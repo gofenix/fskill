@@ -48,9 +48,9 @@ CLAUDE_MARKETPLACE_TOP = {
     "name": "waza",
     "description": (
         "中文优先的工程技能合集，适用于 Claude Code、Codex、"
-        "Antigravity、OpenCode 和 Pi：think、check、hunt、design、"
-        "read、write、learn、health，覆盖方案、审查、调试、设计、"
-        "阅读、写作、研究和 agent health 审计。"
+        "Antigravity、OpenCode 和 Pi：think、how、design、check、hunt、"
+        "write、learn、read、health、handoff。核心不超过十个，"
+        "覆盖方案、走读、审查、调试、设计、阅读、写作、研究和交接。"
     ),
     "owner": {
         "name": "Tw93",
@@ -59,9 +59,9 @@ CLAUDE_MARKETPLACE_TOP = {
 }
 
 BUNDLE_DESCRIPTION = (
-    "安装完整 Waza 工具集，在 waza namespace 下注册八个技能："
-    "/waza:think、/waza:check、/waza:hunt、/waza:design、"
-    "/waza:read、/waza:write、/waza:learn 和 /waza:health。"
+    "安装完整 Waza 工具集，在 waza namespace 下注册十个核心技能："
+    "/waza:think、/waza:how、/waza:design、/waza:check、/waza:hunt、"
+    "/waza:write、/waza:learn、/waza:read、/waza:health 和 /waza:handoff。"
     "Claude Code v2.1.143 或更新版本可用 /plugin install "
     "waza-<name>@waza 单独安装一个技能。"
 )
@@ -78,8 +78,8 @@ AUTHOR = {
 }
 
 CODEX_DESCRIPTION = (
-    "Codex 工程工作流技能：think、check、hunt、design、read、write、"
-    "learn 和 health。"
+    "Codex 工程工作流技能：think、how、design、check、hunt、write、"
+    "learn、read、health 和 handoff。"
 )
 CODEX_MIRROR_IGNORED_DIRS = {
     "__pycache__",
@@ -181,10 +181,10 @@ def build_codex_plugin(version: str) -> dict:
             "displayName": "Waza",
             "shortDescription": "Codex 的中文优先工程工作流技能",
             "longDescription": (
-                "Waza 把八个工程习惯打包成 Codex skills：think 做方案，"
-                "check 做审查和发布门禁，hunt 做根因调试，design 做前端和视觉，"
-                "read 读取 URL/PDF，write 打磨文案，learn 研究陌生领域，"
-                "health 审计 agent 配置和 AI 可维护性。"
+                "Waza 把十个核心技能打包成 Codex skills：think 做方案，"
+                "how 讲清子系统怎么跑，check 做审查和发布门禁，hunt 做根因调试，"
+                "design 做前端和视觉，read 读取 URL/PDF，write 打磨文案，"
+                "learn 研究陌生领域，health 审计 agent 配置，handoff 交接会话。"
             ),
             "developerName": "Tw93",
             "category": CODEX_CATEGORY,

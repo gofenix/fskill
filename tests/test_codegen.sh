@@ -60,7 +60,7 @@ copy_repo "$tmpdir/regen"
 printf '%s\n' '{"plugins": []}' > "$tmpdir/regen/.claude-plugin/marketplace.json"
 rm -rf "$tmpdir/regen/.codex-plugin" "$tmpdir/regen/.agents" "$tmpdir/regen/plugins"
 (cd "$tmpdir/regen" && python3 scripts/build_metadata.py >"$tmpdir/regen.out")
-test "$(jq '.plugins | length' "$tmpdir/regen/.claude-plugin/marketplace.json")" -eq 10
+test "$(jq '.plugins | length' "$tmpdir/regen/.claude-plugin/marketplace.json")" -eq 11
 test "$(jq -r '.name' "$tmpdir/regen/plugins/waza/.codex-plugin/plugin.json")" = "waza"
 test "$(jq -r '.skills' "$tmpdir/regen/plugins/waza/.codex-plugin/plugin.json")" = "./skills/"
 test -f "$tmpdir/regen/plugins/waza/skills/check/SKILL.md"

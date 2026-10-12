@@ -32,6 +32,7 @@ AI 很擅长产出，但没有结构时容易滑向泛泛而谈。这条线维�
 | Skill | 什么时候用 | 它做什么 |
 | :--- | :--- | :--- |
 | [`/think`](skills/think/SKILL.md) | 新功能、架构决策、动手前 | 追问目标和取舍，压测方案，产出另一个 agent 可以直接实施的计划。 |
+| [`/how`](skills/how/SKILL.md) | 改之前要先搞清子系统怎么跑 | 讲清入口、状态归属和分层。不判断要不要做，也不追根因。 |
 | [`/design`](skills/design/SKILL.md) | 前端界面、组件、截图审美问题 | 做有方向感的 UI，包括基于真实截图的视觉迭代，避免默认模板感。 |
 | [`/check`](skills/check/SKILL.md) | 任务完成后、合并前、发布前 | 看 diff，提取项目约束，处理已批准的 commit/push/release/issue 收尾，并用证据验证。 |
 | [`/hunt`](skills/hunt/SKILL.md) | 报错、崩溃、回归、异常行为 | 先找到根因再修，尤其适合“以前可以，现在不行”的问题。 |
@@ -45,8 +46,8 @@ AI 很擅长产出，但没有结构时容易滑向泛泛而谈。这条线维�
 
 | 阶段 | 技能 |
 | :--- | :--- |
-| 想清楚 | `/think` |
-| 动手做 | `/design` |
+| 想清楚 | `/think`、`/how` |
+| 动手做 | `/design`。测试纪律在 `/check` 的 reference 里，不是技能 |
 | 找问题 | `/hunt`、`/check` |
 | 写作与学习 | `/write`、`/learn`、`/read` |
 | 维护环境 | `/health`、`/handoff` |
@@ -63,7 +64,7 @@ AI 很擅长产出，但没有结构时容易滑向泛泛而谈。这条线维�
 npx skills add gofenix/Waza -a claude-code -g -y
 ```
 
-这会安装 `/think`、`/design`、`/check`、`/hunt`、`/write`、`/learn`、`/read`、`/health` 和 `/handoff`。只装单个技能可以用 `npx skills add gofenix/Waza --skill think -a claude-code -g -y`。
+这会安装 `/think`、`/how`、`/design`、`/check`、`/hunt`、`/write`、`/learn`、`/read`、`/health` 和 `/handoff`。只装单个技能可以用 `npx skills add gofenix/Waza --skill think -a claude-code -g -y`。
 
 **Codex**
 
@@ -90,7 +91,7 @@ npx skills add gofenix/Waza -a antigravity-cli -g -y
 npx skills add gofenix/Waza -a opencode -g -y
 ```
 
-安装后 OpenCode 会通过原生 skill 工具加载 Waza。任务匹配时按 `think`、`design`、`check`、`hunt`、`write`、`learn`、`read`、`health` 或 `handoff` 调用。
+安装后 OpenCode 会通过原生 skill 工具加载 Waza。任务匹配时按 `think`、`how`、`design`、`check`、`hunt`、`write`、`learn`、`read`、`health` 或 `handoff` 调用。
 
 **Claude Code plugin marketplace**（单技能入口需要 Claude Code v2.1.143+）
 
@@ -99,7 +100,7 @@ npx skills add gofenix/Waza -a opencode -g -y
 /plugin install waza@waza
 ```
 
-这会安装全部九个核心技能。Claude Code v2.1.143 或更新版本可以只装一个：`/plugin install waza-<name>@waza`，例如 `waza-think@waza`。
+这会安装全部十个核心技能。Claude Code v2.1.143 或更新版本可以只装一个：`/plugin install waza-<name>@waza`，例如 `waza-think@waza`。
 
 **Claude Desktop**
 

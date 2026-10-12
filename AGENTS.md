@@ -4,7 +4,7 @@ This file is the canonical agent guide for the Waza repository. `CLAUDE.md` is a
 
 ## Project
 
-Waza is a skill collection for engineering workflows. This line is maintained at `gofenix/Waza`. Core skills are capped at 10. The current set is `think`, `design`, `check`, `hunt`, `write`, `learn`, `read`, `health`, and `handoff` (9). `handoff` counts toward the cap. The remaining slot is `how`. TDD stays a reference under `check`, not a skill. Groups in the README and `skills/RESOLVER.md` are display-only; `skills/` stays flat.
+Waza is a skill collection for engineering workflows. This line is maintained at `gofenix/Waza`. Core skills are capped at 10. The set is `think`, `how`, `design`, `check`, `hunt`, `write`, `learn`, `read`, `health`, and `handoff`. `handoff` counts toward the cap. TDD stays a reference at `skills/check/references/tdd-discipline.md`, not a skill. Groups in the README and `skills/RESOLVER.md` are display-only; `skills/` stays flat.
 
 ## Repository Map
 

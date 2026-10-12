@@ -17,6 +17,7 @@
 | 触发 | 技能 |
 |---|---|
 | 新功能、架构方案、怎么设计、用什么方案、判断要不要做、有没有必要、值不值得、需要可执行计划、grill me、压测方案、架构草图、先做原型 | `skills/think/SKILL.md` |
+| 怎么工作的、走读、这段怎么跑、放在哪一层、where should this live、how does this work | `skills/how/SKILL.md` |
 
 ### 动手做
 
@@ -24,7 +25,7 @@
 |---|---|
 | UI、页面、组件、前端、字体排印、截图里说丑/怪/不清晰/不协调、视觉 polish | `skills/design/SKILL.md` |
 
-测试纪律不是技能。只有用户明确要求或本地测试很便宜时，才走红绿重构。
+测试纪律不是技能。只有用户明确要求或本地测试很便宜时，才读 [`skills/check/references/tdd-discipline.md`](check/references/tdd-discipline.md)。
 
 ### 找问题
 
@@ -62,10 +63,11 @@
 7. **从零产出 vs 润色**：从材料到文章 -> `/learn`；已有稿子改写 -> `/write`。
 8. **判断 vs 调试**：判断报错原因 -> `/hunt`；判断要不要做、该不该保留 -> `/think`。
 9. **兜底**：仍然模糊时读候选技能的 `Not for` 段，用排除法；还不清楚就问用户。
-10. **压测和草图仍是 think**：grill、架构草图、一次性原型都走 `/think`。
-11. **影响面仍是 check**：双轴审查和 blast radius 走 `/check`，不是新技能。
-12. **复盘环境是 health**：retro 看 agent 工作环境；代码对不对走 `/check` 或 `/hunt`。
-13. **重建上下文是 handoff**：recall 不新开技能，默认不覆盖 `HANDOFF.md`。
+10. **怎么工作 vs 要不要做**：解释现状、归属和分层走 `/how`；价值判断和计划走 `/think`。
+11. **压测和草图仍是 think**：grill、架构草图、一次性原型都走 `/think`。
+12. **影响面仍是 check**：双轴审查和 blast radius 走 `/check`，不是新技能。TDD 也只是 `/check` 的 reference。
+13. **复盘环境是 health**：retro 看 agent 工作环境；代码对不对走 `/check` 或 `/hunt`。
+14. **重建上下文是 handoff**：recall 不新开技能，默认不覆盖 `HANDOFF.md`。
 
 ## Chaining（常见串联）
 
