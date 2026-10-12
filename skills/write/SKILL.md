@@ -1,7 +1,7 @@
 ---
 name: write
-description: "改写和润色中英文自然语言，去掉 AI 味，审阅产品本地化文案，并保留原意。Use when users ask 帮我写/改稿/润色/去AI味/写一段/审稿/本地化文案/tweet/rewrite/proofread. Not for code comments, commit messages, or inline docs."
-when_to_use: "帮我写, 改稿, 润色, 去AI味, 写一段, 审稿, 文档review, 本地化文案, 多语言文案, i18n copy, localization copy, check this document, 推特, twitter, X推文, tweet, social post, 连贯性, 段落连贯, draft, edit text, proofread, sound natural, polish, rewrite"
+description: "改写和润色中英文自然语言，去掉 AI 味，审阅产品本地化文案，并保留原意。Use when users ask 帮我写/改稿/润色/去AI味/写一段/审稿/本地化文案/tweet/unslop/rewrite/proofread. Not for code comments, commit messages, or inline docs."
+when_to_use: "帮我写, 改稿, 润色, 去AI味, 写一段, 审稿, 文档review, 本地化文案, 多语言文案, i18n copy, localization copy, check this document, 推特, twitter, X推文, tweet, social post, 连贯性, 段落连贯, draft, edit text, proofread, sound natural, polish, rewrite, unslop"
 dispatch_intent: "写作、改稿、润色、release notes、launch/social copy、去 AI 味"
 ---
 
@@ -40,7 +40,7 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
    - 中文 + bilingual 或翻译审阅：读取 `references/write-zh-bilingual.md`
    - 产品/网站/app 本地化：读取 `references/write-product-localization.md`；有中文时也读 `references/write-zh-bilingual.md`
    - 默认中文 prose：读取 `references/write-zh-prose.md`；需要完整模式库时读 `references/write-zh.md`
-   - 其他情况：读取 `references/write-en.md`
+   - 其他情况：读取 `references/write-en.md`，并按 `references/unslop-patterns.md` 看英文气味。中文表仍以 `write-zh*` 为准。
 
 读取对应参考后再改。默认不解释修改。
 
@@ -106,7 +106,7 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 - 保留作者的直接语气。
 - 避免 em-dash、过密形容词和“not only... but also...”式模板。
 
-参考 `references/write-en.md`。
+参考 `references/write-en.md` 和 `references/unslop-patterns.md`。分类是气味，不是替换词表。
 
 ## Output
 
@@ -123,3 +123,9 @@ Suggested rewrite:
 ```
 
 用户要求多个版本时，最多给 3 个，并说明每个版本的使用场景。
+
+## Sources
+
+- https://github.com/finografic/pstack （`skills/prose/unslop`）
+
+结构借鉴，正文已改写。中文规则仍以本技能的 `write-zh*` 为准。

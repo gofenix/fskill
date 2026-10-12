@@ -1,7 +1,7 @@
 ---
 name: hunt
-description: "在修复前先找到错误、崩溃、回归、失败测试和异常行为的根因。Use when users ask 排查/报错/崩溃/不工作/回归/判断为什么报错, or say something used to work and now fails. Not for code review or new features."
-when_to_use: "排查, 报错, 崩溃, 不工作, 回归, 判断为什么报错, 测试失败, 以前可以, used to work, error, crash, failing test, regression, broken behavior, why broken, stale cache"
+description: "在修复前先找到错误、崩溃、回归、失败测试和异常行为的根因。硬问题按反馈环、缩小、假设、观测、修复走。Use when users ask 排查/报错/崩溃/不工作/回归/判断为什么报错/diagnose, or say something used to work and now fails. Not for code review or new features."
+when_to_use: "排查, 报错, 崩溃, 不工作, 回归, 判断为什么报错, 测试失败, 以前可以, used to work, error, crash, failing test, regression, broken behavior, why broken, stale cache, diagnose, 缩小复现"
 dispatch_intent: "错误、崩溃、回归、失败测试、异常行为、根因定位"
 ---
 
@@ -48,6 +48,19 @@ Hunt 的核心是：先证明为什么坏，再修。不要看到报错就猜修
 6. **Fix minimally**：只改和根因直接相关的代码。
 7. **Verify**：先跑复现命令，再跑相关回归测试。验证失败就回到根因，不要扩大改动。
 
+## Phase Gates
+
+硬缺陷、时好时坏的失败或性能回归时使用。一句栈跟踪仍走上面的短流程。不要跳过相位，除非写明为什么这一相已经满足。
+
+1. **反馈环**：先有一条能稳定变红的最小命令或操作。没有环就先造环，而不是改产品代码。
+2. **复现并缩小**：去掉无关输入、步骤和数据，直到再删一步就不失败。
+3. **假设**：写下可证伪的原因，一次一个，并写明什么观察会否定它。
+4. **观测**：加最小日志或探针检验假设。秘密打码。这一相不改产品行为。
+5. **修复加回归**：根因确定后做最小修复，并留下能抓住它的测试或命令。
+6. **清理**：去掉临时探针。再跑当初变红的那条命令，确认变绿。
+
+做不到第 1 相时停下来，说明缺的是复现，不是修法。工程立场见 [rules/principles.md](../../rules/principles.md)。
+
 ## Debugging References
 
 - 常见失败模式：`references/failure-patterns.md`
@@ -91,3 +104,9 @@ Hunt 的核心是：先证明为什么坏，再修。不要看到报错就猜修
 
 下一步建议：...
 ```
+
+## Sources
+
+- https://github.com/mattpocock/skills （`skills/engineering/diagnosing-bugs`）
+
+结构借鉴，正文已改写。

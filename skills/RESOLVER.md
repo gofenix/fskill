@@ -16,7 +16,7 @@
 
 | 触发 | 技能 |
 |---|---|
-| 新功能、架构方案、怎么设计、用什么方案、判断要不要做、有没有必要、值不值得、需要可执行计划 | `skills/think/SKILL.md` |
+| 新功能、架构方案、怎么设计、用什么方案、判断要不要做、有没有必要、值不值得、需要可执行计划、grill me、压测方案、架构草图、先做原型 | `skills/think/SKILL.md` |
 
 ### 动手做
 
@@ -30,8 +30,8 @@
 
 | 触发 | 技能 |
 |---|---|
-| 报错、崩溃、测试失败、行为异常、为什么不工作、以前是好的现在坏了、回归、截图回归、缓存/队列/生成物边界 | `skills/hunt/SKILL.md` |
-| review、看看代码、合并前、实现完成、生成物检查、release gate、`code-review` | `skills/check/SKILL.md` |
+| 报错、崩溃、测试失败、行为异常、为什么不工作、以前是好的现在坏了、回归、截图回归、缓存/队列/生成物边界、diagnose、缩小复现 | `skills/hunt/SKILL.md` |
+| review、看看代码、合并前、实现完成、生成物检查、release gate、`code-review`、双轴审查、blast radius、影响面 | `skills/check/SKILL.md` |
 | release、publish、push、commit、close issue、发布表情、registry/asset 检查 | `skills/check/SKILL.md` |
 | 看 issue、看 PR、triage、批量处理、关闭 issue | `skills/check/SKILL.md` |
 | 项目体检、项目评分、代码质量评分、scorecard、linus review、rate this codebase | `skills/check/SKILL.md` |
@@ -40,7 +40,7 @@
 
 | 触发 | 技能 |
 |---|---|
-| 写作、改稿、润色、去 AI 味、本地化文案、tweet、release notes 文案、文档审阅 | `skills/write/SKILL.md` |
+| 写作、改稿、润色、去 AI 味、本地化文案、tweet、release notes 文案、文档审阅、unslop | `skills/write/SKILL.md` |
 | 深度研究陌生领域、多份材料综合、整理成文章、compile sources | `skills/learn/SKILL.md` |
 | 消息含 http(s) URL、网页链接、PDF 路径、看这个链接、读一下 | `skills/read/SKILL.md` |
 
@@ -48,8 +48,8 @@
 
 | 触发 | 技能 |
 |---|---|
-| 检查 Claude/Codex/Pi 配置、agent 不听指令、hook/MCP 异常、AGENTS/CLAUDE/config 漂移、验证缺失、AI coding 腐化、维护性、上下文混乱 | `skills/health/SKILL.md` |
-| handoff、交接、写交接文档、dump context、summarize session、会话总结、compact conversation | `skills/handoff/SKILL.md` |
+| 检查 Claude/Codex/Pi 配置、agent 不听指令、hook/MCP 异常、AGENTS/CLAUDE/config 漂移、验证缺失、AI coding 腐化、维护性、上下文混乱、retro、复盘 | `skills/health/SKILL.md` |
+| handoff、交接、写交接文档、dump context、summarize session、会话总结、compact conversation、下一会话用途、recall | `skills/handoff/SKILL.md` |
 
 ## Disambiguation（歧义消解）
 
@@ -62,6 +62,10 @@
 7. **从零产出 vs 润色**：从材料到文章 -> `/learn`；已有稿子改写 -> `/write`。
 8. **判断 vs 调试**：判断报错原因 -> `/hunt`；判断要不要做、该不该保留 -> `/think`。
 9. **兜底**：仍然模糊时读候选技能的 `Not for` 段，用排除法；还不清楚就问用户。
+10. **压测和草图仍是 think**：grill、架构草图、一次性原型都走 `/think`。
+11. **影响面仍是 check**：双轴审查和 blast radius 走 `/check`，不是新技能。
+12. **复盘环境是 health**：retro 看 agent 工作环境；代码对不对走 `/check` 或 `/hunt`。
+13. **重建上下文是 handoff**：recall 不新开技能，默认不覆盖 `HANDOFF.md`。
 
 ## Chaining（常见串联）
 

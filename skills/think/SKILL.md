@@ -1,7 +1,7 @@
 ---
 name: think
-description: "把粗略想法变成可批准、决策完整的实施计划。Use when users ask 出方案/给方案/深入分析/怎么设计/有没有必要/值不值得/plan this/how should I/should we keep this for features, architecture, or value judgments. Not for bug fixes or small edits."
-when_to_use: "出方案, 给方案, 深入分析, 怎么设计, 用什么方案, 判断一下, 有没有必要, 值不值得, what's the best approach, plan this, how should I, should we keep this"
+description: "把粗略想法变成可批准、决策完整的实施计划，必要时压测决策树、画模块草图或做一次性原型。Use when users ask 出方案/给方案/深入分析/怎么设计/有没有必要/值不值得/plan this/how should I/should we keep this/grill me/architect this for features, architecture, or value judgments. Not for bug fixes, root-cause debugging, or small edits."
+when_to_use: "出方案, 给方案, 深入分析, 怎么设计, 用什么方案, 判断一下, 有没有必要, 值不值得, what's the best approach, plan this, how should I, should we keep this, grill me, 压测方案, architect this, 架构草图, 先做原型, throwaway prototype"
 dispatch_intent: "新功能、架构方案、价值判断、动手前设计、决策完整实施计划"
 ---
 
@@ -34,7 +34,7 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 
 输出一个推荐修法，2 到 3 句话即可：改哪里、怎么改、为什么。先说最朴素的暴力做法，再给推荐做法；除非用户要求优雅，否则默认选最稳的。列出涉及文件，如果超过 5 个文件要明确提醒。说一个主要风险，然后等用户确认再实现。
 
-如果你发现至少 3 种真正不同、取舍接近的方案，升级到完整方案模式。
+如果你发现至少 3 种真正不同、取舍接近的方案，升级到完整方案模式。用户要压测决策树时用 Grill Mode，要模块草图时用 Architect Sketch，要先看见一个答案再承诺时用 Prototype Mode。
 
 ## Evaluation Mode
 
@@ -77,9 +77,36 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 3. **Implementation lock**：明确方案、接口、数据流、失败模式、测试、验收和回滚。计划必须 decision-complete。
 4. **Attack angles**：有外部依赖、高并发或数据迁移时，检查依赖失败、10x 规模、回滚成本。方案扛不住就改方案。
 
+## Grill Mode
+
+用户说 grill me、压测方案、把决策问完时使用。这是把计划里还没闭合的分支问清楚，不是另开一场头脑风暴。
+
+把方案看成决策树。每一轮只问前置已经定下来、现在就能回答的问题。每个问题带一个推荐答案，推荐答案被接受时用户只要说是。问完这一轮就停，等用户答。能从仓库里查到的事实不要问。还依赖本轮答案的下一层问题，留到下一轮。
+
+结束条件：没有还会改变实施、却没人拍板的分支。用户确认这是共同理解之前，不要写代码。
+
+## Architect Sketch
+
+用户要架构草图、模块边界或类型形状，而不是「要不要做」时使用。草图先于 Plan Mode 的实施步骤。
+
+1. 读现有入口、调用方和数据落点，把问题钉在当前代码上。
+2. 只画骨架：模块、谁拥有状态、主要类型、数据怎么流。不写实现，不写伪代码。
+3. 标出还没决定的接口。超过三个模块互相传数据时补一张 ASCII 图，并检查有没有环。
+4. 用户认可草图之后，再进入 Plan Mode，把草图展开成可执行步骤。
+
+## Prototype Mode
+
+可选。用户明确要一个扔掉的原型来回答一个问题时使用。问题只有两类：状态或逻辑是否说得通，界面方向是否值得做。问错了，整份原型作废。
+
+1. 先写清这一份原型要回答的那一个问题。
+2. 放在将来会被替换的代码附近，文件名或目录标明 prototype。一次命令或一次打开就能跑。
+3. 默认不持久化，不做测试，不做抽象，不做错误处理以外的健壮性。
+4. 每次操作都把相关状态显示出来。
+5. 结论写回计划。原型不进主线，除非用户要求留下。
+
 ## Hard Rules
 
-- 先读代码和文档，再给方案。
+- 先读代码和文档，再给方案。工程立场见 [rules/principles.md](../../rules/principles.md)：少写、先减后加、用结构表达领域。
 - 不要问能从仓库里查到的问题。
 - 有官方方案、框架内置能力或生态标准时，默认采用，除非能说明为什么不适合。
 - 一次只推荐一个主方案；只有取舍真的接近时才列一个替代方案。
@@ -97,6 +124,8 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 | 用户说“可以干/直接改/implement this plan” | 视为批准已有计划，不重新争论方向；先检查 repo drift，再执行 |
 | 方案依赖 MCP/CLI 却没验证工具可用 | 交付计划前验证可用性或写成明确依赖 |
 | 用户拒绝方案 | 问具体哪一点不行，带着约束收窄，不从零重启 |
+| Grill 一轮问了依赖本轮答案的下一层 | 只问当前能问的，问完停下 |
+| 原型被当成要合并的功能 | 原型只回答一个问题，结论进计划，代码不进主线 |
 
 ## Output
 
@@ -113,3 +142,10 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 ```text
 Plan approved. To implement: say "implement this plan". After implementation, run `/check` to review before merging or release follow-through.
 ```
+
+## Sources
+
+- https://github.com/mattpocock/skills （`skills/productivity/grilling`，`skills/engineering/prototype`）
+- https://github.com/finografic/pstack （`skills/design/architect`）
+
+结构借鉴，正文已改写。
