@@ -1,14 +1,14 @@
 {
   "name": "waza",
-  "version": "3.28.1",
-  "description": "Codex 工程工作流技能：think、check、hunt、design、read、write、learn 和 health。",
+  "version": "3.40.0-fenix.1",
+  "description": "Codex 工程工作流技能：think、how、design、check、hunt、write、learn、read、health 和 handoff。",
   "author": {
     "name": "Tw93",
     "email": "hitw93@gmail.com",
     "url": "https://github.com/tw93"
   },
-  "homepage": "https://github.com/tw93/Waza",
-  "repository": "https://github.com/tw93/Waza",
+  "homepage": "https://github.com/gofenix/Waza",
+  "repository": "https://github.com/gofenix/Waza",
   "license": "MIT",
   "keywords": [
     "codex",
@@ -23,14 +23,14 @@
   "interface": {
     "displayName": "Waza",
     "shortDescription": "Codex 的中文优先工程工作流技能",
-    "longDescription": "Waza 把八个工程习惯打包成 Codex skills：think 做方案，check 做审查和发布门禁，hunt 做根因调试，design 做前端和视觉，read 读取 URL/PDF，write 打磨文案，learn 研究陌生领域，health 审计 agent 配置和 AI 可维护性。",
+    "longDescription": "Waza 把十个核心技能打包成 Codex skills：think 做方案，how 讲清子系统怎么跑，check 做审查和发布门禁，hunt 做根因调试，design 做前端和视觉，read 读取 URL/PDF，write 打磨文案，learn 研究陌生领域，health 审计 agent 配置，handoff 交接会话。",
     "developerName": "Tw93",
     "category": "Developer Tools",
     "capabilities": [
       "Interactive",
       "Write"
     ],
-    "websiteURL": "https://github.com/tw93/Waza",
+    "websiteURL": "https://github.com/gofenix/Waza",
     "defaultPrompt": [
       "用 Waza think 规划这个改动",
       "用 Waza check 审查这个 diff",

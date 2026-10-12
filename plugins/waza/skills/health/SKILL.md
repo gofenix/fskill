@@ -1,7 +1,7 @@
 ---
 name: health
-description: "做预算友好的 agent-assisted engineering health 审计，覆盖指令/配置漂移、hooks/MCP、验证面和 AI 可维护性。Use when users ask 检查claude/检查codex/检查pi/配置检查/健康度 or report agents ignoring instructions, missing validation, or code becoming hard to maintain. Not for debugging code or reviewing PRs."
-when_to_use: "检查claude, 检查codex, 检查pi, Codex 配置, Pi 配置, AGENTS.md, config.toml, agent instructions, 健康度, 配置检查, 配置对不对, AI coding 腐化, 代码变烂, 维护性, 上下文混乱, 验证缺失, 验证命令失真, Claude ignoring instructions, Pi coding agent, check config, settings not working, audit config"
+description: "做预算友好的 agent-assisted engineering health 审计，覆盖指令/配置漂移、hooks/MCP、验证面、AI 可维护性和会话复盘。Use when users ask 检查claude/检查codex/检查pi/配置检查/健康度/retro or report agents ignoring instructions, missing validation, or code becoming hard to maintain. Not for debugging code or reviewing PRs."
+when_to_use: "检查claude, 检查codex, 检查pi, Codex 配置, Pi 配置, AGENTS.md, config.toml, agent instructions, 健康度, 配置检查, 配置对不对, AI coding 腐化, 代码变烂, 维护性, 上下文混乱, 验证缺失, 验证命令失真, Claude ignoring instructions, Pi coding agent, check config, settings not working, audit config, retro, 复盘, 回顾这次"
 dispatch_intent: "Agent 配置审计、Codex/Claude/Pi 指令漂移、hooks/MCP、验证面、AI 可维护性"
 ---
 
@@ -45,7 +45,7 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 - summary audit 出现高风险发现，需要定位具体层。
 - agent 明显不听指令、验证命令失真、MCP/hook 失败反复出现。
 
-不要一上来读取大量缓存、历史会话或 raw transcripts。先让当前项目证据说话。
+不要一上来读取大量缓存、历史会话或 raw transcripts。先让当前项目证据说话。用户要复盘这次协作时用 Retro Mode，仍然不默认去读原始会话转储。
 
 ## Summary Audit Flow
 
@@ -73,6 +73,25 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 - `scripts/check-maintainability.sh`
 - `scripts/check-verifier-output.sh`
 - `scripts/collect-data.sh`
+- `scripts/scan_skill_security.py`：扫描技能说明面里的提示覆盖、破坏性命令和疑似密钥。输出是有界收据，不是最终裁决。
+
+## Retro Mode
+
+用户说 retro、复盘、回顾这次、agent 哪里费劲时使用。对象是 agent 的工作环境，不是给人写绩效，也不是代码 review。
+
+只看当前会话里已经发生的事，加上仓库里的指令、验证命令和目录。用户点名某份笔记时才读那一份。不扫描本机的会话目录。
+
+候选按严重度排，没有证据的类别跳过：
+
+| 类别 | 看什么 |
+|---|---|
+| 导航 | 找对文件是否绕了远路，缺一个稳定指针 |
+| 自动检查 | 这次错误能不能被仓库已有的 lint、测试或 CI 抓住。没有门禁本身就是发现 |
+| 规范 | 机械规则应该变成检查。只有判断才留在文档里 |
+| 指令膨胀 | 指令如果删掉也不会改变行为，标成无效 |
+| 工具成本 | 有没有又贵又重复的查找 |
+
+每条给证据和下一步。不要顺手改仓库，除非用户说修。
 
 ## Finding Format
 
@@ -102,3 +121,9 @@ Next action: copy-pasteable command or concrete edit
 ## Output
 
 如果有问题，先列 findings，再给最小行动顺序和验证命令。如果没有问题，说清检查了什么、剩余风险是什么。
+
+## Sources
+
+- https://github.com/mattpocock/skills （`skills/engineering/retro`）
+
+结构借鉴，正文已改写。

@@ -5,7 +5,7 @@ set -e
 CLAUDE_DIR="$HOME/.claude"
 DEST="$CLAUDE_DIR/statusline.sh"
 SETTINGS_FILE="$CLAUDE_DIR/settings.json"
-WAZA_REF="${WAZA_REF:-v3.28.1}"
+WAZA_REF="${WAZA_REF:-v3.40.0-fenix.1}"
 
 case "$WAZA_REF" in
   main|v[0-9]*.[0-9]*.[0-9]*) ;;

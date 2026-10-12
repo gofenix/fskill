@@ -1,7 +1,7 @@
 ---
 name: check
-description: "审查代码 diff、PR、issue 队列、发布准备、commit、push、publish 和项目审计。Use when users ask review/看看代码/合并前/看看issue/PR/release/push or to implement an approved plan, with safety gates for dirty and untracked worktrees. Not for exploring ideas, debugging root causes, or prose review."
-when_to_use: "review, 看看代码, 检查一下, 有没有问题, 是否需要优化, 合并前, 继续优化, 优化代码, 看看issue, 看看PR, release, publish, push, release reaction, GitHub reaction, 发布, 提交, 关闭issue, 发布表情, release表情, close issue, issue close, review my code, check changes, before merge, before release, code review, code-review, audit, project audit, 项目体检, 项目评分, 给项目打分, 深入分析项目代码, 评估项目质量, 代码质量评分, scorecard, linus review, rate this codebase, score this project"
+description: "审查代码 diff、PR、issue 队列、发布准备、commit、push、publish 和项目审计，并用规范轴、规格轴和影响面核对。Use when users ask review/看看代码/合并前/看看issue/PR/release/push/blast radius or to implement an approved plan, with safety gates for dirty and untracked worktrees. Not for exploring ideas, debugging root causes, or prose review."
+when_to_use: "review, 看看代码, 检查一下, 有没有问题, 是否需要优化, 合并前, 继续优化, 优化代码, 看看issue, 看看PR, release, publish, push, release reaction, GitHub reaction, 发布, 提交, 关闭issue, 发布表情, release表情, close issue, issue close, review my code, check changes, before merge, before release, code review, code-review, audit, project audit, 项目体检, 项目评分, 给项目打分, 深入分析项目代码, 评估项目质量, 代码质量评分, scorecard, linus review, rate this codebase, score this project, blast radius, 影响面, 双轴审查, TDD, 红绿重构, 写个失败测试"
 dispatch_intent: "代码审查、合并前检查、发布门禁、生成物审查、commit/push/release 收尾、issue/PR triage、项目质量审计"
 ---
 
@@ -52,6 +52,10 @@ PR 检查优先用不会切换工作区的命令：`gh pr view`、`gh pr diff`�
 | 值不值得发版、is this worth a release | Release Worthiness Analysis |
 | commit、push、publish、release、close issue、发布表情 | Ship / Release Follow-through |
 | audit、项目体检、项目评分、scorecard、linus review | Project Audit |
+| 规范是否遵守，以及是否做了规格里的事 | Dual-Axis Review |
+| 会影响哪里、blast radius、改完别的会不会坏 | Blast Radius |
+| 写 PR 说明 | 读取 `references/pr-body.md` |
+| 用户要求 TDD、红绿重构，或本地测试很便宜 | 读取 `references/tdd-discipline.md` |
 | 文档、PDF、自然语言 prose review | 交给 `/write` |
 
 每个模式前都先做 Project Context Extraction。
@@ -101,6 +105,31 @@ Fix: ...
 ```
 
 如果没有发现问题，明确说“未发现阻塞问题”，并说明测试覆盖和剩余风险。
+
+## Dual-Axis Review
+
+正式审查，或 diff 同时牵涉行为规格和仓库规范时使用。两条轴分开看，最后合并。小 diff 不要为了形式拆成两个子任务。
+
+- **规范轴**：改动是否符合本仓库已经写下来的命令、生成物、风格和安全边界。证据来自 README、AGENTS、CI 和周围代码，不来自个人偏好。
+- **规格轴**：改动是否做了用户、issue 或已批准计划要求的事，有没有漏掉验收条件。找不到规格时写「无规格」，不要编一个。
+
+发现仍用 finding 格式，并在标题里标明轴。两条轴冲突时，更严格的那条留下，另一条写成假设。
+
+## Blast Radius
+
+用户问会影响哪里、blast radius、改完别的会不会坏时使用。
+
+1. 从 diff 列出公开入口：导出符号、命令、路由、schema、配置键、生成物。
+2. 在仓库里找调用方和下游测试，不把范围停在改动文件。
+3. 把影响分成直接调用、契约变化、生成物或发布物、运行时状态。
+4. 用一条能碰到最远消费者的命令证明，或写明没跑的原因。
+5. 需要对外说明时套 `references/pr-body.md`。
+
+工程立场见 [rules/principles.md](../../rules/principles.md)：看真实路径，一步一验。
+
+## Test Discipline
+
+不是默认动作，也不是独立技能。只有用户明确要求 TDD、红绿重构，或这次改动已经有一个便宜的本地测试目标时，读取 `references/tdd-discipline.md`。其他情况不要为了形式先写失败测试。
 
 ## Autofix Boundary
 
@@ -202,4 +231,11 @@ Review 输出顺序：
 3. Verification。
 4. Change summary，只作为次要上下文。
 
-Ship 输出要说明：commit、push、release、issue/PR 状态和验证证据。
+Ship 输出要说明：commit、push、release、issue/PR 状态和验证证据。PR 正文形状见 `references/pr-body.md`。
+
+## Sources
+
+- https://github.com/mattpocock/skills （`skills/engineering/code-review`，`skills/engineering/pr`）
+- https://github.com/finografic/pstack （`skills/understand/blast-radius`）
+
+结构借鉴，正文已改写。

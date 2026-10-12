@@ -1,7 +1,7 @@
 ---
 name: handoff
-description: "把当前会话压缩成一份交接文档，让新 agent 接手继续工作。Use when users ask handoff/交接/写交接文档/dump context/summarize session. Not for regular writing, editing, or de-AI tasks."
-when_to_use: "handoff, 交接, 写交接文档, dump context, summarize session, 会话总结, compact conversation, agent handoff, next agent, 上下文压缩"
+description: "把当前会话压缩成一份交接文档，或按下一会话用途从现有材料重建上下文。Use when users ask handoff/交接/写交接文档/dump context/summarize session/recall. Not for regular writing, editing, or de-AI tasks."
+when_to_use: "handoff, 交接, 写交接文档, dump context, summarize session, 会话总结, compact conversation, agent handoff, next agent, 上下文压缩, 下一会话, recall, 从历史重建"
 dispatch_intent: "交接文档、handoff、会话总结"
 ---
 
@@ -28,7 +28,16 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 6. 掩盖密钥、密码、token 和 PII。
 7. 末尾写建议技能：一行一个技能名。
 8. 保存到当前工作区根目录，文件名 `HANDOFF.md`。如果已有同名文件，先在末尾追加分隔线再写新内容，或按用户要求命名。
-9. 如果用户给了参数，把它当作下一个会话的重点方向，只保留相关内容。
+9. 如果用户给了参数，把它当作下一会话用途：这份交接要让新会话完成什么。只保留和这个用途相关的决策、文件和下一步，其余压成一句背景。
+
+## Recall Mode
+
+用户要从已有交接或当前材料重建上下文，而不是新写一份交接时使用。触发包括 recall、从历史重建、这段做到哪了。
+
+1. 只读用户点名的 `HANDOFF.md`、计划、diff 和当前对话。不扫描本机会话目录，不读 raw transcripts。
+2. 按下一会话用途筛选。没有用途时，先用一句话假设用途并请用户纠正。
+3. 输出目标、已决、未决、相关路径、建议技能。
+4. 不覆盖 `HANDOFF.md`，除非用户要求写回。
 
 ## Hard Rules
 
@@ -48,6 +57,8 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 | 漏掉了密钥或 token | 写入前检查整份文档中的敏感信息 |
 | 加了“本次会话完成了以下工作：”等开场 | 第一行直接写当前状态 |
 | 篇幅过长（超过一屏） | 压缩条目，控制在一屏内 |
+| 没给下一会话用途就什么都写 | 先按用途裁剪，没有用途就假设一句并请用户纠正 |
+| Recall 时改写了 HANDOFF.md | 默认只输出重建结果，用户要求才写回 |
 
 ## Output
 
@@ -71,4 +82,14 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 
 建议技能
 - skill-name
+
+下一会话用途
+- <用户给的参数，或你假设的一句>
 ```
+
+## Sources
+
+- https://github.com/mattpocock/skills （`skills/productivity/handoff` 的下一会话用途）
+- https://github.com/finografic/pstack （`skills/understand/recall`）
+
+结构借鉴，正文已改写。交接文件仍以本技能为准：写在工作区根目录的 `HANDOFF.md`。

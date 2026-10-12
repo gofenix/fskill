@@ -40,7 +40,7 @@ resolve_health_helper() {
     fi
   done
 
-  installed_path="$(npx skills path tw93/Waza 2>/dev/null || true)"
+  installed_path="$(npx skills path gofenix/Waza 2>/dev/null || true)"
   if [ -n "$installed_path" ] && [ -f "$installed_path/skills/health/scripts/$name" ]; then
     printf '%s\n' "$installed_path/skills/health/scripts/$name"
     return 0

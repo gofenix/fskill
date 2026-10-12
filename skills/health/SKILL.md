@@ -73,6 +73,7 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 - `scripts/check-maintainability.sh`
 - `scripts/check-verifier-output.sh`
 - `scripts/collect-data.sh`
+- `scripts/scan_skill_security.py`：扫描技能说明面里的提示覆盖、破坏性命令和疑似密钥。输出是有界收据，不是最终裁决。
 
 ## Retro Mode
 

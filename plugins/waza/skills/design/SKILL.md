@@ -42,6 +42,8 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 4. 在真实界面或生成物上验证。需要时检查长词、本地化字符串、紧凑状态和至少一个窄 viewport。
 5. 如果改动碰到 3 个以上组件、改变产品行为，或暴露方向问题，停下来改走 Screenshot Iteration Mode 或先锁方向。
 
+加长清单（加载态、破坏性操作、终端输出）见 `references/mode-quick-fix.md`。本段仍是默认入口。
+
 关键规则：
 
 - 同一布局里不要反复调 3 个以上 magic spacing。调不顺时，把 padding、gap、margin 或 size 合并成一个命名 token。
@@ -71,6 +73,8 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 - 不把“更高级”这类反馈泛化成空话，要落成具体视觉诊断。
 - 如果截图证明的是回归、状态错误或生成物破损，转 `/hunt`。
 
+修复合同、视觉矩阵和原生截图交接见 `references/mode-screenshot-iteration.md`。生成图（封面、示意图、社交卡片）走 `references/mode-generated-asset.md`，不要和界面迭代混在一轮里。
+
 ## Direction Lock
 
 当要从零做页面、组件或较大 redesign 时，先锁方向：
@@ -90,6 +94,10 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 - `references/design-tokens.md`：token 和尺寸规则。
 - `references/design-data-viz.md`：数据可视化。
 - `references/design-aesthetic-quality.md`：审美质量校准。
+- `references/mode-quick-fix.md`：窄视觉修复的加长清单。
+- `references/mode-screenshot-iteration.md`：截图迭代的修复合同和验证矩阵。
+- `references/mode-generated-asset.md`：生成图片，先定规格再出像素。
+- `references/design-native-motion.md`：原生界面的动效映射。SwiftUI、UIKit、Compose 用，网页动画不读这份。
 
 ## Hard Rules
 

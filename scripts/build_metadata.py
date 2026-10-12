@@ -301,13 +301,15 @@ def render_dispatcher(template: str, skills: list[dict]) -> str:
 # users get a stable install without README churn on every version bump.
 README_INSTALL_URL_RE = re.compile(
     r"https://raw\.githubusercontent\.com/gofenix/Waza/"
-    r"(?:main|v\d+\.\d+\.\d+)/scripts/(setup-(?:rule|statusline)\.sh)"
+    r"(?:main|v\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?)/scripts/(setup-(?:rule|statusline)\.sh)"
 )
 README_SWAP_TAG_RE = re.compile(
     r"Curl URLs are pinned to the current release tag for reproducibility; "
     r"swap `v\d+\.\d+\.\d+` for `main` if you want bleeding-edge scripts\."
 )
-WAZA_REF_RE = re.compile(r'WAZA_REF="\$\{WAZA_REF:-(?:main|v\d+\.\d+\.\d+)\}"')
+WAZA_REF_RE = re.compile(
+    r'WAZA_REF="\$\{WAZA_REF:-(?:main|v\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?)\}"'
+)
 
 
 def render_readme(current: str, version: str) -> str:

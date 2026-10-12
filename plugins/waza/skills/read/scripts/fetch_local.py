@@ -191,12 +191,19 @@ def main() -> int:
         body = extract_with_stdlib(html, args.url)
         used = "stdlib"
 
-    # Sanity floor: if even the stdlib extractor returns essentially nothing,
-    # treat as failure so the proxy fallback (if --use-proxy) gets a chance.
-    body_lines = [l for l in body.splitlines() if l.strip()]
-    if len(body_lines) < 4:
+    # Sanity floor: a minified page can be one paragraph. Reject extracts that
+    # are only a title, a source line, or the empty placeholder, so --use-proxy
+    # still gets a chance. Do not require a fixed line count.
+    content_lines = []
+    for line in body.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("> Source:") or stripped.startswith("# "):
+            continue
+        content_lines.append(stripped)
+    content = " ".join(content_lines)
+    if len(content) < 40 or content == "(no text content extracted)":
         print(
-            f"[fetch] tier=local status=fail reason=\"extractor={used} produced <4 non-empty lines\"",
+            f"[fetch] tier=local status=fail reason=\"extractor={used} produced too little text\"",
             file=sys.stderr,
         )
         return 1

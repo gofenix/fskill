@@ -17,7 +17,7 @@ REMOTE_URL="${WAZA_UPDATE_URL:-https://raw.githubusercontent.com/${REPO}/main/VE
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # VERSION is not packaged; read the version build_metadata.py stamps into the
 # shipped setup-rule.sh (WAZA_REF=vX.Y.Z).
-local_ver="$(grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' "${root}/scripts/setup-rule.sh" 2>/dev/null | head -1 | sed 's/^v//')"
+local_ver="$(grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?' "${root}/scripts/setup-rule.sh" 2>/dev/null | head -1 | sed 's/^v//')"
 [ -n "${local_ver}" ] || exit 0
 
 day="$(date +%F 2>/dev/null)" || exit 0

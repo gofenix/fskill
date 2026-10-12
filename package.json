@@ -1,6 +1,6 @@
 {
   "name": "@tw93/waza",
-  "version": "3.28.1",
+  "version": "3.40.0-fenix.1",
   "description": "中文优先的 Waza 工程技能，适用于 Claude Code、Codex、Antigravity、OpenCode、Pi 和兼容 coding agents。",
   "license": "MIT",
   "repository": {

@@ -60,7 +60,8 @@ verify-scripts:
 	  skills/health/scripts/check_doc_refs.py \
 	  skills/health/scripts/check_verifier_output.py \
 	  skills/health/scripts/check_agent_context.py \
-	  skills/health/scripts/check_maintainability.py
+	  skills/health/scripts/check_maintainability.py \
+	  skills/health/scripts/scan_skill_security.py
 	echo "py_compile: ok"
 	bash skills/health/scripts/collect-data.sh auto >/tmp/waza-collect-data.out
 	echo "collect-data: ok"
