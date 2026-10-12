@@ -68,8 +68,8 @@ BUNDLE_DESCRIPTION = (
 
 CATEGORY = "development"
 CODEX_CATEGORY = "Developer Tools"
-HOMEPAGE = "https://github.com/tw93/Waza"
-REPOSITORY = "https://github.com/tw93/Waza"
+HOMEPAGE = "https://github.com/gofenix/Waza"
+REPOSITORY = "https://github.com/gofenix/Waza"
 
 AUTHOR = {
     "name": "Tw93",
@@ -237,9 +237,9 @@ def build_package_json(version: str) -> str:
         "license": "MIT",
         "repository": {
             "type": "git",
-            "url": "git+https://github.com/tw93/Waza.git",
+            "url": "git+https://github.com/gofenix/Waza.git",
         },
-        "homepage": "https://github.com/tw93/Waza#readme",
+        "homepage": "https://github.com/gofenix/Waza#readme",
         "keywords": [
             "pi-package",
             "agent-skills",
@@ -300,7 +300,7 @@ def render_dispatcher(template: str, skills: list[dict]) -> str:
 # The downloaded scripts themselves still default WAZA_REF to a release tag, so
 # users get a stable install without README churn on every version bump.
 README_INSTALL_URL_RE = re.compile(
-    r"https://raw\.githubusercontent\.com/tw93/Waza/"
+    r"https://raw\.githubusercontent\.com/gofenix/Waza/"
     r"(?:main|v\d+\.\d+\.\d+)/scripts/(setup-(?:rule|statusline)\.sh)"
 )
 README_SWAP_TAG_RE = re.compile(
@@ -312,7 +312,7 @@ WAZA_REF_RE = re.compile(r'WAZA_REF="\$\{WAZA_REF:-(?:main|v\d+\.\d+\.\d+)\}"')
 
 def render_readme(current: str, version: str) -> str:
     current = README_INSTALL_URL_RE.sub(
-        r"https://github.com/tw93/Waza/releases/latest/download/\1", current
+        r"https://github.com/gofenix/Waza/releases/latest/download/\1", current
     )
     return README_SWAP_TAG_RE.sub(
         "Curl URLs use the latest GitHub release asset. Set `WAZA_REF=main` "

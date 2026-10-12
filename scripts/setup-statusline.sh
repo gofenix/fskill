@@ -15,7 +15,7 @@ case "$WAZA_REF" in
     ;;
 esac
 
-RAW="https://raw.githubusercontent.com/tw93/Waza/${WAZA_REF}/scripts/statusline.sh"
+RAW="https://raw.githubusercontent.com/gofenix/Waza/${WAZA_REF}/scripts/statusline.sh"
 
 if ! command -v curl &>/dev/null; then
   echo "Error: curl is required but not installed." >&2

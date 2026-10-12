@@ -147,15 +147,15 @@ def write_codex_manifest(root, version="1.2.3", display_name="Waza"):
   "version": "%s",
   "description": "Engineering workflow skills for Codex.",
   "author": {"name": "Tw93"},
-  "homepage": "https://github.com/tw93/Waza",
-  "repository": "https://github.com/tw93/Waza",
+  "homepage": "https://github.com/gofenix/Waza",
+  "repository": "https://github.com/gofenix/Waza",
   "license": "MIT",
   "skills": "./skills/",
   "interface": {
     "displayName": "%s",
     "developerName": "Tw93",
     "category": "Developer Tools",
-    "websiteURL": "https://github.com/tw93/Waza",
+    "websiteURL": "https://github.com/gofenix/Waza",
     "defaultPrompt": ["Use Waza check"]
   }
 }

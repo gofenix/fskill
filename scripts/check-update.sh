@@ -9,7 +9,7 @@
 set -u
 
 SKILL="waza"
-REPO="tw93/Waza"
+REPO="gofenix/Waza"
 UPDATE_CMD="npx skills update -g -y"
 # WAZA_UPDATE_URL overrides the source (used by tests); defaults to the public VERSION.
 REMOTE_URL="${WAZA_UPDATE_URL:-https://raw.githubusercontent.com/${REPO}/main/VERSION}"

@@ -9,21 +9,21 @@ import build_metadata as bm
 
 
 def test_render_readme_rewrites_main_to_latest_asset():
-    body = "curl https://raw.githubusercontent.com/tw93/Waza/main/scripts/setup-rule.sh"
+    body = "curl https://raw.githubusercontent.com/gofenix/Waza/main/scripts/setup-rule.sh"
     out = bm.render_readme(body, "9.9.9")
-    assert "https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh" in out
+    assert "https://github.com/gofenix/Waza/releases/latest/download/setup-rule.sh" in out
     assert "raw.githubusercontent.com" not in out
 
 
 def test_render_readme_rewrites_pinned_version_to_latest_asset():
-    body = "curl https://raw.githubusercontent.com/tw93/Waza/v1.2.3/scripts/setup-rule.sh"
+    body = "curl https://raw.githubusercontent.com/gofenix/Waza/v1.2.3/scripts/setup-rule.sh"
     out = bm.render_readme(body, "9.9.9")
-    assert "https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh" in out
+    assert "https://github.com/gofenix/Waza/releases/latest/download/setup-rule.sh" in out
     assert "v1.2.3" not in out
 
 
 def test_render_readme_no_change_when_already_latest_asset():
-    body = "curl https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh"
+    body = "curl https://github.com/gofenix/Waza/releases/latest/download/setup-rule.sh"
     assert bm.render_readme(body, "9.9.9") == body
 
 

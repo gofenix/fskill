@@ -76,7 +76,7 @@ test "$(jq -r '.publishConfig.access' "$tmpdir/regen/package.json")" = "public"
 copy_repo "$tmpdir/readme"
 version=$(cat "$tmpdir/readme/VERSION")
 sed -i.bak \
-  "s|https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh|https://raw.githubusercontent.com/tw93/Waza/v${version}/scripts/setup-rule.sh|g; s|https://github.com/tw93/Waza/releases/latest/download/setup-statusline.sh|https://raw.githubusercontent.com/tw93/Waza/v${version}/scripts/setup-statusline.sh|g" \
+  "s|https://github.com/gofenix/Waza/releases/latest/download/setup-rule.sh|https://raw.githubusercontent.com/gofenix/Waza/v${version}/scripts/setup-rule.sh|g; s|https://github.com/gofenix/Waza/releases/latest/download/setup-statusline.sh|https://raw.githubusercontent.com/gofenix/Waza/v${version}/scripts/setup-statusline.sh|g" \
   "$tmpdir/readme/README.md"
 rm "$tmpdir/readme/README.md.bak"
 if (cd "$tmpdir/readme" && python3 scripts/build_metadata.py --check >"$tmpdir/readme.out" 2>"$tmpdir/readme.err"); then
@@ -84,9 +84,9 @@ if (cd "$tmpdir/readme" && python3 scripts/build_metadata.py --check >"$tmpdir/r
 fi
 grep -q "README.md installer URLs must use latest release assets" "$tmpdir/readme.err"
 (cd "$tmpdir/readme" && python3 scripts/build_metadata.py >"$tmpdir/readme-regen.out")
-grep -q "tw93/Waza/releases/latest/download/setup-rule.sh" "$tmpdir/readme/README.md"
-grep -q "tw93/Waza/releases/latest/download/setup-statusline.sh" "$tmpdir/readme/README.md"
-if grep -q "raw.githubusercontent.com/tw93/Waza/.*/scripts/setup-" "$tmpdir/readme/README.md"; then
+grep -q "gofenix/Waza/releases/latest/download/setup-rule.sh" "$tmpdir/readme/README.md"
+grep -q "gofenix/Waza/releases/latest/download/setup-statusline.sh" "$tmpdir/readme/README.md"
+if grep -q "raw.githubusercontent.com/gofenix/Waza/.*/scripts/setup-" "$tmpdir/readme/README.md"; then
   echo "README still has raw installer URLs after regen"; exit 1
 fi
 

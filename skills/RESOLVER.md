@@ -10,41 +10,45 @@
 
 ## 按工作流阶段分路
 
-### Pre-build（动手前）
+分组只用于阅读。`skills/` 保持扁平，不建分类目录。工程立场见 [rules/principles.md](../rules/principles.md)。核心技能不超过 10 个，`handoff` 计入。
+
+### 想清楚
 
 | 触发 | 技能 |
 |---|---|
 | 新功能、架构方案、怎么设计、用什么方案、判断要不要做、有没有必要、值不值得、需要可执行计划 | `skills/think/SKILL.md` |
-| UI、页面、组件、前端、字体排印、截图里说丑/怪/不清晰/不协调、视觉 polish | `skills/design/SKILL.md` |
 
-### Post-build（交付前）
+### 动手做
 
 | 触发 | 技能 |
 |---|---|
+| UI、页面、组件、前端、字体排印、截图里说丑/怪/不清晰/不协调、视觉 polish | `skills/design/SKILL.md` |
+
+测试纪律不是技能。只有用户明确要求或本地测试很便宜时，才走红绿重构。
+
+### 找问题
+
+| 触发 | 技能 |
+|---|---|
+| 报错、崩溃、测试失败、行为异常、为什么不工作、以前是好的现在坏了、回归、截图回归、缓存/队列/生成物边界 | `skills/hunt/SKILL.md` |
 | review、看看代码、合并前、实现完成、生成物检查、release gate、`code-review` | `skills/check/SKILL.md` |
 | release、publish、push、commit、close issue、发布表情、registry/asset 检查 | `skills/check/SKILL.md` |
 | 看 issue、看 PR、triage、批量处理、关闭 issue | `skills/check/SKILL.md` |
 | 项目体检、项目评分、代码质量评分、scorecard、linus review、rate this codebase | `skills/check/SKILL.md` |
 
-### Diagnostic（出问题了）
+### 写作与学习
 
 | 触发 | 技能 |
 |---|---|
-| 报错、崩溃、测试失败、行为异常、为什么不工作、以前是好的现在坏了、回归、截图回归、缓存/队列/生成物边界 | `skills/hunt/SKILL.md` |
-| 检查 Claude/Codex/Pi 配置、agent 不听指令、hook/MCP 异常、AGENTS/CLAUDE/config 漂移、验证缺失、AI coding 腐化、维护性、上下文混乱 | `skills/health/SKILL.md` |
-
-### Content（内容进出）
-
-| 触发 | 技能 |
-|---|---|
-| 消息含 http(s) URL、网页链接、PDF 路径、看这个链接、读一下 | `skills/read/SKILL.md` |
 | 写作、改稿、润色、去 AI 味、本地化文案、tweet、release notes 文案、文档审阅 | `skills/write/SKILL.md` |
 | 深度研究陌生领域、多份材料综合、整理成文章、compile sources | `skills/learn/SKILL.md` |
+| 消息含 http(s) URL、网页链接、PDF 路径、看这个链接、读一下 | `skills/read/SKILL.md` |
 
-### Meta（会话管理）
+### 维护环境
 
 | 触发 | 技能 |
 |---|---|
+| 检查 Claude/Codex/Pi 配置、agent 不听指令、hook/MCP 异常、AGENTS/CLAUDE/config 漂移、验证缺失、AI coding 腐化、维护性、上下文混乱 | `skills/health/SKILL.md` |
 | handoff、交接、写交接文档、dump context、summarize session、会话总结、compact conversation | `skills/handoff/SKILL.md` |
 
 ## Disambiguation（歧义消解）

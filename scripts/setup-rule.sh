@@ -37,7 +37,7 @@ case "$WAZA_REF" in
     ;;
 esac
 
-RAW="https://raw.githubusercontent.com/tw93/Waza/${WAZA_REF}/rules/${RULE}.md"
+RAW="https://raw.githubusercontent.com/gofenix/Waza/${WAZA_REF}/rules/${RULE}.md"
 
 # Marker label = how the block appears in ~/.codex/AGENTS.md. Established names
 # kept verbatim so existing installs keep matching their original start/end

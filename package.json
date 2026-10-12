@@ -5,9 +5,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tw93/Waza.git"
+    "url": "git+https://github.com/gofenix/Waza.git"
   },
-  "homepage": "https://github.com/tw93/Waza#readme",
+  "homepage": "https://github.com/gofenix/Waza#readme",
   "keywords": [
     "pi-package",
     "agent-skills",

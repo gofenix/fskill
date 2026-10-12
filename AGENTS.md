@@ -4,7 +4,7 @@ This file is the canonical agent guide for the Waza repository. `CLAUDE.md` is a
 
 ## Project
 
-Waza is a skill collection for engineering workflows. The repository contains eight skills: `think`, `design`, `check`, `hunt`, `write`, `learn`, `read`, and `health`.
+Waza is a skill collection for engineering workflows. This line is maintained at `gofenix/Waza`. Core skills are capped at 10. The current set is `think`, `design`, `check`, `hunt`, `write`, `learn`, `read`, `health`, and `handoff` (9). `handoff` counts toward the cap. The remaining slot is `how`. TDD stays a reference under `check`, not a skill. Groups in the README and `skills/RESOLVER.md` are display-only; `skills/` stays flat.
 
 ## Repository Map
 
@@ -14,7 +14,7 @@ Waza is a skill collection for engineering workflows. The repository contains ei
 - `skills/*/agents/` - specialist reviewer or inspector prompts.
 - `skills/*/references/` - supporting references loaded only when needed.
 - `skills/*/scripts/` - deterministic helper scripts.
-- `rules/` - shared writing and behavior rules used by install and validation flows. `rules/durable-context.md` is the shared Durable Context Preflight preamble; the six skills with optional memory context link to it from their own preflight section.
+- `rules/` - shared writing and behavior rules used by install and validation flows. `rules/durable-context.md` is the shared Durable Context Preflight preamble; the skills that read memory link to it from their own preflight section. `rules/principles.md` is the shared engineering stance. `rules/anti-patterns.md` is the failure-mode list. Do not restate one file inside the other.
 - `.claude-plugin/marketplace.json` - **generated**. Edit `VERSION` or per-skill `SKILL.md` frontmatter and run `make regenerate`; never hand-edit.
 - `.agents/plugins/marketplace.json` - **generated** Codex repo marketplace. Points Codex at `plugins/waza` for plugin installs; never hand-edit.
 - `plugins/waza/` - **generated** Codex plugin tree. Mirrors `skills/` and `rules/` plus `plugins/waza/.codex-plugin/plugin.json`; edit source files and run `make regenerate`.
@@ -53,14 +53,14 @@ Examples: `verify_skills.py` is a script; `rules/english.md` and `rules/chinese.
 
 - Put adaptive, judgment-heavy workflows in skills.
 - Put deterministic checks, lookups, and table-driven validation in scripts.
-- `rules/anti-patterns.md` owns cross-skill always-on behavioral guardrails (AI failure modes that apply regardless of active skill). Per-skill gotchas stay in each `skills/*/SKILL.md` Gotchas table; a gotcha belongs in `rules/anti-patterns.md` only when it applies identically across all eight skills.
+- `rules/anti-patterns.md` owns cross-skill always-on behavioral guardrails (AI failure modes that apply regardless of active skill). `rules/principles.md` owns the engineering stance (subtract before add, prove the real path, fix root causes). Do not restate the same sentence in both files. Per-skill gotchas stay in each `skills/*/SKILL.md` Gotchas table; a gotcha belongs in `rules/anti-patterns.md` only when it applies identically across every core skill.
 - Catalogs consolidate, they do not accumulate. This covers `rules/anti-patterns.md` rows and every reference example list, banned-phrase list, and replacement table (`skills/write/references/*`, `skills/design/references/*`, and the like). Before adding a row, pattern, banned phrase, or example, find the existing row or principle it instantiates and fold it in; never append a near-synonym or a third encoding of a rule already stated above. Keep wording generic enough to ship outside this repo. A reference file that re-lists items it already covers under a numbered pattern is drift, not coverage.
 - Keep `skills/RESOLVER.md` in sync when a skill description, trigger, or scope changes.
 - Keep each `description` concrete enough for automatic routing.
 - Write skill entrypoints outcome-first: name the target result, what counts as done, which constraints and evidence matter, and what the final answer or artifact should look like. Keep detailed process in mode sections and references.
-- Keep all eight `SKILL.md` on one skeleton so they read as a set: a `🥷` first line and one-line tagline, then Outcome Contract, then Durable Context Preflight (right after it, for skills that read memory), then modes, the must-obey list, Gotchas, and Output. Use one name per concept across skills (`Hard Rules` for a skill's must-obey constraints; `Hard Stops` is check's separate merge-blocker list). Tables are compact `| a | b |` with no hand-aligned spacing; a numbered step sequence stays contiguous, with side-checks grouped under a step rather than wedged between two.
+- Keep every core `SKILL.md` on one skeleton so they read as a set: a `🥷` first line and one-line tagline, then Outcome Contract, then Durable Context Preflight (right after it, for skills that read memory), then modes, the must-obey list, Gotchas, and Output. Use one name per concept across skills (`Hard Rules` for a skill's must-obey constraints; `Hard Stops` is check's separate merge-blocker list). Tables are compact `| a | b |` with no hand-aligned spacing; a numbered step sequence stays contiguous, with side-checks grouped under a step rather than wedged between two.
 - Avoid broad skills that mix unrelated workflows.
-- Eight skills is the hard cap. Do not propose a 9th skill or split an existing one. Behavior additions land in `references/`, `rules/`, `scripts/`, or `rules/anti-patterns.md`, not as a new skill.
+- Core skills are capped at 10, including `handoff`. Do not add an 11th skill or split an existing one. Behavior additions land in `references/`, `rules/`, `scripts/`, or `rules/anti-patterns.md`, not as a new skill. TDD stays a reference under `check`, not a top-level skill.
 - Keep generic programmer capabilities in Waza. Project-specific constraints should be extracted from public repository context or user-provided task context.
 - Treat `code-review` as an invocation alias for Waza `check`, not as a separate generic skill.
 - Waza `check` must remain project-aware without depending on unpublished local files. It extracts commands, generated artifacts, risk areas, and release rules from the target diff, public docs, manifests, CI config, and user-provided context.
@@ -97,7 +97,7 @@ Use this path for any new skill or meaningful behavior change:
 ## Distribution Rules
 
 - `.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`, `plugins/waza/.codex-plugin/plugin.json`, `skills/RESOLVER.md`, and every `skills/*/SKILL.md` must agree on skill names, descriptions, versions, and source paths.
-- `npx skills add tw93/Waza` should install the eight direct coding skills by default. Do not add a source-root `SKILL.md`; it prevents nested skill discovery.
+- `npx skills add gofenix/Waza` should install the core skills by default. Do not add a source-root `SKILL.md`; it prevents nested skill discovery.
 - Claude Desktop uses the release ZIP built by `scripts/package-skill.sh`.
 - `scripts/package-skill.sh` builds a public archive with exactly one generated root `SKILL.md`; nested `skills/*/SKILL.md` files are inlined for packaged installs.
 - Do not make packaged skills resolve scripts or references through personal home-directory caches or machine paths. Resolve relative to the installed Waza directory.
@@ -142,7 +142,7 @@ Use this path for any new skill or meaningful behavior change:
 1. **技能名**: 一句话说清楚改了什么以及对用户的影响。
 2. ...
 
-Update: `npx skills add tw93/Waza@latest` · [Claude Desktop](https://github.com/tw93/Waza/releases/latest/download/waza.zip) · ⭐ [tw93/Waza](https://github.com/tw93/Waza)
+Update: `npx skills add gofenix/Waza@latest` · [Claude Desktop](https://github.com/gofenix/Waza/releases/latest/download/waza.zip) · ⭐ [gofenix/Waza](https://github.com/gofenix/Waza)
 ```
 
 - Each item: `**Label**: one sentence`. Bold label is the skill or module name; the description leads with what changed.
