@@ -14,15 +14,18 @@
 
 ## Compétences (Skills)
 
-Chaque compétence est un dossier de références, de scripts et d'échecs réels. Elle ne démarre qu'avec `/name` ou `$name`. Un mot proche ne la lance pas. La forme vient de [tw93/Waza](https://github.com/tw93/Waza) ; le nom et le texte sont ceux de gofenix.
+Chaque compétence est un dossier de références, de scripts et d'échecs réels. Par défaut, elle démarre avec `/name` ou `$name`. Un mot proche ne la lance pas. La forme vient de [tw93/Waza](https://github.com/tw93/Waza) ; le nom et le texte sont ceux de gofenix.
 
 | Compétence | Groupe | Ce qu'elle fait |
 | :--- | :--- | :--- |
+| [`/mode`](skills/mode/SKILL.md) | Route | Entrer explicitement, puis choisir une compétence ci-dessous. Les commandes seules restent directes. |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Décider | Plan, interface, termes, carte entre sessions, découpes, essais, limites. |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Faire | Tâches approuvées, cause racine, une mesure à la fois. |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Livrer | Revue avant merge, push et release, file d'issues, preuve. |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lire et écrire | Une URL ou un PDF, recherche multi-sources, prose. |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | Réutiliser | Passation de session, leçons vérifiées, config d'agent, installation manuelle. |
+
+Entrez `/mode` (Codex : `$mode`, plugin : `/fskill:mode`), puis décrivez vos tâches normalement. Le routage reste actif dans cette session jusqu'à `/mode off`. `/mode status` affiche l'état. Les commandes directes sont prioritaires sans fermer mode. Une nouvelle session démarre sans mode. Les autorisations d'action ne changent pas.
 
 ## Installation
 
@@ -32,7 +35,7 @@ Chaque compétence est un dossier de références, de scripts et d'échecs réel
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-Les compétences sont installées dans `~/.agents/skills`. Claude Code y accède via un lien symbolique ; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI et tout autre agent lisant ce dossier lisent les 20 compétences. Le parcours d'une compétence ne démarre qu'avec `/name` ou `$name`. Les agents dotés d'un dossier de compétences privé prennent leur identifiant après `-a` (par exemple `antigravity-cli` ou `qwen-code`). Mise à jour via `npx skills update -g -y`. Vous pouvez aussi demander directement à votre agent de l'installer :
+Les compétences sont installées dans `~/.agents/skills`. Claude Code y accède via un lien symbolique ; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI et tout autre agent lisant ce dossier lisent les 21 compétences. Le parcours d'une compétence ne démarre qu'avec `/name` ou `$name`. Les agents dotés d'un dossier de compétences privé prennent leur identifiant après `-a` (par exemple `antigravity-cli` ou `qwen-code`). Mise à jour via `npx skills update -g -y`. Vous pouvez aussi demander directement à votre agent de l'installer :
 > Lis https://github.com/gofenix/fskill/blob/main/llms.txt et installe fskill pour moi
 
 **En tant que plugin hôte** (les compétences sont préfixées, ex. `/fskill:check`) :
@@ -133,7 +136,7 @@ Les règles optionnelles s'appliquent au-delà des appels de compétences une fo
 
 ## Pourquoi fskill
 
-fskill est le jeu de compétences de gofenix. La méthode vient de [tw93/Waza](https://github.com/tw93/Waza), pas le nom : Waza appartient à quelqu'un d'autre. Vingt compétences, cinq groupes : décider, faire, livrer, lire et écrire, réutiliser. Chacune nomme le résultat, la limite, et ce qui compte comme terminé.
+fskill est le jeu de compétences de gofenix. La méthode vient de [tw93/Waza](https://github.com/tw93/Waza), pas le nom : Waza appartient à quelqu'un d'autre. Vingt compétences, cinq groupes : décider, faire, livrer, lire et écrire, réutiliser. `/mode` est l'entrée explicite au-dessus. Chacune nomme le résultat, la limite, et ce qui compte comme terminé.
 
 L'appel est explicite : `/name` ou `$name`. Un mot proche ne lance pas le parcours.
 

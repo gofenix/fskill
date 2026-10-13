@@ -14,15 +14,18 @@
 
 ## スキル一覧
 
-各スキルは参照、スクリプト、実際に踏んだ失敗をまとめたディレクトリです。入るのは `/name` または `$name` を入力したときだけです。近い言葉では切り替わりません。形は [tw93/Waza](https://github.com/tw93/Waza) から、名前と本文は自分のものです。
+各スキルは参照、スクリプト、実際に踏んだ失敗をまとめたディレクトリです。通常は `/name` または `$name` で開始します。近い言葉では切り替わりません。形は [tw93/Waza](https://github.com/tw93/Waza) から、名前と本文は自分のものです。
 
 | スキル | グループ | 役割 |
 | :--- | :--- | :--- |
+| [`/mode`](skills/mode/SKILL.md) | 経路 | 明示的に入ってから、下のスキルを一つ選ぶ。単体のコマンドもそのまま使える。 |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 決める | 計画、画面、用語、セッションをまたぐ地図、切り分け、試作、境界。 |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 作る | 承認済みの作業、根本原因、指標は一度に一つ。 |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 渡す | マージ、push、リリース前の確認、課題の整理、検証の説明。 |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 読む・書く | 一つの URL か PDF、複数資料の調査、文章を整える。 |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 次も使える | セッションの引き継ぎ、確認済みの教訓、エージェント設定、手動セットアップ。 |
+
+`/mode`（Codex: `$mode`、プラグイン: `/fskill:mode`）で開始し、通常の言葉で依頼できます。現在の会話で `/mode off` まで自動選択が続きます。`/mode status` で状態を確認。直接コマンドを優先し、mode は維持します。新しい会話では無効です。操作の権限は変わりません。
 
 ## インストール
 
@@ -32,7 +35,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-スキルは共通の `~/.agents/skills` ディレクトリに保存されます。Claude Code はシンボリックリンク経由で連携し、Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI など、このディレクトリを読み込む各エージェントは 20 個のスキルを読み込みます。各スキルの手順は `/name` または `$name` のときだけ始まります。専用ディレクトリを持つエージェントは `-a` の後にID（例：`antigravity-cli`、`qwen-code`）を指定してください。更新は `npx skills update -g -y` で行います。AIエージェントに直接インストールを依頼することも可能です：
+スキルは共通の `~/.agents/skills` ディレクトリに保存されます。Claude Code はシンボリックリンク経由で連携し、Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI など、このディレクトリを読み込む各エージェントは 21 個のスキルを読み込みます。各スキルの手順は `/name` または `$name` のときだけ始まります。専用ディレクトリを持つエージェントは `-a` の後にID（例：`antigravity-cli`、`qwen-code`）を指定してください。更新は `npx skills update -g -y` で行います。AIエージェントに直接インストールを依頼することも可能です：
 > https://github.com/gofenix/fskill/blob/main/llms.txt を読んで fskill をインストールして
 
 **ホストのプラグイン機能を利用する場合**（スキル名に名前空間が付きます：`/fskill:check`）：
@@ -133,7 +136,7 @@ Codex は残りの枠を、上の Claude Code ステータスラインは使用�
 
 ## 開発の背景
 
-fskill は gofenix 自身のスキル集です。進め方は [tw93/Waza](https://github.com/tw93/Waza) から取り、名前は取りません。Waza は他人の名前だからです。スキルは 20 個で、決める、作る、渡す、読む・書く、次も使える、の五つに分かれます。各スキルは結果、越えない線、完了の判断だけを書きます。
+fskill は gofenix 自身のスキル集です。進め方は [tw93/Waza](https://github.com/tw93/Waza) から取り、名前は取りません。Waza は他人の名前だからです。スキルは 20 個で、決める、作る、渡す、読む・書く、次も使える、の五つに分かれます。その上に明示的な入口 `/mode` があります。各スキルは結果、越えない線、完了の判断だけを書きます。
 
 入り方は明示です。`/name` または `$name`。近い意味ではその手順は始まりません。
 

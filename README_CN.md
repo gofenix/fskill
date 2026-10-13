@@ -14,15 +14,18 @@
 
 ## 技能
 
-每个技能是一个目录，里面有参考、脚本和踩过的坑。只在你输入 `/name` 或 `$name` 时进入；说到相关的词不会自动换技能。骨架来自 [tw93/Waza](https://github.com/tw93/Waza)，名字和正文是自己的。
+每个技能是一个目录，里面有参考、脚本和踩过的坑。默认通过 `/name` 或 `$name` 进入单条技能。`/mode` 是唯一会自己选路的入口，而且要先显式进入。说到相关的词不会自动换技能，也不会进入 mode。骨架来自 [tw93/Waza](https://github.com/tw93/Waza)，名字和正文是自己的。
 
 | 技能 | 分组 | 它做什么 |
 | :--- | :--- | :--- |
+| [`/mode`](skills/mode/SKILL.md) | 路由 | 先显式进入，再从下面的技能里选一条。单条仍然可以直接用。 |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 想清楚 | 方案、界面、术语、跨会话地图、切片、试验、边界。 |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 做出来 | 已批准的任务图、根因、一次只动一个指标。 |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 交出去 | 合并、推送和发布前的审查，问题队列，验证说明。 |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 读和写 | 一个链接或 PDF、多来源研究、把文字改顺。 |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 下次还能用 | 会话交接、已经验证的教训、Agent 配置、人工安装。 |
+
+输入 `/mode`（Codex 用 `$mode`，插件用 `/fskill:mode`）进入，再直接描述任务；当前会话内持续自动选技能。`/mode off` 退出，`/mode status` 查看状态。直接 `/hunt` 等命令优先，不关闭 mode。新会话默认关闭；选路不扩大操作授权。
 
 ## 安装
 
@@ -32,7 +35,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-技能统一存放在 `~/.agents/skills` 共享目录，Claude Code 通过软链接接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能读这个目录的 Agent 都会读到这 20 个技能。进入某个技能的流程仍要显式调用。有自己技能目录的 Agent 在 `-a` 后面写上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，后续通过 `npx skills update -g -y` 保持更新。也可以直接告诉你的 Agent 帮你安装：
+技能统一存放在 `~/.agents/skills` 共享目录，Claude Code 通过软链接接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能读这个目录的 Agent 都会读到这 21 个技能。进入某个技能的流程仍要显式调用。有自己技能目录的 Agent 在 `-a` 后面写上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，后续通过 `npx skills update -g -y` 保持更新。也可以直接告诉你的 Agent 帮你安装：
 > 阅读 https://github.com/gofenix/fskill/blob/main/llms.txt 帮我安装 fskill
 
 **宿主插件方式**，如果你更习惯使用宿主自有的更新命令（技能带有命名空间前缀，如 `/fskill:check`）：
@@ -116,7 +119,7 @@ Codex 显示剩余额度，上方 Claude Code 状态栏显示已用百分比（�
   # 行为防错守则：全局常驻约束（先看再改、不随意扩大范围、不主动输出冗余总结）
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # 技能路由提示：技能名单，以及只在 /name 或 $name 时进入
+  # 技能路由提示：默认显式调用，进入 /mode 后按目标选技能
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # 日常清晰表达：术语统一、条件明确、保留不确定性
@@ -133,7 +136,7 @@ Codex 显示剩余额度，上方 Claude Code 状态栏显示已用百分比（�
 
 ## 为什么做 fskill
 
-fskill 是 gofenix 自己的技能集。工作方式来自 [tw93/Waza](https://github.com/tw93/Waza)，名字不沿用，因为 Waza 是别人的。现在是 20 个技能，分成想清楚、做出来、交出去、读和写、下次还能用。每个技能写清结果、不能碰的线，以及怎么算做完。
+fskill 是 gofenix 自己的技能集。工作方式来自 [tw93/Waza](https://github.com/tw93/Waza)，名字不沿用，因为 Waza 是别人的。现在是 20 个技能，分成想清楚、做出来、交出去、读和写、下次还能用。上面再加一个显式入口 `/mode`。每个技能写清结果、不能碰的线，以及怎么算做完。
 
 调用是显式的：`/name` 或 `$name`。意思相近不会自动开始那套流程。
 
