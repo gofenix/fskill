@@ -1,7 +1,7 @@
 {
   "name": "fskill",
   "version": "3.39.0",
-  "description": "Engineering workflow skills for Codex. Twenty skills in five groups. Invocation is explicit: /name or $name.",
+  "description": "Engineering workflow skills for Codex. Twenty workflow skills plus explicit /mode session routing. Direct commands remain available.",
   "author": {
     "name": "gofenix",
     "email": "gofenix@users.noreply.github.com",
@@ -23,7 +23,7 @@
   "interface": {
     "displayName": "fskill",
     "shortDescription": "Engineering workflow skills for Codex",
-    "longDescription": "fskill packages twenty engineering skills in five groups: decide, build, ship, read and write, and leave something the next session can use. Enter a skill with /name or $name. A similar word does not start that workflow.",
+    "longDescription": "fskill packages twenty engineering skills in five groups: decide, build, ship, read and write, and leave something the next session can use. /mode routes only after you enter it. Enter any skill with /name or $name. A similar word does not start that workflow.",
     "developerName": "gofenix",
     "category": "Developer Tools",
     "capabilities": [

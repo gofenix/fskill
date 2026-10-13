@@ -1,6 +1,6 @@
 ---
 name: wizard
-description: "把必须由人完成的配置或迁移步骤做成可运行的交互式向导。仅在显式调用时使用：/wizard、$wizard 或 fskill 限定调用。不用于 Agent 可直接完成的操作、普通 setup 文档或代替用户运行真人向导。"
+description: "把必须由人完成的配置或迁移步骤做成可运行的交互式向导。在显式调用或已开启的 fskill mode 选中时使用：/wizard、$wizard 或 fskill 限定调用。不用于 Agent 可直接完成的操作、普通 setup 文档或代替用户运行真人向导。"
 when_to_use: "/wizard, $wizard, 调用 fskill 的 wizard, 用 fskill wizard skill, invoke fskill wizard, use fskill wizard skill"
 disable-model-invocation: true
 dispatch_intent: "人工操作交接、交互式配置向导、凭据采集、依赖有序的人工迁移步骤"
@@ -14,7 +14,7 @@ dispatch_intent: "人工操作交接、交互式配置向导、凭据采集、�
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/wizard`、`$wizard`、`调用 fskill 的 wizard`、`用 fskill wizard skill`、`invoke fskill wizard`、`use fskill wizard skill`，或 Desktop 根分发器已从 `/fskill wizard` 选中本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；新任务或切换到其他技能仍需显式调用。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/wizard`、`$wizard`、`调用 fskill 的 wizard`、`用 fskill wizard skill`、`invoke fskill wizard`、`use fskill wizard skill`，或 Desktop 根分发器已从 `/fskill wizard` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

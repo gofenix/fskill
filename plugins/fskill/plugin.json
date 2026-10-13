@@ -1,5 +1,5 @@
 {
   "$schema": "https://antigravity.google/schemas/v1/plugin.json",
   "name": "fskill",
-  "description": "Engineering workflow skills for Antigravity CLI. Twenty skills in five groups. Invocation is explicit: /name or $name."
+  "description": "Engineering workflow skills for Antigravity CLI. Twenty workflow skills plus explicit /mode session routing. Direct commands remain available."
 }

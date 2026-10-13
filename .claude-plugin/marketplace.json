@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "fskill",
-  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi. Twenty skills in five groups. Invocation is explicit: /name or $name.",
+  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi. Twenty workflow skills plus an explicit /mode entrypoint for session routing. Direct commands remain available.",
   "owner": {
     "name": "gofenix",
     "email": "gofenix@users.noreply.github.com"
@@ -17,7 +17,7 @@
     },
     {
       "name": "fskill-architect",
-      "description": "从真实调用、变更热点和测试难点识别值得改进的代码边界，比较保持、拆分、合并或深化的收益与取舍。仅在显式调用时使用：/architect、$architect 或 fskill 限定调用。不用于既成 diff 审查或已明确需求的普通实现方案。",
+      "description": "从真实调用、变更热点和测试难点识别值得改进的代码边界，比较保持、拆分、合并或深化的收益与取舍。在显式调用或已开启的 fskill mode 选中时使用：/architect、$architect 或 fskill 限定调用。不用于既成 diff 审查或已明确需求的普通实现方案。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/architect",
@@ -29,7 +29,7 @@
     },
     {
       "name": "fskill-check",
-      "description": "审查代码、技术方案、PRD、spec、发布产物和项目质量。仅在显式调用时使用：/check、$check 或 fskill 限定调用。不用于尚未确定的设计取舍、根因调试或文字润色。",
+      "description": "审查代码、技术方案、PRD、spec、发布产物和项目质量。在显式调用或已开启的 fskill mode 选中时使用：/check、$check 或 fskill 限定调用。不用于尚未确定的设计取舍、根因调试或文字润色。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/check",
@@ -41,7 +41,7 @@
     },
     {
       "name": "fskill-domain",
-      "description": "主动厘清项目领域词汇、事件、行为和上下文边界，用代码与具体反例检验概念是否一致。仅在显式调用时使用：/domain、$domain 或 fskill 限定调用。不用于单纯查询术语、普通方案设计或复盘已证实的工程经验。",
+      "description": "主动厘清项目领域词汇、事件、行为和上下文边界，用代码与具体反例检验概念是否一致。在显式调用或已开启的 fskill mode 选中时使用：/domain、$domain 或 fskill 限定调用。不用于单纯查询术语、普通方案设计或复盘已证实的工程经验。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/domain",
@@ -53,7 +53,7 @@
     },
     {
       "name": "fskill-handoff",
-      "description": "交出当前会话，或从限定历史与当前现场恢复工作上下文，让 agent 接续任务。仅在显式调用时使用：/handoff、$handoff 或 fskill 限定调用。不用于常规写作、编辑、去 AI 味或自动实施历史计划。",
+      "description": "交出当前会话，或从限定历史与当前现场恢复工作上下文，让 agent 接续任务。在显式调用或已开启的 fskill mode 选中时使用：/handoff、$handoff 或 fskill 限定调用。不用于常规写作、编辑、去 AI 味或自动实施历史计划。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/handoff",
@@ -65,7 +65,7 @@
     },
     {
       "name": "fskill-health",
-      "description": "审计 Agent 指令、配置漂移、hooks/MCP、验证面和 AI 可维护性。仅在显式调用时使用：/health、$health 或 fskill 限定调用。不用于用户代码调试或 PR 审查。",
+      "description": "审计 Agent 指令、配置漂移、hooks/MCP、验证面和 AI 可维护性。在显式调用或已开启的 fskill mode 选中时使用：/health、$health 或 fskill 限定调用。不用于用户代码调试或 PR 审查。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/health",
@@ -77,7 +77,7 @@
     },
     {
       "name": "fskill-hunt",
-      "description": "在修复前先找到错误、崩溃、回归、失败测试和异常行为的根因。仅在显式调用时使用：/hunt、$hunt 或 fskill 限定调用。不用于代码审查或新功能开发。",
+      "description": "在修复前先找到错误、崩溃、回归、失败测试和异常行为的根因。在显式调用或已开启的 fskill mode 选中时使用：/hunt、$hunt 或 fskill 限定调用。不用于代码审查或新功能开发。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/hunt",
@@ -89,7 +89,7 @@
     },
     {
       "name": "fskill-implement",
-      "description": "协调已批准任务图的实施、隔离工作、合入验证与状态收尾，由一个协调者负责完整生命周期。仅在显式调用时使用：/implement、$implement 或 fskill 限定调用。不用于未定规格、拆票或没有任务图的普通代码修改。",
+      "description": "协调已批准任务图的实施、隔离工作、合入验证与状态收尾，由一个协调者负责完整生命周期。在显式调用或已开启的 fskill mode 选中时使用：/implement、$implement 或 fskill 限定调用。不用于未定规格、拆票或没有任务图的普通代码修改。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/implement",
@@ -101,7 +101,7 @@
     },
     {
       "name": "fskill-learn",
-      "description": "把陌生领域、代码系统与历史决策整理成可引用研究输出。仅在显式调用时使用：/learn、$learn 或 fskill 限定调用。不用于单文件阅读、持续教学、根因调试或普通无需研究的查询。",
+      "description": "把陌生领域、代码系统与历史决策整理成可引用研究输出。在显式调用或已开启的 fskill mode 选中时使用：/learn、$learn 或 fskill 限定调用。不用于单文件阅读、持续教学、根因调试或普通无需研究的查询。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/learn",
@@ -113,7 +113,7 @@
     },
     {
       "name": "fskill-map",
-      "description": "把跨会话且路线未明的目标组织成共享决策图，逐步消除不确定性并保持依赖和上下文可恢复。仅在显式调用时使用：/map、$map 或 fskill 限定调用。不用于路线已清晰的普通方案、实施任务拆分或自动执行产品开发。",
+      "description": "把跨会话且路线未明的目标组织成共享决策图，逐步消除不确定性并保持依赖和上下文可恢复。在显式调用或已开启的 fskill mode 选中时使用：/map、$map 或 fskill 限定调用。不用于路线已清晰的普通方案、实施任务拆分或自动执行产品开发。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/map",
@@ -124,8 +124,20 @@
       "strict": false
     },
     {
+      "name": "fskill-mode",
+      "description": "显式进入 fskill mode 后，按请求选择已安装技能并在授权范围内执行；支持退出和单条直调。仅在显式调用 /mode、$mode 或用户明确要求进入 fskill mode 时使用。不用于普通话题的自动接管，也不改变宿主权限。",
+      "version": "3.39.0",
+      "category": "development",
+      "source": "./skills/mode",
+      "homepage": "https://github.com/gofenix/fskill",
+      "skills": [
+        "./"
+      ],
+      "strict": false
+    },
+    {
       "name": "fskill-optimize",
-      "description": "围绕既定性能、成本或评测指标，建立可信基线，逐个假设实验并按收益与回归门禁保留或撤回。仅在显式调用时使用：/optimize、$optimize 或 fskill 限定调用。不用于异常根因定位、一次性方案原型或普通统计查询。",
+      "description": "围绕既定性能、成本或评测指标，建立可信基线，逐个假设实验并按收益与回归门禁保留或撤回。在显式调用或已开启的 fskill mode 选中时使用：/optimize、$optimize 或 fskill 限定调用。不用于异常根因定位、一次性方案原型或普通统计查询。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/optimize",
@@ -137,7 +149,7 @@
     },
     {
       "name": "fskill-prototype",
-      "description": "用一次性可运行实验降低明确的领域逻辑或 UI 结构不确定性。仅在显式调用时使用：/prototype、$prototype 或 fskill 限定调用。不用于视觉 polish、常规实现或把 mock 结果当成集成验收。",
+      "description": "用一次性可运行实验降低明确的领域逻辑或 UI 结构不确定性。在显式调用或已开启的 fskill mode 选中时使用：/prototype、$prototype 或 fskill 限定调用。不用于视觉 polish、常规实现或把 mock 结果当成集成验收。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/prototype",
@@ -149,7 +161,7 @@
     },
     {
       "name": "fskill-read",
-      "description": "读取 URL 和 PDF，按来源选择抓取方法，并按需输出摘要、引用或干净 Markdown。仅在显式调用时使用：/read、$read 或 fskill 限定调用。不用于读取仓库中已有的本地文本文件。",
+      "description": "读取 URL 和 PDF，按来源选择抓取方法，并按需输出摘要、引用或干净 Markdown。在显式调用或已开启的 fskill mode 选中时使用：/read、$read 或 fskill 限定调用。不用于读取仓库中已有的本地文本文件。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/read",
@@ -161,7 +173,7 @@
     },
     {
       "name": "fskill-retro",
-      "description": "复盘已验证的修复、用户纠偏和工程经验，把改进沉淀到正确上下文层。仅在显式调用时使用：/retro、$retro 或 fskill 限定调用。不用于尚在进行的调试、未定架构取舍或常规文档写作。",
+      "description": "复盘已验证的修复、用户纠偏和工程经验，把改进沉淀到正确上下文层。在显式调用或已开启的 fskill mode 选中时使用：/retro、$retro 或 fskill 限定调用。不用于尚在进行的调试、未定架构取舍或常规文档写作。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/retro",
@@ -173,7 +185,7 @@
     },
     {
       "name": "fskill-slice",
-      "description": "把已确定的规格或讨论整理为可演示的纵向切片、验收票据和阻塞任务图。仅在显式调用时使用：/slice、$slice 或 fskill 限定调用。不用于尚未确定目标的需求访谈、架构选型或代码实施。",
+      "description": "把已确定的规格或讨论整理为可演示的纵向切片、验收票据和阻塞任务图。在显式调用或已开启的 fskill mode 选中时使用：/slice、$slice 或 fskill 限定调用。不用于尚未确定目标的需求访谈、架构选型或代码实施。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/slice",
@@ -185,7 +197,7 @@
     },
     {
       "name": "fskill-think",
-      "description": "把想法变成决策完整的计划，也支持简短修复方案或高压追问。仅在显式调用时使用：/think、$think 或 fskill 限定调用。不用于根因调试、实施本身，或对照代码审查已写好的 spec。",
+      "description": "把想法变成决策完整的计划，也支持简短修复方案或高压追问。在显式调用或已开启的 fskill mode 选中时使用：/think、$think 或 fskill 限定调用。不用于根因调试、实施本身，或对照代码审查已写好的 spec。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/think",
@@ -197,7 +209,7 @@
     },
     {
       "name": "fskill-triage",
-      "description": "持续处理 issue/外部 PR 队列，区分类别与生命周期状态，产出可接手的行为契约。仅在显式调用时使用：/triage、$triage 或 fskill 限定调用。不用于既成 diff 的代码审查、根因调试或直接实施。",
+      "description": "持续处理 issue/外部 PR 队列，区分类别与生命周期状态，产出可接手的行为契约。在显式调用或已开启的 fskill mode 选中时使用：/triage、$triage 或 fskill 限定调用。不用于既成 diff 的代码审查、根因调试或直接实施。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/triage",
@@ -209,7 +221,7 @@
     },
     {
       "name": "fskill-ui",
-      "description": "做有方向感、可交付的 UI、页面、组件、字体排印和截图细节优化。仅在显式调用时使用：/ui、$ui 或 fskill 限定调用。不用于后端逻辑或数据流水线。",
+      "description": "做有方向感、可交付的 UI、页面、组件、字体排印和截图细节优化。在显式调用或已开启的 fskill mode 选中时使用：/ui、$ui 或 fskill 限定调用。不用于后端逻辑或数据流水线。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/ui",
@@ -221,7 +233,7 @@
     },
     {
       "name": "fskill-verify",
-      "description": "建立并维护项目可复用的验证指南、操作 harness 和用户功能地图。仅在显式调用时使用：/verify、$verify 或 fskill 限定调用。不用于普通测试运行、产品缺陷修复或验证面健康审计。",
+      "description": "建立并维护项目可复用的验证指南、操作 harness 和用户功能地图。在显式调用或已开启的 fskill mode 选中时使用：/verify、$verify 或 fskill 限定调用。不用于普通测试运行、产品缺陷修复或验证面健康审计。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/verify",
@@ -233,7 +245,7 @@
     },
     {
       "name": "fskill-wizard",
-      "description": "把必须由人完成的配置或迁移步骤做成可运行的交互式向导。仅在显式调用时使用：/wizard、$wizard 或 fskill 限定调用。不用于 Agent 可直接完成的操作、普通 setup 文档或代替用户运行真人向导。",
+      "description": "把必须由人完成的配置或迁移步骤做成可运行的交互式向导。在显式调用或已开启的 fskill mode 选中时使用：/wizard、$wizard 或 fskill 限定调用。不用于 Agent 可直接完成的操作、普通 setup 文档或代替用户运行真人向导。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/wizard",
@@ -245,7 +257,7 @@
     },
     {
       "name": "fskill-write",
-      "description": "改写和润色中英文自然语言、技术说明与本地化文案，消除歧义和 AI 味，保留原意。仅在显式调用时使用：/write、$write 或 fskill 限定调用。不用于方案、PRD、spec、代码注释、提交说明或行内文档的技术正确性审查。",
+      "description": "改写和润色中英文自然语言、技术说明与本地化文案，消除歧义和 AI 味，保留原意。在显式调用或已开启的 fskill mode 选中时使用：/write、$write 或 fskill 限定调用。不用于方案、PRD、spec、代码注释、提交说明或行内文档的技术正确性审查。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/write",

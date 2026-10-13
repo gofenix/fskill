@@ -1,6 +1,6 @@
 ---
 name: optimize
-description: "围绕既定性能、成本或评测指标，建立可信基线，逐个假设实验并按收益与回归门禁保留或撤回。仅在显式调用时使用：/optimize、$optimize 或 fskill 限定调用。不用于异常根因定位、一次性方案原型或普通统计查询。"
+description: "围绕既定性能、成本或评测指标，建立可信基线，逐个假设实验并按收益与回归门禁保留或撤回。在显式调用或已开启的 fskill mode 选中时使用：/optimize、$optimize 或 fskill 限定调用。不用于异常根因定位、一次性方案原型或普通统计查询。"
 when_to_use: "/optimize, $optimize, 调用 fskill 的 optimize, 用 fskill optimize skill, invoke fskill optimize, use fskill optimize skill"
 disable-model-invocation: true
 dispatch_intent: "持续指标优化、hillclimb、性能与成本改善、评测分数提升、可信测量基线、单假设实验、收益与回归门禁、保留撤回"
@@ -14,7 +14,7 @@ dispatch_intent: "持续指标优化、hillclimb、性能与成本改善、评�
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/optimize`、`$optimize`、`调用 fskill 的 optimize`、`用 fskill optimize skill`、`invoke fskill optimize`、`use fskill optimize skill`，或 Desktop 根分发器已从 `/fskill optimize` 选中本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；新任务或切换到其他技能仍需显式调用。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/optimize`、`$optimize`、`调用 fskill 的 optimize`、`用 fskill optimize skill`、`invoke fskill optimize`、`use fskill optimize skill`，或 Desktop 根分发器已从 `/fskill optimize` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

@@ -1,0 +1,6 @@
+interface:
+  display_name: "fskill mode"
+  short_description: "显式开启后，在当前会话按目标选择技能；随时退出或单条直调"
+  default_prompt: "使用 $mode 开启 fskill mode，并按当前目标选择已安装技能。"
+policy:
+  allow_implicit_invocation: false
