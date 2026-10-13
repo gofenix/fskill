@@ -1,6 +1,6 @@
 ---
 name: implement
-description: "协调已批准任务图的实施、隔离工作、合入验证与状态收尾，由一个协调者负责完整生命周期。仅在显式调用时使用：/implement、$implement 或 fskill 限定调用。不用于未定规格、拆票或没有任务图的普通代码修改。"
+description: "协调已批准任务图的实施、隔离工作、合入验证与状态收尾，由一个协调者负责完整生命周期。在显式调用或已开启的 fskill mode 选中时使用：/implement、$implement 或 fskill 限定调用。不用于未定规格、拆票或没有任务图的普通代码修改。"
 when_to_use: "/implement, $implement, 调用 fskill 的 implement, 用 fskill implement skill, invoke fskill implement, use fskill implement skill"
 disable-model-invocation: true
 dispatch_intent: "批准任务图实施、ready frontier、coordinator、隔离worktree、integration branch、merger、阻塞解锁、实施恢复与集成验证"
@@ -14,7 +14,7 @@ dispatch_intent: "批准任务图实施、ready frontier、coordinator、隔离w
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/implement`、`$implement`、`调用 fskill 的 implement`、`用 fskill implement skill`、`invoke fskill implement`、`use fskill implement skill`，或 Desktop 根分发器已从 `/fskill implement` 选中本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；新任务或切换到其他技能仍需显式调用。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/implement`、`$implement`、`调用 fskill 的 implement`、`用 fskill implement skill`、`invoke fskill implement`、`use fskill implement skill`，或 Desktop 根分发器已从 `/fskill implement` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

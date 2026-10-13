@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: "交出当前会话，或从限定历史与当前现场恢复工作上下文，让 agent 接续任务。仅在显式调用时使用：/handoff、$handoff 或 fskill 限定调用。不用于常规写作、编辑、去 AI 味或自动实施历史计划。"
+description: "交出当前会话，或从限定历史与当前现场恢复工作上下文，让 agent 接续任务。在显式调用或已开启的 fskill mode 选中时使用：/handoff、$handoff 或 fskill 限定调用。不用于常规写作、编辑、去 AI 味或自动实施历史计划。"
 when_to_use: "/handoff, $handoff, 调用 fskill 的 handoff, 用 fskill handoff skill, invoke fskill handoff, use fskill handoff skill"
 disable-model-invocation: true
 dispatch_intent: "交接文档、handoff、会话总结、接入恢复、本人相关历史与当前状态核对"
@@ -14,7 +14,7 @@ dispatch_intent: "交接文档、handoff、会话总结、接入恢复、本人�
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/handoff`、`$handoff`、`调用 fskill 的 handoff`、`用 fskill handoff skill`、`invoke fskill handoff`、`use fskill handoff skill`，或 Desktop 根分发器已从 `/fskill handoff` 选中本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；新任务或切换到其他技能仍需显式调用。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/handoff`、`$handoff`、`调用 fskill 的 handoff`、`用 fskill handoff skill`、`invoke fskill handoff`、`use fskill handoff skill`，或 Desktop 根分发器已从 `/fskill handoff` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

@@ -1,6 +1,6 @@
 ---
 name: slice
-description: "把已确定的规格或讨论整理为可演示的纵向切片、验收票据和阻塞任务图。仅在显式调用时使用：/slice、$slice 或 fskill 限定调用。不用于尚未确定目标的需求访谈、架构选型或代码实施。"
+description: "把已确定的规格或讨论整理为可演示的纵向切片、验收票据和阻塞任务图。在显式调用或已开启的 fskill mode 选中时使用：/slice、$slice 或 fskill 限定调用。不用于尚未确定目标的需求访谈、架构选型或代码实施。"
 when_to_use: "/slice, $slice, 调用 fskill 的 slice, 用 fskill slice skill, invoke fskill slice, use fskill slice skill"
 disable-model-invocation: true
 dispatch_intent: "确定规格、已定讨论固化、纵向切片、tracer bullet、实施票据、阻塞依赖、任务图、expand-contract迁移"
@@ -14,7 +14,7 @@ dispatch_intent: "确定规格、已定讨论固化、纵向切片、tracer bull
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/slice`、`$slice`、`调用 fskill 的 slice`、`用 fskill slice skill`、`invoke fskill slice`、`use fskill slice skill`，或 Desktop 根分发器已从 `/fskill slice` 选中本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；新任务或切换到其他技能仍需显式调用。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/slice`、`$slice`、`调用 fskill 的 slice`、`用 fskill slice skill`、`invoke fskill slice`、`use fskill slice skill`，或 Desktop 根分发器已从 `/fskill slice` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

@@ -1,6 +1,6 @@
 ---
 name: architect
-description: "从真实调用、变更热点和测试难点识别值得改进的代码边界，比较保持、拆分、合并或深化的收益与取舍。仅在显式调用时使用：/architect、$architect 或 fskill 限定调用。不用于既成 diff 审查或已明确需求的普通实现方案。"
+description: "从真实调用、变更热点和测试难点识别值得改进的代码边界，比较保持、拆分、合并或深化的收益与取舍。在显式调用或已开启的 fskill mode 选中时使用：/architect、$architect 或 fskill 限定调用。不用于既成 diff 审查或已明确需求的普通实现方案。"
 when_to_use: "/architect, $architect, 调用 fskill 的 architect, 用 fskill architect skill, invoke fskill architect, use fskill architect skill"
 disable-model-invocation: true
 dispatch_intent: "主动架构机会识别、代码边界改进、模块深化、调用方认知成本、依赖与测试接缝、备选接口比较"
@@ -14,7 +14,7 @@ dispatch_intent: "主动架构机会识别、代码边界改进、模块深化�
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/architect`、`$architect`、`调用 fskill 的 architect`、`用 fskill architect skill`、`invoke fskill architect`、`use fskill architect skill`，或 Desktop 根分发器已从 `/fskill architect` 选中本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；新任务或切换到其他技能仍需显式调用。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/architect`、`$architect`、`调用 fskill 的 architect`、`用 fskill architect skill`、`invoke fskill architect`、`use fskill architect skill`，或 Desktop 根分发器已从 `/fskill architect` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

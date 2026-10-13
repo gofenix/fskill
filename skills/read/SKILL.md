@@ -1,6 +1,6 @@
 ---
 name: read
-description: "读取 URL 和 PDF，按来源选择抓取方法，并按需输出摘要、引用或干净 Markdown。仅在显式调用时使用：/read、$read 或 fskill 限定调用。不用于读取仓库中已有的本地文本文件。"
+description: "读取 URL 和 PDF，按来源选择抓取方法，并按需输出摘要、引用或干净 Markdown。在显式调用或已开启的 fskill mode 选中时使用：/read、$read 或 fskill 限定调用。不用于读取仓库中已有的本地文本文件。"
 when_to_use: "/read, $read, 调用 fskill 的 read, 用 fskill read skill, invoke fskill read, use fskill read skill"
 disable-model-invocation: true
 dispatch_intent: "URL 或 PDF 读取、网页抓取、链接摘要、Markdown 提取"
@@ -14,7 +14,7 @@ dispatch_intent: "URL 或 PDF 读取、网页抓取、链接摘要、Markdown �
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/read`、`$read`、`调用 fskill 的 read`、`用 fskill read skill`、`invoke fskill read`、`use fskill read skill`，或 Desktop 根分发器已从 `/fskill read` 选中本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；新任务或切换到其他技能仍需显式调用。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/read`、`$read`、`调用 fskill 的 read`、`用 fskill read skill`、`invoke fskill read`、`use fskill read skill`，或 Desktop 根分发器已从 `/fskill read` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 
