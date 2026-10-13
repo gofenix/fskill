@@ -142,7 +142,7 @@ python3 -c "
 from pathlib import Path
 p = Path('$tmpdir/repo8/skills/read/SKILL.md')
 t = p.read_text()
-t = t.replace('仅在显式调用时使用', '在调用时使用')
+t = t.replace('显式调用', '调用', 1)
 p.write_text(t)
 "
 sync_codex_mirror "$tmpdir/repo8"
