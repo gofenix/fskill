@@ -41,7 +41,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix="waza-read-smoke-") as temp:
+    with tempfile.TemporaryDirectory(prefix="fskill-read-smoke-") as temp:
         scratch = Path(temp)
         # fetch.sh uses curl only for third-party tiers. Prevent those requests
         # even on a regression, and retain their arguments as failure evidence.

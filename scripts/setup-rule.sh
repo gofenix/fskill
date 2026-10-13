@@ -13,7 +13,7 @@ set -euo pipefail
 
 RULE="${1:-}"
 TARGET="${2:-claude-code}"
-WAZA_REF="${WAZA_REF:-v3.39.0}"
+FSKILL_REF="${FSKILL_REF:-v3.39.0}"
 
 if [ -z "$RULE" ]; then
   echo "Usage: setup-rule.sh <rule-name> [claude-code|codex|antigravity-cli]" >&2
@@ -29,15 +29,15 @@ case "$RULE" in
     ;;
 esac
 
-case "$WAZA_REF" in
+case "$FSKILL_REF" in
   main|v[0-9]*.[0-9]*.[0-9]*) ;;
   *)
-    echo "Error: WAZA_REF must be main or a release tag like v3.24.0." >&2
+    echo "Error: FSKILL_REF must be main or a release tag like v3.24.0." >&2
     exit 1
     ;;
 esac
 
-RAW="https://raw.githubusercontent.com/gofenix/fskill/${WAZA_REF}/rules/${RULE}.md"
+RAW="https://raw.githubusercontent.com/gofenix/fskill/${FSKILL_REF}/rules/${RULE}.md"
 
 # Marker label = how the block appears in ~/.codex/AGENTS.md. Established names
 # kept verbatim so existing installs keep matching their original start/end

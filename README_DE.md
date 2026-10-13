@@ -47,7 +47,7 @@ codex plugin marketplace add gofenix/fskill
 codex plugin add fskill@fskill
 ```
 
-**Claude Desktop**: Lade [waza.zip](https://github.com/gofenix/fskill/releases/latest/download/waza.zip) herunter, öffne Customize > Skills > "+" > Create skill und lade die ZIP-Datei hoch. Zum Aktualisieren klickst du auf der Skill-Karte auf "...", wählst Replace und lädst die neueste ZIP-Datei hoch.
+**Claude Desktop**: Lade [fskill.zip](https://github.com/gofenix/fskill/releases/latest/download/fskill.zip) herunter, öffne Customize > Skills > "+" > Create skill und lade die ZIP-Datei hoch. Zum Aktualisieren klickst du auf der Skill-Karte auf "...", wählst Replace und lädst die neueste ZIP-Datei hoch.
 
 **Pi**: `pi install npm:fskill`, Update über `pi update npm:fskill`.
 
@@ -67,7 +67,7 @@ fskill liefert universelle Entwicklergewohnheiten. `/check` liest zur Laufzeit n
 
 ## Extras
 
-Die curl-URLs verwenden das neueste GitHub-Release-Asset. Für die neuesten Skripte von main setzt du `WAZA_REF=main` vor den Befehl.
+Die curl-URLs verwenden das neueste GitHub-Release-Asset. Für die neuesten Skripte von main setzt du `FSKILL_REF=main` vor den Befehl.
 
 ### Statusleiste
 
@@ -80,11 +80,11 @@ Minimale Statusleiste für Claude Code: Kontext-Window, 5-Stunden- und 7-Tage-Ko
 ```bash
 (
   set -e
-  WAZA_STATUSLINE_SCRIPT="$(mktemp -t fskill-statusline.XXXXXX)"
-  trap 'rm -f "$WAZA_STATUSLINE_SCRIPT"' EXIT
-  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-statusline.sh -o "$WAZA_STATUSLINE_SCRIPT"
-  # vorher prüfen: less "$WAZA_STATUSLINE_SCRIPT"
-  bash "$WAZA_STATUSLINE_SCRIPT"
+  FSKILL_STATUSLINE_SCRIPT="$(mktemp -t fskill-statusline.XXXXXX)"
+  trap 'rm -f "$FSKILL_STATUSLINE_SCRIPT"' EXIT
+  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-statusline.sh -o "$FSKILL_STATUSLINE_SCRIPT"
+  # vorher prüfen: less "$FSKILL_STATUSLINE_SCRIPT"
+  bash "$FSKILL_STATUSLINE_SCRIPT"
 )
 ```
 
@@ -105,23 +105,23 @@ Optionale Regeln wirken auch außerhalb von Skill-Aufrufen, sobald sie in den da
 ```bash
 (
   set -e
-  WAZA_RULE_SCRIPT="$(mktemp -t fskill-rule.XXXXXX)"
-  trap 'rm -f "$WAZA_RULE_SCRIPT"' EXIT
-  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh -o "$WAZA_RULE_SCRIPT"
-  # vorher prüfen: less "$WAZA_RULE_SCRIPT"
+  FSKILL_RULE_SCRIPT="$(mktemp -t fskill-rule.XXXXXX)"
+  trap 'rm -f "$FSKILL_RULE_SCRIPT"' EXIT
+  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh -o "$FSKILL_RULE_SCRIPT"
+  # vorher prüfen: less "$FSKILL_RULE_SCRIPT"
 
   # Englisch-Coaching: hängt eine kurze 😇-Korrektur an, wenn dein Prompt einen Englischfehler enthält
-  bash "$WAZA_RULE_SCRIPT" english claude-code
+  bash "$FSKILL_RULE_SCRIPT" english claude-code
 
   # Anti-Patterns: stets aktive, skillübergreifende Leitplanken (erst lesen, dann handeln; kein Scope Creep; keine ungefragten Zusammenfassungen)
-  bash "$WAZA_RULE_SCRIPT" anti-patterns claude-code
+  bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
   # Routing-Hinweis: Skill-Namen, und dass der Aufruf explizit ist, /name oder $name
-  bash "$WAZA_RULE_SCRIPT" fskill-routing claude-code
+  bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # Klare Alltagsantworten: einheitliche Begriffe, explizite Bedingungen, Unsicherheit bleibt erhalten
   # Clarity ist auf main verfügbar, aber noch nicht im aktuellen Release
-  WAZA_REF=main bash "$WAZA_RULE_SCRIPT" clarity claude-code
+  FSKILL_REF=main bash "$FSKILL_RULE_SCRIPT" clarity claude-code
 )
 ```
 

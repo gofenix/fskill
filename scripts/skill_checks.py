@@ -3,7 +3,7 @@
 Check implementations live in three sibling modules, split by surface:
   - checks_content.py       skill files, prose, references, catalogs
   - checks_distribution.py  marketplaces, Codex mirror, packaging, npm
-  - checks_routing.py       RESOLVER.md and waza-routing sync
+  - checks_routing.py       RESOLVER.md and fskill-routing sync
 
 Import checks from here (verify_skills.py and the pytest unit layer do) so
 the full check inventory stays visible in one place. Each function takes the
@@ -64,6 +64,6 @@ from checks_distribution import (  # noqa: F401
 from checks_routing import (  # noqa: F401
     QUOTED_PHRASE_RE,
     check_resolver,
-    check_waza_routing_skills,
-    check_waza_routing_triggers,
+    check_fskill_routing_skills,
+    check_fskill_routing_triggers,
 )

@@ -56,7 +56,7 @@ def write_env_override(tmp_path: Path, name: str) -> tuple[Path, dict[str, str]]
     executable.chmod(0o755)
     env = os.environ.copy()
     env["HOME"] = str(tmp_path)
-    env["WAZA_PYTHON"] = str(executable)
+    env["FSKILL_PYTHON"] = str(executable)
     return marker, env
 
 
@@ -110,8 +110,8 @@ def test_collector_ignores_ambient_python_override(tmp_path: Path):
 def test_collector_mode_is_selected_only_by_explicit_argument(tmp_path: Path):
     env = os.environ.copy()
     env["HOME"] = str(tmp_path / "home")
-    env["WAZA_HEALTH_MODE"] = "deep"
-    env["WAZA_HEALTH_DEEP"] = "1"
+    env["FSKILL_HEALTH_MODE"] = "deep"
+    env["FSKILL_HEALTH_DEEP"] = "1"
 
     summary = subprocess.run(
         ["/bin/bash", str(SCRIPTS / "collect-data.sh"), "auto"],
@@ -126,8 +126,8 @@ def test_collector_mode_is_selected_only_by_explicit_argument(tmp_path: Path):
     assert "=== AGENT CONFIG SUMMARY ===" in summary.stdout
     assert "=== AGENT CONFIG DETAIL ===" not in summary.stdout
 
-    env["WAZA_HEALTH_MODE"] = "summary"
-    env["WAZA_HEALTH_DEEP"] = "0"
+    env["FSKILL_HEALTH_MODE"] = "summary"
+    env["FSKILL_HEALTH_DEEP"] = "0"
     deep = subprocess.run(
         ["/bin/bash", str(SCRIPTS / "collect-data.sh"), "auto", "deep"],
         cwd=ROOT,

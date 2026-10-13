@@ -1,5 +1,5 @@
 # Allowlist for `make package`. Default-deny: only paths matching one of these
-# patterns ship in waza.zip. New skills / new shippable assets MUST be added
+# patterns ship in fskill.zip. New skills / new shippable assets MUST be added
 # here explicitly; this is the bug-fix replacement for the old denylist that
 # silently grew stale.
 #

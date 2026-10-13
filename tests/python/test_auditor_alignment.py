@@ -24,15 +24,15 @@ def load_module(name: str, rel_path: str):
     return module
 
 
-audit = load_module("waza_audit_signals", "skills/check/scripts/audit_signals.py")
+audit = load_module("fskill_audit_signals", "skills/check/scripts/audit_signals.py")
 maint = load_module(
-    "waza_check_maintainability", "skills/health/scripts/check_maintainability.py"
+    "fskill_check_maintainability", "skills/health/scripts/check_maintainability.py"
 )
 conversation = load_module(
-    "waza_conversation_audit", "skills/health/scripts/conversation_audit.py"
+    "fskill_conversation_audit", "skills/health/scripts/conversation_audit.py"
 )
 skill_security = load_module(
-    "waza_scan_skill_security", "skills/health/scripts/scan_skill_security.py"
+    "fskill_scan_skill_security", "skills/health/scripts/scan_skill_security.py"
 )
 
 

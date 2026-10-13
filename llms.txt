@@ -62,4 +62,4 @@ Pi package:
 
 Claude Desktop:
 
-Download `https://github.com/gofenix/fskill/releases/latest/download/waza.zip` and upload it in Customize > Skills. The current release asset is still named `waza.zip`.
+Download `https://github.com/gofenix/fskill/releases/latest/download/fskill.zip` and upload it in Customize > Skills.

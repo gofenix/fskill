@@ -30,15 +30,15 @@ def test_render_readme_no_change_when_already_latest_asset():
 
 
 def test_render_script_ref_pins_main():
-    body = 'WAZA_REF="${WAZA_REF:-main}"'
+    body = 'FSKILL_REF="${FSKILL_REF:-main}"'
     out = bm.render_script_ref(body, "9.9.9")
-    assert out == 'WAZA_REF="${WAZA_REF:-v9.9.9}"'
+    assert out == 'FSKILL_REF="${FSKILL_REF:-v9.9.9}"'
 
 
 def test_render_script_ref_repins_old_version():
-    body = 'WAZA_REF="${WAZA_REF:-v1.2.3}"'
+    body = 'FSKILL_REF="${FSKILL_REF:-v1.2.3}"'
     out = bm.render_script_ref(body, "9.9.9")
-    assert out == 'WAZA_REF="${WAZA_REF:-v9.9.9}"'
+    assert out == 'FSKILL_REF="${FSKILL_REF:-v9.9.9}"'
 
 
 def test_render_dispatcher_injects_table():

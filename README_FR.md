@@ -47,7 +47,7 @@ codex plugin marketplace add gofenix/fskill
 codex plugin add fskill@fskill
 ```
 
-**Claude Desktop** : téléchargez [waza.zip](https://github.com/gofenix/fskill/releases/latest/download/waza.zip), allez dans Customize > Skills > "+" > Create skill et chargez l'archive. Pour mettre à jour, cliquez sur "..." sur la carte de la compétence, choisissez Replace et chargez la dernière archive ZIP.
+**Claude Desktop** : téléchargez [fskill.zip](https://github.com/gofenix/fskill/releases/latest/download/fskill.zip), allez dans Customize > Skills > "+" > Create skill et chargez l'archive. Pour mettre à jour, cliquez sur "..." sur la carte de la compétence, choisissez Replace et chargez la dernière archive ZIP.
 
 **Pi** : `pi install npm:fskill`, mise à jour via `pi update npm:fskill`.
 
@@ -67,7 +67,7 @@ fskill n'embarque que des méthodes d'ingénierie universelles. `/check` lit au 
 
 ## Outils additionnels
 
-Les URL curl utilisent le dernier asset de release GitHub. Ajoutez `WAZA_REF=main` avant la commande pour utiliser les scripts les plus récents de main.
+Les URL curl utilisent le dernier asset de release GitHub. Ajoutez `FSKILL_REF=main` avant la commande pour utiliser les scripts les plus récents de main.
 
 ### Barre d'état (Statusline)
 
@@ -80,11 +80,11 @@ Une barre d'état minimale pour Claude Code : fenêtre de contexte, quotas 5 heu
 ```bash
 (
   set -e
-  WAZA_STATUSLINE_SCRIPT="$(mktemp -t fskill-statusline.XXXXXX)"
-  trap 'rm -f "$WAZA_STATUSLINE_SCRIPT"' EXIT
-  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-statusline.sh -o "$WAZA_STATUSLINE_SCRIPT"
-  # à vérifier d'abord : less "$WAZA_STATUSLINE_SCRIPT"
-  bash "$WAZA_STATUSLINE_SCRIPT"
+  FSKILL_STATUSLINE_SCRIPT="$(mktemp -t fskill-statusline.XXXXXX)"
+  trap 'rm -f "$FSKILL_STATUSLINE_SCRIPT"' EXIT
+  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-statusline.sh -o "$FSKILL_STATUSLINE_SCRIPT"
+  # à vérifier d'abord : less "$FSKILL_STATUSLINE_SCRIPT"
+  bash "$FSKILL_STATUSLINE_SCRIPT"
 )
 ```
 
@@ -105,23 +105,23 @@ Les règles optionnelles s'appliquent au-delà des appels de compétences une fo
 ```bash
 (
   set -e
-  WAZA_RULE_SCRIPT="$(mktemp -t fskill-rule.XXXXXX)"
-  trap 'rm -f "$WAZA_RULE_SCRIPT"' EXIT
-  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh -o "$WAZA_RULE_SCRIPT"
-  # à vérifier d'abord : less "$WAZA_RULE_SCRIPT"
+  FSKILL_RULE_SCRIPT="$(mktemp -t fskill-rule.XXXXXX)"
+  trap 'rm -f "$FSKILL_RULE_SCRIPT"' EXIT
+  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh -o "$FSKILL_RULE_SCRIPT"
+  # à vérifier d'abord : less "$FSKILL_RULE_SCRIPT"
 
   # Coaching d'anglais : ajoute une courte correction 😇 quand votre prompt contient une faute d'anglais
-  bash "$WAZA_RULE_SCRIPT" english claude-code
+  bash "$FSKILL_RULE_SCRIPT" english claude-code
 
   # Anti-patterns : garde-fous permanents communs à toutes les compétences (lire avant d'agir, ne pas élargir le périmètre, pas de résumé non demandé)
-  bash "$WAZA_RULE_SCRIPT" anti-patterns claude-code
+  bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
   # Indice de routage : les noms des compétences, et l'appel explicite, /name ou $name
-  bash "$WAZA_RULE_SCRIPT" fskill-routing claude-code
+  bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # Réponses claires au quotidien : termes cohérents, conditions explicites, incertitude préservée
   # Clarity est disponible sur main, mais pas encore dans la version publiée
-  WAZA_REF=main bash "$WAZA_RULE_SCRIPT" clarity claude-code
+  FSKILL_REF=main bash "$FSKILL_RULE_SCRIPT" clarity claude-code
 )
 ```
 

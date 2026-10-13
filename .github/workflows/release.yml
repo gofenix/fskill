@@ -42,10 +42,10 @@ jobs:
       - name: Re-run full test suite against the tagged commit
         run: make test
       - run: make package
-      - name: Upload waza.zip to release
+      - name: Upload fskill.zip to release
         run: |
           gh release upload "${{ github.event.release.tag_name }}" \
-            dist/waza.zip \
+            dist/fskill.zip \
             scripts/setup-rule.sh \
             scripts/setup-statusline.sh \
             --clobber

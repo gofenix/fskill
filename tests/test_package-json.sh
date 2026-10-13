@@ -55,7 +55,7 @@ forbidden = {
     ".agents/plugins/marketplace.json",
     "plugins/fskill/.codex-plugin/plugin.json",
     ".github/workflows/test.yml",
-    "dist/waza.zip",
+    "dist/fskill.zip",
     "tests/test_package.sh",
     "packaging.allowlist",
     "scripts/build_metadata.py",

@@ -172,6 +172,6 @@ sync_codex_mirror "$tmpdir/repo9"
 if (cd "$tmpdir/repo9" && python3 scripts/verify_skills.py --root . >"$tmpdir/routing.out" 2>"$tmpdir/routing.err"); then
   echo "verify-skills should reject ungrounded 「」 routing triggers"; exit 1
 fi
-grep -q 'WAZA ROUTING UNGROUNDED TRIGGER' "$tmpdir/routing.err"
+grep -q 'FSKILL ROUTING UNGROUNDED TRIGGER' "$tmpdir/routing.err"
 
 echo "verify-skills smoke: ok"

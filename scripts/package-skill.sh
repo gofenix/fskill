@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-OUT="${1:-"$ROOT/dist/waza.zip"}"
+OUT="${1:-"$ROOT/dist/fskill.zip"}"
 case "$OUT" in
   /*) ;;
   *) OUT="$ROOT/$OUT" ;;

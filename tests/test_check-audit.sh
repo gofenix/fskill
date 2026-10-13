@@ -210,7 +210,7 @@ python3 "$AUDIT" --root "$dirty" >/dev/null
 guarded=$(make_tmpdir)
 printf '%s\n' '# safe' > "$guarded/README.md"
 (cd "$guarded" && git init -q && git add README.md && git \
-  -c user.name=waza -c user.email=waza@test commit -qm init)
+  -c user.name=fskill -c user.email=fskill@test commit -qm init)
 fsmonitor_marker="$guarded-fsmonitor.executed"
 fsmonitor_hook="$guarded/fsmonitor.sh"
 printf '%s\n' \

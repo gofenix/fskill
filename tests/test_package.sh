@@ -5,12 +5,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/test_helpers.sh"
 
 tmpdir=$(make_tmpdir)
-"$ROOT/scripts/package-skill.sh" "$tmpdir/waza.zip" >/dev/null
-zipinfo -1 "$tmpdir/waza.zip" >"$tmpdir/manifest"
+"$ROOT/scripts/package-skill.sh" "$tmpdir/fskill.zip" >/dev/null
+zipinfo -1 "$tmpdir/fskill.zip" >"$tmpdir/manifest"
 
 # Root SKILL.md is present; nested SKILL.md files are inlined, never re-shipped.
 grep -qx 'SKILL.md' "$tmpdir/manifest"
-test "$(zipinfo -1 "$tmpdir/waza.zip" | grep -ciE '(^|/)skill\.md$')" -eq 1
+test "$(zipinfo -1 "$tmpdir/fskill.zip" | grep -ciE '(^|/)skill\.md$')" -eq 1
 
 # RESOLVER.md is routing for direct installs; the ZIP root dispatcher already
 # inlines the routing table, so shipping it would be dead weight.
@@ -63,7 +63,7 @@ fi
 # Root SKILL.md inlines every skill body and rewrites cross-refs. Read the
 # bundled file once into memory; bash string matching avoids the SIGPIPE that
 # `unzip -p | grep -q` would raise under `set -o pipefail`.
-root_skill=$(unzip -p "$tmpdir/waza.zip" SKILL.md)
+root_skill=$(unzip -p "$tmpdir/fskill.zip" SKILL.md)
 [[ "$root_skill" == *"SKILL: check"* ]] || { echo "expected 'SKILL: check' section in root SKILL.md"; exit 1; }
 if [[ "$root_skill" == *"skills/check/SKILL.md"* ]]; then
   echo "package root should not reference nested SKILL.md"; exit 1
@@ -77,11 +77,11 @@ fi
 
 # Second-hop references inside shipped Markdown must also resolve from the ZIP
 # root instead of pointing at nonexistent root references/ paths.
-workflows=$(unzip -p "$tmpdir/waza.zip" skills/check/references/maintainer-workflows.md)
+workflows=$(unzip -p "$tmpdir/fskill.zip" skills/check/references/maintainer-workflows.md)
 [[ "$workflows" == *'[release-artifacts.md](skills/check/references/release-artifacts.md)'* ]] || {
   echo "nested reference should qualify a same-directory basename"; exit 1
 }
-prose=$(unzip -p "$tmpdir/waza.zip" skills/write/references/write-zh-prose.md)
+prose=$(unzip -p "$tmpdir/fskill.zip" skills/write/references/write-zh-prose.md)
 [[ "$prose" == *'`skills/write/references/write-zh.md`'* ]] || {
   echo "nested basename should resolve in another skill independently"; exit 1
 }

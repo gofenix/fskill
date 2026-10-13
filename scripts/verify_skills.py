@@ -46,8 +46,8 @@ from skill_checks import (  # noqa: E402
     check_skill_files,
     check_table_pipes,
     check_trigger_overlap,
-    check_waza_routing_skills,
-    check_waza_routing_triggers,
+    check_fskill_routing_skills,
+    check_fskill_routing_triggers,
     collect_all_md,
 )
 
@@ -108,8 +108,8 @@ def main() -> int:
     check_rules_files_present(root)
     check_no_automatic_update_checks(root, skill_names)
     check_anti_patterns_contract(root)
-    check_waza_routing_skills(root, skill_names)
-    check_waza_routing_triggers(root)
+    check_fskill_routing_skills(root, skill_names)
+    check_fskill_routing_triggers(root)
     check_readme_install_command(root)
     check_release_workflow_npm_surface(root)
     check_english_coaching_guard(root)

@@ -47,7 +47,7 @@ codex plugin marketplace add gofenix/fskill
 codex plugin add fskill@fskill
 ```
 
-**Claude Desktop**：下載 [waza.zip](https://github.com/gofenix/fskill/releases/latest/download/waza.zip)，開啟 Customize > Skills > "+" > Create skill 並上傳壓縮檔，更新時點選卡片上的 "..." 選擇 Replace 再上傳最新的 ZIP 即可
+**Claude Desktop**：下載 [fskill.zip](https://github.com/gofenix/fskill/releases/latest/download/fskill.zip)，開啟 Customize > Skills > "+" > Create skill 並上傳壓縮檔，更新時點選卡片上的 "..." 選擇 Replace 再上傳最新的 ZIP 即可
 
 **Pi**：`pi install npm:fskill`，透過 `pi update npm:fskill` 更新
 
@@ -67,7 +67,7 @@ fskill 只沉澱通用的工程習慣，`/check` 執行時從目標儲存庫公�
 
 ## 附加工具與規則
 
-下載腳本預設使用最新的 GitHub Release 資源，想用 main 上最新的腳本，可以在指令前加 `WAZA_REF=main`。
+下載腳本預設使用最新的 GitHub Release 資源，想用 main 上最新的腳本，可以在指令前加 `FSKILL_REF=main`。
 
 ### 狀態列
 
@@ -80,11 +80,11 @@ Claude Code 極簡狀態列：顯示上下文視窗、5 小時配額與 7 天配
 ```bash
 (
   set -e
-  WAZA_STATUSLINE_SCRIPT="$(mktemp -t fskill-statusline.XXXXXX)"
-  trap 'rm -f "$WAZA_STATUSLINE_SCRIPT"' EXIT
-  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-statusline.sh -o "$WAZA_STATUSLINE_SCRIPT"
-  # 可以先檢查腳本內容：less "$WAZA_STATUSLINE_SCRIPT"
-  bash "$WAZA_STATUSLINE_SCRIPT"
+  FSKILL_STATUSLINE_SCRIPT="$(mktemp -t fskill-statusline.XXXXXX)"
+  trap 'rm -f "$FSKILL_STATUSLINE_SCRIPT"' EXIT
+  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-statusline.sh -o "$FSKILL_STATUSLINE_SCRIPT"
+  # 可以先檢查腳本內容：less "$FSKILL_STATUSLINE_SCRIPT"
+  bash "$FSKILL_STATUSLINE_SCRIPT"
 )
 ```
 
@@ -105,23 +105,23 @@ Codex 顯示剩餘額度，上方 Claude Code 狀態列顯示已用百分比（�
 ```bash
 (
   set -e
-  WAZA_RULE_SCRIPT="$(mktemp -t fskill-rule.XXXXXX)"
-  trap 'rm -f "$WAZA_RULE_SCRIPT"' EXIT
-  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh -o "$WAZA_RULE_SCRIPT"
-  # 可以先檢查腳本內容：less "$WAZA_RULE_SCRIPT"
+  FSKILL_RULE_SCRIPT="$(mktemp -t fskill-rule.XXXXXX)"
+  trap 'rm -f "$FSKILL_RULE_SCRIPT"' EXIT
+  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh -o "$FSKILL_RULE_SCRIPT"
+  # 可以先檢查腳本內容：less "$FSKILL_RULE_SCRIPT"
 
   # 英文寫作教練：Prompt 中有英文表達錯誤時，在結尾追加一條簡短的 😇 糾錯建議
-  bash "$WAZA_RULE_SCRIPT" english claude-code
+  bash "$FSKILL_RULE_SCRIPT" english claude-code
 
   # 行為防錯守則：全域常駐約束（先看再改、不隨意擴大範圍、不主動輸出冗餘總結）
-  bash "$WAZA_RULE_SCRIPT" anti-patterns claude-code
+  bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
   # 技能路由提示：技能名單，以及只在 /name 或 $name 時進入
-  bash "$WAZA_RULE_SCRIPT" fskill-routing claude-code
+  bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # 日常清晰表達：術語統一、條件明確、保留不確定性
   # Clarity 規則目前在 main 分支可用，尚未進入正式版
-  WAZA_REF=main bash "$WAZA_RULE_SCRIPT" clarity claude-code
+  FSKILL_REF=main bash "$FSKILL_RULE_SCRIPT" clarity claude-code
 )
 ```
 

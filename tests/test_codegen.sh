@@ -74,7 +74,7 @@ test "$(jq -r '.pi.skills[0]' "$tmpdir/regen/package.json")" = "./skills"
 test "$(jq -r '.publishConfig.access' "$tmpdir/regen/package.json")" = "public"
 
 # README installer URLs should use latest release assets. The installer scripts
-# themselves still pin WAZA_REF to VERSION.
+# themselves still pin FSKILL_REF to VERSION.
 copy_repo "$tmpdir/readme"
 version=$(cat "$tmpdir/readme/VERSION")
 sed -i.bak \
@@ -115,20 +115,20 @@ test "$(jq -r '.pi.skills[0]' "$tmpdir/package/package.json")" = "./skills"
 test "$(jq -r '.publishConfig.access' "$tmpdir/package/package.json")" = "public"
 
 # Installer scripts must also default to the current release tag; overriding
-# WAZA_REF=main remains available for bleeding-edge installs.
+# FSKILL_REF=main remains available for bleeding-edge installs.
 copy_repo "$tmpdir/scripts"
 version=$(cat "$tmpdir/scripts/VERSION")
-sed -i.bak 's|WAZA_REF="${WAZA_REF:-v'"$version"'}"|WAZA_REF="${WAZA_REF:-main}"|g' \
+sed -i.bak 's|FSKILL_REF="${FSKILL_REF:-v'"$version"'}"|FSKILL_REF="${FSKILL_REF:-main}"|g' \
   "$tmpdir/scripts/scripts/setup-rule.sh" \
   "$tmpdir/scripts/scripts/setup-statusline.sh"
 rm "$tmpdir/scripts/scripts/setup-rule.sh.bak" "$tmpdir/scripts/scripts/setup-statusline.sh.bak"
 if (cd "$tmpdir/scripts" && python3 scripts/build_metadata.py --check >"$tmpdir/scripts.out" 2>"$tmpdir/scripts.err"); then
-  echo "build_metadata --check should detect unpinned installer WAZA_REF"; exit 1
+  echo "build_metadata --check should detect unpinned installer FSKILL_REF"; exit 1
 fi
-grep -q 'default WAZA_REF is not pinned' "$tmpdir/scripts.err"
+grep -q 'default FSKILL_REF is not pinned' "$tmpdir/scripts.err"
 (cd "$tmpdir/scripts" && python3 scripts/build_metadata.py >"$tmpdir/scripts-regen.out")
-grep -q 'WAZA_REF="${WAZA_REF:-v'"$version"'}"' "$tmpdir/scripts/scripts/setup-rule.sh"
-grep -q 'WAZA_REF="${WAZA_REF:-v'"$version"'}"' "$tmpdir/scripts/scripts/setup-statusline.sh"
+grep -q 'FSKILL_REF="${FSKILL_REF:-v'"$version"'}"' "$tmpdir/scripts/scripts/setup-rule.sh"
+grep -q 'FSKILL_REF="${FSKILL_REF:-v'"$version"'}"' "$tmpdir/scripts/scripts/setup-statusline.sh"
 
 # Dispatcher routing table is also generated; tampering the committed copy
 # (or deleting it) must trip drift detection.

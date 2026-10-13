@@ -9,11 +9,11 @@ home_dir="$tmpdir/home"
 bin_dir="$tmpdir/bin"
 mkdir -p "$home_dir/.codex"
 prepare_codex_installer_bin "$bin_dir"
-write_stub_curl "$bin_dir" "# Waza Routing\n\nrouting table body\n"
+write_stub_curl "$bin_dir" "# fskill Routing\n\nrouting table body\n"
 
 # Claude Code target drops the rule into ~/.claude/rules/ as a standalone file
 # (same path used by english / anti-patterns). Marker label override keeps the
-# Codex block name as <!-- fskill Routing --> instead of <!-- fskill Waza Routing -->.
+# Codex block name as <!-- fskill Routing --> instead of <!-- fskill fskill Routing -->.
 PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-rule.sh" fskill-routing claude-code >"$tmpdir/claude.out"
 grep -q 'routing table body' "$home_dir/.claude/rules/fskill-routing.md"
 
@@ -23,4 +23,4 @@ PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-rule.sh" fskill-
 test "$(grep -c '<!-- fskill Routing: start -->' "$home_dir/.codex/AGENTS.md")" -eq 1
 grep -q 'routing table body' "$home_dir/.codex/AGENTS.md"
 
-echo "Waza Routing installer smoke: ok"
+echo "fskill Routing installer smoke: ok"

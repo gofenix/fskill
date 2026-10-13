@@ -14,7 +14,7 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty sk
 
 ## Repository Map
 
-- `VERSION` - single source of truth for the lock-step version. Marketplace entries, `package.json`, and installer `WAZA_REF` defaults must agree with this file (codegen-enforced). Per-skill frontmatter carries no version field; the verifier rejects a stale `metadata.version`.
+- `VERSION` - single source of truth for the lock-step version. Marketplace entries, `package.json`, and installer `FSKILL_REF` defaults must agree with this file (codegen-enforced). Per-skill frontmatter carries no version field; the verifier rejects a stale `metadata.version`.
 - `skills/RESOLVER.md` - trigger and routing table for the skill set.
 - `skills/*/SKILL.md` - individual skill entrypoints.
 - `skills/*/agents/` - specialist reviewer or inspector prompts.
@@ -24,12 +24,12 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty sk
 - `.claude-plugin/marketplace.json` - **generated**. Edit `VERSION` or per-skill `SKILL.md` frontmatter and run `make regenerate`; never hand-edit.
 - `.agents/plugins/marketplace.json` - **generated** Codex repo marketplace. Points Codex at `plugins/fskill` for plugin installs; never hand-edit.
 - `plugins/fskill/` - **generated** Codex plugin tree. Mirrors `skills/` and `rules/` plus `plugins/fskill/.codex-plugin/plugin.json`; edit source files and run `make regenerate`.
-- `packaging.allowlist` - default-deny list of paths that ship in `waza.zip`. New shippable assets must be added here explicitly; everything else is excluded.
+- `packaging.allowlist` - default-deny list of paths that ship in `fskill.zip`. New shippable assets must be added here explicitly; everything else is excluded.
 - `.github/workflows/` - public test and release automation. `release.yml` runs `make test` before `make package` so the tagged commit is gated by the same suite as PRs.
-- `scripts/build_metadata.py` - codegen for Claude and Codex marketplace metadata, README install URLs, Codex plugin mirror files, skill-local durable-context copies, and installer-script `WAZA_REF` defaults. Run via `make regenerate`; CI checks drift via `make verify-generated`.
+- `scripts/build_metadata.py` - codegen for Claude and Codex marketplace metadata, README install URLs, Codex plugin mirror files, skill-local durable-context copies, and installer-script `FSKILL_REF` defaults. Run via `make regenerate`; CI checks drift via `make verify-generated`.
 - `scripts/verify_skills.py` - the only validator entrypoint; a driver over the check inventory in `scripts/skill_checks.py` (content, distribution, and routing checks). The facade's import list is the canonical inventory; do not re-enumerate it here.
-- `scripts/package-skill.sh` + `scripts/packaging_filter.py` - build `dist/waza.zip` from `packaging.allowlist`.
-- `scripts/setup-rule.sh` + `scripts/setup-statusline.sh` - public install helpers; `WAZA_REF` defaults are codegen-pinned to the current release tag.
+- `scripts/package-skill.sh` + `scripts/packaging_filter.py` - build `dist/fskill.zip` from `packaging.allowlist`.
+- `scripts/setup-rule.sh` + `scripts/setup-statusline.sh` - public install helpers; `FSKILL_REF` defaults are codegen-pinned to the current release tag.
 - `Makefile` - smoke discovery and packaging entrypoints. Adding a `tests/test_<name>.sh` file is enough to create a `smoke-<name>` target automatically.
 - `tests/test_*.sh` - one smoke per surface; sources `tests/test_helpers.sh` for tmpdir / repo-copy / stub-curl / instruction-file fixture factories. `tests/python/` holds the pytest unit layer (`make verify-unit`).
 
@@ -55,7 +55,7 @@ Verify Health changes with `make verify-unit` plus the matching smoke (`tests/te
 make test             # verify-docs + verify-generated + verify-routing + verify-scripts + verify-unit + all smokes
 make regenerate       # rewrite marketplace.json, README install URLs, plugin mirrors
 make verify-generated # drift check used by CI; non-zero if regenerate would change anything
-make package          # build dist/waza.zip from packaging.allowlist
+make package          # build dist/fskill.zip from packaging.allowlist
 ```
 
 Run `make test` before meaningful changes to skill behavior, packaging, scripts, marketplace metadata, or anything generated. If you edited only frontmatter or VERSION, also run `make regenerate` and commit the resulting `.claude-plugin/marketplace.json` / `package.json` / installer changes together with your source edits.
@@ -114,7 +114,7 @@ Use this path for any new skill or meaningful behavior change:
 - Keep smoke tests in `tests/test_*.sh`; `Makefile` should discover and run them, not embed large test bodies.
 - Avoid hidden runtime dependencies. If a script needs a non-stdlib Python package, external CLI, or network resolver, declare it in CI/docs and add a smoke test that fails without it.
 - Shipped skill scripts (`skills/*/scripts/`) stay self-contained: they import only the standard library and run from an arbitrary target project. Do not extract their shared-looking helpers (file walks, parsers) into a root `scripts/` module. That module is dev/CI-only and not on `packaging.allowlist`, so importing it would couple a standalone shipped tool to the install layout and can break `npx skills add` installs. Benign duplication across two shipped scripts is the correct trade; if drift matters, align the copies in place rather than sharing a module. Mechanical definitions copied across shipped auditors (excluded dirs, source extensions, marker regexes) are pinned equal by `tests/python/test_auditor_alignment.py`; extend that test when a new definition gets copied, and keep thresholds per-product.
-- Installer scripts that fetch remote content must default to a release tag. Use `WAZA_REF=main` only as an explicit bleeding-edge override.
+- Installer scripts that fetch remote content must default to a release tag. Use `FSKILL_REF=main` only as an explicit bleeding-edge override.
 - Installer scripts that replace a file the user already has must stage the download into a sibling temp file and clean it up through one `EXIT`/`INT`/`TERM` trap, so neither a failed transfer nor an interrupt can leave partial content installed. `setup-rule.sh` and `setup-statusline.sh` are mirrors of this shape; a change to one belongs in both, and each guard needs a test that fails when that guard alone is removed.
 - Report-only launchers must canonicalize every inherited or discovered executable candidate, including its reparse target, and reject candidates inside the audited project before first execution. Cover each discovery source in the platform test job.
 - One-off review reports, scorecards, or diagnostic snapshots do not belong in durable docs. Extract the stable rule into `AGENTS.md`, `CLAUDE.md`, `rules/`, `skills/*/references/`, or a verifier script, then drop the report.
@@ -139,7 +139,7 @@ Use this path for any new skill or meaningful behavior change:
 ## Verification
 
 - Skill behavior changes: run `python3 scripts/verify_skills.py` and the relevant smoke target.
-- Network-touching smokes (read fetch, skills-add e2e) honor `WAZA_SMOKE_OFFLINE=1` for a fully hermetic run and retry transient failures with backoff when online.
+- Network-touching smokes (read fetch, skills-add e2e) honor `FSKILL_SMOKE_OFFLINE=1` for a fully hermetic run and retry transient failures with backoff when online.
 - Packaging changes: run `make package` and inspect the generated archive.
 - Marketplace, resolver, or root dispatcher changes: run `python3 scripts/verify_skills.py` and confirm every marketplace source points at an existing skill directory. For Codex plugin changes, also run a clean install smoke such as `CODEX_HOME=$(mktemp -d) codex plugin marketplace add <repo>` followed by `codex plugin add fskill@fskill` and `codex plugin list`.
 - Non-trivial diffs: run the review workflow before release handoff.
@@ -151,7 +151,7 @@ Use this path for any new skill or meaningful behavior change:
 - Keep commits atomic. A commit touching more than ~20 files should split into packaging / docs / scripts / per-skill units, unless every file is the same codegen output from `make regenerate`.
 - Release tags use lowercase `v{version}`.
 - Rebuild packaged artifacts before publishing release assets. Run `make package` before publishing; CI should upload the ZIP on published releases.
-- The first release that ships `rules/clarity.md` also drops the Clarity main-only line (`# Clarity is available on main; it is not in the current release yet.`) and the `WAZA_REF=main ` prefix on the clarity command in all seven READMEs, so they stop pointing installs at `main`.
+- The first release that ships `rules/clarity.md` also drops the Clarity main-only line (`# Clarity is available on main; it is not in the current release yet.`) and the `FSKILL_REF=main ` prefix on the clarity command in all seven READMEs, so they stop pointing installs at `main`.
 - Before saying an fskill release is ready or done, separate the evidence layers: source diff, CI, generated metadata, package contents, GitHub release assets, npm registry/dist-tag state, and installed-runtime smoke. Missing layers are explicit gaps, not implied passes.
 - After a GitHub release is published and assets are verified, add every positive release reaction with `gh api`: `+1`, `laugh`, `heart`, `hooray`, `rocket`, and `eyes`. Resolve the release id from the tag, POST each reaction to `repos/<owner>/<repo>/releases/<id>/reactions`, then re-read reactions to confirm them.
 - **Never add the `-1` or `confused` reactions**. Those are negative signals; adding them to one's own release reads as self-deprecation. Only the six positive reactions above.
@@ -178,7 +178,7 @@ Use this path for any new skill or meaningful behavior change:
 1. **技能名**: 一句话说清楚改了什么以及对用户的影响。
 2. ...
 
-Update: `npx skills update -g -y` · [Claude Desktop](https://github.com/gofenix/fskill/releases/latest/download/waza.zip) · ⭐ [gofenix/fskill](https://github.com/gofenix/fskill)
+Update: `npx skills update -g -y` · [Claude Desktop](https://github.com/gofenix/fskill/releases/latest/download/fskill.zip) · ⭐ [gofenix/fskill](https://github.com/gofenix/fskill)
 ```
 
 - Each item: `**Label**: one sentence`. Bold label is the skill or module name; the description leads with what changed.

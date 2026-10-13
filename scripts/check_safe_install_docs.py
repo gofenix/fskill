@@ -16,7 +16,7 @@ DEFAULT_HOOK = ROOT / "skills/health/scripts/block-pipe-to-shell.py"
 
 
 def load_pipe_hook(path: Path) -> ModuleType:
-    spec = importlib.util.spec_from_file_location("waza_pipe_hook", path)
+    spec = importlib.util.spec_from_file_location("fskill_pipe_hook", path)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"cannot load pipe-to-shell checker: {path}")
     module = importlib.util.module_from_spec(spec)

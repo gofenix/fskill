@@ -489,17 +489,17 @@ def test_launcher_does_not_trust_runtime_selection_environment():
     text = LAUNCHER.read_text(encoding="utf-8")
 
     assert "$env:GIT_INSTALL_ROOT" not in text
-    assert "Resolve-Executable $env:WAZA_PYTHON" not in text
+    assert "Resolve-Executable $env:FSKILL_PYTHON" not in text
     assert 'StartsWith("\\\\")' in text
     for name in (
-        "WAZA_PYTHON",
+        "FSKILL_PYTHON",
         "DOC_REF_CHECKER",
         "GIT_INSTALL_ROOT",
         "BASH_ENV",
         "ENV",
     ):
         assert f'Remove-Item "Env:{name}"' in text
-    assert 'waza-health-python-ok' in text
+    assert 'fskill-health-python-ok' in text
     assert "function Resolve-FinalPath" in text
     assert "function Resolve-SafePath" in text
     assert "function ConvertTo-GitBashPath" in text

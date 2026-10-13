@@ -1,9 +1,9 @@
 #!/bin/bash
 # Claude Code statusline: Context % | 5h: % (reset) | 7d: % (reset)
-# Set WAZA_STATUSLINE_DEBUG=1 to surface stderr (jq parse errors, missing tools).
-[ "${WAZA_STATUSLINE_DEBUG:-}" = "1" ] || exec 2>/dev/null
+# Set FSKILL_STATUSLINE_DEBUG=1 to surface stderr (jq parse errors, missing tools).
+[ "${FSKILL_STATUSLINE_DEBUG:-}" = "1" ] || exec 2>/dev/null
 
-CACHE_DIR="$HOME/.cache/waza-statusline"
+CACHE_DIR="$HOME/.cache/fskill-statusline"
 CACHE_FILE="$CACHE_DIR/last.json"
 HIGHWATER_FILE="$CACHE_DIR/highwater.json"
 HIGHWATER_LOCK_DIR="$CACHE_DIR/highwater.lock"

@@ -50,7 +50,7 @@ def check_resolver(root: Path, skill_names: set[str]):
     return resolver_path
 
 
-def check_waza_routing_skills(root: Path, skill_names: set[str]):
+def check_fskill_routing_skills(root: Path, skill_names: set[str]):
     """rules/fskill-routing.md routing table must enumerate exactly the skills
     under skills/. Structural drift only -- trigger phrases stay hand-tuned."""
     path = root / "rules" / "fskill-routing.md"
@@ -73,18 +73,18 @@ def check_waza_routing_skills(root: Path, skill_names: set[str]):
     extra = listed - skill_names
     if missing:
         fail(
-            "WAZA ROUTING MISSING SKILLS: rules/fskill-routing.md table omits: "
+            "FSKILL ROUTING MISSING SKILLS: rules/fskill-routing.md table omits: "
             f"{', '.join(sorted(missing))}"
         )
     if extra:
         fail(
-            "WAZA ROUTING STALE SKILLS: rules/fskill-routing.md lists skills "
+            "FSKILL ROUTING STALE SKILLS: rules/fskill-routing.md lists skills "
             f"not in skills/: {', '.join(sorted(extra))}"
         )
     print(f"ok: rules/fskill-routing.md skills match ({len(listed)} skills)")
 
 
-def check_waza_routing_triggers(root: Path):
+def check_fskill_routing_triggers(root: Path):
     """Quoted user-utterance triggers in rules/fskill-routing.md must be grounded.
 
     The routing table's prose stays hand-tuned, but any phrase in quotes is a
@@ -108,7 +108,7 @@ def check_waza_routing_triggers(root: Path):
             continue
         skill_md = root / "skills" / skill / "SKILL.md"
         if not skill_md.exists():
-            continue  # missing skill dir is check_waza_routing_skills' job
+            continue  # missing skill dir is check_fskill_routing_skills' job
         when = norm(parse_frontmatter(skill_md)["when_to_use"])
         for match in QUOTED_PHRASE_RE.finditer(cells[2]):
             quoted = next(g for g in match.groups() if g is not None)
@@ -116,7 +116,7 @@ def check_waza_routing_triggers(root: Path):
                 seg_norm = norm(seg)
                 if seg_norm and seg_norm not in when:
                     fail(
-                        f"WAZA ROUTING UNGROUNDED TRIGGER: rules/fskill-routing.md "
+                        f"FSKILL ROUTING UNGROUNDED TRIGGER: rules/fskill-routing.md "
                         f"row '{skill}' quotes {seg!r}, but it is absent from "
                         f"skills/{skill}/SKILL.md when_to_use.\n"
                         f"  Quote only phrases a user actually types; align the "

@@ -21,7 +21,7 @@ grep -q '/private/tmp/deleted-worktree/foo.go' "$tmpdir/stale.out"
 grep -q 'golangci-lint cache clean' "$tmpdir/stale.out"
 
 # Existing /tmp path should NOT be flagged as stale.
-existing_file="/tmp/waza-verifier-existing-$$.go"
+existing_file="/tmp/fskill-verifier-existing-$$.go"
 touch "$existing_file"
 printf '%s\n' "go test $existing_file:1" > "$tmpdir/existing.log"
 bash "$CHECKER" "$project" "$tmpdir/existing.log" >"$tmpdir/existing.out"

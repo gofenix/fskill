@@ -18,8 +18,8 @@ Generated files:
                                         direct-install copies of the shared
                                         durable-context preamble (only skills
                                         whose SKILL.md links it)
-  - scripts/setup-rule.sh              default WAZA_REF pinned to VERSION
-  - scripts/setup-statusline.sh        default WAZA_REF pinned to VERSION
+  - scripts/setup-rule.sh              default FSKILL_REF pinned to VERSION
+  - scripts/setup-statusline.sh        default FSKILL_REF pinned to VERSION
 
 Modes:
   --write  (default)  regenerate every file from source
@@ -310,7 +310,7 @@ def render_dispatcher(template: str, skills: list[dict]) -> str:
 
 
 # README installer entrypoints should follow the latest GitHub release asset.
-# The downloaded scripts themselves still default WAZA_REF to a release tag, so
+# The downloaded scripts themselves still default FSKILL_REF to a release tag, so
 # users get a stable install without README churn on every version bump.
 README_INSTALL_URL_RE = re.compile(
     r"https://raw\.githubusercontent\.com/gofenix/fskill/"
@@ -320,7 +320,7 @@ README_SWAP_TAG_RE = re.compile(
     r"Curl URLs are pinned to the current release tag for reproducibility; "
     r"swap `v\d+\.\d+\.\d+` for `main` if you want bleeding-edge scripts\."
 )
-WAZA_REF_RE = re.compile(r'WAZA_REF="\$\{WAZA_REF:-(?:main|v\d+\.\d+\.\d+)\}"')
+FSKILL_REF_RE = re.compile(r'FSKILL_REF="\$\{FSKILL_REF:-(?:main|v\d+\.\d+\.\d+)\}"')
 
 
 def render_readme(current: str) -> str:
@@ -328,14 +328,14 @@ def render_readme(current: str) -> str:
         r"https://github.com/gofenix/fskill/releases/latest/download/\1", current
     )
     return README_SWAP_TAG_RE.sub(
-        "Curl URLs use the latest GitHub release asset. Set `WAZA_REF=main` "
+        "Curl URLs use the latest GitHub release asset. Set `FSKILL_REF=main` "
         "before the command if you want bleeding-edge scripts.",
         current,
     )
 
 
 def render_script_ref(current: str, version: str) -> str:
-    return WAZA_REF_RE.sub(f'WAZA_REF="${{WAZA_REF:-v{version}}}"', current)
+    return FSKILL_REF_RE.sub(f'FSKILL_REF="${{FSKILL_REF:-v{version}}}"', current)
 
 
 def diff(label: str, expected: str, actual: str) -> str:
@@ -451,12 +451,12 @@ def main() -> int:
     pinned_scripts = [
         (
             root / "scripts" / "setup-rule.sh",
-            "default WAZA_REF",
+            "default FSKILL_REF",
             lambda actual: render_script_ref(actual, version),
         ),
         (
             root / "scripts" / "setup-statusline.sh",
-            "default WAZA_REF",
+            "default FSKILL_REF",
             lambda actual: render_script_ref(actual, version),
         ),
     ]

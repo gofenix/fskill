@@ -12,14 +12,14 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export ROOT
 
-_WAZA_TEST_TMPDIRS=()
+_FSKILL_TEST_TMPDIRS=()
 
 _cleanup_tmpdirs() {
   # Trap runs at EXIT so the final command's status becomes the script's exit
   # status. Empty-array iteration under `set -e` would otherwise leak a non-zero
   # status from `[ -n "" ]`; the explicit `return 0` guards against that.
   local dir
-  for dir in ${_WAZA_TEST_TMPDIRS[@]+"${_WAZA_TEST_TMPDIRS[@]}"}; do
+  for dir in ${_FSKILL_TEST_TMPDIRS[@]+"${_FSKILL_TEST_TMPDIRS[@]}"}; do
     [ -n "$dir" ] && [ -d "$dir" ] && rm -rf "$dir"
   done
   return 0
@@ -29,7 +29,7 @@ trap _cleanup_tmpdirs EXIT
 make_tmpdir() {
   local dir
   dir=$(mktemp -d)
-  _WAZA_TEST_TMPDIRS+=("$dir")
+  _FSKILL_TEST_TMPDIRS+=("$dir")
   printf '%s\n' "$dir"
 }
 

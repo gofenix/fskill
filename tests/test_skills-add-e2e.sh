@@ -9,9 +9,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/test_helpers.sh"
 
 # Opt out when offline or for fast iteration loops:
-#   WAZA_SMOKE_OFFLINE=1 make smoke-skills-add-e2e
-if [ "${WAZA_SMOKE_OFFLINE:-0}" = "1" ]; then
-  echo "skills add e2e smoke: skipped (WAZA_SMOKE_OFFLINE=1)"
+#   FSKILL_SMOKE_OFFLINE=1 make smoke-skills-add-e2e
+if [ "${FSKILL_SMOKE_OFFLINE:-0}" = "1" ]; then
+  echo "skills add e2e smoke: skipped (FSKILL_SMOKE_OFFLINE=1)"
   exit 0
 fi
 

@@ -266,7 +266,7 @@ mkdir -p "$guarded"
 write_standard_agents_md "$guarded/AGENTS.md"
 write_real_makefile "$guarded/Makefile"
 (cd "$guarded" && git init -q && git add AGENTS.md Makefile && git \
-  -c user.name=waza -c user.email=waza@test commit -qm init)
+  -c user.name=fskill -c user.email=fskill@test commit -qm init)
 fsmonitor_marker="$tmpdir/maintainability-fsmonitor.executed"
 fsmonitor_hook="$guarded/fsmonitor.sh"
 printf '%s\n' \

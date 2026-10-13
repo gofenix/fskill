@@ -5,17 +5,17 @@ set -euo pipefail
 CLAUDE_DIR="$HOME/.claude"
 DEST="$CLAUDE_DIR/statusline.sh"
 SETTINGS_FILE="$CLAUDE_DIR/settings.json"
-WAZA_REF="${WAZA_REF:-v3.39.0}"
+FSKILL_REF="${FSKILL_REF:-v3.39.0}"
 
-case "$WAZA_REF" in
+case "$FSKILL_REF" in
   main|v[0-9]*.[0-9]*.[0-9]*) ;;
   *)
-    echo "Error: WAZA_REF must be main or a release tag like v3.24.0." >&2
+    echo "Error: FSKILL_REF must be main or a release tag like v3.24.0." >&2
     exit 1
     ;;
 esac
 
-RAW="https://raw.githubusercontent.com/gofenix/fskill/${WAZA_REF}/scripts/statusline.sh"
+RAW="https://raw.githubusercontent.com/gofenix/fskill/${FSKILL_REF}/scripts/statusline.sh"
 
 if ! command -v curl &>/dev/null; then
   echo "Error: curl is required but not installed." >&2
@@ -113,8 +113,8 @@ if [ -n "$EXISTING" ]; then
   fi
   if [ "$prompted" -eq 0 ]; then
     echo "Non-interactive shell with no controlling TTY; keeping existing statusline."
-    echo "Re-run interactively (or set WAZA_REPLACE_STATUSLINE=1) to replace it."
-    if [ "${WAZA_REPLACE_STATUSLINE:-}" != "1" ]; then
+    echo "Re-run interactively (or set FSKILL_REPLACE_STATUSLINE=1) to replace it."
+    if [ "${FSKILL_REPLACE_STATUSLINE:-}" != "1" ]; then
       exit 0
     fi
     ans="y"

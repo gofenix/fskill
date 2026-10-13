@@ -922,17 +922,17 @@ def test_codex_plugin_cache_is_not_treated_as_active_skill_routing(tmp_path: Pat
 def test_generated_plugin_mirror_is_not_a_second_direct_skill_surface(tmp_path: Path):
     project = tmp_path / "project"
     home = tmp_path / "home"
-    repository = home / "src" / "waza-source"
+    repository = home / "src" / "fskill-source"
     project.mkdir()
     (project / "AGENTS.md").write_text("# Guide\n", encoding="utf-8")
     write_skill(repository / "skills" / "check" / "SKILL.md", "check")
     write_skill(
-        repository / "plugins" / "waza" / "skills" / "check" / "SKILL.md",
+        repository / "plugins" / "fskill" / "skills" / "check" / "SKILL.md",
         "check",
     )
     skill_root = home / ".codex" / "skills"
     skill_root.mkdir(parents=True)
-    (skill_root / "waza").symlink_to(repository, target_is_directory=True)
+    (skill_root / "fskill").symlink_to(repository, target_is_directory=True)
 
     output = run_context(project, home)
 

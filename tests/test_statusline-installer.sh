@@ -21,11 +21,11 @@ outfile=""
 while [ "$#" -gt 0 ]; do
   if [ "$1" = "-o" ]; then outfile="$2"; shift 2; else shift; fi
 done
-if [ "${WAZA_TEST_CURL_FAIL:-}" = "1" ]; then
+if [ "${FSKILL_TEST_CURL_FAIL:-}" = "1" ]; then
   printf "%s\n" "#!/bin/bash" "echo partial download" > "$outfile"
   exit 22
 fi
-if [ "${WAZA_TEST_CURL_INTERRUPT:-}" = "1" ]; then
+if [ "${FSKILL_TEST_CURL_INTERRUPT:-}" = "1" ]; then
   printf "%s\n" "#!/bin/bash" "echo partial download" > "$outfile"
   kill -INT "$PPID"
   exit 0
@@ -44,10 +44,10 @@ chmod +x "$bin_dir/curl" "$bin_dir/brew"
 
 # Invalid JSON: installer must refuse and leave file untouched.
 printf '%s\n' '{invalid json' > "$home_dir/.claude/settings.json"
-if WAZA_REF='../../main' BREW_LOG="$tmpdir/brew.log" PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-statusline.sh" >"$tmpdir/bad-ref.out" 2>"$tmpdir/bad-ref.err"; then
-  echo "setup-statusline should reject unsafe WAZA_REF"; exit 1
+if FSKILL_REF='../../main' BREW_LOG="$tmpdir/brew.log" PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-statusline.sh" >"$tmpdir/bad-ref.out" 2>"$tmpdir/bad-ref.err"; then
+  echo "setup-statusline should reject unsafe FSKILL_REF"; exit 1
 fi
-grep -q 'WAZA_REF must be main or a release tag' "$tmpdir/bad-ref.err"
+grep -q 'FSKILL_REF must be main or a release tag' "$tmpdir/bad-ref.err"
 if BREW_LOG="$tmpdir/brew.log" PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-statusline.sh" >"$tmpdir/install.out" 2>"$tmpdir/install.err"; then
   echo "setup-statusline should refuse invalid JSON"; exit 1
 fi
@@ -64,7 +64,7 @@ test ! -f "$tmpdir/brew.log"
 
 # A failed update after curl writes partial output must preserve the installed script.
 cp "$home_dir/.claude/statusline.sh" "$tmpdir/statusline.before"
-if WAZA_TEST_CURL_FAIL=1 BREW_LOG="$tmpdir/brew.log" PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-statusline.sh" >"$tmpdir/install-failed.out" 2>"$tmpdir/install-failed.err"; then
+if FSKILL_TEST_CURL_FAIL=1 BREW_LOG="$tmpdir/brew.log" PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-statusline.sh" >"$tmpdir/install-failed.out" 2>"$tmpdir/install-failed.err"; then
   echo "setup-statusline should fail when the statusline download fails"; exit 1
 fi
 cmp "$tmpdir/statusline.before" "$home_dir/.claude/statusline.sh"
@@ -77,7 +77,7 @@ grep -q 'could not fetch' "$tmpdir/install-failed.err"
 grep -q 'was left untouched' "$tmpdir/install-failed.err"
 
 # Ctrl-C mid-download must clean up the staged file, which no return path covers.
-if WAZA_TEST_CURL_INTERRUPT=1 BREW_LOG="$tmpdir/brew.log" PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-statusline.sh" >"$tmpdir/install-int.out" 2>"$tmpdir/install-int.err"; then
+if FSKILL_TEST_CURL_INTERRUPT=1 BREW_LOG="$tmpdir/brew.log" PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-statusline.sh" >"$tmpdir/install-int.out" 2>"$tmpdir/install-int.err"; then
   echo "setup-statusline should fail when interrupted"; exit 1
 fi
 cmp "$tmpdir/statusline.before" "$home_dir/.claude/statusline.sh"

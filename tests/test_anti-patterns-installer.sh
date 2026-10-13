@@ -25,9 +25,9 @@ if PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-rule.sh" ../C
 fi
 grep -q 'rule-name must match' "$tmpdir/traversal.err"
 test ! -f "$home_dir/.claude/CLAUDE.md"
-if WAZA_REF='../main' PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-rule.sh" anti-patterns claude-code >"$tmpdir/ref.out" 2>"$tmpdir/ref.err"; then
-  echo "setup-rule should reject unsafe WAZA_REF"; exit 1
+if FSKILL_REF='../main' PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-rule.sh" anti-patterns claude-code >"$tmpdir/ref.out" 2>"$tmpdir/ref.err"; then
+  echo "setup-rule should reject unsafe FSKILL_REF"; exit 1
 fi
-grep -q 'WAZA_REF must be main or a release tag' "$tmpdir/ref.err"
+grep -q 'FSKILL_REF must be main or a release tag' "$tmpdir/ref.err"
 
 echo "Anti-Patterns installer smoke: ok"

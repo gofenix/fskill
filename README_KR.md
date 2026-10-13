@@ -47,7 +47,7 @@ codex plugin marketplace add gofenix/fskill
 codex plugin add fskill@fskill
 ```
 
-**Claude Desktop**: [waza.zip](https://github.com/gofenix/fskill/releases/latest/download/waza.zip)을 다운로드한 뒤 Customize > Skills > "+" > Create skill에서 업로드합니다. 업데이트할 때는 카드에서 "..." > Replace를 선택해 최신 ZIP을 다시 업로드하세요.
+**Claude Desktop**: [fskill.zip](https://github.com/gofenix/fskill/releases/latest/download/fskill.zip)을 다운로드한 뒤 Customize > Skills > "+" > Create skill에서 업로드합니다. 업데이트할 때는 카드에서 "..." > Replace를 선택해 최신 ZIP을 다시 업로드하세요.
 
 **Pi**: `pi install npm:fskill`, 업데이트는 `pi update npm:fskill`로 실행합니다.
 
@@ -67,7 +67,7 @@ fskill는 범용적인 엔지니어링 습관만을 제공합니다. `/check`는
 
 ## 추가 도구 및 규칙
 
-curl URL은 최신 GitHub 릴리스 자산을 사용합니다. main의 최신 스크립트를 쓰려면 명령 앞에 `WAZA_REF=main`을 지정하세요.
+curl URL은 최신 GitHub 릴리스 자산을 사용합니다. main의 최신 스크립트를 쓰려면 명령 앞에 `FSKILL_REF=main`을 지정하세요.
 
 ### 상태 표시줄
 
@@ -80,11 +80,11 @@ Claude Code용 미니멀 상태 표시줄: 컨텍스트 윈도우, 5시간 한�
 ```bash
 (
   set -e
-  WAZA_STATUSLINE_SCRIPT="$(mktemp -t fskill-statusline.XXXXXX)"
-  trap 'rm -f "$WAZA_STATUSLINE_SCRIPT"' EXIT
-  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-statusline.sh -o "$WAZA_STATUSLINE_SCRIPT"
-  # 실행 전에 내용을 먼저 확인하세요: less "$WAZA_STATUSLINE_SCRIPT"
-  bash "$WAZA_STATUSLINE_SCRIPT"
+  FSKILL_STATUSLINE_SCRIPT="$(mktemp -t fskill-statusline.XXXXXX)"
+  trap 'rm -f "$FSKILL_STATUSLINE_SCRIPT"' EXIT
+  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-statusline.sh -o "$FSKILL_STATUSLINE_SCRIPT"
+  # 실행 전에 내용을 먼저 확인하세요: less "$FSKILL_STATUSLINE_SCRIPT"
+  bash "$FSKILL_STATUSLINE_SCRIPT"
 )
 ```
 
@@ -105,23 +105,23 @@ Codex는 남은 한도를, 위의 Claude Code 상태 표시줄은 사용한 비�
 ```bash
 (
   set -e
-  WAZA_RULE_SCRIPT="$(mktemp -t fskill-rule.XXXXXX)"
-  trap 'rm -f "$WAZA_RULE_SCRIPT"' EXIT
-  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh -o "$WAZA_RULE_SCRIPT"
-  # 실행 전에 내용을 먼저 확인하세요: less "$WAZA_RULE_SCRIPT"
+  FSKILL_RULE_SCRIPT="$(mktemp -t fskill-rule.XXXXXX)"
+  trap 'rm -f "$FSKILL_RULE_SCRIPT"' EXIT
+  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh -o "$FSKILL_RULE_SCRIPT"
+  # 실행 전에 내용을 먼저 확인하세요: less "$FSKILL_RULE_SCRIPT"
 
   # 영어 코칭: 프롬프트에 영어 실수가 있으면 끝에 짧은 😇 교정을 덧붙임
-  bash "$WAZA_RULE_SCRIPT" english claude-code
+  bash "$FSKILL_RULE_SCRIPT" english claude-code
 
   # 안티패턴: 모든 스킬에 항상 적용되는 가드레일 (먼저 읽고 행동, 범위 확장 금지, 요청하지 않은 요약 금지)
-  bash "$WAZA_RULE_SCRIPT" anti-patterns claude-code
+  bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
   # 라우팅 힌트: 스킬 이름, 그리고 /name 또는 $name 으로만 들어간다는 규칙
-  bash "$WAZA_RULE_SCRIPT" fskill-routing claude-code
+  bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # 명확한 일상 답변: 일관된 용어, 명시적인 조건, 불확실성 유지
   # Clarity는 main 브랜치에서 사용할 수 있으며 아직 정식 릴리스에는 포함되지 않았습니다
-  WAZA_REF=main bash "$WAZA_RULE_SCRIPT" clarity claude-code
+  FSKILL_REF=main bash "$FSKILL_RULE_SCRIPT" clarity claude-code
 )
 ```
 
