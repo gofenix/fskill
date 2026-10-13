@@ -9,6 +9,7 @@
 #   MEMORY.md path          -> built via sed on pwd; unusual chars produce wrong project key; verify manually if (none) seems wrong
 #   Conversation scope      -> summary scans 3 recent previous project files across Claude/Codex; deep streams all previous project files; every file modified in the live window is excluded
 #   MCP token estimate      -> assumes ~25 tools/server, ~200 tokens/tool; treat as directional, not precise
+#   TOKEN TOOLS             -> rtk/codegraph presence only; a missing index is reported, never created
 set -euo pipefail
 
 P=$(pwd)
@@ -832,6 +833,15 @@ echo "skills:        $(count_local_skills)"
 echo "claude_md_lines: $(count_file_lines "$P/CLAUDE.md")"
 echo "collection_mode: $MODE"
 echo "audit_hint: $AUDIT_HINT"
+echo "=== TOKEN TOOLS ==="
+TOKEN_TOOLS_SCRIPT="$SCRIPT_DIR/check-token-tools.sh"
+if [ -f "$TOKEN_TOOLS_SCRIPT" ]; then
+  if ! "$TOKEN_TOOLS_SCRIPT" "$HEALTH_TARGET"; then
+    echo "(unavailable: check-token-tools.sh failed)"
+  fi
+else
+  echo "(unavailable: check-token-tools.sh missing)"
+fi
 
 echo "[2/12] CLAUDE.md (global + local)..."
 echo "=== CLAUDE.md (global) ==="

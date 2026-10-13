@@ -31,7 +31,9 @@ def test_verify_scripts_checks_each_shell_file(tmp_path, broken):
     collector.write_text(
         "printf '%s\\n' "
         "'=== CONVERSATION SIGNALS ===' '=== AGENT CONFIG SUMMARY ===' "
-        "'=== AI MAINTAINABILITY SUMMARY ==='\n"
+        "'=== AI MAINTAINABILITY SUMMARY ===' "
+        "'=== TOKEN TOOLS ===' 'rtk_present: yes' 'codegraph_present: yes' "
+        "'codegraph_index: current'\n"
     )
     result = subprocess.run(
         ["make", "-s", "verify-scripts", f"PROJECT_KEY={tmp_path.name}-{os.getpid()}",

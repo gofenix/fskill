@@ -78,8 +78,21 @@ Agent 配置 -> 指令面 -> 工具与运行时 -> 验证器 -> 可维护性
 - `scripts/check-maintainability.sh`
 - `scripts/check-verifier-output.sh`
 - `scripts/collect-data.sh`
+- `scripts/check-token-tools.sh`
 
-采集器会调用同目录的描述解析、会话审计和技能安全扫描脚本。按输出中的覆盖范围解释结果：summary 只抽样，deep 扩大扫描但仍限制回显；当前会话不作为历史纠偏证据。
+采集器会调用同目录的描述解析、会话审计和技能安全扫描脚本。按输出中的覆盖范围解释结果：summary 只抽样，deep 扩大扫描但仍限制回显；当前会话不作为历史纠偏证据。`=== TOKEN TOOLS ===` 在 summary 和 deep 都会打印。
+
+## 省 token 工具
+
+`rtk` 和 `codegraph` 是查看、搜索、符号定位里最省 token 的两件工具。读 `TOKEN TOOLS` 时按下面判断，层级都是「工具与运行时」：
+
+- `rtk_present: no`，或只有 `rtk_off_path`：P2。没有它，日志和源码读取会退回整文件输出。下一步是安装，或把 `rtk_off_path` 放进 `PATH`。
+- `codegraph_present: no`，或只有 `codegraph_off_path`：P2。没有它，符号查询会退回全仓搜索。下一步同样是安装或加入 `PATH`。
+- `codegraph_present: yes` 且 `codegraph_index: missing`：P2。二进制在，当前仓库没有索引，符号查询还是不能用。下一步是在单独授权后对这个仓库执行 `codegraph init`。
+- `codegraph_index: stale`：P3。下一步是在单独授权后执行 `codegraph sync`。
+- `codegraph_index: unavailable` 且二进制存在：写成覆盖缺口，不写成「索引健康」。
+- 两者都 `present: yes` 且索引是 `current`：不报缺失。
+- 仓库目录里的同名可执行文件不算已安装。不要写节省百分比。体检不安装、不 `init`、不 `sync`。
 
 ## 问题格式
 
