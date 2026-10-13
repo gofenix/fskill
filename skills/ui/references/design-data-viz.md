@@ -1,34 +1,31 @@
-# Design Reference: Data Visualization
+# 数据可视化
 
-Load this only when the surface is a dashboard, analytics view, chart-heavy interface, or any number-dense data display. Marketing pages, landing pages, and generic component work do not need it.
+数据可视化先服务比较和判断，再服务美观。
 
-## Dashboard defaults
+## 选择图表
 
-Dashboards are utility surfaces: orient the user, show status, enable action. No hero sections, no marketing copy. Every element must earn its place by answering a question the user has.
-
-- Primary layout: status summary at top, detail below; or sidebar filters + main chart area. The main question must be answerable without expansion; disclose supplementary records, not the answer itself. Check sparse and typical data without padding gaps with filler.
-- Whitespace: tighter than marketing pages; users scan, not read. Use generous column spacing, not generous row height.
-- Number density: many numbers on screen at once is not a problem. Crowding without alignment is. Use `font-variant-numeric: tabular-nums` for all numeric columns. Right-align numbers. Left-align labels.
-
-## Chart selection
-
-| Use case | Chart type |
+| 目标 | 图表 |
 |---|---|
-| Comparing values across categories | Bar chart (horizontal if labels are long) |
-| Trend over time | Line chart; avoid bars for time series with many points |
-| Part-whole relationships | Treemap (6+ segments) or stacked bar; pie only for 2-4 segments |
-| Distribution | Histogram or box plot; never pie chart |
-| Correlation | Scatter plot; do not use line chart |
+| 比较类别 | 条形图 |
+| 看趋势 | 折线图 |
+| 看组成 | 堆叠条形图，少用饼图 |
+| 看分布 | 直方图、箱线图 |
+| 看相关 | 散点图 |
+| 看流程或路径 | 桑基图、流程图、时间线 |
 
-Pie charts with more than 4 segments communicate nothing. Use a treemap or ranked list instead.
+## 规则
 
-## Number-dense interfaces
+- 坐标轴、单位、时间范围必须可见。
+- 颜色用于含义，不用于装饰。
+- 同一页面里的同一指标使用同一颜色。
+- 不截断 y 轴，除非明确标注。
+- 图例靠近数据，避免用户来回扫。
+- 主要问题应无需展开就能回答；移动端优先展示最关键序列，仅将补充记录折叠或切换。稀疏和典型数据都要检查，不用无意义内容填空。
 
-- `font-variant-numeric: tabular-nums` on every number column so digits align vertically.
-- Right-align all numbers; left-align all text labels. Mixed alignment in the same column is always wrong.
-- Subtle row separators: `1px` line at `rgba(0,0,0,0.06)` (light) or `rgba(255,255,255,0.05)` (dark). Alternating row backgrounds only if the table is very wide (12+ columns).
-- Column spacing: at least `16px` between adjacent columns; more between logically distinct groups.
+## 文案
 
-## Using a product as a benchmark
+标题写结论，不写图表类型。例如“错误率在 3 月后下降”，不要写“错误率折线图”。
 
-When the user references a product for visual benchmark ("make it feel like Grafana" / "similar to Linear analytics"): run the three-property decomposition from direction question 2 in `SKILL.md` with data-visualization-specific properties, not general aesthetic ones. Useful properties: chart color palette (exact values), grid line weight and opacity, axis label size and color, tooltip border-radius and shadow, empty-state treatment. Do not extract "minimal" or "clean" as properties; those are not actionable.
+## 验证
+
+检查空数据、单点数据、极长标签、负数、单位混合和色盲可辨性。

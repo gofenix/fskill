@@ -25,8 +25,8 @@ def check_marketplace(root: Path, expected_version: str, skill_names: set[str], 
 def check_claude_marketplace(root: Path, expected_version: str, skill_names: set[str], skill_descriptions: dict[str, str]):
     """Validate Claude Code marketplace.json shape:
 
-    - One bundle entry: name == "waza", source == "./".
-    - Per-skill entries: name == "waza-<skill>", source == "./skills/<skill>".
+    - One bundle entry: name == "fskill", source == "./".
+    - Per-skill entries: name == "fskill-<skill>", source == "./skills/<skill>".
     - All versions in marketplace march in lock-step with the top-level VERSION
       file. Source of truth is VERSION; per-skill SKILL.md no longer carries a
       version field (codegen + this check guarantee marketplace stays correct).
@@ -56,22 +56,22 @@ def check_claude_marketplace(root: Path, expected_version: str, skill_names: set
             fail(f"DUPLICATE MARKETPLACE ENTRY: {name}")
         seen_names.add(name)
 
-        if name == "waza":
+        if name == "fskill":
             if source != "./":
                 fail(f"WRONG BUNDLE SOURCE: source={source!r} expected='./'")
             bundle_version = version
             continue
 
-        if not name.startswith("waza-"):
+        if not name.startswith("fskill-"):
             fail(
-                f"INVALID PLUGIN NAME: {name!r} must be 'waza' (bundle) or "
-                f"'waza-<skill>' (per-skill entry)"
+                f"INVALID PLUGIN NAME: {name!r} must be 'fskill' (bundle) or "
+                f"'fskill-<skill>' (per-skill entry)"
             )
-        skill_name = name.removeprefix("waza-")
+        skill_name = name.removeprefix("fskill-")
         if not skill_name:
             fail(
                 f"INVALID PLUGIN NAME: {name!r} has an empty <skill> suffix; "
-                f"per-skill entries must be named 'waza-<skill>' with a non-empty skill name"
+                f"per-skill entries must be named 'fskill-<skill>' with a non-empty skill name"
             )
         expected_source = f"./skills/{skill_name}"
         if source != expected_source:
@@ -79,11 +79,11 @@ def check_claude_marketplace(root: Path, expected_version: str, skill_names: set
         market_versions[skill_name] = version
         market_descriptions[skill_name] = description
 
-    if "waza" not in seen_names:
+    if "fskill" not in seen_names:
         fail(
-            "MISSING BUNDLE ENTRY: marketplace.json must include a 'waza' bundle entry "
-            "(name=\"waza\", source=\"./\") so /plugin install waza@waza registers "
-            "all skills under the waza namespace"
+            "MISSING BUNDLE ENTRY: marketplace.json must include a 'fskill' bundle entry "
+            "(name=\"fskill\", source=\"./\") so /plugin install fskill@fskill registers "
+            "all skills under the fskill namespace"
         )
 
     missing_from_market = sorted(skill_names - set(market_versions))
@@ -97,7 +97,7 @@ def check_claude_marketplace(root: Path, expected_version: str, skill_names: set
         market_version = market_versions[skill]
         if market_version != expected_version:
             fail(
-                f"VERSION DRIFT: marketplace waza-{skill} version={market_version!r} "
+                f"VERSION DRIFT: marketplace fskill-{skill} version={market_version!r} "
                 f"!= VERSION file {expected_version!r}.\n"
                 f"  All marketplace entries march in lock-step. "
                 f"Update .claude-plugin/marketplace.json to match VERSION."
@@ -109,13 +109,13 @@ def check_claude_marketplace(root: Path, expected_version: str, skill_names: set
                 f"  marketplace: {market_descriptions[skill]}\n"
                 f"  marketplace description must start with the SKILL.md description"
             )
-        print(f"ok: marketplace waza-{skill} pinned to {market_version}")
+        print(f"ok: marketplace fskill-{skill} pinned to {market_version}")
 
     if bundle_version and bundle_version != expected_version:
         fail(
-            f"VERSION DRIFT: waza bundle version={bundle_version!r} "
+            f"VERSION DRIFT: fskill bundle version={bundle_version!r} "
             f"!= VERSION file {expected_version!r}.\n"
-            f"  Update the 'waza' entry in .claude-plugin/marketplace.json to match VERSION."
+            f"  Update the 'fskill' entry in .claude-plugin/marketplace.json to match VERSION."
         )
     print(f"ok: all versions in lock-step with VERSION={expected_version}")
 
@@ -128,49 +128,49 @@ def check_codex_plugin(root: Path, expected_version: str):
 
 def check_codex_plugin_manifest(root: Path, expected_version: str):
     """Validate Codex plugin manifest shape."""
-    plugin_root = root / "plugins" / "waza"
+    plugin_root = root / "plugins" / "fskill"
     manifest_path = plugin_root / ".codex-plugin" / "plugin.json"
     if not manifest_path.exists():
         fail(
             "MISSING CODEX PLUGIN MANIFEST: expected "
-            "plugins/waza/.codex-plugin/plugin.json "
-            "so Codex can install Waza as a plugin from the repo marketplace"
+            "plugins/fskill/.codex-plugin/plugin.json "
+            "so Codex can install fskill as a plugin from the repo marketplace"
         )
     manifest = json.loads(manifest_path.read_text())
     required = {
-        "name": "waza",
+        "name": "fskill",
         "version": expected_version,
         "skills": "./skills/",
         "license": "MIT",
-        "homepage": "https://github.com/tw93/Waza",
-        "repository": "https://github.com/tw93/Waza",
+        "homepage": "https://github.com/gofenix/fskill",
+        "repository": "https://github.com/gofenix/fskill",
     }
     for key, expected in required.items():
         actual = manifest.get(key)
         if actual != expected:
             fail(
-                f"CODEX PLUGIN FIELD DRIFT: plugins/waza/.codex-plugin/plugin.json {key}="
+                f"CODEX PLUGIN FIELD DRIFT: plugins/fskill/.codex-plugin/plugin.json {key}="
                 f"{actual!r} expected {expected!r}"
             )
     if not (manifest.get("description") or "").strip():
-        fail("CODEX PLUGIN DESCRIPTION: plugins/waza/.codex-plugin/plugin.json needs description")
+        fail("CODEX PLUGIN DESCRIPTION: plugins/fskill/.codex-plugin/plugin.json needs description")
     author = manifest.get("author")
     if not isinstance(author, dict) or not author.get("name"):
-        fail("CODEX PLUGIN AUTHOR: plugins/waza/.codex-plugin/plugin.json needs author.name")
+        fail("CODEX PLUGIN AUTHOR: plugins/fskill/.codex-plugin/plugin.json needs author.name")
     interface = manifest.get("interface")
     if not isinstance(interface, dict):
-        fail("CODEX PLUGIN INTERFACE: plugins/waza/.codex-plugin/plugin.json needs interface object")
+        fail("CODEX PLUGIN INTERFACE: plugins/fskill/.codex-plugin/plugin.json needs interface object")
     interface_required = {
-        "displayName": "Waza",
-        "developerName": "Tw93",
+        "displayName": "fskill",
+        "developerName": "gofenix",
         "category": "Developer Tools",
-        "websiteURL": "https://github.com/tw93/Waza",
+        "websiteURL": "https://github.com/gofenix/fskill",
     }
     for key, expected in interface_required.items():
         actual = interface.get(key)
         if actual != expected:
             fail(
-                f"CODEX PLUGIN INTERFACE DRIFT: plugins/waza/.codex-plugin/plugin.json "
+                f"CODEX PLUGIN INTERFACE DRIFT: plugins/fskill/.codex-plugin/plugin.json "
                 f"interface.{key}={actual!r} expected {expected!r}"
             )
     default_prompt = interface.get("defaultPrompt")
@@ -186,8 +186,8 @@ def check_codex_plugin_manifest(root: Path, expected_version: str):
         )
     if not (plugin_root / "skills").is_dir():
         fail(
-            "CODEX PLUGIN SKILLS PATH: plugins/waza/.codex-plugin/plugin.json "
-            "points at missing plugins/waza/skills/"
+            "CODEX PLUGIN SKILLS PATH: plugins/fskill/.codex-plugin/plugin.json "
+            "points at missing plugins/fskill/skills/"
         )
     print(f"ok: Codex plugin manifest pinned to {expected_version}")
 
@@ -198,7 +198,7 @@ def check_codex_plugin_mirror(root: Path):
     The verifier owns its traversal independently from codegen, while both
     share only the declarative cache/noise filter. A broken generator walk
     must not make its oracle agree on an incomplete tree."""
-    plugin_root = root / "plugins" / "waza"
+    plugin_root = root / "plugins" / "fskill"
     for source_name in ("skills", "rules"):
         source_root = root / source_name
         for source_path in sorted(source_root.rglob("*")):
@@ -245,26 +245,26 @@ def check_codex_marketplace(root: Path):
     if not marketplace_path.exists():
         fail(
             "MISSING CODEX MARKETPLACE: expected .agents/plugins/marketplace.json "
-            "so `codex plugin marketplace add tw93/Waza` can discover Waza"
+            "so `codex plugin marketplace add gofenix/fskill` can discover fskill"
         )
     marketplace = json.loads(marketplace_path.read_text())
-    if marketplace.get("name") != "waza":
-        fail("CODEX MARKETPLACE NAME: .agents/plugins/marketplace.json name must be 'waza'")
+    if marketplace.get("name") != "fskill":
+        fail("CODEX MARKETPLACE NAME: .agents/plugins/marketplace.json name must be 'fskill'")
     interface = marketplace.get("interface")
-    if not isinstance(interface, dict) or interface.get("displayName") != "Waza":
+    if not isinstance(interface, dict) or interface.get("displayName") != "fskill":
         fail(
             "CODEX MARKETPLACE DISPLAY NAME: .agents/plugins/marketplace.json "
-            "must set interface.displayName to 'Waza'"
+            "must set interface.displayName to 'fskill'"
         )
     plugins = marketplace.get("plugins")
     if not isinstance(plugins, list) or len(plugins) != 1:
-        fail("CODEX MARKETPLACE PLUGINS: expected exactly one Waza plugin entry")
+        fail("CODEX MARKETPLACE PLUGINS: expected exactly one fskill plugin entry")
     entry = plugins[0]
     expected_entry = {
-        "name": "waza",
+        "name": "fskill",
         "source": {
             "source": "local",
-            "path": "./plugins/waza",
+            "path": "./plugins/fskill",
         },
         "policy": {
             "installation": "AVAILABLE",
@@ -277,12 +277,12 @@ def check_codex_marketplace(root: Path):
             "CODEX MARKETPLACE ENTRY DRIFT: .agents/plugins/marketplace.json "
             f"plugins[0]={entry!r} expected {expected_entry!r}"
         )
-    if not (root / "plugins" / "waza" / ".codex-plugin" / "plugin.json").exists():
+    if not (root / "plugins" / "fskill" / ".codex-plugin" / "plugin.json").exists():
         fail(
-            "CODEX MARKETPLACE SOURCE: source.path './plugins/waza' must resolve to a plugin "
+            "CODEX MARKETPLACE SOURCE: source.path './plugins/fskill' must resolve to a plugin "
             "root containing .codex-plugin/plugin.json"
         )
-    print("ok: Codex marketplace exposes waza plugin")
+    print("ok: Codex marketplace exposes fskill plugin")
 
 
 def check_rules_files_present(root: Path):
@@ -293,7 +293,7 @@ def check_rules_files_present(root: Path):
         "chinese.md",
         "anti-patterns.md",
         "durable-context.md",
-        "waza-routing.md",
+        "fskill-routing.md",
     ]
     for name in required:
         path = root / "rules" / name
@@ -346,13 +346,13 @@ def check_readme_install_command(root: Path):
     # that lack global-install support and prints a "Failed to install" block.
     # Naming agents installs cleanly; codex and cursor share `~/.agents/skills`,
     # so other universal agents pick the skills up without being listed.
-    expected = "npx skills add tw93/Waza -a claude-code codex cursor -g -y"
+    expected = "npx skills add gofenix/fskill -a claude-code codex cursor -g -y"
     if expected not in text:
         fail(
             f"README INSTALL COMMAND: README.md must include {expected!r}\n"
-            f"  Waza's public install path depends on this exact string."
+            f"  fskill's public install path depends on this exact string."
         )
-    expected_codex_marketplace = "codex plugin marketplace add tw93/Waza"
+    expected_codex_marketplace = "codex plugin marketplace add gofenix/fskill"
     if expected_codex_marketplace not in text:
         fail(
             "README CODEX MARKETPLACE COMMAND: README.md must include "
@@ -360,22 +360,22 @@ def check_readme_install_command(root: Path):
             f"  Codex plugin installs should use the repo marketplace so users can "
             f"upgrade without rerunning npx skills add."
         )
-    expected_codex_install = "codex plugin add waza@waza"
+    expected_codex_install = "codex plugin add fskill@fskill"
     if expected_codex_install not in text:
         fail(
             "README CODEX PLUGIN COMMAND: README.md must include "
             f"{expected_codex_install!r}\n"
             f"  The Codex marketplace entry must document the plugin install selector."
         )
-    expected_pi = "pi install npm:@tw93/waza"
+    expected_pi = "pi install npm:fskill"
     if expected_pi not in text:
         fail(
             f"README PI INSTALL COMMAND: README.md must include {expected_pi!r}\n"
             f"  The Pi package install path depends on this exact string."
         )
     expected_installers = {
-        "setup-rule": "https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh",
-        "setup-statusline": "https://github.com/tw93/Waza/releases/latest/download/setup-statusline.sh",
+        "setup-rule": "https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh",
+        "setup-statusline": "https://github.com/gofenix/fskill/releases/latest/download/setup-statusline.sh",
     }
     for label, url in expected_installers.items():
         if url not in text:
@@ -397,8 +397,8 @@ def check_release_workflow_npm_surface(root: Path):
         fail(f"MISSING RELEASE WORKFLOW: expected {workflow}")
     text = workflow.read_text()
     required = {
-        "npm publish": "publishes @tw93/waza during release",
-        "npm view @tw93/waza": "re-reads the npm registry after publish",
+        "npm publish": "publishes fskill during release",
+        "npm view fskill": "re-reads the npm registry after publish",
         "id-token: write": "allows npm trusted publishing through GitHub OIDC",
         "node-version: 24": "uses a Node/npm runtime that supports trusted publishing",
         "package-manager-cache: false": "keeps release publish jobs from caching credentials or package state",
@@ -412,7 +412,7 @@ def check_release_workflow_npm_surface(root: Path):
     if missing:
         fail(
             "RELEASE WORKFLOW NPM SURFACE: .github/workflows/release.yml "
-            "must publish and verify @tw93/waza for Pi installs.\n"
+            "must publish and verify fskill for Pi installs.\n"
             + "\n".join(f"  missing {label!r}: {required[label]}" for label in missing)
         )
     print("ok: release workflow publishes npm package and installer assets")

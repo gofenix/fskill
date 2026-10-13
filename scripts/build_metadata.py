@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate Waza distribution metadata from a single source of truth.
+"""Generate fskill distribution metadata from a single source of truth.
 
 Source of truth:
   - VERSION                            top-level version string (single source)
@@ -7,10 +7,10 @@ Source of truth:
 
 Generated files:
   - .claude-plugin/marketplace.json    full plugin manifest
-  - plugins/waza/.codex-plugin/plugin.json
+  - plugins/fskill/.codex-plugin/plugin.json
                                         Codex plugin manifest
-  - plugins/waza/skills/               Codex plugin skill mirror
-  - plugins/waza/rules/                Codex plugin rule mirror
+  - plugins/fskill/skills/               Codex plugin skill mirror
+  - plugins/fskill/rules/                Codex plugin rule mirror
   - .agents/plugins/marketplace.json   Codex repo marketplace
   - README.md                          installer URLs on latest release assets
   - package.json                       npm/Pi package metadata pinned to VERSION
@@ -50,38 +50,37 @@ from skill_frontmatter import (  # noqa: E402
 
 
 # Hand-maintained marketplace/plugin constants. Kept here (not in frontmatter)
-# because they describe the Waza project itself, not any single skill.
+# because they describe the fskill project itself, not any single skill.
 CLAUDE_MARKETPLACE_TOP = {
     "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-    "name": "waza",
+    "name": "fskill",
     "description": (
         "Personal skill collection for Claude Code, Codex, Antigravity, "
         "OpenCode, and Pi: think, check, hunt, ui, read, write, learn, "
         "and health for agent config and AI maintainability audits."
     ),
     "owner": {
-        "name": "Tw93",
-        "email": "hitw93@gmail.com",
+        "name": "gofenix",
+        "email": "gofenix@users.noreply.github.com",
     },
 }
 
 BUNDLE_DESCRIPTION = (
-    "Installs the full Waza toolkit. Registers all eight skills under the "
-    "waza namespace, callable as /waza:think, /waza:check, /waza:hunt, "
-    "/waza:ui, /waza:read, /waza:write, /waza:learn, and /waza:health. "
-    "For one skill on Claude Code v2.1.143 or newer, use /plugin install "
-    "waza-<name>@waza."
+    "Installs the full fskill toolkit. Registers the skills under the "
+    "fskill namespace, callable as /fskill:think, /fskill:ui, /fskill:check, "
+    "and the other fskill commands. For one skill on Claude Code v2.1.143 "
+    "or newer, use /plugin install fskill-<name>@fskill."
 )
 
 CATEGORY = "development"
 CODEX_CATEGORY = "Developer Tools"
-HOMEPAGE = "https://github.com/tw93/Waza"
-REPOSITORY = "https://github.com/tw93/Waza"
+HOMEPAGE = "https://github.com/gofenix/fskill"
+REPOSITORY = "https://github.com/gofenix/fskill"
 
 AUTHOR = {
-    "name": "Tw93",
-    "email": "hitw93@gmail.com",
-    "url": "https://github.com/tw93",
+    "name": "gofenix",
+    "email": "gofenix@users.noreply.github.com",
+    "url": "https://github.com/gofenix",
 }
 
 CODEX_DESCRIPTION = (
@@ -124,7 +123,7 @@ def build_marketplace(version: str, skills: list[dict]) -> dict:
     """Build the Claude Code plugin marketplace metadata."""
     plugins = [
         {
-            "name": "waza",
+            "name": "fskill",
             "description": BUNDLE_DESCRIPTION,
             "version": version,
             "category": CATEGORY,
@@ -135,7 +134,7 @@ def build_marketplace(version: str, skills: list[dict]) -> dict:
     for skill in sorted(skills, key=lambda s: s["name"]):
         plugins.append(
             {
-                "name": f"waza-{skill['name']}",
+                "name": f"fskill-{skill['name']}",
                 "description": skill["description"],
                 "version": version,
                 "category": CATEGORY,
@@ -158,7 +157,7 @@ def render_json(data: dict) -> str:
 
 def build_codex_plugin(version: str) -> dict:
     return {
-        "name": "waza",
+        "name": "fskill",
         "version": version,
         "description": CODEX_DESCRIPTION,
         "author": AUTHOR,
@@ -176,16 +175,16 @@ def build_codex_plugin(version: str) -> dict:
         ],
         "skills": "./skills/",
         "interface": {
-            "displayName": "Waza",
+            "displayName": "fskill",
             "shortDescription": "Engineering workflow skills for Codex",
             "longDescription": (
-                "Waza packages eight engineering habits as Codex skills: "
+                "fskill packages eight engineering habits as Codex skills: "
                 "think for planning, check for review, hunt for debugging, "
                 "ui for frontend work, read for source intake, write for "
                 "prose, learn for domain research, and health for agent "
                 "configuration audits."
             ),
-            "developerName": "Tw93",
+            "developerName": "gofenix",
             "category": CODEX_CATEGORY,
             "capabilities": [
                 "Interactive",
@@ -193,9 +192,9 @@ def build_codex_plugin(version: str) -> dict:
             ],
             "websiteURL": HOMEPAGE,
             "defaultPrompt": [
-                "Use Waza think to plan this change",
-                "Use Waza check to review this diff",
-                "Use Waza hunt to debug this failure",
+                "Use fskill think to plan this change",
+                "Use fskill check to review this diff",
+                "Use fskill hunt to debug this failure",
             ],
             "brandColor": "#111827",
         },
@@ -205,23 +204,23 @@ def build_codex_plugin(version: str) -> dict:
 def build_agy_plugin() -> dict:
     return {
         "$schema": "https://antigravity.google/schemas/v1/plugin.json",
-        "name": "waza",
+        "name": "fskill",
         "description": CODEX_DESCRIPTION.replace("Codex", "Antigravity CLI"),
     }
 
 
 def build_codex_marketplace() -> dict:
     return {
-        "name": "waza",
+        "name": "fskill",
         "interface": {
-            "displayName": "Waza",
+            "displayName": "fskill",
         },
         "plugins": [
             {
-                "name": "waza",
+                "name": "fskill",
                 "source": {
                     "source": "local",
-                    "path": "./plugins/waza",
+                    "path": "./plugins/fskill",
                 },
                 "policy": {
                     "installation": "AVAILABLE",
@@ -235,22 +234,22 @@ def build_codex_marketplace() -> dict:
 
 def build_package_json(version: str) -> str:
     package = {
-        "name": "@tw93/waza",
+        "name": "fskill",
         "version": version,
         "description": (
-            "Waza engineering skills for Claude Code, Codex, Antigravity, "
+            "fskill engineering skills for Claude Code, Codex, Antigravity, "
             "OpenCode, Pi, and compatible coding agents."
         ),
         "license": "MIT",
         "repository": {
             "type": "git",
-            "url": "git+https://github.com/tw93/Waza.git",
+            "url": "git+https://github.com/gofenix/fskill.git",
         },
-        "homepage": "https://github.com/tw93/Waza",
+        "homepage": "https://github.com/gofenix/fskill",
         "keywords": [
             "pi-package",
             "agent-skills",
-            "waza",
+            "fskill",
             "claude-code",
             "codex",
             "antigravity",
@@ -315,7 +314,7 @@ def render_dispatcher(template: str, skills: list[dict]) -> str:
 # The downloaded scripts themselves still default WAZA_REF to a release tag, so
 # users get a stable install without README churn on every version bump.
 README_INSTALL_URL_RE = re.compile(
-    r"https://raw\.githubusercontent\.com/tw93/Waza/"
+    r"https://raw\.githubusercontent\.com/gofenix/fskill/"
     r"(?:main|v\d+\.\d+\.\d+)/scripts/(setup-(?:rule|statusline)\.sh)"
 )
 README_SWAP_TAG_RE = re.compile(
@@ -327,7 +326,7 @@ WAZA_REF_RE = re.compile(r'WAZA_REF="\$\{WAZA_REF:-(?:main|v\d+\.\d+\.\d+)\}"')
 
 def render_readme(current: str) -> str:
     current = README_INSTALL_URL_RE.sub(
-        r"https://github.com/tw93/Waza/releases/latest/download/\1", current
+        r"https://github.com/gofenix/fskill/releases/latest/download/\1", current
     )
     return README_SWAP_TAG_RE.sub(
         "Curl URLs use the latest GitHub release asset. Set `WAZA_REF=main` "
@@ -398,8 +397,8 @@ def collect_codex_plugin_tree(
     symlinks or references back to the repository root.
     """
     generated = {
-        "plugins/waza/.codex-plugin/plugin.json": codex_plugin_rendered.encode(),
-        "plugins/waza/plugin.json": agy_plugin_rendered.encode(),
+        "plugins/fskill/.codex-plugin/plugin.json": codex_plugin_rendered.encode(),
+        "plugins/fskill/plugin.json": agy_plugin_rendered.encode(),
     }
     for source_name in ("skills", "rules"):
         if not (root / source_name).exists():
@@ -408,9 +407,9 @@ def collect_codex_plugin_tree(
             )
     for _source_name, _source_rel, path in iter_codex_source_files(root):
         rel = path.relative_to(root).as_posix()
-        generated[f"plugins/waza/{rel}"] = path.read_bytes()
+        generated[f"plugins/fskill/{rel}"] = path.read_bytes()
     for rel, content in generated_skill_files.items():
-        generated[f"plugins/waza/{rel}"] = content
+        generated[f"plugins/fskill/{rel}"] = content
     return generated
 
 
@@ -509,7 +508,7 @@ def main() -> int:
                 )
                 sys.stderr.write(bytes_diff(rel, expected, actual))
                 drift = True
-        codex_plugin_root = root / "plugins" / "waza"
+        codex_plugin_root = root / "plugins" / "fskill"
         if codex_plugin_root.exists():
             expected_paths = set(codex_plugin_tree)
             for _plugin_rel, path in iter_codex_plugin_files(codex_plugin_root):
@@ -574,7 +573,7 @@ def main() -> int:
             return 1
         for generated_path, _, _ in generated_json_files:
             print(f"ok: {generated_path.relative_to(root)} matches generator")
-        print("ok: plugins/waza Codex plugin tree matches generator")
+        print("ok: plugins/fskill Codex plugin tree matches generator")
         print("ok: README.md install URLs use latest release assets")
         print(f"ok: package.json pinned to v{version}")
         print(f"ok: installer defaults pinned to v{version}")
@@ -586,13 +585,13 @@ def main() -> int:
         generated_path.parent.mkdir(parents=True, exist_ok=True)
         generated_path.write_text(expected)
         print(f"wrote: {generated_path.relative_to(root)} ({len(expected)} bytes)")
-    codex_plugin_root = root / "plugins" / "waza"
+    codex_plugin_root = root / "plugins" / "fskill"
     shutil.rmtree(codex_plugin_root, ignore_errors=True)
     for rel, expected in codex_plugin_tree.items():
         path = root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(expected)
-    print(f"wrote: plugins/waza ({len(codex_plugin_tree)} generated files)")
+    print(f"wrote: plugins/fskill ({len(codex_plugin_tree)} generated files)")
     if package_actual != package_rendered:
         package_json.write_text(package_rendered)
         print(f"wrote: package.json (pinned version to v{version})")

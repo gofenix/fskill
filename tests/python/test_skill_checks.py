@@ -111,7 +111,7 @@ def test_markdown_links_rejects_fragment_found_only_inside_fence(tmp_path, capsy
 def write_update_check_surfaces(tmp_path):
     scripts = tmp_path / "scripts"
     scripts.mkdir()
-    (scripts / "dispatcher-template.md").write_text("# Waza\n")
+    (scripts / "dispatcher-template.md").write_text("# fskill\n")
     skill = tmp_path / "skills" / "check"
     skill.mkdir(parents=True)
     (skill / "SKILL.md").write_text("# Check\n")
@@ -216,17 +216,14 @@ def test_description_starting_with_article_rejected(capsys):
     assert "STARTS WITH ARTICLE" in capsys.readouterr().err
 
 
-def test_description_rejects_cjk_triggers(capsys):
-    with pytest.raises(SystemExit):
-        check_description_conformance(
-            {
-                "x": (
-                    "Reviews code changes. Use when users ask 看看代码 or need "
-                    "release review. Not for debugging runtime failures."
-                )
-            }
-        )
-    assert "DESCRIPTION CONTAINS CJK" in capsys.readouterr().err
+def test_description_accepts_explicit_chinese_cues():
+    check_description_conformance(
+        {
+            "x": (
+                "审查即将合并、推送或发布的改动。仅在显式调用时使用：/check。不用于根因调试。"
+            )
+        }
+    )
 
 
 # ---- check_outcome_contract ----------------------------------------------
@@ -270,34 +267,34 @@ def test_outcome_contract_missing_field_rejected(tmp_path, capsys):
 # ---- Codex plugin metadata ------------------------------------------------
 
 
-def write_codex_manifest(root, version="1.2.3", display_name="Waza"):
-    plugin_root = root / "plugins" / "waza"
+def write_codex_manifest(root, version="1.2.3", display_name="fskill"):
+    plugin_root = root / "plugins" / "fskill"
     plugin_dir = plugin_root / ".codex-plugin"
     plugin_dir.mkdir(parents=True)
     (root / "skills" / "check").mkdir(parents=True)
     (root / "skills" / "check" / "SKILL.md").write_text("skill body\n")
     (root / "rules").mkdir()
-    (root / "rules" / "waza-routing.md").write_text("routing rule\n")
+    (root / "rules" / "fskill-routing.md").write_text("routing rule\n")
     (plugin_root / "skills" / "check").mkdir(parents=True)
     (plugin_root / "skills" / "check" / "SKILL.md").write_text("skill body\n")
     (plugin_root / "rules").mkdir()
-    (plugin_root / "rules" / "waza-routing.md").write_text("routing rule\n")
+    (plugin_root / "rules" / "fskill-routing.md").write_text("routing rule\n")
     (plugin_dir / "plugin.json").write_text(
         """{
-  "name": "waza",
+  "name": "fskill",
   "version": "%s",
   "description": "Engineering workflow skills for Codex.",
-  "author": {"name": "Tw93"},
-  "homepage": "https://github.com/tw93/Waza",
-  "repository": "https://github.com/tw93/Waza",
+  "author": {"name": "gofenix"},
+  "homepage": "https://github.com/gofenix/fskill",
+  "repository": "https://github.com/gofenix/fskill",
   "license": "MIT",
   "skills": "./skills/",
   "interface": {
     "displayName": "%s",
-    "developerName": "Tw93",
+    "developerName": "gofenix",
     "category": "Developer Tools",
-    "websiteURL": "https://github.com/tw93/Waza",
-    "defaultPrompt": ["Use Waza check"]
+    "websiteURL": "https://github.com/gofenix/fskill",
+    "defaultPrompt": ["Use fskill check"]
   }
 }
 """
@@ -305,18 +302,19 @@ def write_codex_manifest(root, version="1.2.3", display_name="Waza"):
     )
 
 
-def write_codex_marketplace(root, source_path="./plugins/waza"):
+def write_codex_marketplace(root, source_path="./plugins/fskill"):
     market_dir = root / ".agents" / "plugins"
     market_dir.mkdir(parents=True)
-    (root / "plugins" / "waza" / ".codex-plugin").mkdir(parents=True)
-    (root / "plugins" / "waza" / ".codex-plugin" / "plugin.json").write_text("{}")
+    plugin_json = root / "plugins" / "fskill" / ".codex-plugin" / "plugin.json"
+    plugin_json.parent.mkdir(parents=True, exist_ok=True)
+    plugin_json.write_text("{}\n")
     (market_dir / "marketplace.json").write_text(
         """{
-  "name": "waza",
-  "interface": {"displayName": "Waza"},
+  "name": "fskill",
+  "interface": {"displayName": "fskill"},
   "plugins": [
     {
-      "name": "waza",
+      "name": "fskill",
       "source": {"source": "local", "path": "%s"},
       "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
       "category": "Developer Tools"
@@ -356,7 +354,7 @@ def test_codex_plugin_rejects_version_drift(tmp_path, capsys):
 def test_codex_marketplace_happy_path(tmp_path, capsys):
     write_codex_marketplace(tmp_path)
     check_codex_marketplace(tmp_path)
-    assert "ok: Codex marketplace exposes waza plugin" in capsys.readouterr().out
+    assert "ok: Codex marketplace exposes fskill plugin" in capsys.readouterr().out
 
 
 def test_codex_marketplace_rejects_wrong_source(tmp_path, capsys):
@@ -393,7 +391,7 @@ def test_anti_patterns_contract_rejects_project_name(tmp_path, capsys):
         tmp_path,
         "| # | Pattern | Wrong | Right |\n"
         "|---|---------|-------|-------|\n"
-        "| 1 | Waza-specific rule | Copy repo rituals | Extract generic behavior |\n",
+        "| 1 | fskill-specific rule | Copy repo rituals | Extract generic behavior |\n",
     )
 
     with pytest.raises(SystemExit):

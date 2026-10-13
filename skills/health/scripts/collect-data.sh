@@ -95,21 +95,23 @@ PATH="$(sanitize_health_path "$HEALTH_TARGET")"
 export PATH
 PYTHON_BIN=""
 for candidate in python3 python; do
-  resolved=$(type -P "$candidate" 2>/dev/null || true)
-  [ -n "$resolved" ] || continue
-  resolved=$(canonical_health_executable "$resolved" 2>/dev/null || true)
-  [ -n "$resolved" ] || continue
-  if [ "$HEALTH_TARGET" = "/" ]; then
-    continue
-  fi
-  case "$resolved/" in
-    "$HEALTH_TARGET/"*) continue ;;
-  esac
-  "$resolved" --version >/dev/null 2>&1 || continue
-  "$resolved" -I -c 'import sys; raise SystemExit(sys.version_info < (3, 9))' \
-    >/dev/null 2>&1 || continue
-  PYTHON_BIN="$resolved"
-  break
+  # A rejected first PATH entry must not hide later trusted interpreters.
+  while IFS= read -r resolved; do
+    [ -n "$resolved" ] || continue
+    resolved=$(canonical_health_executable "$resolved" 2>/dev/null || true)
+    [ -n "$resolved" ] || continue
+    if [ "$HEALTH_TARGET" = "/" ]; then
+      continue
+    fi
+    case "$resolved/" in
+      "$HEALTH_TARGET/"*) continue ;;
+    esac
+    "$resolved" --version >/dev/null 2>&1 || continue
+    "$resolved" -I -c 'import sys; raise SystemExit(sys.version_info < (3, 9))' \
+      >/dev/null 2>&1 || continue
+    PYTHON_BIN="$resolved"
+    break 2
+  done < <(type -aP "$candidate" 2>/dev/null || true)
 done
 
 safe_health_text() {
@@ -1031,17 +1033,7 @@ fi
 
 echo "[8/12] Conversation signals + extract..."
 CONVERSATION_AUDIT_SCRIPT="$(resolve_health_helper conversation_audit.py || true)"
-if [ "$AUDIT_HINT" = "instructions" ]; then
-  # Out of scope, not unavailable: an instruction-and-config audit does not need
-  # session history, and calling a deliberate skip a coverage gap would train the
-  # reader to ignore real ones.
-  echo "=== CONVERSATION COVERAGE ==="
-  echo "(out of scope: instruction and config audit, session history not read)"
-  echo "=== CONVERSATION FILES ==="
-  echo "(out of scope)"
-  echo "=== CONVERSATION SIGNALS ==="
-  echo "(out of scope)"
-elif [ -n "$CONVERSATION_AUDIT_SCRIPT" ] && [ -n "$PYTHON_BIN" ]; then
+if [ -n "$CONVERSATION_AUDIT_SCRIPT" ] && [ -n "$PYTHON_BIN" ]; then
   "$PYTHON_BIN" -I "$CONVERSATION_AUDIT_SCRIPT" "$CONVO_DIR" "$MODE" \
     --codex-root "$HOME/.codex/sessions" --project-root "$P"
 else

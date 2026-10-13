@@ -11,21 +11,21 @@ import build_metadata as bm
 
 
 def test_render_readme_rewrites_main_to_latest_asset():
-    body = "curl https://raw.githubusercontent.com/tw93/Waza/main/scripts/setup-rule.sh"
+    body = "curl https://raw.githubusercontent.com/gofenix/fskill/main/scripts/setup-rule.sh"
     out = bm.render_readme(body)
-    assert "https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh" in out
+    assert "https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh" in out
     assert "raw.githubusercontent.com" not in out
 
 
 def test_render_readme_rewrites_pinned_version_to_latest_asset():
-    body = "curl https://raw.githubusercontent.com/tw93/Waza/v1.2.3/scripts/setup-rule.sh"
+    body = "curl https://raw.githubusercontent.com/gofenix/fskill/v1.2.3/scripts/setup-rule.sh"
     out = bm.render_readme(body)
-    assert "https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh" in out
+    assert "https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh" in out
     assert "v1.2.3" not in out
 
 
 def test_render_readme_no_change_when_already_latest_asset():
-    body = "curl https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh"
+    body = "curl https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh"
     assert bm.render_readme(body) == body
 
 
@@ -79,20 +79,20 @@ def test_render_dispatcher_alphabetical():
 
 def test_build_codex_plugin_manifest_shape():
     manifest = bm.build_codex_plugin("9.9.9")
-    assert manifest["name"] == "waza"
+    assert manifest["name"] == "fskill"
     assert manifest["version"] == "9.9.9"
     assert manifest["skills"] == "./skills/"
-    assert manifest["interface"]["displayName"] == "Waza"
+    assert manifest["interface"]["displayName"] == "fskill"
     assert manifest["interface"]["category"] == "Developer Tools"
     assert len(manifest["interface"]["defaultPrompt"]) <= 3
 
 
 def test_build_codex_marketplace_points_at_plugin_root():
     marketplace = bm.build_codex_marketplace()
-    assert marketplace["name"] == "waza"
+    assert marketplace["name"] == "fskill"
     entry = marketplace["plugins"][0]
-    assert entry["name"] == "waza"
-    assert entry["source"] == {"source": "local", "path": "./plugins/waza"}
+    assert entry["name"] == "fskill"
+    assert entry["source"] == {"source": "local", "path": "./plugins/fskill"}
     assert entry["policy"] == {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL",
@@ -110,14 +110,14 @@ def test_collect_codex_plugin_tree_ignores_local_cache_files(tmp_path):
 
     rules_dir = tmp_path / "rules"
     rules_dir.mkdir()
-    (rules_dir / "waza-routing.md").write_text("routing\n")
+    (rules_dir / "fskill-routing.md").write_text("routing\n")
     (rules_dir / ".DS_Store").write_bytes(b"noise")
 
     tree = bm.collect_codex_plugin_tree(tmp_path, "{}\n", "{}\n", {})
 
-    assert "plugins/waza/skills/check/scripts/run.py" in tree
-    assert "plugins/waza/rules/waza-routing.md" in tree
-    assert "plugins/waza/plugin.json" in tree
+    assert "plugins/fskill/skills/check/scripts/run.py" in tree
+    assert "plugins/fskill/rules/fskill-routing.md" in tree
+    assert "plugins/fskill/plugin.json" in tree
     assert all("__pycache__" not in path for path in tree)
     assert all(not path.endswith((".pyc", ".DS_Store")) for path in tree)
 

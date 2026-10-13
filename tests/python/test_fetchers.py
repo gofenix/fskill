@@ -122,8 +122,7 @@ def test_feishu_get_token_without_credentials_is_offline(monkeypatch):
     monkeypatch.delenv("FEISHU_APP_SECRET", raising=False)
     token, err = fetch_feishu.get_token()
     assert token is None
-    assert "not set" in err
-    assert "lark-cli auth login" in err
+    assert "FEISHU_APP_ID or FEISHU_APP_SECRET not set" in err
 
 
 def test_feishu_get_token_without_requests_names_both_paths(monkeypatch):
@@ -133,7 +132,6 @@ def test_feishu_get_token_without_requests_names_both_paths(monkeypatch):
     token, err = fetch_feishu.get_token()
     assert token is None
     assert "pip install requests" in err
-    assert "lark-cli docs +fetch" in err
 
 
 def test_weixin_to_markdown_frontmatter():

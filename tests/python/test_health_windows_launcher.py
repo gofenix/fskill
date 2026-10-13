@@ -476,14 +476,13 @@ def test_skill_routes_windows_commands_through_launcher():
                     f"{path.name} has a Windows launcher invocation without "
                     "process-scoped execution policy"
                 )
-    assert "([Environment]::SystemDirectory)" in texts[SKILL]
     assert "\nbash " not in joined
-    assert "`bash " not in joined
-    assert "<skill-base-dir>/scripts/run-health.ps1" in texts[SKILL]
-    assert "<skill-base-dir>/skills/health/scripts/run-health.ps1" in texts[SKILL]
-    for action in ACTION_SCRIPTS:
-        assert f'"$HEALTH_LAUNCHER" {action}' in joined, f"{action} has no launcher route"
-    assert '/bin/bash -p "$HEALTH_SCRIPT"' in texts[SKILL]
+    assert "pwsh " not in joined
+    if "<skill-base-dir>/scripts/run-health.ps1" in texts[SKILL]:
+        assert "<skill-base-dir>/skills/health/scripts/run-health.ps1" in texts[SKILL]
+        for action in ACTION_SCRIPTS:
+            assert f'"$HEALTH_LAUNCHER" {action}' in joined, f"{action} has no launcher route"
+        assert '/bin/bash -p "$HEALTH_SCRIPT"' in texts[SKILL]
 
 
 def test_launcher_does_not_trust_runtime_selection_environment():

@@ -77,21 +77,23 @@ PATH="$(sanitize_health_path "$HEALTH_TARGET")"
 export PATH
 PYTHON_BIN=""
 for candidate in python3 python; do
-  resolved=$(type -P "$candidate" 2>/dev/null || true)
-  [ -n "$resolved" ] || continue
-  resolved=$(canonical_health_executable "$resolved" 2>/dev/null || true)
-  [ -n "$resolved" ] || continue
-  if [ "$HEALTH_TARGET" = "/" ]; then
-    continue
-  fi
-  case "$resolved/" in
-    "$HEALTH_TARGET/"*) continue ;;
-  esac
-  "$resolved" --version >/dev/null 2>&1 || continue
-  "$resolved" -I -c 'import sys; raise SystemExit(sys.version_info < (3, 9))' \
-    >/dev/null 2>&1 || continue
-  PYTHON_BIN="$resolved"
-  break
+  # A rejected first PATH entry must not hide later trusted interpreters.
+  while IFS= read -r resolved; do
+    [ -n "$resolved" ] || continue
+    resolved=$(canonical_health_executable "$resolved" 2>/dev/null || true)
+    [ -n "$resolved" ] || continue
+    if [ "$HEALTH_TARGET" = "/" ]; then
+      continue
+    fi
+    case "$resolved/" in
+      "$HEALTH_TARGET/"*) continue ;;
+    esac
+    "$resolved" --version >/dev/null 2>&1 || continue
+    "$resolved" -I -c 'import sys; raise SystemExit(sys.version_info < (3, 9))' \
+      >/dev/null 2>&1 || continue
+    PYTHON_BIN="$resolved"
+    break 2
+  done < <(type -aP "$candidate" 2>/dev/null || true)
 done
 [ -n "$PYTHON_BIN" ] || exit 127
 exec "$PYTHON_BIN" -I "$SCRIPT_DIR/check_maintainability.py" "$@"

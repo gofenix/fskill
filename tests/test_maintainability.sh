@@ -301,11 +301,11 @@ grep -q '^markdown_link_status: PASS$' "$tmpdir/doc-symlink.out"
 # Case 15: generated plugin mirrors are one logical maintenance surface, and
 # fixture/documentation marker examples are not implementation debt.
 mirrors="$tmpdir/mirrors"
-mkdir -p "$mirrors/skills/demo" "$mirrors/plugins/waza/skills/demo" "$mirrors/tests"
+mkdir -p "$mirrors/skills/demo" "$mirrors/plugins/fskill/skills/demo" "$mirrors/tests"
 write_standard_agents_md "$mirrors/AGENTS.md"
 write_real_makefile "$mirrors/Makefile"
 printf '%s\n' '# Demo' 'TODO is a documented placeholder example.' > "$mirrors/skills/demo/SKILL.md"
-cp "$mirrors/skills/demo/SKILL.md" "$mirrors/plugins/waza/skills/demo/SKILL.md"
+cp "$mirrors/skills/demo/SKILL.md" "$mirrors/plugins/fskill/skills/demo/SKILL.md"
 printf '%s\n' '# TODO fixture' > "$mirrors/tests/test_fixture.py"
 bash "$CHECKER" "$mirrors" deep >"$tmpdir/mirrors.out"
 grep -q '^generated_mirror_files_collapsed: 1$' "$tmpdir/mirrors.out"
@@ -317,7 +317,7 @@ grep -q '^fixture_or_instruction_marker_lines_ignored: 2$' "$tmpdir/mirrors.out"
 # Case 16: mirror comparison must read the complete file. Generated files that
 # share a large prefix but differ after the text-audit limit remain separate.
 large_mirrors="$tmpdir/large-mirrors"
-mkdir -p "$large_mirrors/skills/demo" "$large_mirrors/plugins/waza/skills/demo"
+mkdir -p "$large_mirrors/skills/demo" "$large_mirrors/plugins/fskill/skills/demo"
 write_standard_agents_md "$large_mirrors/AGENTS.md"
 write_real_makefile "$large_mirrors/Makefile"
 ROOT_LM="$large_mirrors" python3 -c "
@@ -326,7 +326,7 @@ from pathlib import Path
 root = Path(os.environ['ROOT_LM'])
 prefix = b'x' * 2_000_000
 (root / 'skills/demo/SKILL.md').write_bytes(prefix + b'source')
-(root / 'plugins/waza/skills/demo/SKILL.md').write_bytes(prefix + b'mirror')
+(root / 'plugins/fskill/skills/demo/SKILL.md').write_bytes(prefix + b'mirror')
 "
 bash "$CHECKER" "$large_mirrors" deep >"$tmpdir/large-mirrors.out"
 grep -q '^generated_mirror_files_collapsed: 0$' "$tmpdir/large-mirrors.out"
@@ -335,7 +335,7 @@ grep -q '^drift_status: WARN$' "$tmpdir/large-mirrors.out"
 
 # Case 17: an oversized mirror comparison stays bounded and reports a gap.
 huge_mirrors="$tmpdir/huge-mirrors"
-mkdir -p "$huge_mirrors/skills/demo" "$huge_mirrors/plugins/waza/skills/demo"
+mkdir -p "$huge_mirrors/skills/demo" "$huge_mirrors/plugins/fskill/skills/demo"
 write_standard_agents_md "$huge_mirrors/AGENTS.md"
 write_real_makefile "$huge_mirrors/Makefile"
 ROOT_HM="$huge_mirrors" python3 -c "
@@ -344,7 +344,7 @@ from pathlib import Path
 root = Path(os.environ['ROOT_HM'])
 payload = b'x' * 16_000_001
 (root / 'skills/demo/SKILL.md').write_bytes(payload)
-(root / 'plugins/waza/skills/demo/SKILL.md').write_bytes(payload)
+(root / 'plugins/fskill/skills/demo/SKILL.md').write_bytes(payload)
 "
 bash "$CHECKER" "$huge_mirrors" summary >"$tmpdir/huge-mirrors.out"
 grep -q '^generated_mirror_files_collapsed: 0$' "$tmpdir/huge-mirrors.out"

@@ -1,0 +1,6 @@
+interface:
+  display_name: "fskill retro"
+  short_description: "复盘已验证的修复、用户纠偏和工程经验，把改进沉淀到正确上下文层"
+  default_prompt: "使用 $retro 完成用户显式选择的 fskill 工作流。"
+policy:
+  allow_implicit_invocation: false

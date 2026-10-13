@@ -31,7 +31,7 @@ grep -q 'DRIFT:' "$tmpdir/drift.err"
 copy_repo "$tmpdir/codex-drift"
 python3 -c "
 import json
-p = '$tmpdir/codex-drift/plugins/waza/.codex-plugin/plugin.json'
+p = '$tmpdir/codex-drift/plugins/fskill/.codex-plugin/plugin.json'
 d = json.load(open(p))
 d['interface']['displayName'] = 'Tampered'
 open(p, 'w').write(json.dumps(d, indent=2) + '\n')
@@ -43,13 +43,13 @@ open(p, 'w').write(json.dumps(d, indent=2) + '\n')
 if (cd "$tmpdir/codex-drift" && python3 scripts/build_metadata.py --check >"$tmpdir/codex-drift.out" 2>"$tmpdir/codex-drift.err"); then
   echo "build_metadata --check should detect tampered Codex plugin metadata"; exit 1
 fi
-grep -q 'plugins/waza/.codex-plugin/plugin.json is out of sync' "$tmpdir/codex-drift.err"
+grep -q 'plugins/fskill/.codex-plugin/plugin.json is out of sync' "$tmpdir/codex-drift.err"
 grep -q '.agents/plugins/marketplace.json is out of sync' "$tmpdir/codex-drift.err"
 
 # Extra files in the generated Codex plugin tree must not linger.
 copy_repo "$tmpdir/codex-extra"
-mkdir -p "$tmpdir/codex-extra/plugins/waza/tmp"
-printf '%s\n' 'stale' > "$tmpdir/codex-extra/plugins/waza/tmp/stale.txt"
+mkdir -p "$tmpdir/codex-extra/plugins/fskill/tmp"
+printf '%s\n' 'stale' > "$tmpdir/codex-extra/plugins/fskill/tmp/stale.txt"
 if (cd "$tmpdir/codex-extra" && python3 scripts/build_metadata.py --check >"$tmpdir/codex-extra.out" 2>"$tmpdir/codex-extra.err"); then
   echo "build_metadata --check should detect extra generated Codex plugin files"; exit 1
 fi
@@ -60,15 +60,15 @@ copy_repo "$tmpdir/regen"
 printf '%s\n' '{"plugins": []}' > "$tmpdir/regen/.claude-plugin/marketplace.json"
 rm -rf "$tmpdir/regen/.codex-plugin" "$tmpdir/regen/.agents" "$tmpdir/regen/plugins"
 (cd "$tmpdir/regen" && python3 scripts/build_metadata.py >"$tmpdir/regen.out")
-test "$(jq '.plugins | length' "$tmpdir/regen/.claude-plugin/marketplace.json")" -eq 9
-test "$(jq -r '.name' "$tmpdir/regen/plugins/waza/.codex-plugin/plugin.json")" = "waza"
-test "$(jq -r '.skills' "$tmpdir/regen/plugins/waza/.codex-plugin/plugin.json")" = "./skills/"
-test -f "$tmpdir/regen/plugins/waza/skills/check/SKILL.md"
-test -f "$tmpdir/regen/plugins/waza/rules/waza-routing.md"
-test "$(jq -r '.plugins[0].source.path' "$tmpdir/regen/.agents/plugins/marketplace.json")" = "./plugins/waza"
+test "$(jq '.plugins | length' "$tmpdir/regen/.claude-plugin/marketplace.json")" -eq 21
+test "$(jq -r '.name' "$tmpdir/regen/plugins/fskill/.codex-plugin/plugin.json")" = "fskill"
+test "$(jq -r '.skills' "$tmpdir/regen/plugins/fskill/.codex-plugin/plugin.json")" = "./skills/"
+test -f "$tmpdir/regen/plugins/fskill/skills/check/SKILL.md"
+test -f "$tmpdir/regen/plugins/fskill/rules/fskill-routing.md"
+test "$(jq -r '.plugins[0].source.path' "$tmpdir/regen/.agents/plugins/marketplace.json")" = "./plugins/fskill"
 test "$(jq -r '.plugins[0].policy.installation' "$tmpdir/regen/.agents/plugins/marketplace.json")" = "AVAILABLE"
-test "$(jq -r '.name' "$tmpdir/regen/package.json")" = "@tw93/waza"
-test "$(jq -r '.homepage' "$tmpdir/regen/package.json")" = "https://github.com/tw93/Waza"
+test "$(jq -r '.name' "$tmpdir/regen/package.json")" = "fskill"
+test "$(jq -r '.homepage' "$tmpdir/regen/package.json")" = "https://github.com/gofenix/fskill"
 test "$(jq -r '.files | index("llms.txt") != null' "$tmpdir/regen/package.json")" = "true"
 test "$(jq -r '.pi.skills[0]' "$tmpdir/regen/package.json")" = "./skills"
 test "$(jq -r '.publishConfig.access' "$tmpdir/regen/package.json")" = "public"
@@ -78,7 +78,7 @@ test "$(jq -r '.publishConfig.access' "$tmpdir/regen/package.json")" = "public"
 copy_repo "$tmpdir/readme"
 version=$(cat "$tmpdir/readme/VERSION")
 sed -i.bak \
-  "s|https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh|https://raw.githubusercontent.com/tw93/Waza/v${version}/scripts/setup-rule.sh|g; s|https://github.com/tw93/Waza/releases/latest/download/setup-statusline.sh|https://raw.githubusercontent.com/tw93/Waza/v${version}/scripts/setup-statusline.sh|g" \
+  "s|https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh|https://raw.githubusercontent.com/gofenix/fskill/v${version}/scripts/setup-rule.sh|g; s|https://github.com/gofenix/fskill/releases/latest/download/setup-statusline.sh|https://raw.githubusercontent.com/gofenix/fskill/v${version}/scripts/setup-statusline.sh|g" \
   "$tmpdir/readme/README.md"
 rm "$tmpdir/readme/README.md.bak"
 if (cd "$tmpdir/readme" && python3 scripts/build_metadata.py --check >"$tmpdir/readme.out" 2>"$tmpdir/readme.err"); then
@@ -86,9 +86,9 @@ if (cd "$tmpdir/readme" && python3 scripts/build_metadata.py --check >"$tmpdir/r
 fi
 grep -q "README.md installer URLs must use latest release assets" "$tmpdir/readme.err"
 (cd "$tmpdir/readme" && python3 scripts/build_metadata.py >"$tmpdir/readme-regen.out")
-grep -q "tw93/Waza/releases/latest/download/setup-rule.sh" "$tmpdir/readme/README.md"
-grep -q "tw93/Waza/releases/latest/download/setup-statusline.sh" "$tmpdir/readme/README.md"
-if grep -q "raw.githubusercontent.com/tw93/Waza/.*/scripts/setup-" "$tmpdir/readme/README.md"; then
+grep -q "gofenix/fskill/releases/latest/download/setup-rule.sh" "$tmpdir/readme/README.md"
+grep -q "gofenix/fskill/releases/latest/download/setup-statusline.sh" "$tmpdir/readme/README.md"
+if grep -q "raw.githubusercontent.com/gofenix/fskill/.*/scripts/setup-" "$tmpdir/readme/README.md"; then
   echo "README still has raw installer URLs after regen"; exit 1
 fi
 

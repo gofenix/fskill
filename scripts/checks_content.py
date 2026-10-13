@@ -46,7 +46,10 @@ CJK_RE = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]")
 
 DURABLE_CONTEXT_SKILLS = {"think", "check", "hunt", "ui", "write", "health"}
 
-NINJA_PREFIX = "Prefix your first line with 🥷 inline, not as its own paragraph."
+NINJA_PREFIXES = (
+    "Prefix your first line with 🥷 inline, not as its own paragraph.",
+    "首行内联带上 🥷，不要单独起段。",
+)
 
 OUTCOME_CONTRACT_FIELDS = ("Outcome:", "Done when:", "Evidence:", "Output:")
 
@@ -113,11 +116,12 @@ def check_skill_files(root: Path):
         fields = parse_frontmatter(path)
         if fields["name"] != skill_dir:
             fail(f"NAME MISMATCH: {path} frontmatter name={fields['name']} dir={skill_dir}")
-        if NINJA_PREFIX not in path.read_text():
+        if not any(prefix in path.read_text() for prefix in NINJA_PREFIXES):
             fail(
                 f"MISSING NINJA PREFIX INSTRUCTION: {path}\n"
-                f"  Every SKILL.md must carry this exact line:\n"
-                f"  {NINJA_PREFIX}"
+                f"  Every SKILL.md must carry one of:\n"
+                f"  {NINJA_PREFIXES[0]}\n"
+                f"  {NINJA_PREFIXES[1]}"
             )
         if not fields["dispatch_intent"]:
             fail(
@@ -163,21 +167,17 @@ def check_description_conformance(skill_descriptions: dict[str, str]):
                 f"DESCRIPTION STARTS WITH ARTICLE: {skill}\n"
                 f"  Start with a verb or action phrase (third-person). Got: {clean[:60]!r}"
             )
-        if "use when" not in clean.lower():
+        lowered = clean.lower()
+        if "use when" not in lowered and "显式调用" not in clean:
             fail(
                 f"DESCRIPTION MISSING USE-WHEN CUE: {skill}\n"
-                f"  Description must include a 'Use when ...' trigger phrase because "
+                f"  Description must include a 'Use when ...' or '显式调用' trigger phrase because "
                 f"some agent runtimes see description before when_to_use. Got: {clean[:120]!r}"
             )
-        if "not for" not in clean.lower():
+        if "not for" not in lowered and "不用于" not in clean:
             fail(
                 f"DESCRIPTION MISSING EXCLUSION CLAUSE: {skill}\n"
-                f"  Must contain a 'Not for ...' clause so the resolver learns when NOT to fire. Got: {clean[:120]!r}"
-            )
-        if CJK_RE.search(clean):
-            fail(
-                f"DESCRIPTION CONTAINS CJK: {skill}\n"
-                f"  Keep public-facing description metadata English-only. Put multilingual trigger phrases in when_to_use."
+                f"  Must contain a 'Not for ...' or '不用于' clause so the resolver learns when NOT to fire. Got: {clean[:120]!r}"
             )
         print(f"ok: description {skill} ({length} chars)")
 
@@ -186,14 +186,19 @@ def check_outcome_contract(skill_files: list[Path]):
     """Keep skill entrypoints outcome-first instead of process-heavy."""
     for path in skill_files:
         text = path.read_text()
-        if "## Outcome Contract" not in text:
+        if "## Outcome Contract" in text:
+            section = text.split("## Outcome Contract", 1)[1]
+            fields = OUTCOME_CONTRACT_FIELDS
+        elif "## 交付约定" in text:
+            section = text.split("## 交付约定", 1)[1]
+            fields = ("目标:", "完成条件:", "依据:", "交付形式:")
+        else:
             fail(
                 f"MISSING OUTCOME CONTRACT: {path}\n"
                 f"  Skill entrypoints must name outcome, done state, evidence, and output before detailed workflow."
             )
-        section = text.split("## Outcome Contract", 1)[1]
         section = section.split("\n## ", 1)[0]
-        missing = [field for field in OUTCOME_CONTRACT_FIELDS if field not in section]
+        missing = [field for field in fields if field not in section]
         if missing:
             fail(
                 f"INCOMPLETE OUTCOME CONTRACT: {path}\n"
@@ -269,13 +274,16 @@ def check_durable_context(root: Path, skill_files: list[Path]):
     for path in skill_files:
         skill = path.parent.name
         text = path.read_text()
-        has_section = "## Durable Context Preflight" in text
+        has_section = "## Durable Context Preflight" in text or "## 长期上下文预检" in text
         if skill in DURABLE_CONTEXT_SKILLS and not has_section:
             fail(
                 f"MISSING DURABLE CONTEXT PREFLIGHT: {path}\n"
                 f"  This skill must explain how to consume optional memory/preview context."
             )
         if not has_section:
+            continue
+        if "## Durable Context Preflight" not in text:
+            print(f"ok: durable context preflight for {skill}")
             continue
 
         section = text.split("## Durable Context Preflight", 1)[1]
@@ -304,9 +312,9 @@ def check_durable_context(root: Path, skill_files: list[Path]):
 
 
 def check_portable_skill_surface(root: Path, markdown_paths: list[Path]):
-    """Guard Waza's public skill surface against private/project-specific drift.
+    """Guard fskill's public skill surface against private/project-specific drift.
 
-    Waza skills should teach transferable workflow behavior. Project-specific
+    fskill skills should teach transferable workflow behavior. Project-specific
     release rituals and platform products are warning signals, while
     one-machine paths and platform-forcing commands are hard portability failures.
     """
@@ -332,7 +340,7 @@ def check_portable_skill_surface(root: Path, markdown_paths: list[Path]):
         if FORCED_GITHUB_TOOL_RE.search(text):
             fail(
                 f"FORCED GITHUB TOOLING IN GENERIC SURFACE: {rel}\n"
-                f"  GitHub projects may prefer gh, but Waza must derive platform tools from project context."
+                f"  GitHub projects may prefer gh, but fskill must derive platform tools from project context."
             )
         if PRIVATE_CONTEXT_RE.search(text):
             fail(
@@ -422,7 +430,7 @@ def check_table_pipes(root: Path, all_md: list[Path]):
 
 
 def check_no_root_skill(root: Path):
-    """A root SKILL.md would make `npx skills add tw93/Waza` stop scanning nested
+    """A root SKILL.md would make `npx skills add gofenix/fskill` stop scanning nested
     skills, so the direct coding install path would expose only `/waza`. Claude
     Desktop's single-root SKILL.md is generated by scripts/package-skill.sh
     during release packaging.
@@ -434,7 +442,7 @@ def check_no_root_skill(root: Path):
 
 # A bare repo-relative command in skill prose (`bash skills/...`, `python3
 # scripts/...`) resolves against the agent's cwd, which in an installed copy is
-# the target project, not the Waza checkout; the command exits 127. Every
+# the target project, not the fskill checkout; the command exits 127. Every
 # instruction must resolve through the skill's own install path instead:
 # a `<skill-base-dir>` placeholder, a resolved variable such as
 # `"$(dirname "$HEALTH_SCRIPT")"`, or a candidate cascade.
@@ -472,7 +480,7 @@ def check_anti_patterns_contract(root: Path):
         fail(f"MISSING ANTI-PATTERNS: expected {path}")
 
     text = path.read_text()
-    if re.search(r"\bWaza\b", text):
+    if re.search(r"\bfskill\b", text):
         fail(
             "ANTI-PATTERN PROJECT NAME LEAK: rules/anti-patterns.md\n"
             "  Anti-pattern rules are shared behavior. Keep row wording generic, "
@@ -482,9 +490,9 @@ def check_anti_patterns_contract(root: Path):
     stale_terms = (
         "Private rule leak",
         "Project fact promoted to global skill",
-        "public Waza rules",
-        "reusable Waza skill",
-        "Keep Waza generic",
+        "public fskill rules",
+        "reusable fskill skill",
+        "Keep fskill generic",
     )
     for term in stale_terms:
         if term in text:

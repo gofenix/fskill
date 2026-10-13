@@ -1,14 +1,14 @@
 {
-  "name": "waza",
+  "name": "fskill",
   "interface": {
-    "displayName": "Waza"
+    "displayName": "fskill"
   },
   "plugins": [
     {
-      "name": "waza",
+      "name": "fskill",
       "source": {
         "source": "local",
-        "path": "./plugins/waza"
+        "path": "./plugins/fskill"
       },
       "policy": {
         "installation": "AVAILABLE",

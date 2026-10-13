@@ -1,13 +1,13 @@
 ---
-name: waza
-description: 'Dispatcher for Waza engineering skills: think (architecture/handoff), ui (artifact-grounded interface design), check (review/release gates), hunt (runtime debugging/regression), write (prose/release copy), learn (research), read (URL/PDF fetch), health (agent config and AI maintainability audit).'
+name: fskill
+description: 'Dispatcher for fskill engineering skills: think (architecture/handoff), ui (artifact-grounded interface design), check (review/release gates), hunt (runtime debugging/regression), write (prose/release copy), learn (research), read (URL/PDF fetch), health (agent config and AI maintainability audit).'
 ---
 
-# Waza: Engineering Skills Dispatcher
+# fskill: Engineering Skills Dispatcher
 
 Prefix your first line with 🥷 inline, not as its own paragraph.
 
-You have eight skills available. Match the user's intent to the right skill, read the matching section below, and execute it.
+Match the user's intent to a skill in the table, read that skill, and execute it. Invocation is explicit: /name or $name.
 
 ## Routing Table
 

@@ -22,9 +22,9 @@ skill="$ROOT/skills/check/SKILL.md"
 rules="$ROOT/rules/anti-patterns.md"
 durable_context="$ROOT/rules/durable-context.md"
 
-grep -q '## Worktree Safety Preflight' "$skill"
+grep -q '## 工作区安全预检' "$skill"
 grep -q 'git status --short --branch -uall' "$skill"
-grep -q 'Treat modified, staged, and untracked files as user work' "$skill"
+grep -q '把已修改、已暂存和未跟踪文件都视为用户工作' "$skill"
 
 for forbidden in \
   'git switch' \
@@ -57,8 +57,8 @@ grep -q 'Read-only request as write authorization' "$rules"
 grep -q '## Memory is not authorization' "$durable_context"
 grep -q 'must never grant or broaden authorization' "$durable_context"
 grep -q 'git status --short --branch -uall' "$rules"
-grep -q 'Review, audit, triage, and readiness requests are report-only' "$skill"
-grep -q 'Apply only after explicit write authorization; otherwise report it' "$skill"
-grep -q 'Never say "all read", "full audit complete", or "no issues" while any reviewer or required verification is still pending' "$skill"
+grep -q '读取 diff，基于证据报告问题' "$skill"
+grep -q '修改前按自动修复边界核对授权' "$skill"
+grep -q '停下来报告' "$skill"
 
 echo "check safety smoke: ok"

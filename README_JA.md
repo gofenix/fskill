@@ -1,13 +1,13 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/tw93/Waza/main/assets/logo.svg" width="120" />
-  <h1>Waza</h1>
-  <p><b>Tw93 のエンジニアリング習慣を、あなたのスキルに</b></p>
+  <img src="https://raw.githubusercontent.com/gofenix/fskill/main/assets/logo.svg" width="120" />
+  <h1>fskill</h1>
+  <p><b>gofenix のエンジニアリング習慣を、あなたのスキルに</b></p>
   <p><a href="README.md">English</a> · <a href="README_CN.md">中文</a> · <a href="README_TW.md">繁體</a> · 日本語 · <a href="README_KR.md">한국어</a> · <a href="README_DE.md">Deutsch</a> · <a href="README_FR.md">Français</a></p>
-  <a href="https://github.com/tw93/Waza/actions/workflows/test.yml"><img src="https://img.shields.io/github/actions/workflow/status/tw93/Waza/test.yml?branch=main&style=flat-square&label=tests" alt="Tests"></a>
-  <a href="https://github.com/tw93/Waza/stargazers"><img src="https://img.shields.io/github/stars/tw93/Waza?style=flat-square" alt="Stars"></a>
-  <a href="https://github.com/tw93/Waza/releases"><img src="https://img.shields.io/github/v/tag/tw93/Waza?label=version&style=flat-square" alt="Version"></a>
+  <a href="https://github.com/gofenix/fskill/actions/workflows/test.yml"><img src="https://img.shields.io/github/actions/workflow/status/gofenix/fskill/test.yml?branch=main&style=flat-square&label=tests" alt="Tests"></a>
+  <a href="https://github.com/gofenix/fskill/stargazers"><img src="https://img.shields.io/github/stars/gofenix/fskill?style=flat-square" alt="Stars"></a>
+  <a href="https://github.com/gofenix/fskill/releases"><img src="https://img.shields.io/github/v/tag/gofenix/fskill?label=version&style=flat-square" alt="Version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
-  <a href="https://twitter.com/HiTw93"><img src="https://img.shields.io/badge/follow-Tw93-red?style=flat-square&logo=Twitter" alt="Twitter"></a>
+  <a href="https://twitter.com/Higofenix"><img src="https://img.shields.io/badge/follow-gofenix-red?style=flat-square&logo=Twitter" alt="Twitter"></a>
 </div>
 
 <br/>
@@ -36,27 +36,27 @@
 **Claude Code、Codex、Cursor、その他のエージェント**
 
 ```bash
-npx skills add tw93/Waza -a claude-code codex cursor -g -y
+npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
 スキルは共通の `~/.agents/skills` ディレクトリに保存されます。Claude Code はシンボリックリンク経由で連携し、Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI など、このディレクトリを読み込む各エージェントで自動的に利用可能になります。専用ディレクトリを持つエージェントは `-a` の後にID（例：`antigravity-cli`、`qwen-code`）を指定してください。更新は `npx skills update -g -y` で行います。AIエージェントに直接インストールを依頼することも可能です：
-> https://github.com/tw93/Waza/blob/main/llms.txt を読んで Waza をインストールして
+> https://github.com/gofenix/fskill/blob/main/llms.txt を読んで fskill をインストールして
 
 **ホストのプラグイン機能を利用する場合**（スキル名に名前空間が付きます：`/waza:check`）：
 
 ```bash
 # Claude Code（更新：claude plugin update waza）
-/plugin marketplace add tw93/Waza
-/plugin install waza@waza
+/plugin marketplace add gofenix/fskill
+/plugin install fskill@fskill
 
-# Codex（更新：codex plugin marketplace upgrade waza、その後 codex plugin add waza@waza）
-codex plugin marketplace add tw93/Waza
-codex plugin add waza@waza
+# Codex（更新：codex plugin marketplace upgrade waza、その後 codex plugin add fskill@fskill）
+codex plugin marketplace add gofenix/fskill
+codex plugin add fskill@fskill
 ```
 
-**Claude Desktop**：[waza.zip](https://github.com/tw93/Waza/releases/latest/download/waza.zip) をダウンロードし、Customize > Skills > "+" > Create skill からZIPをアップロードします。更新時はカードの "..." から Replace を選択し、最新のZIPを再度アップロードしてください。
+**Claude Desktop**：[waza.zip](https://github.com/gofenix/fskill/releases/latest/download/waza.zip) をダウンロードし、Customize > Skills > "+" > Create skill からZIPをアップロードします。更新時はカードの "..." から Replace を選択し、最新のZIPを再度アップロードしてください。
 
-**Pi**：`pi install npm:@tw93/waza`、更新は `pi update npm:@tw93/waza` で行います。
+**Pi**：`pi install npm:fskill`、更新は `pi update npm:fskill` で行います。
 
 ## スキルの連携
 
@@ -70,7 +70,7 @@ codex plugin add waza@waza
 
 ## プロジェクトコンテキスト
 
-Waza は汎用的なエンジニアリングの型のみを提供します。`/check` は実行時に対象リポジトリの公開情報（README、パッケージ定義、Makefile、CI設定）とタスク要件を読み取り、非公開のパスや認証情報、トークンは読みません。レビュー用コンテキストのテンプレートは [`skills/check/references/project-context.md`](skills/check/references/project-context.md) を参照してください。
+fskill は汎用的なエンジニアリングの型のみを提供します。`/check` は実行時に対象リポジトリの公開情報（README、パッケージ定義、Makefile、CI設定）とタスク要件を読み取り、非公開のパスや認証情報、トークンは読みません。レビュー用コンテキストのテンプレートは [`skills/check/references/project-context.md`](skills/check/references/project-context.md) を参照してください。
 
 ## 追加ツールとルール
 
@@ -81,15 +81,15 @@ curl の URL は最新の GitHub リリースアセットを使います。main 
 Claude Code 向けのミニマルなステータスライン：コンテキストウィンドウ、5時間制限、7日間制限の使用率を色分け表示し、プログレスバーや余計なノイズはありません。
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/tw93/Waza/main/assets/statusline.png" width="1000" />
+  <img src="https://raw.githubusercontent.com/gofenix/fskill/main/assets/statusline.png" width="1000" />
 </div>
 
 ```bash
 (
   set -e
-  WAZA_STATUSLINE_SCRIPT="$(mktemp -t waza-statusline.XXXXXX)"
+  WAZA_STATUSLINE_SCRIPT="$(mktemp -t fskill-statusline.XXXXXX)"
   trap 'rm -f "$WAZA_STATUSLINE_SCRIPT"' EXIT
-  curl -fL https://github.com/tw93/Waza/releases/latest/download/setup-statusline.sh -o "$WAZA_STATUSLINE_SCRIPT"
+  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-statusline.sh -o "$WAZA_STATUSLINE_SCRIPT"
   # 実行前に内容を確認：less "$WAZA_STATUSLINE_SCRIPT"
   bash "$WAZA_STATUSLINE_SCRIPT"
 )
@@ -107,14 +107,14 @@ Codex は残りの枠を、上の Claude Code ステータスラインは使用�
 
 ### オプションルール
 
-オプションルールは、エージェントの永続的な指示にインストールすると、スキルを呼び出していないときにも適用されます。Waza のスキルをインストールするだけでは有効になりません。必要なものをコピーして実行してください（Codex や Antigravity では `claude-code` を `codex` または `antigravity-cli` に置き換えます）：
+オプションルールは、エージェントの永続的な指示にインストールすると、スキルを呼び出していないときにも適用されます。fskill のスキルをインストールするだけでは有効になりません。必要なものをコピーして実行してください（Codex や Antigravity では `claude-code` を `codex` または `antigravity-cli` に置き換えます）：
 
 ```bash
 (
   set -e
-  WAZA_RULE_SCRIPT="$(mktemp -t waza-rule.XXXXXX)"
+  WAZA_RULE_SCRIPT="$(mktemp -t fskill-rule.XXXXXX)"
   trap 'rm -f "$WAZA_RULE_SCRIPT"' EXIT
-  curl -fL https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh -o "$WAZA_RULE_SCRIPT"
+  curl -fL https://github.com/gofenix/fskill/releases/latest/download/setup-rule.sh -o "$WAZA_RULE_SCRIPT"
   # 実行前に内容を確認：less "$WAZA_RULE_SCRIPT"
 
   # 英語コーチング：プロンプトに英語の誤りがあると、末尾に短い 😇 の訂正を追加
@@ -123,8 +123,8 @@ Codex は残りの枠を、上の Claude Code ステータスラインは使用�
   # アンチパターン：スキル横断で常に効くガードレール（読んでから動く、範囲を広げない、頼まれていない要約をしない）
   bash "$WAZA_RULE_SCRIPT" anti-patterns claude-code
 
-  # ルーティングヒント：Claude 以外のホストに、トリガーに合うリクエストでは Waza スキルを優先させる
-  bash "$WAZA_RULE_SCRIPT" waza-routing claude-code
+  # ルーティングヒント：Claude 以外のホストに、トリガーに合うリクエストでは fskill スキルを優先させる
+  bash "$WAZA_RULE_SCRIPT" fskill-routing claude-code
 
   # 明快な日常回答：用語の統一、条件の明示、不確かさの保持
   # Clarity は main ブランチで利用でき、現行リリースにはまだ含まれていません
@@ -133,43 +133,43 @@ Codex は残りの枠を、上の Claude Code ステータスラインは使用�
 ```
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/tw93/Waza/main/assets/english-coaching.png" width="1000" />
+  <img src="https://raw.githubusercontent.com/gofenix/fskill/main/assets/english-coaching.png" width="1000" />
 </div>
 
 [Clarity](rules/clarity.md) は ASD-STE100 のわかりやすい文章の原則を取り入れていますが、制限英語の文法を押し付けたり、あなたの文体を変えたりはしません。更新するにはコマンドを再実行し、新しいセッションを開始してください。Codex は `~/.codex/AGENTS.md` にマーク付きブロックを追加し、Claude Code と Antigravity はルールファイルをインストールします。ほかのツールでは、ルールを各ツールの永続的なカスタム指示にコピーしてください。
 
 ## 開発の背景
 
-Waza（技、わざ）は武道の用語で、本能になるまで繰り返し練習した技を指します。優れたエンジニアはコードを書くだけではありません。要件を突き詰めて検証し、根本原因までデバッグし、自分の差分をレビューし、一次情報を読みます。AI はこれらすべてをこなせますが、構造がなければ出力は汎用的で不正確なものに流れていきます。Waza の各スキルは、目指す成果、越えてはいけない一線、結果の検証方法だけを示し、進め方はモデルに任せます。モデルが賢くなるほど、この抑制が効いてきます。
+fskill（技、わざ）は武道の用語で、本能になるまで繰り返し練習した技を指します。優れたエンジニアはコードを書くだけではありません。要件を突き詰めて検証し、根本原因までデバッグし、自分の差分をレビューし、一次情報を読みます。AI はこれらすべてをこなせますが、構造がなければ出力は汎用的で不正確なものに流れていきます。fskill の各スキルは、目指す成果、越えてはいけない一線、結果の検証方法だけを示し、進め方はモデルに任せます。モデルが賢くなるほど、この抑制が効いてきます。
 
-Superpowers や gstack のようなツールは強力ですが重く、スキルも設定も多すぎます。Waza は小さく保ち、本当に大事な習慣に絞った 8 つのスキルだけを置いています。どれも役割は一つで、呼び出すタイミングもはっきりしています。7 つのプロジェクトと 300 以上のセッションで磨いてきたもので、どの回避策も実際の失敗に由来します。`/health` スキルは[この記事](https://tw93.fun/en/2026-03-12/claude.html)で紹介した Claude Code の 6 層フレームワークから生まれました。
+Superpowers や gstack のようなツールは強力ですが重く、スキルも設定も多すぎます。fskill は小さく保ち、本当に大事な習慣に絞った 8 つのスキルだけを置いています。どれも役割は一つで、呼び出すタイミングもはっきりしています。7 つのプロジェクトと 300 以上のセッションで磨いてきたもので、どの回避策も実際の失敗に由来します。`/health` スキルは[この記事](https://tw93.fun/en/2026-03-12/claude.html)で紹介した Claude Code の 6 層フレームワークから生まれました。
 
-[Kaku](https://github.com/tw93/Kaku)（書く）がコードを書き、[Waza](https://github.com/tw93/Waza)（技）が習慣を鍛え、[Kami](https://github.com/tw93/Kami)（紙）がドキュメントを仕上げる、という三部作です。家族にたとえると、Kaku は父、Waza は姉、Kami は妹です。
+[Kaku](https://github.com/gofenix/Kaku)（書く）がコードを書き、[fskill](https://github.com/gofenix/fskill)（技）が習慣を鍛え、[Kami](https://github.com/gofenix/Kami)（紙）がドキュメントを仕上げる、という三部作です。家族にたとえると、Kaku は父、fskill は姉、Kami は妹です。
 
 ## アンインストール
 
 ```bash
-npx skills remove tw93/Waza -g
+npx skills remove gofenix/fskill -g
 rm -f ~/.claude/statusline.sh
 rm -f ~/.claude/rules/english.md
 rm -f ~/.claude/rules/anti-patterns.md
-rm -f ~/.claude/rules/waza-routing.md
+rm -f ~/.claude/rules/fskill-routing.md
 rm -f ~/.claude/rules/clarity.md
 ```
 
-ステータスラインを導入していた場合は、`~/.claude/settings.json` から `statusLine` エントリも削除してください。Claude Desktop では Customize > Skills から Waza を削除してください。Codex にルールをインストールした場合は、`~/.codex/AGENTS.md` から Waza のマーク付きブロックを削除してください。Antigravity では `~/.gemini/antigravity-cli/rules/` から該当するルールファイルを削除してください。ほかのツールにコピーしたルールは、各ツールのカスタム指示から削除してください。ルールを削除したら新しいセッションを開始してください。
+ステータスラインを導入していた場合は、`~/.claude/settings.json` から `statusLine` エントリも削除してください。Claude Desktop では Customize > Skills から fskill を削除してください。Codex にルールをインストールした場合は、`~/.codex/AGENTS.md` から fskill のマーク付きブロックを削除してください。Antigravity では `~/.gemini/antigravity-cli/rules/` から該当するルールファイルを削除してください。ほかのツールにコピーしたルールは、各ツールのカスタム指示から削除してください。ルールを削除したら新しいセッションを開始してください。
 
 ## サポート
 
 - 私が作った有料の Mac クリーナー [Mole for Mac](https://mole.fit) を使っていただくのが、いちばん直接的な支援になります
-- Waza が役に立った場合は、Star を付けたり、[共有](https://twitter.com/intent/tweet?url=https://github.com/tw93/Waza&text=Waza%20-%20Tw93%27s%20engineering%20habits%2C%20turned%20into%20your%20skills.)したり、Issue や PR を送ったりしていただけるとうれしいです
-- 飼い猫の「湯円（TangYuan）」と「コーラ（Coke）」に <a href="https://cats.tw93.fun?name=Waza" target="_blank">おやつ 🥩</a> をご馳走することもできます
+- fskill が役に立った場合は、Star を付けたり、[共有](https://twitter.com/intent/tweet?url=https://github.com/gofenix/fskill&text=fskill%20-%20gofenix%27s%20engineering%20habits%2C%20turned%20into%20your%20skills.)したり、Issue や PR を送ったりしていただけるとうれしいです
+- 飼い猫の「湯円（TangYuan）」と「コーラ（Coke）」に <a href="https://cats.tw93.fun?name=fskill" target="_blank">おやつ 🥩</a> をご馳走することもできます
 
 <details>
 <summary>スポンサー一覧 🐱</summary>
 <br/>
 <div align="center">
-  <a href="https://cats.tw93.fun?name=Waza"><img src="https://cdn.jsdelivr.net/gh/tw93/sponsors@main/assets/sponsors.svg" width="1000" loading="lazy" /></a>
+  <a href="https://cats.tw93.fun?name=fskill"><img src="https://cdn.jsdelivr.net/gh/tw93/sponsors@main/assets/sponsors.svg" width="1000" loading="lazy" /></a>
 </div>
 </details>
 

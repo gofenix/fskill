@@ -1,150 +1,137 @@
 ---
 name: hunt
-description: "Finds root cause before any fix. Use when something errors, crashes, regresses, or used to work. Not for code review or new features."
-when_to_use: "排查, 报错, 崩溃, 回归, 截图回归, 判断错误原因, 判断为什么报错, 反复修不好, debug, regression, used to work, broke after update, why broken, not working, what's wrong, fix error, stack trace, 以前是好的"
-dispatch_intent: "Error, crash, regression, screenshot-reported defect, test failure, stale cache, runtime boundary, why broken"
+description: "在修复前先找到错误、崩溃、回归、失败测试和异常行为的根因。仅在显式调用时使用：/hunt、$hunt 或 fskill 限定调用。不用于代码审查或新功能开发。"
+when_to_use: "/hunt, $hunt, 调用 fskill 的 hunt, 用 fskill hunt skill, invoke fskill hunt, use fskill hunt skill"
+disable-model-invocation: true
+dispatch_intent: "错误、崩溃、回归、失败测试、异常行为、根因定位"
 ---
 
-# Hunt: Diagnose Before You Fix
+# Hunt: 先抓根因，再动刀
 
-Prefix your first line with 🥷 inline, not as its own paragraph.
+首行内联带上 🥷，不要单独起段。
 
-A patch applied to a symptom creates a new bug somewhere else.
+Hunt 的核心是：先证明为什么坏，再修。不要看到报错就猜修法，不要用一堆尝试覆盖不确定性。
 
-## Outcome Contract
+## 调用边界
 
-- Outcome: the root cause is identified before any fix is applied.
-- Done when: one sentence explains the cause, every observed symptom fits it, and the fix or handoff is verified against a reproducible check.
-- Evidence: source trace, repro command or UI path, logs or state, targeted test/build output, and runtime evidence for UI or native defects.
-- Output: root cause, fix or handoff, verification result, and any unswept sibling risks.
-- Authorization: "diagnose", "investigate", "why", "look into", "排查", "看看", or equivalent is report-only. Apply a fix only when the current request explicitly asks to fix, change, implement, or optimize, or when an authorization to do so is still in force for this same unfinished task with the action, scope, and goal unchanged; root-cause proof is still required first. A fix authorization never carries commit, push, publish, or any destructive action with it.
+首次进入本技能时，须由用户显式输入 `/hunt`、`$hunt`、`调用 fskill 的 hunt`、`用 fskill hunt skill`、`invoke fskill hunt`、`use fskill hunt skill`，或 Desktop 根分发器已从 `/fskill hunt` 选中本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；新任务或切换到其他技能仍需显式调用。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
-**Do not touch code until you can state the root cause in one sentence:**
-> "I believe the root cause is [X] because [evidence]."
+## 交付约定
 
-Name a specific file, function, line, or condition. "A state management issue" is not testable. "Stale cache in `useUser` at `src/hooks/user.ts:42` because the dependency array is missing `userId`" is testable. If you cannot be that specific, you do not have a hypothesis yet.
+- 目标: 根因被定位并用当前证据证明，随后给出最小修复或明确阻塞。
+- 完成条件: 反馈信号、根因、修复点和验证命令都在本轮被说明；如果不能修，阻塞条件具体可复现。
+- 依据: 错误日志、测试输出、trace、相关代码、最近 diff、生成物、运行时状态、截图或用户给出的复现步骤。
+- 交付形式: 根因说明 + 修复或补丁摘要 + 验证结果；仅诊断请求只输出诊断。
 
-## Diagnosis Signals
+## 长期上下文预检
 
-Hypothesis quality gate: the hypothesis must explain every observable symptom, not just the one reported first; partial coverage is a symptom-level guess, not a root cause. A symptom the reporter waves off as unrelated is still a symptom the hypothesis has to cover. For timing-dependent issues (flicker, intermittent failure, race), reproduce reliably before diagnosing.
+可选读取长期上下文，但只作为背景。对 `/hunt` 来说，旧记忆可以提供历史失败模式、常见命令和用户偏好的诊断边界；但当前日志、测试、代码、复现步骤、截图和运行时状态优先于旧记忆。
 
-Rationalization smells: "I'll just try this" = no hypothesis, write it first. "I'm confident" = run the instrument that proves it. "Probably the same issue" = re-read the execution path from scratch. "It works on my machine" = enumerate env differences before dismissing. "One more restart" = read the last error verbatim; never restart more than twice without new evidence.
+## 问题分诊
 
-## Durable Context Preflight
+先判断问题类型：
 
-See [references/durable-context.md](references/durable-context.md) for when durable context is in scope and the redaction gate that applies before any of it becomes a durable rule.
+| 症状 | 第一步 |
+|---|---|
+| 报错或 stack trace | 读完整错误、定位抛出点、找最近调用链 |
+| 测试失败 | 跑最小失败测试，确认是断言、环境、fixture 还是生成物 |
+| 回归 | 找旧好版本、最近改动、行为差异 |
+| UI 截图错误 | 先判断是审美问题还是渲染/状态回归 |
+| 缓存或队列异常 | 检查输入、输出、缓存 key、重试和并发边界 |
 
-For `/hunt`: durable context is hypothesis fuel only, and current code, logs, and repro evidence override memory. It never replaces a fresh root-cause sentence or a reproducible symptom list.
+如果用户明确说“只做诊断”，不要改文件。
 
-## Bisect Mode
+## 反馈信号检查
 
-Activate when: "以前是好的", "之前是好的", "used to work", "上一次提交还是对的", "broke after update", or the user remembers a specific good commit or version.
+修改代码前，先建立或确认一个能区分修复前后的反馈信号。它必须命中用户报告的原始症状，不能只证明“程序没有崩”或另一个相邻问题。优先使用项目已有测试或公开命令，也可以用 CLI/HTTP 调用、浏览器脚本、trace replay、版本对比或性能基线。
 
-- Protect the user's worktree first: `git status --short --branch -uall`. Any modified, staged, or untracked files mean no bisect in the current checkout: run it in a temporary detached worktree and remove that worktree when done. If a temporary worktree is impossible, stop and ask for explicit cleanup/stash approval.
-- If the last-good version is only a few releases back, `git diff <last-good>..HEAD -- <suspect path>` and read the delta first. The regression is usually visible there at a fraction of a bisect's cost; fall through to bisect only when the diff is too large or the culprit is not obvious.
-- Bisect only with a non-interactive pass/fail command defined up front, and keep the bookkeeping in git (`git bisect good/bad`), including when you test a suspect commit directly. When it names the culprit, read only that diff down to the specific line, then run `git bisect reset` before removing the temporary worktree.
+先定义什么实际状态区分正确与破损，并确认实例、版本、账号与数据属于用户报告的入口。已有候选修复、commit 或 PR 时优先验证其效果与适用范围，避免重复实现；别人的认领和交付不自动转移 ownership。
 
-## Repeated Regression / Screenshot Reference Mode
+一个可用的反馈信号应尽量满足：
 
-Activate when the user says the same issue is still wrong after a fix, provides a "good" screenshot/version/file, or describes a visual result as previously correct.
+- **准确**：走到真实问题路径，并对原始症状给出明确判定。
+- **可重复**：相同输入得到相同结论；偶现问题记录运行次数和复现率。
+- **够快**：能支撑多轮定位；全量构建很慢时先找更窄入口。
+- **Agent 可运行**：不依赖人工观察；无法避免时保存日志、dump、HAR、录屏时间点等可复查产物。
 
-Treat the reference as evidence, not decoration: list every reported and visible symptom in the user's concrete words; identify the reference oracle (last-good commit, old build, fixture, screenshot, described expected state); define the pass/fail check before editing; then name the exact current-vs-reference delta. Do not generalize a visual defect into "style polish" when the evidence points to a broken render, race, font pipeline, or state path.
+没有可运行信号时，可以用 crash dump、日志或录屏继续诊断，但要明确验证缺口。修改代码前至少要有可重复的原始症状，或一份能确定性走到同一路径且有修后验证办法的采集产物；两者都没有时，停止修改并请求环境访问、采集产物或临时观测权限。
 
-If the issue is purely subjective UI taste, route to `/ui`. If it is rendering, state, timing, build output, font generation, or a regression from a known-good version, stay in `/hunt`.
+这里不强制 TDD、pytest 或特定测试框架。反馈方式服从目标项目公开文档、CI 和现有测试约定。
 
-## Scope Blast Mode
+## 排查流程
 
-Activate after fixing a root-cause pattern, before declaring the bug done; also when the user says "举一反三", "举一反三深入看看", or "其他地方有没有同样问题". The same shape often hides in N other places; one local fix that ignores the blast leaves N - 1 bugs in the tree.
+1. **确认工作区**：运行 `pwd` 或 `git rev-parse --show-toplevel`，确认当前仓库。
+2. **读取失败信息**：读取用户给的日志、测试输出、截图、命令和相关文件。不要只看最后一行。
+3. **建立反馈信号**：实际运行最小命令或复查确定性产物，记录修前失败证据，确认它命中原始症状；不能只推测旧代码一定失败。
+4. **追踪根因**：沿输入、状态、调用链、输出走一遍，找第一个背离预期的点。
+5. **证明根因**：用日志、断点、临时只读检查、单测或对比证明根因。
+6. **最小修复**：用户要求修复且根因已确认时直接完成范围内的最小修改，不再问同一授权；仅诊断请求继续保持只读。若同一 guard 有多个拒绝原因，逐项核对输入、日志和运行端能力，避免只覆盖复现到的一支。
+7. **验证**：先跑复现命令，再跑相关回归测试。新增回归测试需在隔离临时 checkout 或 fixture 中对未修复代码实际跑红，再对修复跑绿；不要为比较而 revert 或 stash 共享工作区。确认失败断言确实让测试失败，否定断言另配可触发失败的正例，避免空输出或从未出现过的字符串造成假绿。验证失败就回到根因，不要扩大改动。
 
-Extract the pattern signature (the specific function, regex, API call, CSS selector, lock acquisition, validation skip, or input boundary that produced the bug) and `grep -rn` it across the repo, excluding generated dirs, build output, and vendored deps; for class-of-bug patterns ("any handler missing the lock"), grep the surrounding shape, not just the literal text. For every match, answer in writing: same bug / safe to leave (why) / unsure (ask the user). Do not silently skip a match, and do not claim "fixed" until the blast report is in the Output block. Unrelated bugs the sweep surfaces get listed, not fixed in this PR, unless the user agrees.
+## 诊断参考
 
-## Confirm or Discard
+- 常见失败模式：`references/failure-patterns.md`
+- 日志、trace 产物、性能基线、缩减复现与可证伪实验：`references/logging-techniques.md`（复现成本高、变量混杂或多次修法失败时读取）
+- 输入法和 Unicode 问题：`references/ime-unicode.md`
+- 渲染问题定位：`references/rendering-debug.md`
 
-Run the one probe that would fail if the hypothesis were wrong, then read it. If the evidence contradicts the hypothesis, discard it completely and re-orient on what the probe just showed. Do not stack a fix onto a disproven hypothesis, and do not keep one just because the code "looks like" the cause.
+按问题类型只读需要的参考，不要把参考文件当作检查清单全跑一遍。
 
-## Runtime Evidence Ladder
+## 硬性规则
 
-Use this ladder before claiming a bug is fixed:
+- 不要在没有根因证据时修。
+- 不要用只能证明“命令成功”的检查冒充原始问题反馈信号。
+- 不要把“测试通过不了”归因于环境，除非你能证明环境差异。
+- 不要为了清理现场运行 `git reset --hard`、`git clean` 或丢弃用户改动。
+- 不要把多个独立问题混成一个大修。
+- 修复后必须跑触发问题的命令或说明为什么不能跑。
+- 截图证明的是事实，不是风格偏好；如果是审美问题，可建议用户显式调用 `/ui`，不自动切换技能。
 
-1. Source trace: name the exact function, state transition, file, line, or condition that can produce the symptom.
-2. Deterministic repro: run or write the smallest command, fixture, UI path, or scenario that produces it.
-3. Logs/state/cache: inspect the runtime state that proves the path was reached, including queues, DB rows, caches, temp files, generated outputs, or external tool logs.
-4. Build/test: run the narrow test or build that exercises the fix.
-5. Real runtime check: for UI, native app, browser, rendering, or visual bugs, open the app/page/artifact and verify the visible result with a screenshot or concrete checklist.
+## 复盘沉淀建议
 
-Compile-only is not enough for UI, native-app, visual, rendering, or generated-artifact bugs. If the runtime check is impossible in the environment, say why and hand off the exact screen, command, or artifact to verify.
+修复并验证后可以判断是否存在防复发经验，但不得自动执行 `/retro` 或发起原任务范围外的沉淀写入。
 
-When the reporter's environment is the missing rung and it cannot be reproduced locally, the next artifact is a read-only probe they can paste and run, not another hypothesis. Have it print the environment, the disputed measurement, and the state of whatever the hypothesis turns on, and nothing that could carry a secret or a private path. Assume none of your own layout: their install method, directory conventions, locale, shell, and version all differ, so discover rather than hardcode. Ship it as plain copyable text with one command to run and one block to paste back.
+触发信号：
 
-For recurring classes of failures, load `references/failure-patterns.md` before adding a second fix.
+- 用户纠正了“应该怎么写”的项目约束，例如测试框架、日志 API、handler/service 分层、错误处理或配置读取方式。
+- 根因来自缺失的项目规则、隐式架构边界、错误验证命令或 agent 容易重复的误用。
+- 修复路径揭示了可写成 `AGENTS.md` 规则、`docs/solutions/` 方案、`CONCEPTS.md` 术语或 verifier 的经验。
 
-## Native App Freeze Mode
+处理方式：
 
-For beachballs, not responding, tab-switch freezes, first-open lag, idle wake stalls, overlay lockups, or frozen-app screenshots, load `references/logging-techniques.md` (Native App Freeze Mode) before changing code.
+1. 只把本轮证据验证过的经验列为候选。
+2. 有候选时，用一句话建议用户显式调用 `/retro` 或 `$retro`。
+3. 未收到显式调用前，不为额外沉淀经验而修改长期上下文；原任务已授权修复的项目指令、文档或配置仍按排查流程完成。
+4. 没有候选时不额外打扰。
 
-## Targeted Logging
+## 输出
 
-Every log is a yes/no question: "if this prints X before Y, hypothesis A survives; otherwise A is dead." A log that cannot rule a hypothesis in or out is noise. Remove temporary logs before finishing; gate persistent diagnostics behind the project's debug flag. If adding a log changes the behavior, that is itself evidence of a timing, lifecycle, or concurrency problem. Full playbook: `references/logging-techniques.md`.
+默认输出：
 
-## Rendering Bug Mode
+```text
+🥷 根因：...
 
-For PDF output, page breaks, font rendering, or print layout defects, load `references/rendering-debug.md`; it carries the activation triggers and the diagnosis checklist (WeasyPrint quirks, font loading, page overflow, browser print CSS).
+修复：...
 
-## IME / Unicode Issues
+反馈信号：
+- `command` 或产物：修复前 -> 修复后
 
-For input method, character rendering, or text encoding bugs (IME state, cursor drift, emoji splitting, composition events), check `references/ime-unicode.md` first before forming a hypothesis.
+验证：
+- `command`：通过/失败
 
-## Hard Rules
+沉淀建议：
+- 需要时建议显式调用 `/retro` 或 `$retro`
 
-- **Same symptom after a fix is a hard stop; so is "let me just try this."** Both mean the hypothesis is unfinished. Re-read the execution path from scratch before touching code again.
-- **After three failed hypotheses, stop.** Use the Handoff format below to surface what was checked, what was ruled out, and what is unknown. Ask how to proceed.
-- **External tool failure: diagnose before switching.** When an MCP tool or API fails, determine why first (server running? API key valid? Config correct?) before trying an alternative.
-- **System/tooling symptoms need a lower-layer baseline.** Before blaming the visible app, generated file, or top-level feature, measure the raw lower layer first: OS capture versus post-processing, runtime service versus UI, compiler/toolchain versus test assertion, network/API versus client handling. Retire hypotheses that the baseline disproves instead of circling them.
-- **Visual/rendering bugs: static analysis first.** Trace paint layers, stacking contexts, and layer order in DevTools before adding console.log or visual debug overlays. Logs cannot capture what the compositor does. Only add instrumentation after static analysis fails.
-- **Behavioral / lifecycle / async bugs: instrument while forming the hypothesis.** Window lifecycle, event delivery, navigation, focus, timer, state-machine, and async-ordering bugs almost never yield to static reading alone. The moment the hypothesis involves "this callback fires before/after that one", "this state should be X when Y runs", or "this object should still be alive here", add the log before writing any fix; two guesses in a row is the hard-stop signal. Compositor behavior needs DevTools, not logs; pure-logic bugs (wrong formula, off-by-one) need only static analysis.
-- **Tuning magic numbers past round three: stop, unify.** When a spacing / sizing / threshold value has been adjusted three times and still looks wrong, the bug is structural, not numeric. Replace the N independent values with one named token (`Spacing.s4`, `--gap-content`, etc.) and verify the asymmetry was hiding a missing constraint. Asymmetry that survives tuning is structural; more tuning will not converge.
-- **Performance complaints need numbers.** For "slow", "laggy", or memory-growth reports outside Native App Freeze Mode, measure the baseline first (wall-clock time, profile sample, memory footprint), fix, then re-measure and report before/after numbers. "Feels faster" is not evidence.
-- **Fix the cause within the authorized scope.** Continue necessary fixes, including a prerequisite refactor such as a shared interface change once you state why it is needed; ask only when the fix expands that scope or needs an unresolved behavior tradeoff, and file count alone is not an approval boundary. Keep unrelated refactors separate, and route an explicitly requested feature to its own workflow under the same completion ledger after diagnosis; a bug-fix authorization alone does not authorize an unrequested feature.
-
-## Gotchas
-
-| What happened | Rule |
-|---------------|------|
-| Patched the wrong copy of a duplicated surface | Trace the execution path backward to the instance that actually renders before touching any file |
-| Orchestrator reported RUNNING while a downstream stage was misconfigured | In multi-stage pipelines, test each stage in isolation |
-| Race condition diagnosed as a stale-state bug | For timing-sensitive issues, inspect event timestamps and ordering before state |
-| Reproduced locally but failed in CI | Align the environment first (runtime version, env vars, timezone), then chase the code |
-| Worked when launched from app, broke when opened via file association / drag-drop / deep link / external proxy | Reproduce using the exact entry point the user described. App-internal init differs from cold-launch-with-file init; state may not be ready when the document arrives. |
-| Fix matched the reporter's setup but changed nothing for everyone else, or regressed the default | A defect report is evidence, not the full scope. State whether the fix changes the default experience for all users or only the reporter's configuration, and prefer fixing the default path. |
-| Broke after toggling theme / mode / locale, fine after restart | State not re-applied on the toggle path. Trace the toggle's recompute or invalidation route first; do not tune styles pixel by pixel while the state path is broken. |
-| Changed the algorithm but the output stayed wrong | The reader may be hitting persisted output written by the old code (scan results, analysis cache, snapshot with a TTL). Changing generated-then-persisted data requires invalidating or version-bumping the old cache in the same change; before re-diagnosing, confirm the runtime is not reading stale data. |
-| Fixed the one cause that reproduced, shipped, and the same gate blocked the next user for a different reason | A guard that refuses has a set of causes, not one. Enumerate every branch that can refuse before shipping, and give each a distinguishable code, a one-line reason, and a next command. |
-| The user's observation and the log disagreed, and the log won | Trust the observation and treat the gap as an un-instrumented path. A probe that passes on the happy path says nothing about the failing one; a probe that cannot reproduce is an invalid probe, not an absent defect. |
-| Patched a capability-gated feature on a surface that never offered the capability | Confirm the run surface (simulator, device, sandbox, restricted entitlement) supports it before writing a fix. If it does not, say so and stop; no source change makes it appear. |
-
-## Output
-
-### Success Format
-
-Open the wrap-up with one plain line stating the outcome and whether the changes are committed; the block below supports that line, it does not replace it.
-
-```
-Root cause:        [what was wrong, file:line]
-Fix:               [what changed, file:line]
-Sibling sweep:     [N same-shape sites checked, N fixed / none found / not run, why]
-Confirmed:         [evidence or test that proves the fix]
-Tests:             [pass/fail count, regression test location]
-Regression guard:  [test file:line] or [none, reason]
+剩余风险：...
 ```
 
-Status: **resolved**, **resolved with caveats** (state them), or **blocked** (state what is unknown).
+只诊断时输出：
 
-**Regression guard rule**: for any bug that recurred or was previously "fixed", the fix is not done until:
-1. A regression test exists that fails on the unfixed code and passes on the fixed code.
-2. The test lives in the project's test suite, not a temporary file.
-3. The commit message states why the bug recurred and why this fix prevents it.
-4. Red-green was **run**, not assumed: run the new test against the unfixed code in an isolated temporary checkout or fixture, then against the fix. Do not revert or stash the shared worktree for this comparison. A regression test that has only ever been observed passing pins nothing. State the red run in the output. Two shapes make this fail silently: a framework or syntax where a failing assertion mid-test does not fail the test, so only the last one gates (in shell suites this can hinge on the bracket form alone, with one keyword swallowed and the other caught, so confirm which by running a two-line minimal repro rather than reasoning about it); and an assertion that the wrong string is absent, which passes forever because that string was never emitted under any code version. Any negative assertion ("output must not contain X") also needs a paired positive case in the same test proving the assertion can fail at all.
+```text
+🥷 诊断结论：...
 
-### Handoff Format (after 3 failed hypotheses)
+证据：
+- ...
 
-Status **blocked**, then: the symptom in one sentence; each hypothesis with its test method and why it was ruled out; evidence collected (log or stack excerpts, repro steps, versions, config, runtime); what is still unknown or missing; and next steps, naming any tool, permission, or context the user must supply.
+下一步建议：...
+```

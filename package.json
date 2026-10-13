@@ -1,17 +1,17 @@
 {
-  "name": "@tw93/waza",
+  "name": "fskill",
   "version": "3.39.0",
-  "description": "Waza engineering skills for Claude Code, Codex, Antigravity, OpenCode, Pi, and compatible coding agents.",
+  "description": "fskill engineering skills for Claude Code, Codex, Antigravity, OpenCode, Pi, and compatible coding agents.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tw93/Waza.git"
+    "url": "git+https://github.com/gofenix/fskill.git"
   },
-  "homepage": "https://github.com/tw93/Waza",
+  "homepage": "https://github.com/gofenix/fskill",
   "keywords": [
     "pi-package",
     "agent-skills",
-    "waza",
+    "fskill",
     "claude-code",
     "codex",
     "antigravity",

@@ -1,58 +1,28 @@
-# IME / Unicode Debugging Reference
+# 输入法与 Unicode
 
-Recurring patterns in webview-hosted and native macOS apps. Check these before forming a hypothesis.
+输入问题先区分输入法组合状态、事件顺序和字符串位置单位，再形成假设。
 
-## IME State Desync
+## 输入与事件顺序
 
-**Symptom**: Latin characters appear correctly but CJK input is dropped, doubled, or committed at the wrong time.
+记录 `compositionstart`、`compositionupdate`、`compositionend`、`beforeinput`、`input` 和 `keydown`，包括输入数据、选区和焦点变化。不要在输入法组合期间做会破坏候选词的格式化、DOM 重建、自动提交或光标跳转。
 
-**Cause candidates**:
-- Input method switch mid-composition: the IME commits the preedit with a stale target, then the new mode processes the same keystrokes again.
-- `keydown` handler consuming events during active composition: suppress the confirmation event's bound submit/navigation action while preserving normal IME text commitment. Do not queue that action for `compositionend`; check the event-ordering section for cases where `isComposing` is already false.
-- Webview + native frame split focus: in Tauri, the webview and the native window title bar can hold focus simultaneously. A click on a native control during IME composition triggers a focus-out, committing incomplete preedit text.
+确认候选词的 Enter 应只提交文字，不能触发表单提交或导航，也不能把该动作排队到 `compositionend` 执行。`compositionend` 可能先于确认键的 `keydown`，此时 `isComposing` 已为 false；同样在 `compositionend` 清除的标志也会漏判。按实际 IME 和宿主采集事件顺序，不靠操作系统名称或固定延迟猜测。
 
-**Instruments**:
-- Log `compositionstart`, `compositionupdate`, `compositionend` sequence; confirm they fire in order without gaps.
-- Log the `data` field of each `compositionupdate`; a sudden empty string signals a forced commit.
+回归验证覆盖两种事件顺序：候选词确认不提交表单，随后用户主动按 Enter 只提交一次。
 
-## Cursor Position Drift After IME Commit
+## 字符与位置单位
 
-**Symptom**: After confirming a CJK word, the cursor jumps to the wrong position or the selection collapses.
+- JavaScript 的 `str.length` 和文本节点 DOM 偏移使用 UTF-16 码元。
+- `[...str]` 遍历码点，不能直接替代 DOM 偏移。
+- 可见字符截断通常需要字素簇；使用 `Intl.Segmenter` 的 `grapheme` 粒度，并先确认接收位置的 API 使用什么单位。
+- `👩‍🚒` 包含 3 个码点、1 个字素簇。ZWJ 序列被拆开时检查切片边界、实际字体和序列化前后字节。
+- 检查 NFC/NFD 是否混用，以及全角空格、不可见空白和零宽字符。
 
-**Cause candidates**:
-- DOM mutation during composition: React/Svelte/Vue re-rendering while `isComposing` is true will reset the selection. Batch state updates and flush only on `compositionend`.
-- Mixing offset units: JavaScript string lengths and text-node DOM offsets use UTF-16 code units; string iteration counts code points, and visible-character operations may need grapheme clusters. Identify the receiving API's unit before converting positions; replacing `str.length` with `[...str].length` can itself cause drift.
+需要检查 Python 字符值时：
 
-## Emoji ZWJ Sequence Splitting
+```python
+for ch in text:
+    print(ch, hex(ord(ch)))
+```
 
-**Symptom**: Multi-person or profession emoji (e.g. `👩‍🚒`) renders as two or three separate emoji, or the ZWJ (`U+200D`) appears as a visible character.
-
-**Cause candidates**:
-- String sliced at a UTF-16 code-unit offset: `str.slice(0, n)` splits a ZWJ sequence if `n` falls inside the sequence. Use `Intl.Segmenter` with `granularity: 'grapheme'` for visible-character truncation.
-- Font does not support the sequence: the font renders each code point individually. Verify with `canvas.measureText` or by checking which font is actually used via `document.fonts`.
-- Serialization strips ZWJ: some JSON encoders normalize or escape `U+200D`. Verify the raw bytes of the stored string.
-
-**Test**: `[...'👩‍🚒'].length` is 3 code points; `[...new Intl.Segmenter(undefined, {granularity: 'grapheme'}).segment('👩‍🚒')].length` is 1 grapheme cluster. Test offsets separately against the consuming API.
-
-## `compositionend` / `keydown` Event Ordering
-
-**Symptom**: The action bound to Enter or Tab fires during IME confirmation, submitting incomplete input.
-
-**Cause candidate**: `compositionend` can precede the confirmation `keydown`, leaving `isComposing` false, or follow it. Capture the actual order for the affected IME and host rather than inferring it from the OS.
-
-**Verification target**: IME confirmation commits text without submitting; a subsequent deliberate Enter submits once. A flag cleared on `compositionend` has the same ordering gap as `isComposing`. Log the key events and composition boundaries, derive the confirmation-key guard from the observed host behavior, and replay both orderings plus a normal Enter in regression tests. Do not substitute an arbitrary timeout for that evidence.
-
-## macOS Text System vs Webview Conflict
-
-**Symptom**: Undo (`Cmd+Z`) reverts individual IME preedit characters instead of committed words, or system text shortcuts (Cmd+Shift+Left for word selection) behave differently inside vs outside the webview.
-
-**Cause**: WKWebView has its own text system that partially overlaps with NSTextView conventions. The webview host's key-handling config can suppress system shortcuts (Tauri's `preventDefaultFor` in `tauri.conf.json` or `app.json`, or the equivalent in other hosts); check it for `preventDefault` rules that are too broad.
-
-## Quick Checklist
-
-- [ ] `isComposing` checked before acting on keyboard events?
-- [ ] No DOM mutation while `isComposing` is true?
-- [ ] Offset units match the receiving API, with grapheme boundaries for visible-character operations?
-- [ ] ZWJ sequences verified with `Intl.Segmenter`?
-- [ ] Confirmation-key guard tested against both event orderings and a subsequent deliberate action?
-- [ ] `tauri.conf.json` `preventDefaultFor` not too broad?
+焦点切换、撤销粒度或原生窗口与 WebView 行为不同时，同时记录宿主输入事件；不要只修改页面键盘处理器。

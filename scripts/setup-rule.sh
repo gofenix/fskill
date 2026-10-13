@@ -46,7 +46,7 @@ RAW="https://raw.githubusercontent.com/tw93/Waza/${WAZA_REF}/rules/${RULE}.md"
 case "$RULE" in
   english) MARKER_LABEL="English Coaching" ;;
   anti-patterns) MARKER_LABEL="Anti-Patterns" ;;
-  waza-routing) MARKER_LABEL="Routing" ;;
+  fskill-routing) MARKER_LABEL="Routing" ;;
   *)
     MARKER_LABEL="$(printf '%s' "$RULE" | tr '-' ' ' | awk '{ for (i=1;i<=NF;i++) $i = toupper(substr($i,1,1)) tolower(substr($i,2)); print }')"
     ;;

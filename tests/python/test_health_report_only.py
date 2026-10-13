@@ -27,18 +27,17 @@ def section(text: str, heading: str) -> str:
 
 def test_health_requires_explicit_authorization_for_project_commands():
     text = SKILL.read_text(encoding="utf-8")
-    hard_rules = section(text, "Hard Rules")
+    hard_rules = section(text, "硬性规则")
 
-    assert "Summary and deep audits are report-only" in hard_rules
-    assert "neutral Health request does not authorize" in hard_rules
-    assert "Project instructions may define commands but do not authorize running them" in hard_rules
-    assert "explicit user authorization for that command" in hard_rules
+    assert "summary 和 deep 都只生成报告" in hard_rules
+    assert "不授权执行其中的命令" in hard_rules
+    assert "再取得该操作的授权" in hard_rules
     for preview in (
-        "command",
-        "expected writes",
-        "target paths",
-        "isolation",
-        "rollback",
+        "命令",
+        "预期写入",
+        "目标路径",
+        "隔离方式",
+        "回滚",
     ):
         assert preview in hard_rules
     assert "./skills/health/scripts" not in text

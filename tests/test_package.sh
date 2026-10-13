@@ -21,7 +21,7 @@ fi
 
 # Required helper scripts are bundled.
 for required in \
-  skills/check/scripts/release_gate.py \
+  skills/check/scripts/audit_signals.py \
   skills/read/scripts/fetch.sh \
   skills/health/scripts/block-pipe-to-shell.py \
   skills/health/scripts/check-agent-context.sh \
@@ -68,33 +68,21 @@ root_skill=$(unzip -p "$tmpdir/waza.zip" SKILL.md)
 if [[ "$root_skill" == *"skills/check/SKILL.md"* ]]; then
   echo "package root should not reference nested SKILL.md"; exit 1
 fi
-if [[ "$root_skill" != *'`skills/check/references/mode-triage.md`'* ]]; then
+if [[ "$root_skill" != *'`skills/check/references/project-context.md`'* ]]; then
   echo "package root should rewrite inlined skill-relative backtick paths"; exit 1
 fi
-if [[ "$root_skill" != *'[references/durable-context.md](skills/check/references/durable-context.md)'* ]]; then
+if [[ "$root_skill" != *'[references/review-patterns.md](skills/check/references/review-patterns.md)'* ]]; then
   echo "package root should rewrite inlined skill-relative Markdown links"; exit 1
 fi
 
 # Second-hop references inside shipped Markdown must also resolve from the ZIP
-# root instead of pointing at nonexistent root references/ or agents/ paths.
-mode_ship=$(unzip -p "$tmpdir/waza.zip" skills/check/references/mode-ship.md)
-[[ "$mode_ship" == *'`skills/check/references/project-context.md`'* ]] || {
-  echo "nested reference should qualify another reference path"; exit 1
-}
-persona_catalog=$(unzip -p "$tmpdir/waza.zip" skills/check/references/persona-catalog.md)
-[[ "$persona_catalog" == *'`skills/check/agents/reviewer-security.md`'* ]] || {
-  echo "nested reference should qualify an agent path"; exit 1
-}
-release_surfaces=$(unzip -p "$tmpdir/waza.zip" skills/check/references/release-surfaces.md)
-[[ "$release_surfaces" == *'`skills/check/references/project-context.md`'* ]] || {
+# root instead of pointing at nonexistent root references/ paths.
+workflows=$(unzip -p "$tmpdir/waza.zip" skills/check/references/maintainer-workflows.md)
+[[ "$workflows" == *'[release-artifacts.md](skills/check/references/release-artifacts.md)'* ]] || {
   echo "nested reference should qualify a same-directory basename"; exit 1
 }
-project_context=$(unzip -p "$tmpdir/waza.zip" skills/check/references/project-context.md)
-[[ "$project_context" == *'`skills/check/references/public-reply.md`'* ]] || {
-  echo "second nested basename should stay inside the same skill"; exit 1
-}
-mode_long_form=$(unzip -p "$tmpdir/waza.zip" skills/write/references/mode-long-form.md)
-[[ "$mode_long_form" == *'`skills/write/references/write-zh.md`'* ]] || {
+prose=$(unzip -p "$tmpdir/waza.zip" skills/write/references/write-zh-prose.md)
+[[ "$prose" == *'`skills/write/references/write-zh.md`'* ]] || {
   echo "nested basename should resolve in another skill independently"; exit 1
 }
 

@@ -1,4 +1,4 @@
-"""Routing-table checks: RESOLVER.md and rules/waza-routing.md stay in sync with the skills.
+"""Routing-table checks: RESOLVER.md and rules/fskill-routing.md stay in sync with the skills.
 
 Split from skill_checks.py; import through skill_checks (the facade) so the
 check inventory stays visible in one place.
@@ -12,7 +12,7 @@ from pathlib import Path
 from skill_frontmatter import fail, parse_frontmatter, skill_ref_diff
 
 
-# Quoted user-utterance triggers in rules/waza-routing.md. Covers straight ("),
+# Quoted user-utterance triggers in rules/fskill-routing.md. Covers straight ("),
 # curly (U+201C/D), and CJK corner brackets (「」 U+300C/D, 『』 U+300E/F) so a
 # Chinese phrase in 「」 is checked just like one in straight quotes.
 QUOTED_PHRASE_RE = re.compile(
@@ -51,9 +51,9 @@ def check_resolver(root: Path, skill_names: set[str]):
 
 
 def check_waza_routing_skills(root: Path, skill_names: set[str]):
-    """rules/waza-routing.md routing table must enumerate exactly the skills
+    """rules/fskill-routing.md routing table must enumerate exactly the skills
     under skills/. Structural drift only -- trigger phrases stay hand-tuned."""
-    path = root / "rules" / "waza-routing.md"
+    path = root / "rules" / "fskill-routing.md"
     if not path.exists():
         return
     listed: set[str] = set()
@@ -73,19 +73,19 @@ def check_waza_routing_skills(root: Path, skill_names: set[str]):
     extra = listed - skill_names
     if missing:
         fail(
-            "WAZA ROUTING MISSING SKILLS: rules/waza-routing.md table omits: "
+            "WAZA ROUTING MISSING SKILLS: rules/fskill-routing.md table omits: "
             f"{', '.join(sorted(missing))}"
         )
     if extra:
         fail(
-            "WAZA ROUTING STALE SKILLS: rules/waza-routing.md lists skills "
+            "WAZA ROUTING STALE SKILLS: rules/fskill-routing.md lists skills "
             f"not in skills/: {', '.join(sorted(extra))}"
         )
-    print(f"ok: rules/waza-routing.md skills match ({len(listed)} skills)")
+    print(f"ok: rules/fskill-routing.md skills match ({len(listed)} skills)")
 
 
 def check_waza_routing_triggers(root: Path):
-    """Quoted user-utterance triggers in rules/waza-routing.md must be grounded.
+    """Quoted user-utterance triggers in rules/fskill-routing.md must be grounded.
 
     The routing table's prose stays hand-tuned, but any phrase in quotes is a
     claim about what a user literally types. Each quoted phrase (split on '/',
@@ -93,7 +93,7 @@ def check_waza_routing_triggers(root: Path):
     the routing hint can never advertise a trigger no skill actually claims.
     Unquoted wording is intentionally free and is not checked here.
     """
-    path = root / "rules" / "waza-routing.md"
+    path = root / "rules" / "fskill-routing.md"
     if not path.exists():
         return
     norm = lambda s: re.sub(r"\s+", "", s)  # noqa: E731
@@ -116,10 +116,10 @@ def check_waza_routing_triggers(root: Path):
                 seg_norm = norm(seg)
                 if seg_norm and seg_norm not in when:
                     fail(
-                        f"WAZA ROUTING UNGROUNDED TRIGGER: rules/waza-routing.md "
+                        f"WAZA ROUTING UNGROUNDED TRIGGER: rules/fskill-routing.md "
                         f"row '{skill}' quotes {seg!r}, but it is absent from "
                         f"skills/{skill}/SKILL.md when_to_use.\n"
                         f"  Quote only phrases a user actually types; align the "
                         f"phrase with when_to_use or add it to when_to_use."
                     )
-    print("ok: rules/waza-routing.md quoted triggers grounded")
+    print("ok: rules/fskill-routing.md quoted triggers grounded")

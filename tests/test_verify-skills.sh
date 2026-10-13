@@ -8,9 +8,9 @@ tmpdir=$(make_tmpdir)
 
 sync_codex_mirror() {
   local repo="$1"
-  rm -rf "$repo/plugins/waza/skills" "$repo/plugins/waza/rules"
-  cp -R "$repo/skills" "$repo/plugins/waza/skills"
-  cp -R "$repo/rules" "$repo/plugins/waza/rules"
+  rm -rf "$repo/plugins/fskill/skills" "$repo/plugins/fskill/rules"
+  cp -R "$repo/skills" "$repo/plugins/fskill/skills"
+  cp -R "$repo/rules" "$repo/plugins/fskill/rules"
 }
 
 # Case 1: missing closing frontmatter delimiter.
@@ -37,7 +37,7 @@ python3 -c "
 import json
 p = '$tmpdir/repo2/.claude-plugin/marketplace.json'
 d = json.load(open(p))
-d['plugins'].append({'name':'waza-ghost','description':'x','version':'1.0.0','category':'development','source':'./skills/ghost','homepage':'https://example.com'})
+d['plugins'].append({'name':'fskill-ghost','description':'x','version':'1.0.0','category':'development','source':'./skills/ghost','homepage':'https://example.com'})
 open(p,'w').write(json.dumps(d, indent=2) + '\n')
 "
 if (cd "$tmpdir/repo2" && python3 scripts/verify_skills.py --root . >"$tmpdir/market.out" 2>"$tmpdir/market.err"); then
@@ -52,14 +52,14 @@ import json
 p = '$tmpdir/repo3/.claude-plugin/marketplace.json'
 d = json.load(open(p))
 for entry in d['plugins']:
-    if entry['name'] == 'waza-check':
+    if entry['name'] == 'fskill-check':
         entry['source'] = './skills/read'
 open(p,'w').write(json.dumps(d, indent=2) + '\n')
 "
 if (cd "$tmpdir/repo3" && python3 scripts/verify_skills.py --root . >"$tmpdir/source.out" 2>"$tmpdir/source.err"); then
   echo "verify-skills should reject wrong source paths"; exit 1
 fi
-grep -q 'WRONG SOURCE: waza-check' "$tmpdir/source.err"
+grep -q 'WRONG SOURCE: fskill-check' "$tmpdir/source.err"
 
 # Case 4: broken markdown link inside a SKILL.md.
 copy_repo "$tmpdir/repo4"
@@ -99,20 +99,20 @@ import json
 p = '$tmpdir/repo7/.claude-plugin/marketplace.json'
 d = json.load(open(p))
 for e in d['plugins']:
-    if e['name'] == 'waza':
+    if e['name'] == 'fskill':
         e['version'] = '3.0.0'
 open(p,'w').write(json.dumps(d, indent=2) + '\n')
 "
 if (cd "$tmpdir/repo7" && python3 scripts/verify_skills.py --root . >"$tmpdir/bundle.out" 2>"$tmpdir/bundle.err"); then
   echo "verify-skills should reject bundle version drift from VERSION"; exit 1
 fi
-grep -q 'VERSION DRIFT: waza bundle' "$tmpdir/bundle.err"
+grep -q 'VERSION DRIFT: fskill bundle' "$tmpdir/bundle.err"
 
 # Case 7b: Codex plugin version also drifts away from VERSION file.
 copy_repo "$tmpdir/repo7b"
 python3 -c "
 import json
-p = '$tmpdir/repo7b/plugins/waza/.codex-plugin/plugin.json'
+p = '$tmpdir/repo7b/plugins/fskill/.codex-plugin/plugin.json'
 d = json.load(open(p))
 d['version'] = '3.0.0'
 open(p,'w').write(json.dumps(d, indent=2) + '\n')
@@ -142,7 +142,7 @@ python3 -c "
 from pathlib import Path
 p = Path('$tmpdir/repo8/skills/read/SKILL.md')
 t = p.read_text()
-t = t.replace(' Use when asked to read, fetch, quote, cite, convert, or save a URL or PDF.', '')
+t = t.replace('仅在显式调用时使用', '在调用时使用')
 p.write_text(t)
 "
 sync_codex_mirror "$tmpdir/repo8"
@@ -151,29 +151,21 @@ if (cd "$tmpdir/repo8" && python3 scripts/verify_skills.py --root . >"$tmpdir/us
 fi
 grep -q 'DESCRIPTION MISSING USE-WHEN CUE: read' "$tmpdir/usewhen.err"
 
-# Case 8b: public description metadata must stay English-only; multilingual
-# trigger aliases belong in when_to_use.
+# Case 8b: Chinese descriptions are allowed when they still name the explicit
+# invocation and the exclusion.
 copy_repo "$tmpdir/repo8b"
-python3 -c "
-from pathlib import Path
-p = Path('$tmpdir/repo8b/skills/read/SKILL.md')
-t = p.read_text()
-t = t.replace('Use when asked to read, fetch, quote', 'Use when asked to 读一下, fetch, quote')
-p.write_text(t)
-"
 sync_codex_mirror "$tmpdir/repo8b"
-if (cd "$tmpdir/repo8b" && python3 scripts/verify_skills.py --root . >"$tmpdir/cjk-desc.out" 2>"$tmpdir/cjk-desc.err"); then
-  echo "verify-skills should reject CJK in public descriptions"; exit 1
+if ! (cd "$tmpdir/repo8b" && python3 scripts/verify_skills.py --root . >"$tmpdir/cjk-desc.out" 2>"$tmpdir/cjk-desc.err"); then
+  echo "verify-skills should accept Chinese descriptions with 显式调用 and 不用于"; exit 1
 fi
-grep -q 'DESCRIPTION CONTAINS CJK: read' "$tmpdir/cjk-desc.err"
 
 # Case 9: ungrounded routing trigger inside CJK corner brackets 「」 is caught.
 copy_repo "$tmpdir/repo9"
 python3 -c "
 from pathlib import Path
-p = Path('$tmpdir/repo9/rules/waza-routing.md')
+p = Path('$tmpdir/repo9/rules/fskill-routing.md')
 t = p.read_text()
-t = t.replace('\"读一下\"', '「读一个不存在的触发词」')
+t = t.rstrip() + '\n| read | 「读一个不存在的触发词」 |\n'
 p.write_text(t)
 "
 sync_codex_mirror "$tmpdir/repo9"

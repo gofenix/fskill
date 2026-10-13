@@ -1,43 +1,31 @@
-# Logging Techniques for Debugging
+# 日志与调试探针
 
-Every log answers a yes/no question about a hypothesis: "if this prints X before Y, hypothesis A holds; otherwise A is dead." A log that cannot rule a hypothesis in or out is noise.
+日志是为了证明假设，不是为了制造噪声。
 
-## Discriminating Content
+好日志包含：
 
-Log what discriminates between hypotheses: ordering (sequence number or timestamp), input identity key, branch taken, old-vs-new state transition, and error code plus context. Place logs at boundaries where behavior should be predictable (handler entry/exit, cache hit or miss with key, state setter with old value and caller, async callback entry, external API result) rather than in tight-loop interiors. Never log credentials, PII, or full request/response bodies.
+- 输入摘要，不泄露秘密信息。
+- 唯一请求 ID、任务 ID 或样本 ID。
+- 状态变化前后值。
+- 分支选择原因。
+- 耗时和重试次数。
+- 错误类型和上游响应摘要。
 
-For race conditions, flicker, or intermittent failures, also capture event identity, monotonic ordering, start and end (not just "it ran"), and thread/task/queue identity. If adding a log changes the behavior, that is evidence of a timing, lifecycle, or concurrency problem, not "logging side effects" to dismiss.
+调试步骤：
 
-## Runner-Only Failures
+1. 先写出可证伪的预测：“若 X 成立，改变 Y 后应观察到 Z”，尽量只改变一个变量。偶现故障先固定输入和环境、记录次数与复现率，必要时提高触发概率；复现慢或变量混杂时，每次缩减一项，并确认原故障信号仍存在，不为追求理论最小复现丢失真实路径。
+2. 只在关键边界打点：输入、解析、状态更新、外部调用、输出。
+3. 保留时间戳和 ID，方便串联。
+4. 预测的结果与竞争假设确实可区分时再下根因结论。多个修法在同一门槛失败时，写出它们共用的前提，检验参与者、状态和边界是否符合前提；分布均匀本身不能排除因果。存在已知好坏版本且成本合理时用 bisect 收窄，不把一次变快当因果证明。
+5. 临时探针用统一可检索标记；验证后删除临时日志，或把有价值的日志改为正式观测点，再回验原始场景。
 
-When a script fails only under a specific runner (make target, CI job, test harness, cron) but passes standalone, do not edit the script with debug hacks you might forget to remove. Inject tracing from the outside via the environment the runner already passes through:
+性能异常先记录同条件基线、实际完成工作量与错误数，确认计时覆盖目标工作；profile 的开销与正常 timing 分开，保留重复次数与波动。一次粗估明确标注，不能当稳定收益。用户目标转为持续争取指标收益时，可建议显式 `/optimize`；本技能不自动切换或重复维护完整优化协议。
 
-```bash
-# xtrace-env.sh: sourced by every non-interactive bash via BASH_ENV
-exec 19>>/path/to/persistent/xtrace.log
-export BASH_XTRACEFD=19
-export PS4='+ [$0:$LINENO] '
-set -x
-```
+分析 trace、dump、HAR 等产物先确认格式、采集条件、revision 与源映射，沿事件/请求身份配对成功和失败路径。用下一次对照采集区分最强竞争假设；解析工具输出只是观察，不是自动根因。优先项目现有工具，不强制转 SQLite，也不凭诊断参考默认热补线上进程。
 
-Run the failing pipeline as `BASH_ENV=/path/to/xtrace-env.sh make test` (or the runner's equivalent). Every bash the runner spawns appends `file:line`-stamped traces to one persistent file, surviving the runner's temp-dir cleanup, so the exact dying line is on record even when the failure needs the full pipeline to reproduce. Guard the injection with a sentinel variable if nested shells would re-source it, and delete the env file when done.
+不要记录：
 
-## Native App Freeze Mode
-
-Activate when a desktop or mobile native app reports beachball, not responding, tab-switch freeze, first-open lag, idle wake stall, overlay lockup, or a screenshot shows a frozen app.
-
-Evidence to collect before changing code:
-
-1. Exact user path and version: first launch versus warm launch, the tab or window transition, idle duration, permissions, display count, and any setting that makes the freeze disappear.
-2. Runtime capture while frozen: `sample <process>`, recent app logs, CPU and memory footprint, thread count, and whether the main thread is blocked, spinning, or allocating.
-3. First-frame surface: view body work, first `.task`, synchronous icon or metadata lookup, filesystem scans, URL parent walks, notification callbacks, and app/window wake handlers.
-4. Blast search after the fix: grep the same API shape across the repo, especially path parent walks, synchronous icon loading, metadata reads in render paths, and callbacks that run on the main thread.
-
-Common native freeze traps:
-
-- Launch, terminate, permission, audio, display, or workspace notifications doing path walks, icon lookup, filesystem scans, or process enumeration on the main thread.
-- First paint hydrating a full app list, directory tree, media thumbnail set, or system status table before showing an interactive shell.
-- An input-lock or full-screen overlay without a guaranteed teardown path for Escape, app deactivation, permission denial, process termination, and window close.
-- Timer or sampler work that survives hidden windows, long idle periods, sleep/wake, or app reactivation.
-
-Compile-only and source-only checks are insufficient for this mode. The outcome must include the runtime capture, the root-cause frame or state transition, the focused regression guard, and any sibling matches that were fixed or explicitly left safe.
+- token、cookie、authorization header。
+- 完整用户数据或内部 URL。
+- 超大载荷。
+- 会改变时序的重型日志。

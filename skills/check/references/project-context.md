@@ -1,130 +1,47 @@
-# Project Review Context Template
+# 项目上下文模板
 
-Use this template to compress repository context before running Waza `/check`. The context must come from public project files, the diff, CI configuration, or explicit user instructions. Do not depend on private machine paths or unpublished project instructions.
+`/check` 进入任何项目时，先从公开上下文提炼约束。不要把私有记忆、个人路径或机器配置当项目规则。
 
-## What Belongs In Waza `/check`
+## 审查上下文
 
-- Diff depth classification.
-- Scope drift detection.
-- Hard stops such as destructive automation, missing release artifacts, generated artifact drift, version skew, unknown identifiers, injection risks, credential leakage, and dependency surprises.
-- Release Gate 2.0 matrix for release readiness.
-- Safety sink review for destructive operations, command construction, path boundaries, signing/appcast, sandbox/approval, and auth prompts.
-- Security and architecture specialist routing.
-- Autofix policy.
-- Sign-off format.
-- Verification expectations.
+填这些字段：
 
-## What Belongs In Project Context
+- **审查基准**：本地 diff、staged diff、PR、range，或用户指定 commit。
+- **变更范围**：语言、框架、生成物、配置、CI、发布文件。
+- **验证命令**：README、Makefile、package scripts、CI 或用户给出的命令。
+- **生成文件与受保护文件**：哪些文件由脚本生成，哪些不能手改。
+- **领域风险**：安全、数据、性能、兼容性、用户可见行为。
+- **公共回复规则**：issue/PR 回复语气和必须包含的证据。
 
-- Verification commands discovered from public docs, manifests, Makefiles, scripts, or CI workflows.
-- Protected files and directories.
-- Generated or bundled artifacts that must stay in sync with source changes.
-- Packaging source of truth: whether archives are built from `git ls-files`, explicit allowlists, generated manifests, or source directories.
-- Delivery surfaces: whether generated outputs are tracked, ignored, external release assets, registry uploads, appcasts, installer metadata, checksums, or site/download copy; how they are regenerated, inspected, staged, or uploaded.
-- Distribution lanes: preview, beta, nightly, stable, App Store, or registry channels, and which generated artifacts belong to each lane.
-- CLI command surfaces: entrypoints, subcommands, flags, help/version behavior, exit codes, stdout/stderr contract, TTY and non-interactive paths, config/env precedence, and installed-runtime checks.
-- Runtime dependencies introduced by the diff: Python packages, CLIs, network services, package managers, or platform tools that are not already declared in CI/docs.
-- Skill, plugin, marketplace, or package install surfaces: installer default ref, marketplace source path, generated mirror, package allowlist, archive root, executable bits, and the installed-runtime smoke command.
-- Domain-specific safety rules.
-- Release artifacts that must exist.
-- GitHub release reactions or other public release follow-through expected by the project.
-- Release-asset verification method: download, archive entry comparison, checksum manifest, package metadata readback, appcast readback, or registry query.
-- Public issue or PR reply conventions.
-- Known CI or test flakes documented by the project and how to distinguish them from real failures.
-- Release, publish, push, or issue-closure prerequisites documented by the project.
+## 发布检查 2.0
 
-## What Does Not Belong In Public Context
+发布就绪判断、打包或发布前填适用的矩阵项；仅 commit/push 使用 `maintainer-workflows.md` 的源码交付检查，公共回复或关闭操作核对对应远端状态，不要求无关发布证据：
 
-- Credential paths, private key filenames, passwords, tokens, or secret values.
-- Maintainer-only machine paths.
-- One-off personal preferences that do not affect project behavior.
-- One-off review reports, scorecards, or diagnostic snapshots copied as guidance instead of distilled into stable project rules.
-- Raw memory, chat excerpts, screenshots, private support details, local paths, project-specific commands, issue/PR numbers, release tags, or commit hashes from another project.
-- Full copies of Waza `/check` sections.
-
-## Recommended Context Shape
-
-```markdown
-## Project Commands
-
-- Format: `<command>`
-- Fast check: `<command>`
-- Full verification: `<command>`
-
-## CLI Command Surface
-
-- Entrypoints: `<command or bin>`.
-- Command contract: help/version, subcommands, flags, exit codes, stdout/stderr, JSON/schema output.
-- Runtime shape: TTY vs non-interactive behavior, env/config precedence, completion/manpage or shell integration.
-- Install/run proof: built package, temp prefix, PATH shim, shebang/executable bit, or package-manager path checked with `<command>`.
-- Mutating commands: dry-run/confirmation, operation log, rollback/retry behavior, signal/partial-failure handling.
-
-## Skill Or Plugin Install Surface
-
-- User install path: `<package manager / release archive / marketplace entry / plugin id / installer script>`.
-- Source path and generated mirror: `<source dir>` -> `<installed dir>`.
-- Package/archive inclusion: new scripts, references, templates, rules, manifests, and executable bits checked with `<command>`.
-- Isolated install smoke: fresh temp home/config/cache plus `<install command>` and `<list or invoke command>`.
-- Noise filtering: cache files, local logs, screenshots, and temp outputs excluded or intentionally shipped.
-
-## Project Hard Stops
-
-- Do not modify `<protected path>` unless explicitly requested.
-- If `<artifact>` is generated from `<source>`, verify it was regenerated.
-- If `<artifact>` is ignored by git but required for release, verify the regeneration and force-stage, upload, or registry publish path named by the project.
-- If `<package script>` builds from tracked files or an allowlist, verify newly introduced helpers, references, templates, and scripts are included in `<archive>`.
-- If an installer fetches remote content, verify the default ref is pinned to a release tag or checksum-protected; floating `main` must be an explicit override.
-- If a helper introduces a non-stdlib package or external CLI, verify CI installs it or the helper fails with a clear setup path.
-- If `<artifact>` is listed in release notes, verify it exists before sign-off.
-
-## Project-Specific Risks
-
-- `<risk>`: `<how to inspect it>`
-
-## Public Replies
-
-See `public-reply.md` for posting, edit-or-new-comment, read-back, and closure criteria; the reply body follows `/write` Public Reply Mode. Do not restate the rules here.
-
-## Release Follow-through
-
-- Version fields to check: `<manifest>`, `<app config>`, `<lockfile>`.
-- Generated artifacts to check: `<artifact>` from `<source>`.
-- Distribution lane: `<preview/beta/nightly/stable/etc.>` and which public surfaces it is allowed to touch.
-- Dry-run command before publishing: `<command>`.
-- Remote asset proof: `<download/readback command>` that checks content, manifest, digest, appcast, or registry state.
-- GitHub release reactions to add after asset verification: `<+1/laugh/heart/hooray/rocket/eyes or none>`.
-- Public state to re-read after publishing or closing: `<registry/release/issue URL or command>`.
-```
-
-Keep this context brief. It should guide the review, not replace the review method.
-
-## Release Gate 2.0 Matrix
-
-Fill this before claiming a change is release-ready. Use "n/a" only when the project clearly has no such surface.
-
-| Surface | Evidence |
+| 检查项 | 所需证据 |
 |---|---|
-| Review base | Base branch, latest tag, and commit range reviewed |
-| Worktree state | Dirty, staged, and untracked files accounted for |
-| Remote state | `origin/main` or release branch sync checked |
-| Version fields | Manifest, app config, changelog, appcast, and lockfile versions aligned |
-| Distribution lane | Preview, beta, nightly, stable, registry, or app-store lane named, with unrelated lanes left untouched |
-| Runtime dependencies | Newly introduced Python packages, CLIs, package managers, and network tools declared and available in CI |
-| Generated artifacts | Tracked archives, ignored dist outputs, bundled/minified files, appcasts, installer metadata, checksums, and site/download copy regenerated or proven not needed |
-| Package/archive contents | Built package inspected for required files, newly introduced helpers/references, and missing extras |
-| Installed runtime | Package, skill, plugin, CLI, or marketplace install exercised from a clean environment when the diff changes installable surfaces |
-| Release assets | GitHub release, appcast, download archive, checksum, or installer assets downloaded or read back and verified beyond page text or file size |
-| Registry/appcast | npm/crates/Homebrew/appcast/App Store or equivalent state re-read after publish |
-| CI status | Latest required checks passed or blocker named |
-| Issue/PR state | Target issue or PR re-read before commenting, closing, merging, or saying shipped |
+| 审查基准 | 当前分支、HEAD、diff 范围 |
+| 工作区 | dirty/staged/untracked 状态 |
+| 远端同步 | 本地和远端是否一致，是否需要 fetch |
+| 版本 | VERSION、package、manifest、tag 是否一致 |
+| 生成物 | 生成物是否由官方命令重建且无 drift |
+| 包与归档 | 包内容、入口文件、权限、大小 |
+| 发布附件 | asset 名称、hash/size、上传状态 |
+| 包注册表、appcast 与 CI | registry 最新版本、CI 状态、发布 workflow |
+| 公开状态 | issue/PR/release 是否已更新并重新读取确认 |
 
-## Safety Sink Review
+缺少证据时，不要声称已就绪。
 
-Any diff that touches one of these sinks needs explicit validation and rollback thinking:
+## 命令选择
 
-- Deleting, moving, or overwriting user files, caches, history, preferences, or generated outputs.
-- Building shell, AppleScript, SQL, URL, or filesystem paths from user input.
-- Changing cwd handling, symlink resolution, path traversal guards, sandbox permissions, approval checks, or auth prompts.
-- Changing signing, notarization, appcast, update, license, payment, or release asset generation.
+优先级：
 
-Review the smallest entry point that reaches the sink, then the downstream call. If validation is missing or rollback is unclear, treat it as a hard stop.
+1. 同一任务中仍有效的用户指定命令或已确定计划中的命令。
+2. 项目公开文档和 CI 命令。
+3. manifest 推导的最小相关命令。
+4. 如果不能运行，说明原因和可复制命令。
+
+## 公开内容规则
+
+- 不写入 secret、token、证书、私钥、内部路径、个人 home 目录。
+- 不把一次性事故复盘直接放进公共规则；只提炼可复用原则。
+- 项目案例是输入，不是通用政策。

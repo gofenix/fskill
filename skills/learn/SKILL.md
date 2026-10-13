@@ -1,112 +1,81 @@
 ---
 name: learn
-description: "Runs a six-phase research workflow from source bundle to publish-ready output. Use when researching an unfamiliar domain or compiling materials into one reference. Not for quick lookups or single-file reads."
-when_to_use: "学习一下, 深入研究, 研究一下, 整理成文章, 把这批材料整理, 一站式参考, 一篇就够, 整理成长文, research, deep dive, help me understand, compile sources, unfamiliar domain"
-dispatch_intent: "Deep research, unfamiliar domain, compile sources into output"
+description: "把陌生领域、代码系统与历史决策整理成可引用研究输出。仅在显式调用时使用：/learn、$learn 或 fskill 限定调用。不用于单文件阅读、持续教学、根因调试或普通无需研究的查询。"
+when_to_use: "/learn, $learn, 调用 fskill 的 learn, 用 fskill learn skill, invoke fskill learn, use fskill learn skill"
+disable-model-invocation: true
+dispatch_intent: "陌生领域深度研究、多来源综合、代码心智模型、历史决策研究、从材料到可发布输出"
 ---
 
-# Learn: From Raw Materials to Published Output
+# Learn: 把陌生领域研究到能输出
 
-Prefix your first line with 🥷 inline, not as its own paragraph.
+首行内联带上 🥷，不要单独起段。
 
-Support the user's thinking; do not replace it.
+把材料、陌生领域或代码系统变成结构清晰、可引用的输出。说明系统如何运行时追踪真实行为，解释历史决定时追踪当时证据；最终让读者能够理解或决策。
 
-## Outcome Contract
+## 调用边界
 
-- Outcome: unfamiliar material becomes a reliable mental model, reference, article, or notes set the user can use.
-- Done when: primary sources are collected or supplied, contradictions are handled explicitly, and the final structure teaches the topic without hiding uncertainty.
-- Evidence: source URLs or files, fetched content, notes from digestion, outline decisions, and self-review against the requested output.
-- Output: research notes, outline, publish-ready draft, or canonical reference, matching the chosen mode.
+首次进入本技能时，须由用户显式输入 `/learn`、`$learn`、`调用 fskill 的 learn`、`用 fskill learn skill`、`invoke fskill learn`、`use fskill learn skill`，或 Desktop 根分发器已从 `/fskill learn` 选中本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；新任务或切换到其他技能仍需显式调用。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
-**Boundary**: single URL that only needs fetching belongs in `/read`. A single URL that needs summary or analysis can use `/read` as the fetch step, but the final answer should satisfy the user's requested summary or analysis. `/learn` is for multi-source research that produces a new structured output.
+## 交付约定
 
-## Choose Mode
+- 目标: 用户得到一份结构化研究输出，能解释领域或系统、关键概念、历史取舍、证据和可行动结论。
+- 完成条件: 来源已收集并分层，主张有依据，结构经过自审，未知和不确定被标出。
+- 依据: 原始链接、PDF、论文、文档、仓库、用户提供材料、检索结果和抓取内容。
+- 交付形式: 研究简报、文章、提纲、学习路线、对比表或可交付文稿，按用户要求选择。
 
-Infer the mode from the requested artifact and supplied materials. Ask only when plausible modes would change the scope or deliverable and the user's intent does not resolve the choice:
+## 适用场景
 
-| Mode | Goal | Entry | Exit |
-|------|------|-------|------|
-| **Deep Research** | Understand a domain well enough to write about it | Phase 1 | Phase 6: publish-ready draft |
-| **Quick Reference** | Build a working mental model fast, no article planned | Phase 2 | Phase 2: notes only |
-| **Write to Learn** | Already have materials, force understanding through writing | Phase 3 | Phase 6: publish-ready draft |
-| **Canonical Article** | One article that covers a topic so thoroughly readers need nothing else | Phase 1 | Phase 6: single authoritative reference |
+使用 `/learn`：
 
-If unsure, suggest Quick Reference.
+- 用户给了一批来源，希望综合成一个答案。
+- 用户要深入理解一个陌生领域。
+- 用户需要理解代码系统的运行机制，或查清既有设计的历史原因。
+- 用户要从素材整理成文章、报告、讲稿或决策参考。
+- 任务需要比较多个观点、时间线、证据强弱。
 
-## Canonical Article Mode
+不要使用 `/learn`：
 
-Activate when: "一篇就够", "一站式参考", "整理成长文", "目的是大家只需要看这篇就好了", or the user wants a single authoritative reference on a topic.
+- 只需要读一个链接，可建议 `/read`，不自动切换。
+- 普通查询无需研究交付时按原请求处理；决策所需窄问题查证按 `references/focused-research.md` 收敛。
+- 只是改写已有稿子，用 `/write`。
+- 只是调试代码，用 `/hunt`。
+- 只是做工程方案，用 `/think`。
 
-Goal: after reading the article, no one should need to search for anything else on this topic.
+## 六阶段流程
 
-Additional requirements on top of standard Deep Research:
-- Every major sub-topic must have its own section; nothing left as a footnote
-- Include worked examples, not just principles
-- Cover common mistakes and how to avoid them
-- Add a "Further Reading" section with the 3-5 sources that go deepest; flag which ones are the best starting points
-- Phase 6 self-review must confirm: "Could a reader implement/understand this from this article alone?"
+1. **界定范围**：明确研究问题、目标读者、输出形态、时间边界、必须覆盖和明确不覆盖的内容。
+2. **收集来源**：收集一手来源优先。网页、PDF、论文、代码仓库用当前可用工具取回干净内容；代码机制或历史原因研究读取 [代码系统与历史决策](references/code-investigation.md)，分别追踪行为与动机。只有用户同时显式调用 `/read` 时才运行该技能。
+3. **消化材料**：把来源分成事实、解释、观点、案例、数据和未证实说法。记录冲突点。
+4. **组织结构**：先做骨架，再填内容。避免按来源逐篇复述。
+5. **写作**：用读者能跟上的顺序输出，关键术语第一次出现要解释。
+6. **自审**：检查主张是否有证据、有没有遗漏反方、有没有把猜测写成事实。
 
-## Phase 1: Collect
+## 来源规则
 
-Gather primary sources only: papers that introduced key ideas, official lab/product blogs, posts from builders, canonical "build it from scratch" repositories. Not summaries. Not explainers.
+- 优先使用一手来源：官方文档、论文、代码、公告、数据集、原始采访。
+- 二手文章可用于线索和解释，但不能单独支撑关键结论。
+- 对最新、容易变化或高风险信息，必须实时核实。
+- 来源不足时直接说不足，不补脑。
 
-Three ordered steps per source -- no shortcuts, no merging:
+## 输出模式
 
-1. **Discover** -- use an installed search plugin to map the landscape, then deep-search the 2-3 most promising sub-topics. No plugin: use the environment's native web search. Output is a URL list; do not fetch content here.
-2. **Fetch** -- every URL goes through `/read` when available. `/read` owns the proxy cascade, paywall detection, and platform routing (WeChat, Feishu, PDF, GitHub). Native fetch tools and raw `curl` silently fail on JS-heavy or paywalled sites and skip all of that. If `/read` is not installed, warn once without blocking, fall back to native fetch, and state the reduced coverage on paywalled, JS-heavy, and Chinese-platform pages.
-3. **File** -- tell `/read` the research project's source directory when one exists. If no directory was specified, let `/read` use a per-session temp directory and return the saved path. Move or index saved files into sub-topic directories after fetch returns. Move, don't refetch.
+| 用户请求 | 交付 |
+|---|---|
+| 学习一下 | 概念地图 + 核心机制 + 推荐阅读顺序 |
+| 深入研究 | 结构化研究报告，含证据和不确定性 |
+| 整理成文章 | 可发布草稿，按读者视角组织 |
+| 对比 | 维度表 + 结论 + 适用场景 |
+| 系统如何运行或为何这样设计 | 可核查的运行模型或历史证据，说明推断、矛盾与搜索缺口；后续改动约束不作为实施授权 |
+| 简报或窄问题查证 | 决策摘要 + 来源证据 + 未决事项；窄问题按 `references/focused-research.md` 收敛，不强制长报告 |
 
-Target: 5-10 sources for a blog post, 15-20 for a deep technical survey.
+## 硬性规则
 
-## Phase 2: Digest
+- 不要只堆来源摘要；必须综合。
+- 不要用“业内普遍认为”这类无来源话术。
+- 不要把模型推断包装成事实。
+- 重要数字、日期、版本、政策和 API 状态需要当前验证。
+- 长输出要有结构，但不要为了显得完整而加空泛章节。
 
-Work through the materials. For each piece: read it fully, keep what is good, cut ruthlessly what is not.
+## 后续交接
 
-For key claims, ask before including in the outline:
-- Does this idea appear in at least two different contexts from the same source?
-- Can this framework predict what the source would say about a new problem?
-- Is this specific to this source, or would any expert in the field say the same thing?
-
-Generic wisdom is not worth distilling. Passes two or three: belongs in the outline. Passes one: background material. Passes zero: cut it.
-
-### Conversation Or Review Distillation
-
-When the input is a recent conversation, project review, scorecard, or diagnostic report, treat it as raw material. Read distilled summaries, memory entries, and review outputs first; open raw transcripts only to verify a disputed detail or recover the exact source of a repeated pattern. Before editing durable guidance, build a candidate matrix (source/project, repeated failure, transferable rule, target layer, evidence count, redaction risk) and promote only candidates with cross-source support or a repeated failure in the same project family. Map each repeated workflow failure, invariant, or verifier surface to project docs, shared rules, skill references, or a deterministic script that can fail reliably without project context. Drop dated line numbers, current-score framing, private paths, one-machine setup, and repo-specific commands unless the output is for that same repo, and keep raw conversation history out of the final artifact.
-
-## Phase 3: Outline
-
-Write the outline for the article. For each section: note the source materials it draws from. If a section has no sources, either it does not belong or a source needs to be found first.
-
-## Phase 4: Fill In
-
-Work through the outline section by section. A section that is hard to write means the mental model is still weak there: return to Phase 2 for that sub-topic, not the whole article. Stall signals: an opening sentence rewritten three times without settling, a single-source claim with no cross-check, a source missing from Phase 1, or a claim you could not explain out loud. The outline may change, and that is fine.
-
-## Phase 5: Refine
-
-Edits only: cut redundancy without changing meaning or voice, flag broken argument flow, and mark gaps (concepts used before they are explained, claims needing sources). Do not draft new sections from scratch. Then strip AI patterns: invoke `/write` when installed, otherwise warn once and scan manually for filler, binary contrasts, and dramatic fragmentation.
-
-## Phase 6: Self-review and Publish Readiness
-
-The user reads the entire article linearly before publishing. Not with AI. Mark everything that feels off, fix it, read again. Two passes minimum.
-
-When it reads clean from start to finish, the draft is ready for the user to publish.
-
-## Hard Rules
-
-- **No Phase 4 before the outline is solid**, with a source behind every section (Phase 3).
-- **Contradictions stay visible.** When two sources contradict on a factual claim, note both positions and the evidence each gives; never silently pick one.
-- **Stop at publish confirmation.** After the user confirms the article is ready, do not upload, post, distribute, or perform any publish action unless explicitly asked.
-
-## Gotchas
-
-| What happened | Rule |
-|---------------|------|
-| Phase 2 wrote summaries instead of teaching the concept | Digest means building the mental model. Summarizing is not digesting. |
-
-## Output
-
-The artifact is the mode's exit from the table above. Report the saved path when files were written and complete the authorized handoff; publication requires an explicit request as stated in Hard Rules.
-
-Within the requested format and scope, choose a representation for the reader's question: prose for conclusions, diagrams for relationships and branches, interactive examples for changing conditions, and animation or video for processes whose timing or motion matters. Add a representation only when it helps the reader understand or test the explanation; a research request alone does not require building an app or producing a video.
-
-Across representations, preserve the same facts, conditions, failure branches, and uncertainty. Interactive results must follow a supported model or explicitly labeled assumptions, not decorative controls. Judge an explanation by whether its content lets the reader trace a relevant failure path, predict a condition change, or identify a load-bearing assumption; visual polish alone is not evidence of correctness.
+用户要完整文章时交付可编辑草稿，不停在提纲；已授权的研究和写作在本技能范围内连续完成。若用户只要供 `/write` 使用的材料，交付草稿或清晰提纲，不自动调用后续技能。如果会进入 `/think`，最后给出决策所需的事实、约束和可选方向，不替 `/think` 做架构计划。
