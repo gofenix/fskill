@@ -60,7 +60,7 @@ copy_repo "$tmpdir/regen"
 printf '%s\n' '{"plugins": []}' > "$tmpdir/regen/.claude-plugin/marketplace.json"
 rm -rf "$tmpdir/regen/.codex-plugin" "$tmpdir/regen/.agents" "$tmpdir/regen/plugins"
 (cd "$tmpdir/regen" && python3 scripts/build_metadata.py >"$tmpdir/regen.out")
-test "$(jq '.plugins | length' "$tmpdir/regen/.claude-plugin/marketplace.json")" -eq 10
+test "$(jq '.plugins | length' "$tmpdir/regen/.claude-plugin/marketplace.json")" -eq 9
 test "$(jq -r '.name' "$tmpdir/regen/plugins/waza/.codex-plugin/plugin.json")" = "waza"
 test "$(jq -r '.skills' "$tmpdir/regen/plugins/waza/.codex-plugin/plugin.json")" = "./skills/"
 test -f "$tmpdir/regen/plugins/waza/skills/check/SKILL.md"
@@ -68,6 +68,8 @@ test -f "$tmpdir/regen/plugins/waza/rules/waza-routing.md"
 test "$(jq -r '.plugins[0].source.path' "$tmpdir/regen/.agents/plugins/marketplace.json")" = "./plugins/waza"
 test "$(jq -r '.plugins[0].policy.installation' "$tmpdir/regen/.agents/plugins/marketplace.json")" = "AVAILABLE"
 test "$(jq -r '.name' "$tmpdir/regen/package.json")" = "@tw93/waza"
+test "$(jq -r '.homepage' "$tmpdir/regen/package.json")" = "https://github.com/tw93/Waza"
+test "$(jq -r '.files | index("llms.txt") != null' "$tmpdir/regen/package.json")" = "true"
 test "$(jq -r '.pi.skills[0]' "$tmpdir/regen/package.json")" = "./skills"
 test "$(jq -r '.publishConfig.access' "$tmpdir/regen/package.json")" = "public"
 

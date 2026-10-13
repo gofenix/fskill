@@ -13,9 +13,80 @@ VERSION file).
 from __future__ import annotations
 
 import ast
+import re
 import sys
 from pathlib import Path
 from typing import NoReturn
+
+# Shared across the generator (build_metadata.py), the verifier
+# (skill_checks.py), and the packaging filter (packaging_filter.py) so the
+# three can never disagree on what counts as local cache noise or a skill
+# reference. Edit here only.
+CODEX_MIRROR_IGNORED_DIRS = {
+    "__pycache__",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+}
+CODEX_MIRROR_IGNORED_NAMES = {
+    ".DS_Store",
+}
+CODEX_MIRROR_IGNORED_SUFFIXES = {
+    ".pyc",
+    ".pyo",
+}
+SKILL_REF_RE = re.compile(r"skills/([a-z][a-z0-9_-]*)/SKILL\.md")
+
+
+def should_include_codex_mirror_file(path: Path) -> bool:
+    if any(part in CODEX_MIRROR_IGNORED_DIRS for part in path.parts):
+        return False
+    if path.name in CODEX_MIRROR_IGNORED_NAMES:
+        return False
+    return path.suffix not in CODEX_MIRROR_IGNORED_SUFFIXES
+
+
+def iter_codex_source_files(root: Path):
+    """Yield (source_name, source_rel, source_path) for every skills/ and
+    rules/ file that ships in the Codex plugin mirror.
+
+    Single owner of the source-side mirror walk: codegen builds the plugin
+    tree from it and the verifier compares against it, so inclusion-rule
+    changes land in one place.
+    """
+    for source_name in ("skills", "rules"):
+        source_root = root / source_name
+        if not source_root.is_dir():
+            continue
+        for path in sorted(source_root.rglob("*")):
+            if not path.is_file():
+                continue
+            rel = path.relative_to(source_root)
+            if should_include_codex_mirror_file(rel):
+                yield source_name, rel, path
+
+
+def iter_codex_plugin_files(plugin_root: Path):
+    """Yield (plugin_rel, path) for every file under the generated Codex
+    plugin tree that passes the mirror filter. Reverse side of the walk:
+    used to catch stale mirror files regeneration would delete."""
+    if not plugin_root.is_dir():
+        return
+    for path in sorted(plugin_root.rglob("*")):
+        if not path.is_file():
+            continue
+        rel = path.relative_to(plugin_root)
+        if should_include_codex_mirror_file(rel):
+            yield rel, path
+
+
+def skill_ref_diff(text: str, expected: set[str]) -> tuple[list[str], list[str]]:
+    """Diff skills/<name>/SKILL.md references in text against expected names.
+
+    Returns (missing, stale): expected skills the text never references, and
+    referenced skills that do not exist."""
+    referenced = set(SKILL_REF_RE.findall(text))
+    return sorted(expected - referenced), sorted(referenced - expected)
 
 
 def fail(message: str) -> NoReturn:

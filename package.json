@@ -1,13 +1,13 @@
 {
   "name": "@tw93/waza",
-  "version": "3.28.1",
-  "description": "中文优先的 Waza 工程技能，适用于 Claude Code、Codex、Antigravity、OpenCode、Pi 和兼容 coding agents。",
+  "version": "3.39.0",
+  "description": "Waza engineering skills for Claude Code, Codex, Antigravity, OpenCode, Pi, and compatible coding agents.",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tw93/Waza.git"
   },
-  "homepage": "https://github.com/tw93/Waza#readme",
+  "homepage": "https://github.com/tw93/Waza",
   "keywords": [
     "pi-package",
     "agent-skills",
@@ -15,13 +15,17 @@
     "claude-code",
     "codex",
     "antigravity",
-    "opencode"
+    "opencode",
+    "antigravity-cli"
   ],
   "files": [
     "LICENSE",
+    "llms.txt",
     "README.md",
     "rules",
-    "scripts",
+    "scripts/setup-rule.sh",
+    "scripts/setup-statusline.sh",
+    "scripts/statusline.sh",
     "skills",
     "!**/__pycache__/**",
     "!**/*.pyc"
@@ -31,7 +35,8 @@
   },
   "pi": {
     "skills": [
-      "./skills"
+      "./skills",
+      "!skills/RESOLVER.md"
     ]
   }
 }

@@ -12,7 +12,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/test_helpers.sh"
 
 NINJA="Prefix your first line with 🥷 inline, not as its own paragraph."
-SKILLS="think design check hunt write learn read health"
+SKILLS="think ui check hunt write learn read health"
 
 # --- validate_package.py -----------------------------------------------------
 stage=$(make_tmpdir)

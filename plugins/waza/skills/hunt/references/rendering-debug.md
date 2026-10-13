@@ -1,24 +1,34 @@
-# Rendering Debug
+# Rendering Bug Debug Reference
 
-用于截图回归、空白页面、布局错乱、资源不显示、canvas/3D 不渲染。
+## Rendering Bug Mode
 
-检查顺序：
+Activate when: "PDF looks wrong", "page break issue", "font not rendering", broken PDF output, print layout wrong.
 
-1. 控制台错误和网络错误。
-2. DOM 是否存在目标节点。
-3. CSS 是否把节点隐藏、挤出、覆盖或透明。
-4. 资源 URL、CORS、MIME、尺寸、加载时机。
-5. viewport、device pixel ratio、safe area。
-6. 状态是否正确进入当前页面或组件。
-7. canvas/3D 是否真的画出非背景像素。
+Static analysis first (CSS review), then reproduce if needed.
 
-常见根因：
+### WeasyPrint
 
-- 父容器高度为 0。
-- flex/grid 子项缺 `min-width: 0`。
-- z-index 或 stacking context 覆盖。
-- 图片路径在 dev 可用，打包后不可用。
-- SSR/CSR hydration 状态不一致。
-- 动画初始状态停在透明或 offscreen。
+- `rgba()` causes double-rectangle bug: use solid hex colors instead
+- `page-break-inside: avoid` is often ignored: use explicit breaks
+- Float-based layouts often break at page boundaries: prefer flexbox or block
+- External font URLs blocked at render time: embed fonts as base64 or host locally
 
-验证要用真实截图或渲染产物，不能只看代码。
+### Font Loading
+
+- Check `@font-face` src paths (relative vs. absolute)
+- CORS headers must allow the render origin for external fonts
+- Format support: WeasyPrint prefers WOFF/TTF; WOFF2 support depends on version
+- Missing font fallback = invisible text or system fallback glyph
+
+### Page Overflow
+
+- Calculate content height vs. page height before debugging line-by-line
+- Reduce `line-height`, `padding`, or `margin` to reclaim space
+- Orphan/widow control: `orphans: 3; widows: 3` in `@page` body rule
+
+### Browser Print CSS
+
+- Confirm `@media print` rules are present and not overridden
+- `@page` margin must account for printer unprintable area (~6mm minimum)
+- `break-before: page` / `break-after: page` on section dividers
+- Test with `window.print()` in browser DevTools, not just visual preview

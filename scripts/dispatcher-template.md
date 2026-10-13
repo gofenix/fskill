@@ -1,15 +1,13 @@
 ---
 name: waza
-description: '中文优先的 Waza 工程技能分发器：think 做方案，design 做 UI，check 做审查和发布门禁，hunt 做根因调试，write 做文案，learn 做研究，read 读取 URL/PDF，health 审计 agent 配置和 AI 可维护性。'
+description: 'Dispatcher for Waza engineering skills: think (architecture/handoff), ui (artifact-grounded interface design), check (review/release gates), hunt (runtime debugging/regression), write (prose/release copy), learn (research), read (URL/PDF fetch), health (agent config and AI maintainability audit).'
 ---
 
-# Waza: 工程技能分发器
+# Waza: Engineering Skills Dispatcher
 
 Prefix your first line with 🥷 inline, not as its own paragraph.
 
-**Update check（非阻塞）**。路由前运行一次 `bash scripts/check-update.sh`；如果它输出了新版本提示，把那一行转告用户，然后继续。这个脚本每天最多读一次公开版本文件，不发送本地数据，失败时静默。
-
-你有八个技能可用。根据用户意图选中一个技能，读取下面对应的技能段落，然后严格执行该技能。
+You have eight skills available. Match the user's intent to the right skill, read the matching section below, and execute it.
 
 ## Routing Table
 
@@ -18,28 +16,28 @@ Prefix your first line with 🥷 inline, not as its own paragraph.
 
 ## How This Works
 
-1. 读取用户消息，按上表匹配技能。
-2. 完整阅读匹配到的技能段落。
-3. 按该技能的说明执行。
+1. Read the user's message and match it to a skill from the table above.
+2. Read the matched skill section in full.
+3. Execute that skill's instructions exactly.
 
-如果多个技能都可能匹配，用这些规则消歧：
+If the message could match multiple skills, use these disambiguation rules:
 
-1. 更具体者优先：UI 决策里 `/design` 比 `/think` 更具体。
-2. 消息包含 URL：先用 `/read`。如果内容是研究材料，再接 `/learn`。
-3. 代码已完成还是代码坏了：已完成或 PR 用 `/check`；报错、崩溃、行为异常用 `/hunt`。
-4. 配置或维护性 vs 用户代码：Codex/Claude 不听指令、hooks/MCP、`/health` token 消耗、AI coding code rot、上下文混乱、验证缺失或验证输出过期用 `/health`；用户代码报错用 `/hunt`。
-5. 发布动作 vs 发布文案：commit、tag、publish、push、release reactions、close issue 用 `/check`；写 release notes 或 changelog 文案用 `/write`。
-6. 截图审美 vs 截图回归：视觉品味问题用 `/design`；渲染、状态、生成物错误或“以前可用”证据用 `/hunt`。
-7. 从零产出 vs 编辑已有稿：新长文用 `/learn`；已有草稿润色用 `/write`。
-8. 判断报错原因用 `/hunt`；判断要不要保留、值不值得做用 `/think`。
-9. 仍然模糊时，读两个技能的 `Not for` 段，用排除法；还不清楚就问用户。
+1. Most specific wins: `/ui` is more specific than `/think` for UI decisions.
+2. URL in message: start with `/read`. If the content is research material, chain to `/learn`.
+3. Code already done vs. code broken: done/PR -> `/check`; error/broken -> `/hunt`.
+4. Config/maintainability vs. code: Codex/Claude misbehaving, hooks/MCP, `/health` token usage, AI coding code rot, unclear context, missing verification, or stale verifier output -> `/health`; user code errors -> `/hunt`.
+5. Release action vs. release prose: commit/tag/publish/push/release reactions/close issue -> `/check`; write release notes/changelog text -> `/write`.
+6. Screenshot taste vs. screenshot regression: visual taste complaint -> `/ui`; broken render/state/generated output or used-to-work evidence -> `/hunt`.
+7. From scratch vs. editing: new long-form output -> `/learn`; existing draft to polish -> `/write`.
+8. "Judge this" + error -> `/hunt`; "judge this" + should we keep it -> `/think`.
+9. Still ambiguous: read both skills' "Not for" sections; use exclusion. If still unclear, ask the user.
 
 ## Path Resolution
 
-在这个发行包里，子技能脚本位于 `skills/{name}/scripts/`。所有相对路径都从本文件所在目录解析，不要从个人 home 目录里的缓存路径解析。
+In this distribution, sub-skill scripts live at `skills/{name}/scripts/`. Resolve all relative paths from this file's directory, not from a personal home-directory skill cache.
 
 ## Chaining
 
-技能之间手动串联，不自动触发。每个技能完成后等待用户下一步。
+Each skill stops at the requested outcome. If the user explicitly authorizes a workflow across skills, complete that workflow without asking for approval at every transition; do not infer authorization for further actions.
 
-常见串联：`/think` -> implement approved plan -> `/check` | `/hunt` -> fix -> `/check` -> release/push/issue follow-through | `/read` -> `/learn` -> `/write`
+Common chains: `/think` -> implement approved plan -> `/check` | `/hunt` -> fix -> `/check` -> release/push/issue follow-through | `/read` -> `/learn` -> `/write`

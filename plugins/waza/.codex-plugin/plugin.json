@@ -1,7 +1,7 @@
 {
   "name": "waza",
-  "version": "3.28.1",
-  "description": "Codex 工程工作流技能：think、check、hunt、design、read、write、learn 和 health。",
+  "version": "3.39.0",
+  "description": "Engineering workflow skills for Codex: think, check, hunt, ui, read, write, learn, and health.",
   "author": {
     "name": "Tw93",
     "email": "hitw93@gmail.com",
@@ -22,8 +22,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Waza",
-    "shortDescription": "Codex 的中文优先工程工作流技能",
-    "longDescription": "Waza 把八个工程习惯打包成 Codex skills：think 做方案，check 做审查和发布门禁，hunt 做根因调试，design 做前端和视觉，read 读取 URL/PDF，write 打磨文案，learn 研究陌生领域，health 审计 agent 配置和 AI 可维护性。",
+    "shortDescription": "Engineering workflow skills for Codex",
+    "longDescription": "Waza packages eight engineering habits as Codex skills: think for planning, check for review, hunt for debugging, ui for frontend work, read for source intake, write for prose, learn for domain research, and health for agent configuration audits.",
     "developerName": "Tw93",
     "category": "Developer Tools",
     "capabilities": [
@@ -32,9 +32,9 @@
     ],
     "websiteURL": "https://github.com/tw93/Waza",
     "defaultPrompt": [
-      "用 Waza think 规划这个改动",
-      "用 Waza check 审查这个 diff",
-      "用 Waza hunt 排查这个失败"
+      "Use Waza think to plan this change",
+      "Use Waza check to review this diff",
+      "Use Waza hunt to debug this failure"
     ],
     "brandColor": "#111827"
   }

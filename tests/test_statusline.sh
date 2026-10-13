@@ -104,4 +104,16 @@ printf '%s' "$json2" | HOME="$tmpdir6" bash "$ROOT/scripts/statusline.sh" >"$tmp
 grep -q '5h: --' "$tmpdir6/out"
 grep -q '7d: --' "$tmpdir6/out"
 
+# A missing five_hour block must not shift seven_day fields: resets_at must
+# never render as the 7d percentage.
+tmpdir7=$(make_tmpdir)
+json_no_5h='{"context_window":{"current_usage":{"input_tokens":5},"context_window_size":100},"rate_limits":{"seven_day":{"used_percentage":42,"resets_at":2000003600}}}'
+printf '%s' "$json_no_5h" | HOME="$tmpdir7" bash "$ROOT/scripts/statusline.sh" >"$tmpdir7/out"
+grep -q '5h: --' "$tmpdir7/out"
+grep -q '42%' "$tmpdir7/out"
+if grep -q '2000003600%' "$tmpdir7/out"; then
+  echo "resets_at leaked into the 7d percentage" >&2
+  exit 1
+fi
+
 echo "statusline smoke: ok"

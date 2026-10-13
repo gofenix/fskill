@@ -1,11 +1,11 @@
 #!/bin/bash
 # Install Waza statusline into Claude Code
-set -e
+set -euo pipefail
 
 CLAUDE_DIR="$HOME/.claude"
 DEST="$CLAUDE_DIR/statusline.sh"
 SETTINGS_FILE="$CLAUDE_DIR/settings.json"
-WAZA_REF="${WAZA_REF:-v3.28.1}"
+WAZA_REF="${WAZA_REF:-v3.39.0}"
 
 case "$WAZA_REF" in
   main|v[0-9]*.[0-9]*.[0-9]*) ;;
@@ -40,6 +40,34 @@ if ! command -v jq &>/dev/null; then
 fi
 
 mkdir -p "$CLAUDE_DIR"
+
+# A download that dies partway must not touch the installed script, so stage it
+# into a sibling temp file and swap that in only once it is complete and
+# executable. The trap covers what a return cannot: Ctrl-C or a kill mid-curl.
+STAGED_DOWNLOAD=""
+cleanup_staged_download() {
+  if [ -n "$STAGED_DOWNLOAD" ]; then
+    rm -f "$STAGED_DOWNLOAD"
+  fi
+  return 0
+}
+trap cleanup_staged_download EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+download_failed() {
+  echo "Error: could not fetch $RAW (exit $1)." >&2
+  echo "$DEST was left untouched." >&2
+  exit "$1"
+}
+
+download_statusline_atomically() {
+  STAGED_DOWNLOAD="$(mktemp "${DEST}.tmp.XXXXXX")" || return 1
+  curl -fsSL --connect-timeout 10 --max-time 60 "$RAW" -o "$STAGED_DOWNLOAD" || return
+  chmod +x "$STAGED_DOWNLOAD" || return
+  mv -f "$STAGED_DOWNLOAD" "$DEST" || return
+  STAGED_DOWNLOAD=""
+}
 
 # Refuse to modify an invalid settings file. Overwriting it would drop unrelated keys.
 if [ -f "$SETTINGS_FILE" ]; then
@@ -97,9 +125,8 @@ if [ -n "$EXISTING" ]; then
   fi
 fi
 
-# Download statusline script (after any confirmation prompt)
-curl -fsSL "$RAW" -o "$DEST"
-chmod +x "$DEST"
+# Download statusline script (after any confirmation prompt).
+download_statusline_atomically || download_failed $?
 
 # Write statusLine into ~/.claude/settings.json
 SETTINGS_FILE="$SETTINGS_FILE" python3 - <<'PYEOF'

@@ -5,26 +5,28 @@ is covered by the shell smoke (tests/test_codegen.sh); here we test the small
 transforms.
 """
 
+import pytest
+
 import build_metadata as bm
 
 
 def test_render_readme_rewrites_main_to_latest_asset():
     body = "curl https://raw.githubusercontent.com/tw93/Waza/main/scripts/setup-rule.sh"
-    out = bm.render_readme(body, "9.9.9")
+    out = bm.render_readme(body)
     assert "https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh" in out
     assert "raw.githubusercontent.com" not in out
 
 
 def test_render_readme_rewrites_pinned_version_to_latest_asset():
     body = "curl https://raw.githubusercontent.com/tw93/Waza/v1.2.3/scripts/setup-rule.sh"
-    out = bm.render_readme(body, "9.9.9")
+    out = bm.render_readme(body)
     assert "https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh" in out
     assert "v1.2.3" not in out
 
 
 def test_render_readme_no_change_when_already_latest_asset():
     body = "curl https://github.com/tw93/Waza/releases/latest/download/setup-rule.sh"
-    assert bm.render_readme(body, "9.9.9") == body
+    assert bm.render_readme(body) == body
 
 
 def test_render_script_ref_pins_main():
@@ -111,9 +113,40 @@ def test_collect_codex_plugin_tree_ignores_local_cache_files(tmp_path):
     (rules_dir / "waza-routing.md").write_text("routing\n")
     (rules_dir / ".DS_Store").write_bytes(b"noise")
 
-    tree = bm.collect_codex_plugin_tree(tmp_path, "{}\n")
+    tree = bm.collect_codex_plugin_tree(tmp_path, "{}\n", "{}\n", {})
 
     assert "plugins/waza/skills/check/scripts/run.py" in tree
     assert "plugins/waza/rules/waza-routing.md" in tree
+    assert "plugins/waza/plugin.json" in tree
     assert all("__pycache__" not in path for path in tree)
     assert all(not path.endswith((".pyc", ".DS_Store")) for path in tree)
+
+
+def test_collect_skill_shared_assets_copies_durable_context_when_linked(tmp_path):
+    rules_dir = tmp_path / "rules"
+    rules_dir.mkdir()
+    (rules_dir / "durable-context.md").write_text("preamble\n")
+    linked = tmp_path / "skills" / "check"
+    linked.mkdir(parents=True)
+    (linked / "SKILL.md").write_text(
+        "---\nname: x\n---\nSee [references/durable-context.md](references/durable-context.md).\n"
+    )
+    unlinked = tmp_path / "skills" / "read"
+    unlinked.mkdir(parents=True)
+    (unlinked / "SKILL.md").write_text("---\nname: x\n---\n")
+
+    tree = bm.collect_skill_shared_assets(tmp_path)
+
+    assert tree["skills/check/references/durable-context.md"] == b"preamble\n"
+    assert "skills/read/references/durable-context.md" not in tree
+
+
+def test_collect_skill_shared_assets_fails_when_link_has_no_source(tmp_path):
+    skill_dir = tmp_path / "skills" / "check"
+    skill_dir.mkdir(parents=True)
+    (skill_dir / "SKILL.md").write_text(
+        "---\nname: x\n---\nSee [references/durable-context.md](references/durable-context.md).\n"
+    )
+
+    with pytest.raises(SystemExit):
+        bm.collect_skill_shared_assets(tmp_path)

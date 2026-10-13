@@ -10,11 +10,12 @@ generated.
 from __future__ import annotations
 
 import argparse
-import re
 import sys
 from pathlib import Path
 
-SKILL_REF_RE = re.compile(r"skills/([a-z][a-z0-9_-]*)/SKILL\.md")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from skill_frontmatter import skill_ref_diff  # noqa: E402
 
 
 def main() -> int:
@@ -35,47 +36,24 @@ def main() -> int:
         print("ERROR: no skills found under skills/*/SKILL.md", file=sys.stderr)
         return 1
 
-    dispatcher = set(
-        SKILL_REF_RE.findall((root / "scripts" / "dispatcher.md").read_text())
-    )
-    resolver = set(
-        SKILL_REF_RE.findall((root / "skills" / "RESOLVER.md").read_text())
-    )
-
     drift = False
-
-    missing_dispatcher = expected - dispatcher
-    if missing_dispatcher:
-        print(
-            "ROUTING DRIFT: skills missing from scripts/dispatcher.md: "
-            f"{sorted(missing_dispatcher)}",
-            file=sys.stderr,
-        )
-        drift = True
-
-    missing_resolver = expected - resolver
-    if missing_resolver:
-        print(
-            f"ROUTING DRIFT: skills missing from RESOLVER.md: {sorted(missing_resolver)}",
-            file=sys.stderr,
-        )
-        drift = True
-
-    stale_dispatcher = dispatcher - expected
-    if stale_dispatcher:
-        print(
-            f"ROUTING DRIFT: stale skill refs in scripts/dispatcher.md: {sorted(stale_dispatcher)}",
-            file=sys.stderr,
-        )
-        drift = True
-
-    stale_resolver = resolver - expected
-    if stale_resolver:
-        print(
-            f"ROUTING DRIFT: stale skill refs in RESOLVER.md: {sorted(stale_resolver)}",
-            file=sys.stderr,
-        )
-        drift = True
+    for label, path in (
+        ("scripts/dispatcher.md", root / "scripts" / "dispatcher.md"),
+        ("RESOLVER.md", root / "skills" / "RESOLVER.md"),
+    ):
+        missing, stale = skill_ref_diff(path.read_text(), expected)
+        if missing:
+            print(
+                f"ROUTING DRIFT: skills missing from {label}: {missing}",
+                file=sys.stderr,
+            )
+            drift = True
+        if stale:
+            print(
+                f"ROUTING DRIFT: stale skill refs in {label}: {stale}",
+                file=sys.stderr,
+            )
+            drift = True
 
     if drift:
         return 1

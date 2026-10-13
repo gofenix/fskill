@@ -2,17 +2,29 @@ name: release
 on:
   release:
     types: [published]
+# Two release events close together must not run two npm publishes at once;
+# queue rather than cancel, since a half-finished publish is worse than a wait.
+concurrency:
+  group: release-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
 jobs:
   upload-zip:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+      - name: Assert release tag matches VERSION
+        run: test "v$(cat VERSION)" = "${{ github.event.release.tag_name }}"
+      - name: Pin Python (keep CI behavior reproducible from local dev)
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y jq ripgrep python3 python3-pip
+        run: sudo apt-get update && sudo apt-get install -y jq
       - name: Install pytest for unit layer
-        run: python3 -m pip install --user --break-system-packages pytest
+        run: python3 -m pip install pytest
       - name: Install shellcheck (pinned to keep CI behavior reproducible from local dev)
         env:
           SHELLCHECK_VERSION: v0.10.0
@@ -47,8 +59,8 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
@@ -76,7 +88,12 @@ jobs:
         run: |
           set -euo pipefail
           version="$(cat VERSION)"
-          for attempt in 1 2 3 4 5 6; do
+          # npm holds a successful upload behind a scan before it is readable,
+          # and "a few minutes" is its own wording. The publish above is
+          # at-most-once, so a short window here turns a completed release into
+          # a red run and invites a re-publish that must never happen. Wait for
+          # the registry rather than for the loop: 30 tries at 30s is 15 minutes.
+          for attempt in $(seq 1 30); do
             published="$(npm view "@tw93/waza@${version}" version 2>/dev/null || true)"
             latest="$(npm view @tw93/waza dist-tags.latest 2>/dev/null || true)"
             if [ "$published" = "$version" ] && [ "$latest" = "$version" ]; then
@@ -84,7 +101,9 @@ jobs:
               exit 0
             fi
             echo "waiting for npm @tw93/waza@${version}; published=${published:-missing} latest=${latest:-missing}"
-            sleep 10
+            sleep 30
           done
-          echo "npm did not publish @tw93/waza@${version} as latest" >&2
+          echo "npm @tw93/waza@${version} still not readable after 15 minutes." >&2
+          echo "The publish step already succeeded if it printed + @tw93/waza@${version}." >&2
+          echo "Check https://www.npmjs.com/package/@tw93/waza before re-running anything; do not re-publish." >&2
           exit 1

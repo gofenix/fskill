@@ -11,6 +11,10 @@ CACHE_MAX_AGE=21600  # 6 hours: one full rate_limit window
 HIGHWATER_LOCK_MAX_AGE=10
 HIGHWATER_RESET_SKEW_MAX=7200  # tolerate session jitter, reject crossed windows
 HIGHWATER_DROP_RESET_MIN=5  # fresh lower live values must drop by at least 5%
+CTX_RED_PCT=85     # context usage color thresholds
+CTX_YELLOW_PCT=70
+USAGE_RED_PCT=90   # rate-limit usage color thresholds
+USAGE_WARN_PCT=70
 
 input=$(cat)
 
@@ -25,16 +29,16 @@ jq_full='[
   (.cost.total_api_duration_ms // 0 | tonumber? // 0 | floor | tostring),
   (.context_window.total_output_tokens // 0 | tonumber? // 0 | floor | tostring),
   (.rate_limits.five_hour.used_percentage // null | if . then (. | round | tostring) else "null" end),
-  (.rate_limits.five_hour.resets_at // "" | tostring),
+  (.rate_limits.five_hour.resets_at // "null" | tostring),
   (.rate_limits.seven_day.used_percentage // null | if . then (. | round | tostring) else "null" end),
-  (.rate_limits.seven_day.resets_at // "" | tostring)
+  (.rate_limits.seven_day.resets_at // "null" | tostring)
 ] | @tsv'
 
 jq_rl='[
   (.rate_limits.five_hour.used_percentage // null | if . then (. | round | tostring) else "null" end),
-  (.rate_limits.five_hour.resets_at // "" | tostring),
+  (.rate_limits.five_hour.resets_at // "null" | tostring),
   (.rate_limits.seven_day.used_percentage // null | if . then (. | round | tostring) else "null" end),
-  (.rate_limits.seven_day.resets_at // "" | tostring)
+  (.rate_limits.seven_day.resets_at // "null" | tostring)
 ] | @tsv'
 
 jq_hw='[
@@ -67,25 +71,45 @@ is_uint() {
 
 acquire_highwater_lock() {
   mkdir -p "$CACHE_DIR" 2>/dev/null || return 1
-  local attempts=0 lock_mtime now
+  local attempts=0 lock_mtime now lock_pid stale
   while [ "$attempts" -lt 5 ]; do
     attempts=$((attempts + 1))
     if mkdir "$HIGHWATER_LOCK_DIR" 2>/dev/null; then
+      echo $$ > "$HIGHWATER_LOCK_DIR/pid" 2>/dev/null
       return 0
     fi
-    lock_mtime=$(cache_file_mtime "$HIGHWATER_LOCK_DIR")
-    now=$(date +%s)
-    if [ $((now - lock_mtime)) -gt "$HIGHWATER_LOCK_MAX_AGE" ]; then
-      rmdir "$HIGHWATER_LOCK_DIR" 2>/dev/null || true
+    # Reclaim only provably dead locks. A recorded live PID always wins; the
+    # mtime age check is the fallback for a lock whose owner died between
+    # mkdir and the pid write. mv-aside is atomic so two reclaimers cannot
+    # both win, and a live owner that raced in gets its lock moved back.
+    lock_pid=$(cat "$HIGHWATER_LOCK_DIR/pid" 2>/dev/null)
+    if is_uint "$lock_pid" && kill -0 "$lock_pid" 2>/dev/null; then
+      sleep 0.05
       continue
     fi
-    sleep 0.05
+    if [ -z "$lock_pid" ]; then
+      lock_mtime=$(cache_file_mtime "$HIGHWATER_LOCK_DIR")
+      now=$(date +%s)
+      if [ $((now - lock_mtime)) -le "$HIGHWATER_LOCK_MAX_AGE" ]; then
+        sleep 0.05
+        continue
+      fi
+    fi
+    stale="${HIGHWATER_LOCK_DIR}.stale.$$"
+    if mv "$HIGHWATER_LOCK_DIR" "$stale" 2>/dev/null; then
+      lock_pid=$(cat "$stale/pid" 2>/dev/null)
+      if is_uint "$lock_pid" && kill -0 "$lock_pid" 2>/dev/null; then
+        mv "$stale" "$HIGHWATER_LOCK_DIR" 2>/dev/null || rm -rf "$stale"
+      else
+        rm -rf "$stale"
+      fi
+    fi
   done
   return 1
 }
 
 release_highwater_lock() {
-  rmdir "$HIGHWATER_LOCK_DIR" 2>/dev/null || true
+  rm -rf "$HIGHWATER_LOCK_DIR" 2>/dev/null || true
 }
 
 read_highwater() {
@@ -206,38 +230,34 @@ write_highwater() {
   local wrote=0 sid_json
   is_uint "$r5" || r5=0
   is_uint "$r7" || r7=0
-  if ! {
-    {
-      printf '{\n'
-      if [ "$live_rate_limits_present" = "1" ] \
+  {
+    printf '{\n'
+    if [ "$live_rate_limits_present" = "1" ] \
         && [ -n "$live_session_id" ] && [ "$live_session_id" != "null" ]; then
         sid_json=$(json_quote "$live_session_id")
         printf '  "_last": {"session_id": %s, "api_duration_ms": %s, "output_tokens": %s}' \
           "${sid_json:-\"\"}" "${live_api_ms:-0}" "${live_output_tokens:-0}"
         wrote=1
-      elif [ -n "$hw_last_session_id" ]; then
+    elif [ -n "$hw_last_session_id" ]; then
         sid_json=$(json_quote "$hw_last_session_id")
         printf '  "_last": {"session_id": %s, "api_duration_ms": %s, "output_tokens": %s}' \
           "${sid_json:-\"\"}" "${hw_last_api_ms:-0}" "${hw_last_output_tokens:-0}"
         wrote=1
-      fi
-      if is_uint "$new_hw_5h_pct"; then
+    fi
+    if is_uint "$new_hw_5h_pct"; then
         [ "$wrote" = "1" ] && printf ',\n'
         printf '  "five_hour": {"used_percentage": %s, "resets_at": %s}' "$new_hw_5h_pct" "$r5"
         wrote=1
-      fi
-      if is_uint "$new_hw_7d_pct"; then
+    fi
+    if is_uint "$new_hw_7d_pct"; then
         [ "$wrote" = "1" ] && printf ',\n'
         printf '  "seven_day": {"used_percentage": %s, "resets_at": %s}\n' "$new_hw_7d_pct" "$r7"
-      else
+    else
         printf '\n'
-      fi
-      printf '}\n'
-    } > "${HIGHWATER_FILE}.tmp" 2>/dev/null \
-      && mv "${HIGHWATER_FILE}.tmp" "$HIGHWATER_FILE" 2>/dev/null
-  }; then
-    :
-  fi
+    fi
+    printf '}\n'
+  } > "${HIGHWATER_FILE}.tmp" 2>/dev/null \
+    && mv "${HIGHWATER_FILE}.tmp" "$HIGHWATER_FILE" 2>/dev/null
 }
 
 apply_highwater_all() {
@@ -293,16 +313,17 @@ EOF
   fi
 fi
 
+# resets_at uses a "null" placeholder: tab is IFS whitespace, so an empty TSV
+# field would collapse and shift every later field one slot left.
+[ "$five_reset" = "null" ] && five_reset=""
+[ "$seven_reset" = "null" ] && seven_reset=""
+
 # Persist live rate_limits only when present (atomic write)
 if [ "${live_five_pct:-}" != "null" ] && [ -n "${live_five_pct:-}" ] && [ -n "$input" ]; then
   mkdir -p "$CACHE_DIR"
-  if ! {
-    printf '%s' "$input" | jq '{rate_limits: .rate_limits}' \
-      > "${CACHE_FILE}.tmp" 2>/dev/null \
-      && mv "${CACHE_FILE}.tmp" "$CACHE_FILE" 2>/dev/null
-  }; then
-    :
-  fi
+  printf '%s' "$input" | jq '{rate_limits: .rate_limits}' \
+    > "${CACHE_FILE}.tmp" 2>/dev/null \
+    && mv "${CACHE_FILE}.tmp" "$CACHE_FILE" 2>/dev/null
 fi
 
 new_hw_5h_pct=""
@@ -353,9 +374,9 @@ ctx_pct=0
 if [ "$window_size" -gt 0 ] 2>/dev/null; then
   ctx_pct=$(awk -v u="${used_tokens:-0}" -v t="$window_size" 'BEGIN { printf "%d", (u/t)*100 }')
 fi
-if [ "$ctx_pct" -ge 85 ] 2>/dev/null; then
+if [ "$ctx_pct" -ge "$CTX_RED_PCT" ] 2>/dev/null; then
   ctx_color="$RED"
-elif [ "$ctx_pct" -ge 70 ] 2>/dev/null; then
+elif [ "$ctx_pct" -ge "$CTX_YELLOW_PCT" ] 2>/dev/null; then
   ctx_color="$YELLOW"
 else
   ctx_color="$GREEN"
@@ -365,8 +386,8 @@ context_part="${DIM}Context${RESET} ${ctx_color}${ctx_pct}%${RESET}"
 # Usage color
 usage_color() {
   local pct="$1"
-  if [ "$pct" -ge 90 ] 2>/dev/null; then printf "%s" "$RED"
-  elif [ "$pct" -ge 70 ] 2>/dev/null; then printf "%s" "$MAGENTA"
+  if [ "$pct" -ge "$USAGE_RED_PCT" ] 2>/dev/null; then printf "%s" "$RED"
+  elif [ "$pct" -ge "$USAGE_WARN_PCT" ] 2>/dev/null; then printf "%s" "$MAGENTA"
   else printf "%s" "$BLUE"
   fi
 }

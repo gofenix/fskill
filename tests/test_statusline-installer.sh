@@ -10,8 +10,9 @@ bin_dir="$tmpdir/bin"
 mkdir -p "$home_dir/.claude" "$bin_dir"
 ln -s "$(command -v python3)" "$bin_dir/python3"
 ln -s "$(command -v jq)" "$bin_dir/jq"
-ln -s /bin/chmod "$bin_dir/chmod"
-ln -s /bin/mkdir "$bin_dir/mkdir"
+for command in chmod mkdir mktemp mv rm; do
+  ln -s "$(command -v "$command")" "$bin_dir/$command"
+done
 
 # Stub curl: writes a tiny statusline script to the -o output path.
 cat >"$bin_dir/curl" <<'CURL'
@@ -20,6 +21,15 @@ outfile=""
 while [ "$#" -gt 0 ]; do
   if [ "$1" = "-o" ]; then outfile="$2"; shift 2; else shift; fi
 done
+if [ "${WAZA_TEST_CURL_FAIL:-}" = "1" ]; then
+  printf "%s\n" "#!/bin/bash" "echo partial download" > "$outfile"
+  exit 22
+fi
+if [ "${WAZA_TEST_CURL_INTERRUPT:-}" = "1" ]; then
+  printf "%s\n" "#!/bin/bash" "echo partial download" > "$outfile"
+  kill -INT "$PPID"
+  exit 0
+fi
 printf "%s\n" "#!/bin/bash" "echo statusline" > "$outfile"
 CURL
 
@@ -51,6 +61,29 @@ BREW_LOG="$tmpdir/brew.log" PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/sc
 python3 -c "import json, sys; data=json.load(open(sys.argv[1])); assert data['theme'] == 'dark'; assert data['statusLine']['command'] == 'bash ~/.claude/statusline.sh'" "$home_dir/.claude/settings.json"
 test -x "$home_dir/.claude/statusline.sh"
 test ! -f "$tmpdir/brew.log"
+
+# A failed update after curl writes partial output must preserve the installed script.
+cp "$home_dir/.claude/statusline.sh" "$tmpdir/statusline.before"
+if WAZA_TEST_CURL_FAIL=1 BREW_LOG="$tmpdir/brew.log" PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-statusline.sh" >"$tmpdir/install-failed.out" 2>"$tmpdir/install-failed.err"; then
+  echo "setup-statusline should fail when the statusline download fails"; exit 1
+fi
+cmp "$tmpdir/statusline.before" "$home_dir/.claude/statusline.sh"
+test -x "$home_dir/.claude/statusline.sh"
+python3 -c "import json, sys; data=json.load(open(sys.argv[1])); assert data['theme'] == 'dark'; assert data['statusLine']['command'] == 'bash ~/.claude/statusline.sh'" "$home_dir/.claude/settings.json"
+if compgen -G "$home_dir/.claude/statusline.sh.tmp.*" >/dev/null; then
+  echo "failed statusline download left a temporary file"; exit 1
+fi
+grep -q 'could not fetch' "$tmpdir/install-failed.err"
+grep -q 'was left untouched' "$tmpdir/install-failed.err"
+
+# Ctrl-C mid-download must clean up the staged file, which no return path covers.
+if WAZA_TEST_CURL_INTERRUPT=1 BREW_LOG="$tmpdir/brew.log" PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-statusline.sh" >"$tmpdir/install-int.out" 2>"$tmpdir/install-int.err"; then
+  echo "setup-statusline should fail when interrupted"; exit 1
+fi
+cmp "$tmpdir/statusline.before" "$home_dir/.claude/statusline.sh"
+if compgen -G "$home_dir/.claude/statusline.sh.tmp.*" >/dev/null; then
+  echo "interrupted statusline download left a temporary file"; exit 1
+fi
 
 # Foreign statusLine already present: keep it intact, no overwrite.
 printf '%s\n' '{"statusLine":{"type":"command","command":"bash ~/foreign.sh"}}' > "$home_dir/.claude/settings.json"

@@ -26,11 +26,20 @@ test_home="$tmpdir/home"
 mkdir -p "$test_home"
 
 # Install all 8 skills into an isolated HOME against the local repo copy.
-HOME="$test_home" npx --yes skills add "$tmpdir/repo" -a claude-code -g -y \
-  >"$tmpdir/install.out" 2>&1
+# One retry absorbs transient npm-registry hiccups without hiding real breakage.
+if ! HOME="$test_home" npx --yes skills add "$tmpdir/repo" -a claude-code -g -y \
+  >"$tmpdir/install.out" 2>&1; then
+  sleep 5
+  if ! HOME="$test_home" npx --yes skills add "$tmpdir/repo" -a claude-code -g -y \
+    >"$tmpdir/install.out" 2>&1; then
+    echo "skills add e2e smoke: install failed after retry"
+    cat "$tmpdir/install.out" >&2
+    exit 1
+  fi
+fi
 
 # All 8 SKILL.md files landed under ~/.claude/skills/.
-expected=(check design health hunt learn read think write)
+expected=(check health hunt learn read think ui write)
 for skill in "${expected[@]}"; do
   target="$test_home/.claude/skills/$skill/SKILL.md"
   if [ ! -f "$target" ]; then

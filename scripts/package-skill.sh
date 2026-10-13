@@ -28,6 +28,21 @@ python3 "$ROOT/scripts/packaging_filter.py" "$ROOT/packaging.allowlist" \
 
 tar -cf - -T "$FILTERED_MANIFEST" | (cd "$STAGE" && tar -xf -)
 
+# Shipped reference files resolve runtime paths from the package root, just
+# like the generated root dispatcher. Qualify each skill-relative path before
+# the archive is built, including references loaded after the first hop.
+find "$STAGE/skills" -type f -name '*.md' -print0 |
+  while IFS= read -r -d '' markdown; do
+    relative="${markdown#"$STAGE/skills/"}"
+    skill="${relative%%/*}"
+    skill_relative="${relative#"$skill/"}"
+    python3 "$ROOT/scripts/validate_package.py" \
+      --rewrite-skill-paths "$skill" \
+      --skill-root "$ROOT/skills/$skill" \
+      --source-relative "$skill_relative" \
+      --rewrite-file "$markdown"
+  done
+
 # Dispatcher body is codegen output: scripts/dispatcher.md. Source of truth is
 # scripts/dispatcher-template.md plus SKILL.md frontmatter; regenerate with
 # `make regenerate` if the template or any dispatch_intent changes.
@@ -42,7 +57,10 @@ find skills -mindepth 2 -maxdepth 2 -name SKILL.md | sort | while IFS= read -r p
   {
     printf '\n---\n\n# SKILL: %s\n\n' "$skill"
     awk 'BEGIN{skip=0} /^---$/{if(NR==1){skip=1;next} if(skip){skip=0;next}} !skip' "$path"
-  } >> "$STAGE/SKILL.md"
+  } | python3 "$ROOT/scripts/validate_package.py" \
+    --rewrite-skill-paths "$skill" \
+    --skill-root "$ROOT/skills/$skill" \
+    --source-relative "SKILL.md" >> "$STAGE/SKILL.md"
 done
 
 perl -0pi -e 's#`skills/([a-z][a-z0-9_-]*)/SKILL\.md`#the **$1** section below#g' "$STAGE/SKILL.md"

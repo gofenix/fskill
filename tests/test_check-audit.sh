@@ -205,4 +205,31 @@ assert_block_status "$cli_pass_out" "CLI CONTRACT SURFACE" "PASS"
 # Script exits 0 even when findings surface (it's a reporter, not a gate).
 python3 "$AUDIT" --root "$dirty" >/dev/null
 
+# Case 6: report-only audit must not execute Git fsmonitor hooks or follow
+# repository-controlled symlinks outside the audited root.
+guarded=$(make_tmpdir)
+printf '%s\n' '# safe' > "$guarded/README.md"
+(cd "$guarded" && git init -q && git add README.md && git \
+  -c user.name=waza -c user.email=waza@test commit -qm init)
+fsmonitor_marker="$guarded-fsmonitor.executed"
+fsmonitor_hook="$guarded/fsmonitor.sh"
+printf '%s\n' \
+  '#!/bin/sh' \
+  "printf executed > '$fsmonitor_marker'" \
+  'exit 0' \
+  > "$fsmonitor_hook"
+chmod +x "$fsmonitor_hook"
+git -C "$guarded" config core.fsmonitor "$fsmonitor_hook"
+outside_audit="$guarded-outside.md"
+printf '%s\n' '# PRIVATE_AUDIT_TOKEN' '<!-- TODO -->' > "$outside_audit"
+ln -s "$outside_audit" "$guarded/private-audit.md"
+guarded_out="$guarded/audit.out"
+python3 "$AUDIT" --root "$guarded" > "$guarded_out"
+test ! -e "$fsmonitor_marker" || {
+  echo "audit_signals executed the target repository fsmonitor hook"; exit 1
+}
+if grep -qE 'PRIVATE_AUDIT_TOKEN|private-audit.md' "$guarded_out"; then
+  echo "audit_signals followed a repository-controlled symlink"; exit 1
+fi
+
 echo "check audit smoke: ok"

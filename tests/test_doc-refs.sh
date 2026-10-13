@@ -26,4 +26,29 @@ fi
 grep -q 'MISSING: CLAUDE.md:1 -> docs/missing.md' "$tmpdir/bad.out"
 grep -q 'MISSING: CLAUDE.md:1 -> @MISSING.md' "$tmpdir/bad.out"
 
+# Repository-controlled symlink sources are not trusted audit inputs. Their
+# targets may be outside the project and must never be read for diagnostics.
+outside_source="$tmpdir/outside-instructions.md"
+printf '%s\n' 'See docs/private-missing.md.' > "$outside_source"
+rm "$project/CLAUDE.md"
+ln -s "$outside_source" "$project/CLAUDE.md"
+HOME="$home_dir" bash "$CHECKER" "$project" >"$tmpdir/symlink.out"
+if grep -q 'private-missing' "$tmpdir/symlink.out"; then
+  echo "doc-ref check followed a repository-controlled symlink"; exit 1
+fi
+
+# Existing targets reached through symlinks do not prove a repository-owned
+# reference. They must be reported missing instead of following the alias.
+outside_target="$tmpdir/outside-target.md"
+printf '%s\n' 'outside target' > "$outside_target"
+rm "$project/CLAUDE.md"
+printf '%s\n' 'See docs/escaped.md and ~/.claude/rules/escaped.md.' > "$project/CLAUDE.md"
+ln -s "$outside_target" "$project/docs/escaped.md"
+ln -s "$outside_target" "$home_dir/.claude/rules/escaped.md"
+if HOME="$home_dir" bash "$CHECKER" "$project" >"$tmpdir/target-symlink.out"; then
+  echo "doc-ref check should reject symlink targets"; exit 1
+fi
+grep -q 'MISSING: CLAUDE.md:1 -> docs/escaped.md' "$tmpdir/target-symlink.out"
+grep -q 'MISSING: CLAUDE.md:1 -> ~/.claude/rules/escaped.md' "$tmpdir/target-symlink.out"
+
 echo "doc references smoke: ok"

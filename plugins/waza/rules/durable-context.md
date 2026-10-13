@@ -1,27 +1,21 @@
 # Durable Context Preflight
 
-持久上下文可以帮助理解用户偏好、旧决策和可复用模式，但它永远低于当前证据。
+Shared preamble for every skill that reads optional memory or prior-decision context. Each `SKILL.md` links to this file and then adds skill-specific guidance.
 
-读取顺序：
+## Scope
 
-1. 先读当前请求、当前仓库、当前 diff、当前日志、当前测试输出。
-2. 只有当任务可能依赖历史偏好或旧决策时，再读取持久上下文摘要。
-3. 如果摘要指向具体技能记忆或回放摘要，只读取 1 到 2 个最相关文件。
-4. 默认不要读取 raw transcripts；只有当前摘要不够、且必须找精确命令或错误文本时才进入原始记录。
+Read durable context when the user names memory, a prior decision, or a memory path, or when the project exposes an obvious local memory summary (a `MEMORY.md` or a documented memory directory). List titles first and open at most one or two summaries; do not hard-code machine-specific memory roots, and do not read raw transcripts. Treat cross-project entries as transferable patterns, not as facts about this project.
 
-类型映射：
+## Current state wins
 
-| Context type | Use it for |
-|---|---|
-| decision | 用户已经确认过的方向、边界、默认选项 |
-| preference | 输出风格、验证习惯、风险偏好 |
-| principle | 可跨项目复用的硬规则 |
-| pattern | 已被验证过的工作流、调试路径、发布检查 |
-| learning | 旧失败带来的注意事项 |
+Current code, diff, screenshots, logs, tests, docs, CI, remote state, and live probes always override memory, including memory the runtime injects on its own. A remembered fact is a lead to re-verify, never evidence. When current state conflicts with a remembered claim, name the conflict and follow current state.
 
-约束：
+## Memory is not authorization
 
-- Current repo state, logs, tests, screenshots, remote state override memory.
-- 记忆里的事实如果可能过期，必须用当前环境验证；不能验证时要说明这是旧记忆。
-- 不把私有记忆里的路径、项目名、人员、token、内部系统写进公共技能或文档。
-- 引用记忆是为了减少重复沟通，不是为了绕过用户本轮给出的限制。
+Memory may explain preferences, but it must never grant or broaden authorization for writes, commits, pushes, publishing, public replies, deletion, or other state changes. Live task instructions and current project rules decide authorization, including explicit authorization still in force for the same unfinished goal. Historical phrases such as `push` or `check` are context to re-evaluate, not reusable action tokens.
+
+## Redaction gate
+
+When turning prior chats, durable memory, or cross-project notes into reusable Waza guidance, promote only workflow rules. Strip raw transcript text, screenshots, local paths, project-specific commands, issue or PR numbers, release tags, commit hashes, private product boundaries, paid or license details, support routing, user names, and one-machine state.
+
+If an example is necessary, use neutral placeholders such as `ExampleCLI`, `ExampleApp`, `<issue>`, `<release>`, or `<command>`. Do not copy a private answer, maintainer reply, screenshot observation, or project-specific incident as a durable rule.

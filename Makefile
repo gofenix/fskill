@@ -34,39 +34,29 @@ verify-generated:
 verify-routing:
 	python3 scripts/check_routing_drift.py --root .
 
+# Shell and Python sources are glob-derived so a new script is syntax-checked
+# the moment it lands; hand-maintained lists silently skip new files.
+SHELL_SOURCES := $(wildcard scripts/*.sh skills/*/scripts/*.sh)
+PY_SOURCES := $(wildcard scripts/*.py skills/*/scripts/*.py)
+
 verify-scripts:
 	git diff --check
-	bash -n scripts/statusline.sh skills/health/scripts/collect-data.sh skills/health/scripts/check-agent-context.sh skills/health/scripts/check-doc-refs.sh skills/health/scripts/check-maintainability.sh skills/health/scripts/check-verifier-output.sh skills/read/scripts/fetch.sh scripts/setup-statusline.sh scripts/setup-rule.sh skills/check/scripts/run-tests.sh scripts/package-skill.sh
+	@for file in $(SHELL_SOURCES); do bash -n "$$file" || exit $$?; done
 	echo "bash -n: ok"
-	bash -n $(TEST_FILES) tests/test_helpers.sh
+	@for file in $(TEST_FILES) tests/test_helpers.sh; do bash -n "$$file" || exit $$?; done
 	echo "bash -n tests/: ok"
 	@if command -v shellcheck >/dev/null 2>&1; then \
-	  shellcheck scripts/*.sh skills/*/scripts/*.sh && echo "shellcheck: ok"; \
+	  shellcheck $(SHELL_SOURCES) && echo "shellcheck: ok"; \
 	else \
 	  echo "shellcheck: skipped (not installed)"; \
 	fi
-	python3 -m py_compile \
-	  scripts/verify_skills.py \
-	  scripts/skill_frontmatter.py \
-	  scripts/skill_checks.py \
-	  scripts/build_metadata.py \
-	  scripts/packaging_filter.py \
-	  scripts/check_routing_drift.py \
-	  scripts/validate_package.py \
-	  skills/read/scripts/fetch_feishu.py \
-	  skills/read/scripts/fetch_weixin.py \
-	  skills/read/scripts/fetch_local.py \
-	  skills/check/scripts/audit_signals.py \
-	  skills/health/scripts/check_doc_refs.py \
-	  skills/health/scripts/check_verifier_output.py \
-	  skills/health/scripts/check_agent_context.py \
-	  skills/health/scripts/check_maintainability.py
+	python3 -m py_compile $(PY_SOURCES)
 	echo "py_compile: ok"
-	bash skills/health/scripts/collect-data.sh auto >/tmp/waza-collect-data.out
+	bash skills/health/scripts/collect-data.sh auto >/tmp/waza-collect-data-$(PROJECT_KEY).out
 	echo "collect-data: ok"
-	rg -n "^=== CONVERSATION SIGNALS ===$$|^=== CONVERSATION EXTRACT ===$$|^=== MCP ACCESS DENIALS ===$$" /tmp/waza-collect-data.out
-	rg -n "^=== AGENT CONFIG SUMMARY ===$$|^=== AGENT INSTRUCTION SURFACE ===$$|^=== CODEX SURFACE ===$$" /tmp/waza-collect-data.out
-	rg -n "^=== AI MAINTAINABILITY SUMMARY ===$$|^maintainability_status: " /tmp/waza-collect-data.out
+	grep -nE "^=== CONVERSATION SIGNALS ===$$|^=== CONVERSATION EXTRACT ===$$|^=== MCP ACCESS DENIALS ===$$" /tmp/waza-collect-data-$(PROJECT_KEY).out
+	grep -nE "^=== AGENT CONFIG SUMMARY ===$$|^=== AGENT INSTRUCTION SURFACE ===$$|^=== CODEX SURFACE ===$$" /tmp/waza-collect-data-$(PROJECT_KEY).out
+	grep -nE "^=== AI MAINTAINABILITY SUMMARY ===$$|^maintainability_status: " /tmp/waza-collect-data-$(PROJECT_KEY).out
 
 # Static pattern rule binds every smoke-<name> phony target to its sibling
 # tests/test_<name>.sh script. Each script is self-contained, sources

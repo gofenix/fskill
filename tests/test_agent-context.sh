@@ -16,14 +16,7 @@ mkdir -p \
   "$home_dir/.pi/agent/skills/global-skill" \
   "$home_dir/.agents/skills/legacy-skill"
 
-printf '%s\n' \
-  '## Project' \
-  'Repository Map: source lives in src.' \
-  '## Verification' \
-  'Run `make test`.' \
-  '## Boundaries' \
-  'Do not rewrite unrelated modules.' \
-  > "$project/AGENTS.md"
+write_standard_agents_md "$project/AGENTS.md"
 printf '%s\n' 'global codex rule' > "$home_dir/.codex/AGENTS.md"
 
 # config.toml with sensitive keys that must be redacted before output.
@@ -98,13 +91,14 @@ HOME="$home_dir" bash "$CHECKER" "$project" summary >"$tmpdir/drift.out"
 grep -q '^codex_status: WARN$' "$tmpdir/drift.out"
 grep -q 'global Codex AGENTS.md has identity/memory context but lacks operational rules' "$tmpdir/drift.out"
 
-# High-permission Codex config without an explicit deny floor is a warning.
+# High-permission Codex config is a one-time user-tradeoff warning, not a
+# per-project "add denies" action (Codex has no command-level deny mechanism).
 {
   printf '%s\n' 'approval_policy = "never"'
   printf '%s\n' 'sandbox_mode = "danger-full-access"'
 } >> "$home_dir/.codex/config.toml"
 HOME="$home_dir" bash "$CHECKER" "$project" summary >"$tmpdir/danger.out"
-grep -q 'Codex high-permission mode lacks a deny floor' "$tmpdir/danger.out"
+grep -q 'Codex has no command-level deny mechanism' "$tmpdir/danger.out"
 
 # Delegation: CLAUDE.md pointing to AGENTS.md should show delegates_to=yes and
 # clear the conflict warning.

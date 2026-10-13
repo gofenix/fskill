@@ -1,115 +1,142 @@
 ---
 name: think
-description: "把粗略想法变成可批准、决策完整的实施计划。Use when users ask 出方案/给方案/深入分析/怎么设计/有没有必要/值不值得/plan this/how should I/should we keep this for features, architecture, or value judgments. Not for bug fixes or small edits."
-when_to_use: "出方案, 给方案, 深入分析, 怎么设计, 用什么方案, 判断一下, 有没有必要, 值不值得, what's the best approach, plan this, how should I, should we keep this"
-dispatch_intent: "新功能、架构方案、价值判断、动手前设计、决策完整实施计划"
+description: "Turns rough ideas into approved, decision-complete plans before coding. Use when planning architecture, judging whether to build, or writing a handoff. Not for bug fixes or small edits."
+when_to_use: "出方案, 给方案, 怎么设计, 用什么方案, 有没有必要, 值不值得, what's the best approach, plan this, how should I, should we keep this"
+dispatch_intent: "New feature, architecture, how should I design this, value judgment, executable plan, handoff"
 ---
 
-# Think: 动手前先把方向想透
+# Think: Design and Validate Before You Build
 
 Prefix your first line with 🥷 inline, not as its own paragraph.
 
-**Update check（非阻塞）**。开始前运行一次 `bash ../../scripts/check-update.sh`；如果它输出提示，把那一行转告用户，然后继续。脚本每天最多读一次公开版本文件，不发送本地数据，失败时静默。
+Turn a rough idea into an approved plan. No code, no scaffolding, no pseudo-code until the user approves.
 
-把一个模糊想法变成能被批准、能直接实施的计划。不要写代码、不要脚手架、不要伪代码，除非用户已经批准计划并要求实现。
-
-直接给判断。说清你推荐什么、为什么，以及什么证据会改变这个判断。不要用空泛开场。
+Give opinions directly. Take a position and state what evidence would change it. Avoid "That's interesting," "There are many ways to think about this," "You might want to consider."
 
 ## Outcome Contract
 
-- Outcome: 用户得到一个方向明确、边界清楚、可执行的推荐或实施计划。
-- Done when: 目标、成功标准、约束、已选方案、被拒绝的取舍、验证方式和执行步骤足够具体，不需要实施者重新做关键决策。
-- Evidence: 当前仓库状态、项目文档、必要的官方资料、已有决策、用户约束和当前运行证据。
-- Output: 一个推荐方向，或一份带假设和验证步骤的实施计划。
+- Outcome: a rough idea becomes a decision-complete recommendation or implementation plan.
+- Done when: the goal, success criteria, constraints, chosen approach, rejected tradeoffs, tests, and handoff steps are concrete enough to execute without re-deciding.
+- Evidence: current repo state, project docs, live external docs when relevant, prior decisions, constraints, and explicit user preferences.
+- Output: one recommended direction or a handoff plan with assumptions and verification steps.
 
 ## Durable Context Preflight
 
-参见 [rules/durable-context.md](../../rules/durable-context.md)。对 `/think` 来说，`decision`、`preference` 和 `principle` 可以锁定用户已批准的方向、边界和默认偏好；`pattern`、`learning` 只能作为可复用经验。Current repo state, live docs, logs, tests, screenshots, and remote state override memory.
+See [references/durable-context.md](references/durable-context.md) for when durable context is in scope and the redaction gate that applies before any of it becomes a durable rule.
 
-在输出计划前，扫描项目里的 `AGENTS.md`、`CLAUDE.md`、`.claude/rules/*.md`，以及用户指向的本地 agent memory 摘要。如果计划和其中的 hard rule 冲突，要在计划里点明冲突并给出建议处理方式；如果规则阻塞计划，先停下来问用户。
+For `/think`: current repo state and live docs override memory. Lock durable decisions and preferences before asking questions, and do not ask the user to restate an intent that the durable context already establishes unless it is risky, stale, or contradicted by current state.
+
+Before outputting any plan, read the project guide index (`AGENTS.md` or `CLAUDE.md`) and only the domain rule that matches the problem. Do not load the entire `.claude/rules/` tree. If the user pointed at a local agent-memory summary, read that too. If the proposed plan contradicts a "hard rule", "never X", "must Y", or "prefer Z" in those files, surface the contradiction in the plan output (one sentence: which rule, which step contradicts it, recommended resolution). Do not silently override the rule. If the rule blocks the plan, stop and ask before continuing.
 
 ## Lightweight Mode
 
-当问题已经定义好，用户只是问“怎么修”或“怎么做这个小改动”时使用。
+Activate when the user asks for a plan for a defined problem and the only open question is "how to fix it." An explicit repair request follows `/hunt`; file count alone does not create another planning approval.
 
-输出一个推荐修法，2 到 3 句话即可：改哪里、怎么改、为什么。先说最朴素的暴力做法，再给推荐做法；除非用户要求优雅，否则默认选最稳的。列出涉及文件，如果超过 5 个文件要明确提醒。说一个主要风险，然后等用户确认再实现。
+Give one recommended fix in 2-3 sentences: what changes, where (file:line if known), and why. Name the brute-force version in one line first; default to it unless the user wants elegance. List involved files, flag explicitly if more than 8. State one risk. Wait for approval before implementing.
 
-如果你发现至少 3 种真正不同、取舍接近的方案，升级到完整方案模式。
+Upgrade to full mode if you find 3 or more genuinely different approaches with meaningful tradeoffs.
 
 ## Evaluation Mode
 
-当用户问“要不要做”“有没有必要”“值不值得”“should we keep this”时使用。这是价值判断，不是实施计划。
-
-先说明判断对象和判断维度：价值、风险还是取舍。然后读取当前状态：它现在做什么、谁在用、什么依赖它。不要没 grep、没读文件就发表意见。
-
-如果是产品转向、商业化或业务方向，先评估市场、用户、分发、付费意愿和维护成本，再谈技术。不要把商业判断伪装成技术方案。
-
-输出格式：
-
-第一行只写一个 verdict：**Kill** / **Keep** / **Pivot**。
-
-然后给三条理由，必须基于用户的真实约束，比如时间、动机、商业模型、维护成本。不要列一堆通用优缺点。
-
-如果 verdict 是 **Pivot**，每个方向单独一行，必须可行动。如果 verdict 是 **Kill** 或大改，先列影响范围：文件、依赖、迁移成本，再等用户确认。
+For value, viability, commercialization, or keep/remove judgments about a single target, load `references/mode-evaluation.md`.
 
 ## Triage Mode
 
-当用户一次给出多个请求、issue、截图或需求包时使用。不要把它们直接当 todo list，先分类：
+For a bundle of independently accepted or rejected asks or screenshots, including "are these worth doing", load `references/mode-triage.md`; use its per-item table rather than Evaluation Mode's single verdict.
 
-| Bucket | Meaning | Action |
-|---|---|---|
-| Bug | 有证据的破损行为 | 修 |
-| Already works | 功能已有，只是报告者没看到 | 指出现有入口 |
-| Accepted improvement | 真空缺、低风险、符合方向 | 实现 |
-| Cosmetic / preference | 主观偏好，没有功能影响 | 记录，不默认实现 |
-| Out of scope | 违背产品边界或增加不必要复杂度 | 用一句话拒绝 |
+## Before Reading Any Code
 
-先输出分类表，等用户确认接受的子集。最常见的浪费是把已有功能误判成缺口，所以分类前先 grep 现有入口。
+- If the project tracks prior decisions (ADRs, design docs, issue threads), skim the ones matching the problem before proposing.
+- If the plan involves a default value, env var, or config field, open the project's actual config file (e.g. `app.config.json`, `tauri.conf.json`, `package.json`, `.env`) and lift the live value. Never quote a default from memory or docs.
 
-## Plan Mode
+## Check for Official Solutions First
 
-当用户需要完整方案或实施计划时使用。
+Before proposing custom implementations, check framework built-ins, official patterns, and ecosystem standards against live docs (use the environment's doc-lookup tools when available). An existing official solution is the default recommendation unless you can articulate why it falls short for this specific case.
 
-流程：
+For a hard problem, or one already tuned several times that still feels off, study how 2-3 mature open-source projects or direct competitors solve it before designing: read the actual implementation, extract the transferable mechanism, and name what you took from each. First-principles design next to a proven implementation discards the iterations someone else already paid for.
 
-1. **Grounding**：确认路径和状态，读取相关入口、配置、文档、测试、已有实现。能通过仓库发现的事实不要问用户。
-2. **Intent lock**：明确目标、成功标准、用户/受众、范围内外、硬约束、偏好和取舍。高影响歧义必须问。
-3. **Implementation lock**：明确方案、接口、数据流、失败模式、测试、验收和回滚。计划必须 decision-complete。
-4. **Attack angles**：有外部依赖、高并发或数据迁移时，检查依赖失败、10x 规模、回滚成本。方案扛不住就改方案。
+## Propose Approaches
+
+Give one recommended approach with rationale. Include effort, risk, and what existing code it builds on. Mention one alternative only when a concrete tradeoff could reasonably change the user's choice. Always include one minimal option.
+
+Anything that asks a person to install or configure something (hook, MCP server, editor plugin, config key, pricing tier, per-day limit) is a setup cost paid by every user. Default to the zero-setup form: a built-in command plus a skill, a fixed sensible default, a doc line. Offer the setup-requiring form only after naming why the zero-setup one cannot do the job.
+
+A plan to distill one project's lessons into reusable skills or shared rules splits into **promote** (reusable workflow constraints only) and **do not promote** (project-specific commands, paths, release checklists, safety boundaries, private local context), unless the user asks to update that project itself.
+
+For the recommendation, identify the most fragile assumption (premise collapse) and state it explicitly: "This plan assumes X. If X does not hold, Y happens." If the assumption is load-bearing and fragile, deform the design to survive its failure.
+
+**Blocking ambiguities**: if requirements have a conflict the user must resolve (two contradicting sources, two valid interpretations with different cost), name the specific conflict in one sentence and ask which takes precedence. Do not silently pick.
+
+**Additional attack angles** (run only when the plan involves external dependencies, high concurrency, or data migration):
+
+| Attack angle | Question |
+|---|---|
+| Dependency failure | If an external API, service, or tool goes down, can the plan degrade gracefully? |
+| Scale explosion | At 10x data volume or user load, which step breaks first? |
+| Rollback cost | If the direction is wrong after launch, what state can we return to and how hard is it? |
+
+If an attack holds, deform the design to survive it. If it shatters the approach entirely, discard it and tell the user why. Do not present a plan that failed an attack without disclosing the failure.
+
+Get approval before proceeding.
+
+## Validate Before Handing Off
+
+- More than 8 files or 1 new service? Acknowledge it explicitly.
+- More than 3 components exchanging data? Draw an ASCII diagram. Look for cycles.
+- Every meaningful test path listed: happy path, errors, edge cases.
+- Can this be rolled back without touching data?
+- Every API key, token, and third-party account the plan requires listed with one-line explanations. No credential requests mid-implementation.
+- Verify required tool availability and external reachability with read-only checks where possible. Do not launch unverified applications, install tools, or mutate state to validate a plan. Record unavailable access as an implementation prerequisite; do not present it as verified.
+
+## Simplicity Gate
+
+Skip for one-file bug fixes or when the user explicitly chose the minimal option.
+
+When the plan adds files, abstractions, error layers, config knobs, or retries the user did not ask for:
+
+- **Minimal path:** the brute-force version in one line; the chosen plan must beat it on risk, rollback, or latency, not elegance.
+- **Defensive layers:** every try/catch, retry, fallback, or flag maps to one named failure mode; delete layers that only "might" fail.
+- **Surface delta:** list new commands, env vars, flags, or services; prefer +0 unless a user split needs a knob.
+- **Compensating complexity:** if the plan is mostly workaround machinery around a misbehaving API, stop and name a route change: when the workaround is larger than the feature it supports, the premise is wrong.
+
+If the gate fails, shrink the plan or switch to the minimal option before asking for approval.
+
+## Implementation Handoff
+
+A finished plan must be executable by another engineer or agent without re-deciding the direction. Include:
+
+- Scope and non-scope.
+- The chosen approach and the one rejected alternative, if the tradeoff was close.
+- Public API, schema, command, config, or file-interface changes, if any.
+- Verification commands and manual acceptance checks.
+- Release, publish, migration, or issue/PR follow-through steps, if the task naturally continues there.
+- Rollback or failure handling for any step that can leave external state changed.
+
+When the user asks to export a handoff, or when the environment prevents further execution, make the handoff execution-ready instead of explaining the limitation. Include file targets, key constants or selectors, exact commands, runtime or visual checklist, and risk boundaries. If the work depends on a screenshot or artifact, name the artifact and the pass/fail delta.
+
+When the user says "Implement the plan", "just do it", "可以干", "直接改", "直接做", "按你说的来", "不用确认", "整", or otherwise explicitly authorizes implementation, execute the authorized direction without another approval round. With implementation authorization still in force for the same task, skip this skill's planning approval gates (including Lightweight Mode's wait) when the user or project rules already settle the choice. State which plan is being executed and check for repo drift; stop if specific drift makes it unsafe or a material choice remains unresolved. A settled design alone does not authorize implementation or public actions.
 
 ## Hard Rules
 
-- 先读代码和文档，再给方案。
-- 不要问能从仓库里查到的问题。
-- 有官方方案、框架内置能力或生态标准时，默认采用，除非能说明为什么不适合。
-- 一次只推荐一个主方案；只有取舍真的接近时才列一个替代方案。
-- 不输出含 TBD、TODO、later、details to be determined 的批准计划。
-- 计划若涉及超过 8 个文件或 1 个新服务，明确提醒复杂度。
-- 多于 3 个组件交换数据时，画一个 ASCII 图并检查循环。
-- 所有 API key、token、第三方账号、外部 CLI 都要在计划里列出，不要实施到一半才要凭据。
+- **No placeholders in approved plans.** Every step must be concrete before approval. Forbidden patterns: TBD, TODO, "implement later," "similar to step N," "details to be determined." A plan with placeholders is a promise to plan later.
+- **Phase independence.** Each phase must be independently mergeable: after Phase N ships, the system is usable even if N+1 never lands, because a plan that needs every phase before anything works lets one stuck phase block the release. If the work cannot be cut that way, ship it as one phase instead of pretending it is staged. A "Phase 0: investigate / spike" is the same red flag: investigation belongs before the plan, not inside it.
+- **An error or bug report routes out before anything else.** "判断一下" plus error or bug context is debugging, not a value judgment: say it belongs to `/hunt` in one line, then route. Evaluation Mode is for value and existence judgments only.
 
 ## Gotchas
 
 | What happened | Rule |
-|---|---|
-| 路径相似但不是同一仓库 | 第一轮文件操作前运行 `pwd` 或 `git rev-parse --show-toplevel` |
-| 用户说“判断一下报错” | 这是调试，交给 `/hunt`，不是 Evaluation Mode |
-| 用户说“可以干/直接改/implement this plan” | 视为批准已有计划，不重新争论方向；先检查 repo drift，再执行 |
-| 方案依赖 MCP/CLI 却没验证工具可用 | 交付计划前验证可用性或写成明确依赖 |
-| 用户拒绝方案 | 问具体哪一点不行，带着约束收窄，不从零重启 |
+|---------------|------|
+| Rejected design restarted from scratch | Ask what specifically failed, re-enter with narrowed constraints |
+| Picked a regional or locale-specific API variant without checking | List all regional or locale differences before writing integration code |
+| Introduced a second language or runtime into a single-stack project | Never add a new language or runtime without explicit approval |
 
 ## Output
 
-批准前输出：
+**Approved design summary:**
+- **Building**: what this is (1 paragraph)
+- **Not building**: explicit out-of-scope list
+- **Approach**: chosen option with rationale
+- **Key decisions**: 3-5 with reasoning
+- **Unknowns**: only items that are explicitly deferred with a stated reason and a clear owner. Not vague gaps. If an unknown blocks a decision, loop back before approval.
 
-- **Building**: 一段话说明要做什么。
-- **Not building**: 明确不做什么。
-- **Approach**: 推荐方案和理由。
-- **Key decisions**: 3 到 5 条关键决策。
-- **Unknowns**: 只列明确延期且有 owner 的事项；阻塞项不能留在这里。
-
-用户批准后，只输出：
-
-```text
-Plan approved. To implement: say "implement this plan". After implementation, run `/check` to review before merging or release follow-through.
-```
+If the user only approves the design, end with the plan. If implementation is requested, follow Implementation Handoff instead of asking them to repeat the request.

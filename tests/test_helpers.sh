@@ -33,10 +33,28 @@ make_tmpdir() {
   printf '%s\n' "$dir"
 }
 
+# Fixture: the standard 3-section AGENTS.md (Project / Verification /
+# Boundaries) that the agent-context and maintainability smokes both need.
+write_standard_agents_md() {
+  local file="$1"
+  local boundary="${2:-Do not rewrite unrelated modules.}"
+  printf '%s\n' \
+    '## Project' \
+    'Repository Map: src contains runtime code.' \
+    '## Verification' \
+    'Run `make test` before handoff.' \
+    '## Boundaries' \
+    "$boundary" \
+    > "$file"
+}
+
 copy_repo() {
   local dest="$1"
   mkdir -p "$dest"
-  ( cd "$ROOT" && tar --exclude './.git' --exclude '.git' -cf - . ) | ( cd "$dest" && tar -xf - )
+  # Mirror the packager's file set (tracked + untracked-unignored): smokes test
+  # the current worktree, but gitignored junk (dist/, __pycache__, local caches)
+  # must not leak into the copy and diverge it from what actually ships.
+  ( cd "$ROOT" && git ls-files --cached --others --exclude-standard -z | tar --null -cf - -T - ) | ( cd "$dest" && tar -xf - )
 }
 
 # Stub curl that drops a fixed payload at the -o output path. Used by installer
@@ -56,13 +74,13 @@ CURL
   chmod +x "$bin_dir/curl"
 }
 
-# Build a stub PATH bin dir with python3, mkdir, mktemp, rm symlinked from the
-# real environment. Returns the bin_dir path.
+# Build a stub PATH bin dir with the tools setup-rule.sh needs (python3,
+# mkdir, mktemp, rm, plus tr/awk for the Title Case marker fallback) symlinked
+# from the real environment. Returns the bin_dir path.
 prepare_codex_installer_bin() {
-  local bin_dir="$1"
+  local bin_dir="$1" name
   mkdir -p "$bin_dir"
-  ln -s "$(command -v python3)" "$bin_dir/python3"
-  ln -s /bin/mkdir "$bin_dir/mkdir"
-  ln -s "$(command -v mktemp)" "$bin_dir/mktemp"
-  ln -s /bin/rm "$bin_dir/rm"
+  for name in python3 mkdir mktemp rm mv tr awk; do
+    ln -s "$(command -v "$name")" "$bin_dir/$name"
+  done
 }

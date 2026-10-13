@@ -12,8 +12,12 @@ Generated files:
   - plugins/waza/skills/               Codex plugin skill mirror
   - plugins/waza/rules/                Codex plugin rule mirror
   - .agents/plugins/marketplace.json   Codex repo marketplace
-  - README.md                          install URLs pinned to VERSION
+  - README.md                          installer URLs on latest release assets
   - package.json                       npm/Pi package metadata pinned to VERSION
+  - skills/*/references/durable-context.md
+                                        direct-install copies of the shared
+                                        durable-context preamble (only skills
+                                        whose SKILL.md links it)
   - scripts/setup-rule.sh              default WAZA_REF pinned to VERSION
   - scripts/setup-statusline.sh        default WAZA_REF pinned to VERSION
 
@@ -38,7 +42,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from skill_frontmatter import parse_frontmatter  # noqa: E402
+from skill_frontmatter import (  # noqa: E402
+    iter_codex_plugin_files,
+    iter_codex_source_files,
+    parse_frontmatter,
+)
 
 
 # Hand-maintained marketplace/plugin constants. Kept here (not in frontmatter)
@@ -47,10 +55,9 @@ CLAUDE_MARKETPLACE_TOP = {
     "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
     "name": "waza",
     "description": (
-        "中文优先的工程技能合集，适用于 Claude Code、Codex、"
-        "Antigravity、OpenCode 和 Pi：think、check、hunt、design、"
-        "read、write、learn、health，覆盖方案、审查、调试、设计、"
-        "阅读、写作、研究和 agent health 审计。"
+        "Personal skill collection for Claude Code, Codex, Antigravity, "
+        "OpenCode, and Pi: think, check, hunt, ui, read, write, learn, "
+        "and health for agent config and AI maintainability audits."
     ),
     "owner": {
         "name": "Tw93",
@@ -59,11 +66,11 @@ CLAUDE_MARKETPLACE_TOP = {
 }
 
 BUNDLE_DESCRIPTION = (
-    "安装完整 Waza 工具集，在 waza namespace 下注册八个技能："
-    "/waza:think、/waza:check、/waza:hunt、/waza:design、"
-    "/waza:read、/waza:write、/waza:learn 和 /waza:health。"
-    "Claude Code v2.1.143 或更新版本可用 /plugin install "
-    "waza-<name>@waza 单独安装一个技能。"
+    "Installs the full Waza toolkit. Registers all eight skills under the "
+    "waza namespace, callable as /waza:think, /waza:check, /waza:hunt, "
+    "/waza:ui, /waza:read, /waza:write, /waza:learn, and /waza:health. "
+    "For one skill on Claude Code v2.1.143 or newer, use /plugin install "
+    "waza-<name>@waza."
 )
 
 CATEGORY = "development"
@@ -78,22 +85,13 @@ AUTHOR = {
 }
 
 CODEX_DESCRIPTION = (
-    "Codex 工程工作流技能：think、check、hunt、design、read、write、"
-    "learn 和 health。"
+    "Engineering workflow skills for Codex: think, check, hunt, ui, read, "
+    "write, learn, and health."
 )
-CODEX_MIRROR_IGNORED_DIRS = {
-    "__pycache__",
-    ".mypy_cache",
-    ".pytest_cache",
-    ".ruff_cache",
-}
-CODEX_MIRROR_IGNORED_NAMES = {
-    ".DS_Store",
-}
-CODEX_MIRROR_IGNORED_SUFFIXES = {
-    ".pyc",
-    ".pyo",
-}
+# Shared durable-context preamble: source of truth in rules/, copied into each
+# referencing skill's references/ so direct installs resolve the link locally.
+DURABLE_CONTEXT_RULE = Path("rules/durable-context.md")
+DURABLE_CONTEXT_COPY = Path("references/durable-context.md")
 
 
 def read_version(root: Path) -> str:
@@ -179,12 +177,13 @@ def build_codex_plugin(version: str) -> dict:
         "skills": "./skills/",
         "interface": {
             "displayName": "Waza",
-            "shortDescription": "Codex 的中文优先工程工作流技能",
+            "shortDescription": "Engineering workflow skills for Codex",
             "longDescription": (
-                "Waza 把八个工程习惯打包成 Codex skills：think 做方案，"
-                "check 做审查和发布门禁，hunt 做根因调试，design 做前端和视觉，"
-                "read 读取 URL/PDF，write 打磨文案，learn 研究陌生领域，"
-                "health 审计 agent 配置和 AI 可维护性。"
+                "Waza packages eight engineering habits as Codex skills: "
+                "think for planning, check for review, hunt for debugging, "
+                "ui for frontend work, read for source intake, write for "
+                "prose, learn for domain research, and health for agent "
+                "configuration audits."
             ),
             "developerName": "Tw93",
             "category": CODEX_CATEGORY,
@@ -194,12 +193,20 @@ def build_codex_plugin(version: str) -> dict:
             ],
             "websiteURL": HOMEPAGE,
             "defaultPrompt": [
-                "用 Waza think 规划这个改动",
-                "用 Waza check 审查这个 diff",
-                "用 Waza hunt 排查这个失败",
+                "Use Waza think to plan this change",
+                "Use Waza check to review this diff",
+                "Use Waza hunt to debug this failure",
             ],
             "brandColor": "#111827",
         },
+    }
+
+
+def build_agy_plugin() -> dict:
+    return {
+        "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+        "name": "waza",
+        "description": CODEX_DESCRIPTION.replace("Codex", "Antigravity CLI"),
     }
 
 
@@ -231,15 +238,15 @@ def build_package_json(version: str) -> str:
         "name": "@tw93/waza",
         "version": version,
         "description": (
-            "中文优先的 Waza 工程技能，适用于 Claude Code、Codex、"
-            "Antigravity、OpenCode、Pi 和兼容 coding agents。"
+            "Waza engineering skills for Claude Code, Codex, Antigravity, "
+            "OpenCode, Pi, and compatible coding agents."
         ),
         "license": "MIT",
         "repository": {
             "type": "git",
             "url": "git+https://github.com/tw93/Waza.git",
         },
-        "homepage": "https://github.com/tw93/Waza#readme",
+        "homepage": "https://github.com/tw93/Waza",
         "keywords": [
             "pi-package",
             "agent-skills",
@@ -248,12 +255,16 @@ def build_package_json(version: str) -> str:
             "codex",
             "antigravity",
             "opencode",
+            "antigravity-cli"
         ],
         "files": [
             "LICENSE",
+            "llms.txt",
             "README.md",
             "rules",
-            "scripts",
+            "scripts/setup-rule.sh",
+            "scripts/setup-statusline.sh",
+            "scripts/statusline.sh",
             "skills",
             "!**/__pycache__/**",
             "!**/*.pyc",
@@ -262,8 +273,12 @@ def build_package_json(version: str) -> str:
             "access": "public",
         },
         "pi": {
+            # Pi scans a skills directory for both recursive SKILL.md and
+            # stray root-level *.md, so exclude the human routing index;
+            # it has no frontmatter description and is not a skill.
             "skills": [
                 "./skills",
+                "!skills/RESOLVER.md",
             ],
         },
     }
@@ -310,7 +325,7 @@ README_SWAP_TAG_RE = re.compile(
 WAZA_REF_RE = re.compile(r'WAZA_REF="\$\{WAZA_REF:-(?:main|v\d+\.\d+\.\d+)\}"')
 
 
-def render_readme(current: str, version: str) -> str:
+def render_readme(current: str) -> str:
     current = README_INSTALL_URL_RE.sub(
         r"https://github.com/tw93/Waza/releases/latest/download/\1", current
     )
@@ -344,37 +359,59 @@ def bytes_diff(label: str, expected: bytes, actual: bytes) -> str:
     )
 
 
-def collect_codex_plugin_tree(root: Path, plugin_manifest_rendered: str) -> dict[str, bytes]:
-    """Build the generated file set for the Codex plugin directory.
+def collect_skill_shared_assets(root: Path) -> dict[str, bytes]:
+    """Per-skill copies of shared assets that direct installs need locally.
+
+    `npx skills add` copies only each skill directory, so every skill whose
+    SKILL.md links the shared durable-context preamble carries a references/
+    copy of it.
+    """
+    generated: dict[str, bytes] = {}
+    durable_source = root / DURABLE_CONTEXT_RULE
+    durable_bytes = durable_source.read_bytes() if durable_source.exists() else None
+    for skill_file in sorted((root / "skills").glob("*/SKILL.md")):
+        skill_dir = skill_file.parent.relative_to(root)
+        if DURABLE_CONTEXT_COPY.as_posix() in skill_file.read_text():
+            if durable_bytes is None:
+                raise SystemExit(
+                    f"ERROR: {skill_file} links {DURABLE_CONTEXT_COPY} but "
+                    f"{DURABLE_CONTEXT_RULE} does not exist"
+                )
+            generated[(skill_dir / DURABLE_CONTEXT_COPY).as_posix()] = durable_bytes
+    return generated
+
+
+def shared_asset_source(rel: str) -> str:
+    return DURABLE_CONTEXT_RULE.as_posix()
+
+
+def collect_codex_plugin_tree(
+    root: Path,
+    codex_plugin_rendered: str,
+    agy_plugin_rendered: str,
+    generated_skill_files: dict[str, bytes],
+) -> dict[str, bytes]:
+    """Build the generated file set for the Codex and Antigravity plugin directory.
 
     Codex installs only the directory referenced by marketplace source.path, so
     the plugin tree contains real copies of the skill and rule files instead of
     symlinks or references back to the repository root.
     """
     generated = {
-        "plugins/waza/.codex-plugin/plugin.json": plugin_manifest_rendered.encode()
+        "plugins/waza/.codex-plugin/plugin.json": codex_plugin_rendered.encode(),
+        "plugins/waza/plugin.json": agy_plugin_rendered.encode(),
     }
     for source_name in ("skills", "rules"):
-        source_root = root / source_name
-        if not source_root.exists():
-            raise SystemExit(f"ERROR: missing required Codex plugin source tree {source_root}")
-        for path in sorted(source_root.rglob("*")):
-            if not path.is_file():
-                continue
-            source_rel = path.relative_to(source_root)
-            if not should_include_codex_mirror_file(source_rel):
-                continue
-            rel = path.relative_to(root).as_posix()
-            generated[f"plugins/waza/{rel}"] = path.read_bytes()
+        if not (root / source_name).exists():
+            raise SystemExit(
+                f"ERROR: missing required Codex plugin source tree {root / source_name}"
+            )
+    for _source_name, _source_rel, path in iter_codex_source_files(root):
+        rel = path.relative_to(root).as_posix()
+        generated[f"plugins/waza/{rel}"] = path.read_bytes()
+    for rel, content in generated_skill_files.items():
+        generated[f"plugins/waza/{rel}"] = content
     return generated
-
-
-def should_include_codex_mirror_file(path: Path) -> bool:
-    if any(part in CODEX_MIRROR_IGNORED_DIRS for part in path.parts):
-        return False
-    if path.name in CODEX_MIRROR_IGNORED_NAMES:
-        return False
-    return path.suffix not in CODEX_MIRROR_IGNORED_SUFFIXES
 
 
 def main() -> int:
@@ -398,8 +435,8 @@ def main() -> int:
     marketplace = build_marketplace(version, skills)
     rendered = render_json(marketplace)
     codex_plugin_rendered = render_json(build_codex_plugin(version))
+    agy_plugin_rendered = render_json(build_agy_plugin())
     codex_marketplace_rendered = render_json(build_codex_marketplace())
-    codex_plugin_tree = collect_codex_plugin_tree(root, codex_plugin_rendered)
     package_rendered = build_package_json(version)
 
     target = root / ".claude-plugin" / "marketplace.json"
@@ -412,15 +449,30 @@ def main() -> int:
     package_actual = package_json.read_text() if package_json.exists() else ""
     readme = root / "README.md"
     readme_actual = readme.read_text() if readme.exists() else ""
-    readme_rendered = render_readme(readme_actual, version)
-    ref_scripts = [
-        root / "scripts" / "setup-rule.sh",
-        root / "scripts" / "setup-statusline.sh",
+    readme_rendered = render_readme(readme_actual)
+    pinned_scripts = [
+        (
+            root / "scripts" / "setup-rule.sh",
+            "default WAZA_REF",
+            lambda actual: render_script_ref(actual, version),
+        ),
+        (
+            root / "scripts" / "setup-statusline.sh",
+            "default WAZA_REF",
+            lambda actual: render_script_ref(actual, version),
+        ),
     ]
     script_pairs = []
-    for script in ref_scripts:
+    for script, field_label, renderer in pinned_scripts:
         actual = script.read_text() if script.exists() else ""
-        script_pairs.append((script, actual, render_script_ref(actual, version)))
+        script_pairs.append((script, field_label, actual, renderer(actual)))
+    skill_shared_assets = collect_skill_shared_assets(root)
+    codex_plugin_tree = collect_codex_plugin_tree(
+        root,
+        codex_plugin_rendered,
+        agy_plugin_rendered,
+        skill_shared_assets,
+    )
 
     dispatcher_template = root / "scripts" / "dispatcher-template.md"
     dispatcher_target = root / "scripts" / "dispatcher.md"
@@ -460,12 +512,7 @@ def main() -> int:
         codex_plugin_root = root / "plugins" / "waza"
         if codex_plugin_root.exists():
             expected_paths = set(codex_plugin_tree)
-            for path in sorted(codex_plugin_root.rglob("*")):
-                if not path.is_file():
-                    continue
-                plugin_rel = path.relative_to(codex_plugin_root)
-                if not should_include_codex_mirror_file(plugin_rel):
-                    continue
+            for _plugin_rel, path in iter_codex_plugin_files(codex_plugin_root):
                 rel = path.relative_to(root).as_posix()
                 if rel not in expected_paths:
                     print(
@@ -492,11 +539,22 @@ def main() -> int:
             )
             sys.stderr.write(diff("package.json", package_rendered, package_actual))
             drift = True
-        for script, actual, rendered_script in script_pairs:
+        for rel, expected in skill_shared_assets.items():
+            path = root / rel
+            actual = path.read_bytes() if path.exists() else b""
+            if actual != expected:
+                print(
+                    f"DRIFT: {rel} is out of sync with {shared_asset_source(rel)}.\n"
+                    f"Run scripts/build_metadata.py (no flags) to regenerate.",
+                    file=sys.stderr,
+                )
+                sys.stderr.write(bytes_diff(rel, expected, actual))
+                drift = True
+        for script, field_label, actual, rendered_script in script_pairs:
             if actual != rendered_script:
                 label = script.relative_to(root).as_posix()
                 print(
-                    f"DRIFT: {label} default WAZA_REF is not pinned to v{version}.\n"
+                    f"DRIFT: {label} {field_label} is not pinned to v{version}.\n"
                     f"Run scripts/build_metadata.py (no flags) to regenerate.",
                     file=sys.stderr,
                 )
@@ -520,6 +578,7 @@ def main() -> int:
         print("ok: README.md install URLs use latest release assets")
         print(f"ok: package.json pinned to v{version}")
         print(f"ok: installer defaults pinned to v{version}")
+        print("ok: skill-local shared assets match generator")
         print(f"ok: {dispatcher_target.relative_to(root)} matches generator")
         return 0
 
@@ -544,12 +603,18 @@ def main() -> int:
         print("wrote: README.md (installer URLs use latest release assets)")
     else:
         print("ok: README.md install URLs already use latest release assets")
-    for script, actual, rendered_script in script_pairs:
+    for script, field_label, actual, rendered_script in script_pairs:
         if actual != rendered_script:
             script.write_text(rendered_script)
-            print(f"wrote: {script.relative_to(root)} (default WAZA_REF=v{version})")
+            print(f"wrote: {script.relative_to(root)} ({field_label}=v{version})")
         else:
-            print(f"ok: {script.relative_to(root)} default WAZA_REF already pinned")
+            print(f"ok: {script.relative_to(root)} {field_label} already pinned")
+    for rel, expected in skill_shared_assets.items():
+        path = root / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if not path.exists() or path.read_bytes() != expected:
+            path.write_bytes(expected)
+            print(f"wrote: {rel} (copied from {shared_asset_source(rel)})")
     if dispatcher_actual != dispatcher_rendered:
         dispatcher_target.write_text(dispatcher_rendered)
         print(

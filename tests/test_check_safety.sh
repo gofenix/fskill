@@ -20,6 +20,7 @@ status="$(cd "$repo" && git status --short --branch -uall)"
 
 skill="$ROOT/skills/check/SKILL.md"
 rules="$ROOT/rules/anti-patterns.md"
+durable_context="$ROOT/rules/durable-context.md"
 
 grep -q '## Worktree Safety Preflight' "$skill"
 grep -q 'git status --short --branch -uall' "$skill"
@@ -52,7 +53,12 @@ for safe_pr_command in \
   }
 done
 
-grep -q 'Review request as worktree authorization' "$rules"
+grep -q 'Read-only request as write authorization' "$rules"
+grep -q '## Memory is not authorization' "$durable_context"
+grep -q 'must never grant or broaden authorization' "$durable_context"
 grep -q 'git status --short --branch -uall' "$rules"
+grep -q 'Review, audit, triage, and readiness requests are report-only' "$skill"
+grep -q 'Apply only after explicit write authorization; otherwise report it' "$skill"
+grep -q 'Never say "all read", "full audit complete", or "no issues" while any reviewer or required verification is still pending' "$skill"
 
 echo "check safety smoke: ok"

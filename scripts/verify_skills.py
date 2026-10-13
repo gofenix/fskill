@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Validate Waza skill metadata, references, marketplace, and resolver invariants.
 
-Driver only. Validation logic lives in two sibling modules so both can be
-imported and unit-tested without invoking argparse:
-  - `skill_frontmatter.py`  -- parse_frontmatter, parse_when_to_use_keywords, fail
-  - `skill_checks.py`       -- all check_* functions
+Driver only. Validation logic lives in sibling modules so it can be imported
+and unit-tested without invoking argparse:
+  - `skill_frontmatter.py`  -- parsing plus constants shared with codegen
+  - `skill_checks.py`       -- facade re-exporting every check from the domain
+    modules `checks_content.py`, `checks_distribution.py`, `checks_routing.py`
 
 Run as: python3 scripts/verify_skills.py [--root PATH] [--skills-only]
 
@@ -26,12 +27,16 @@ from skill_checks import (  # noqa: E402
     check_anti_patterns_contract,
     check_attribution_leak,
     check_description_conformance,
-    check_durable_context_and_paths,
+    check_context_classifier_literals,
+    check_durable_context,
+    check_personal_paths,
     check_english_coaching_guard,
     check_marketplace,
     check_markdown_links,
     check_no_root_skill,
+    check_no_automatic_update_checks,
     check_outcome_contract,
+    check_portable_invocations,
     check_portable_skill_surface,
     check_readme_install_command,
     check_release_workflow_npm_surface,
@@ -72,8 +77,11 @@ def main() -> int:
     skill_names = set(skill_descriptions)
     check_description_conformance(skill_descriptions)
     check_outcome_contract(skill_files)
+    check_context_classifier_literals(root, skill_files)
+    check_portable_invocations(root, skill_files)
     if (root / "rules" / "durable-context.md").exists():
-        check_durable_context_and_paths(root, skill_files)
+        check_personal_paths(skill_files)
+        check_durable_context(root, skill_files)
 
     if args.skills_only:
         # Installed copies (e.g. ~/.claude/skills/) don't ship VERSION,
@@ -98,6 +106,7 @@ def main() -> int:
     check_no_root_skill(root)
     check_trigger_overlap(skill_keywords)
     check_rules_files_present(root)
+    check_no_automatic_update_checks(root, skill_names)
     check_anti_patterns_contract(root)
     check_waza_routing_skills(root, skill_names)
     check_waza_routing_triggers(root)

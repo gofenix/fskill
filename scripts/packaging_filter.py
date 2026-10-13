@@ -6,12 +6,16 @@ import re
 import sys
 from pathlib import Path
 
-EXCLUDE_RE = re.compile(
-    r"(^skills/[^/]+/SKILL\.md$"
-    r"|(^|/)__pycache__/"
-    r"|\.pyc$"
-    r"|(^|/)\.DS_Store$)"
-)
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from skill_frontmatter import should_include_codex_mirror_file  # noqa: E402
+
+# Nested SKILL.md files are inlined into the generated root SKILL.md by the
+# packager, so they never ship as standalone files, and the resolver table is
+# superseded by the dispatcher routing already inlined at the ZIP root.
+# Cache/noise filtering is shared with the mirror generator and verifier via
+# skill_frontmatter.
+PACKAGING_EXCLUDE_RE = re.compile(r"^skills/([^/]+/)?SKILL\.md$|^skills/RESOLVER\.md$")
 
 
 def load_patterns(path: Path) -> list[str]:
@@ -44,7 +48,7 @@ def main() -> int:
         path = line.rstrip("\n")
         if not path:
             continue
-        if EXCLUDE_RE.search(path):
+        if PACKAGING_EXCLUDE_RE.match(path) or not should_include_codex_mirror_file(Path(path)):
             continue
         if allowed(path, patterns):
             print(path)

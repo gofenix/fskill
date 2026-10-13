@@ -1,125 +1,128 @@
 ---
 name: write
-description: "改写和润色中英文自然语言，去掉 AI 味，审阅产品本地化文案，并保留原意。Use when users ask 帮我写/改稿/润色/去AI味/写一段/审稿/本地化文案/tweet/rewrite/proofread. Not for code comments, commit messages, or inline docs."
-when_to_use: "帮我写, 改稿, 润色, 去AI味, 写一段, 审稿, 文档review, 本地化文案, 多语言文案, i18n copy, localization copy, check this document, 推特, twitter, X推文, tweet, social post, 连贯性, 段落连贯, draft, edit text, proofread, sound natural, polish, rewrite"
-dispatch_intent: "写作、改稿、润色、release notes、launch/social copy、去 AI 味"
+description: "Rewrites and polishes Chinese or English prose, technical instructions, and product copy. Use when drafting, editing, localizing, or cutting AI tone. Not for code comments or commit messages."
+when_to_use: "改稿, 润色, 去AI味, 帮我写文案, 审稿, 文档review, 技术说明改写, 指令消歧, clarify instructions, technical writing, 本地化文案, 多语言文案, i18n copy, localization copy, check this document, 推特, twitter, X推文, tweet, social post, draft, edit text, proofread, sound natural, polish, rewrite"
+dispatch_intent: "Writing, editing prose, clarify technical instructions, polish, release notes, launch/social copy, remove AI tone"
 ---
 
-# Write: 去掉 AI 味
+# Write: Cut the AI Taste
 
 Prefix your first line with 🥷 inline, not as its own paragraph.
 
-**Update check（非阻塞）**。开始前运行一次 `bash ../../scripts/check-update.sh`；如果它输出提示，把那一行转告用户，然后继续。脚本每天最多读一次公开版本文件，不发送本地数据，失败时静默。
-
-把文案改到自然、有人的判断，但不炫技。不要“提升词汇”，要去掉表演式改进。
+Strip AI patterns from prose and rewrite it to sound human. Do not improve vocabulary; remove the performance of improvement.
 
 ## Outcome Contract
 
-- Outcome: 文案保留作者意图，同时更符合目标读者、场景和语言习惯。
-- Done when: 除非用户要求改变事实或结构，否则意义、事实主张和结构被保留，AI 腔被去掉。
-- Evidence: 用户提供的文本、目标读者、项目风格参考、当前 release/product 状态和目标语言。
-- Output: 默认只给改好的文案；只有用户要求时才给 notes、variants 或 review comments。
-
-## Core Stance
-
-这个技能是气味目录，不是逐条执行 checklist。识别 AI 味后做判断：该删就删，该保留就保留。
-
-- **过度编辑和编辑不足一样失败**。句子已经自然、清楚、稳定时，不要动。
-- **作者声音优先**。保留作者原有口语、节奏和立场。规则是默认值，不是法律。
-- **禁用词表和替换表只是例子**。看气味，不做机械 find-and-replace。
-- **少而准**。三个有效改动比三十个机械替换更好。
-
-把新经验沉淀进技能时，合并到已有原则，不要无限追加同义禁用词。
-
-## Pre-flight
-
-1. **Text present?** 用户没给要改的文本时，只问一句让他贴文本。
-2. **Audience locked?** 读者不能从文本推断时先问。写给初级工程师和资深架构师完全不同。
-3. **Language detected from the text being edited**，不是从用户命令判断：
-   - 中文 + release notes 或社交发布：读取 `references/write-zh-release-notes.md`
-   - 中文 + bilingual 或翻译审阅：读取 `references/write-zh-bilingual.md`
-   - 产品/网站/app 本地化：读取 `references/write-product-localization.md`；有中文时也读 `references/write-zh-bilingual.md`
-   - 默认中文 prose：读取 `references/write-zh-prose.md`；需要完整模式库时读 `references/write-zh.md`
-   - 其他情况：读取 `references/write-en.md`
-
-读取对应参考后再改。默认不解释修改。
+- Outcome: the prose preserves the author's intent while sounding natural for its audience and surface.
+- Done when: meaning, factual claims, and structure are preserved unless the user asked to change them, and AI-like wording is removed; punctuation and CJK/Latin mixing pass the Punctuation Gate for the output language.
+- Evidence: supplied text, target audience, project style references, release or product state, and requested language.
+- Output: edited prose for pasted text; for repository edits, a scoped diff and the requested verification or delivery receipt.
 
 ## Durable Context Preflight
 
-参见 [rules/durable-context.md](../../rules/durable-context.md)。对 `/write` 来说，旧记忆可以提供声音、格式和用户偏好；the supplied text, target audience, project docs, current release state, and source material override memory.
+See [references/durable-context.md](references/durable-context.md) for when durable context is in scope and the redaction gate that applies before any of it becomes a durable rule.
+
+For `/write`: the supplied text and current release state override memory. Durable preferences can set brevity, tone, and social-post shape; they do not override the hard rule to edit in place, keep meaning intact, and avoid change lists unless the user explicitly asks or the input is the author's own finished draft.
+
+## Core Stance
+
+This skill is a catalog of smells, not a checklist to run top to bottom. Use it to recognize AI taste, then make judgment calls. The reference files are catalogs; do not try to apply every rule to every text. Applying more rules is not doing a better job.
+
+- **Over-editing is failure, equal to under-editing.** If a sentence is already natural, clear, and stable, leave it. Most polish is subtraction (cut repetition, summary-tone, restated conclusions), not phrase-by-phrase replacement. When the input is the author's own finished draft, the default scope shrinks to typos, broken sentences, and clear AI tells: never rewrite their sentences for style, and return a per-sentence list of every deleted or rewritten sentence so the author can veto each one.
+- **A piece has a speaker.** Smooth prose that could belong to anyone has lost something. Keep the author's colloquial words, cadence, knowledge and judgments; deliberate authorial or genre choices take precedence over these defaults. The author's affection, frustration, pride, gratitude and personal convictions are content, even when abstract or phrased as a conclusion. Preserve their intensity; do not require external evidence for a feeling or replace it with a neutral observation. Distinguish authentic colloquialisms, emotional markers, and deliberate series branding from AI corporate jargon and translationese: protect the author's real voice (including signature informal words or established series titles); remove synthetic PR buzzwords. Read nearby paragraphs and author revisions to separate a real stance from stock rhetoric. If that distinction is uncertain, keep the sentence. Do not invent emotion or turn "what I did" into "what you must do."
+- **Banned-phrase lists and replacement tables are examples, not find-and-replace.** A flagged word that reads naturally in context stays. Match the smell, not the string. When source material exists, check it before flagging the author's wording; restore their words rather than paraphrasing them. When restoring copy, trace that passage's diffs to the nearest version before the unwanted edit and compare the restored text exactly; do not choose an older, shorter version or rewrite unrelated paragraphs.
+- **Prefer fewer, stronger edits.** Three changes that matter beat thirty mechanical swaps that flatten the voice.
+
+## Pre-flight
+
+1. **Locate the text.** Read named files or discover posts in the supplied repository before asking the user to paste anything. For "latest N," freeze the dated article set and its language mirrors, then account for each as edited, unchanged with reason, or unavailable.
+2. **Audience locked?** If the intended audience is unclear and cannot be inferred from the text (blog reader vs RFC vs email), ask before editing. Junior engineer and senior architect prose should read completely different.
+3. **Language detected from the text being edited**, not the user's command:
+   - Contains Chinese characters + release notes or social post mode loads `references/write-zh-release-notes.md` on top of `references/write-zh.md`
+   - Bilingual or translation review loads `references/write-zh-bilingual.md` and the language references for both versions
+   - Product/site/app localization review across multiple locales loads `references/write-product-localization.md`; also load `references/write-zh-bilingual.md` when Chinese copy is present
+   - Contains Chinese characters (default prose) loads `references/write-zh.md`
+   - Otherwise loads `references/write-en.md`
+
+## Mode Picker
+
+Default is a line-level rewrite of the supplied text. Take a mode only when its row matches, and load a mode file only when its row points at one.
+
+| Ask | Mode |
+|---|---|
+| Release note, changelog entry, update-feed copy | load `references/mode-release-notes.md` |
+| Maintainer reply on a public issue or PR | load `references/mode-public-reply.md` |
+| Installation steps, operating instructions, error text, or tool descriptions to clarify; wording-only edits to agent instructions | load `references/write-technical.md` for those passages, alongside the language reference; prompt design and code behavior stay outside this mode |
+| Long draft with several sections, tables, or images that needs structural work | load `references/mode-long-form.md` |
+| EN/CN pair or mixed Chinese/English copy to check for drift | load `references/write-zh-bilingual.md`, which owns the judgment the Punctuation Gate does not check |
+| Product, site, or app copy across locales ("本地化文案", "多语言文案", "localization copy", "i18n copy", runtime catalog, release feed copy) | load `references/write-product-localization.md` and follow its review procedure; add `references/write-zh-bilingual.md` when Chinese is a locale |
+| Document, PDF, or white paper to review | [Document Review](#document-review-mode) |
+| Paragraphs that read disconnected | [Paragraph Coherence](#paragraph-coherence-mode) |
+| Tweet, thread, or launch post | [Tweet / Social Post](#tweet--social-post-mode) |
+
+## Document Review Mode
+
+Activate when: PDF, document, white paper, "review this document", "check this document", "审稿"
+
+Review checklist:
+- **Privacy scan**: Flag sensitive information whose disclosure is not authorized for the intended audience. Preserve identity and experience the author explicitly supplies for this document or has already published; job seeking, employer names, and locations alone are not grounds to stop or delete content. Resolve uncertain disclosure before exposing it.
+- **Tone consistency**: Flag voice shifts, register mismatches, formulaic phrasing.
+- **Bilingual validation**: For CN/EN pairs, confirm translation accuracy and terminology consistency with `references/write-zh-bilingual.md`.
+- **Rendering check**: Placeholder text remaining (`Lorem ipsum`, `TODO`, `[TBD]`), broken image links.
+- **Durable-doc scan**: If the document is a review report, scorecard, or diagnostic snapshot, flag dated claims, stale line references, private paths, repo-specific commands, and current-score framing. Recommend extracting stable rules instead of preserving the snapshot as evergreen guidance.
+
+Output format: follow the requested review or rewrite; mention privacy only when an actionable disclosure concern remains.
+
+## Paragraph Coherence Mode
+
+Activate when: "连贯性", "段落连贯", "可读性", "coherence", "flow check", "段落顺不顺"
+
+Check unsignalled topic shifts, openings that do not follow the previous close, and monotone sentence length across a paragraph. Each fix is the minimal one: one word, one reordered clause, or one bridging sentence. Review requests get a numbered list with paragraph locations; explicit rewrite or file-edit requests get the minimal authorized edits without asking again.
+
+## Tweet / Social Post Mode
+
+Activate when: "推特", "twitter", "X推文", "tweet", "social post", "折叠长度", "长文推特", "发文"
+
+Load `references/write-zh-release-notes.md` for the five announcement rules (community lead, highlights over completeness, UX framing, one stance, native rhythm) and the casual invitation close. For English posts or projects without that community voice, keep the same structure in the project's own voice.
 
 ## Hard Rules
 
-- **Meaning first, style second.** 去 AI 味会改变作者意思时，保留原文意思。
-- **No silent restructuring.** 不擅自重排标题、段落、顺序或合并章节，除非用户要求。Long-form Article Mode 例外。
-- **Artifact-grounded claims.** Launch copy、release notes、产品页和 public reply 的事实必须来自当前产品、可运行产物、截图、release page、changelog、issue/PR 或用户材料。
-- **No em-dash.** 不输出 U+2014 或 U+2013。用逗号、句号、冒号、分号或括号。
-- **Stop after output.** 默认只给改好的文本，不追加解释、修改列表或收尾话。
+- **Meaning first, style second.** If removing an AI pattern would change the author's intended meaning, keep the original. Removing promotion does not remove legitimate product descriptions, licensing information, or related-product explanations. Broad copy cleanup does not authorize rewriting attributed quotations or testimonials; preserve their wording unless explicitly included in the edit scope, and distinguish any paraphrase from a verbatim quote.
+- **No silent restructuring.** Do not reorganize headings, reorder paragraphs, or merge sections unless structural changes are explicitly requested. Edit in place. Structural assets are not cleanup noise: image placeholders, links, frontmatter, and example blocks stay unless the user asked to remove them, and any deletion gets listed with its reason instead of discovered later in the diff. (Exception: `references/mode-long-form.md` treats structural cuts and merges as in-scope, since structure is the main problem there; it still proposes them as change-points first instead of doing them silently.)
+- **No invented first-person experience.** When ghostwriting as the author, every personal anecdote, tool history, opinion, and quote must come from the supplied material or the author's published writing, and so does any color used to replace a flagged phrase: fix by subtraction, not by fresh imagery. The material lacking an example is a question to ask, not a gap to fill. Before drafting in the author's voice (rather than editing supplied text), read one or two of their published pieces as the voice and length baseline.
+- **Material gate before drafting long-form.** When asked to write rather than edit, count what you actually hold before choosing a length: supplied experience, numbers, quotes, actions, and verifiable public sources. A category name is not a material, and a restated idea is not a second material. A material the intended reader would already predict (common sense, consensus advice, the topic's standard talking points) does not count either; if no section carries something that reader would not have guessed, ask the author for the surprising part instead of drafting the predictable version. Reasoning connects material; it does not breed material. If you cannot name a distinct material for each planned section, the plan is longer than the evidence. Resolve it by researching first, asking at most three questions in one round, or shipping a shorter piece. A target word count is not a reason to pad with invented examples or a fourth phrasing of the same point.
+- **Shorter than the first draft wants to be.** Outward copy (README paragraphs, tweets, release notes, maintainer replies) defaults to the length of the user's previously accepted pieces; when a physical constraint exists (tweet fold line, single-line rendering), derive the budget from the constraint before writing, not after the user trims it.
+- **Artifact-grounded claims.** For launch copy, release notes, social posts, product pages, and public replies, ground factual claims in real source material: current app behavior, runnable artifact, screenshot, product page, release page, changelog, issue/PR, or user-provided draft. Do not present handoffs, plans, old memory, or stale screenshots as current product truth, and do not turn concrete product evidence into generic marketing language. Compare the draft against the shipping artifact and tighten until the two agree.
+- **No em-dash.** Never produce em-dash (U+2014) or en-dash (U+2013) in Chinese or English output, and replace every one in an edited draft; it is the strongest AI-tone fingerprint here. Use commas, periods, colons, or parentheses; hyphen-minus inside compound words is allowed.
+- **Route bundled work without dropping it.** Code comments and commit messages stay outside this prose skill. When explicitly requested alongside writing, handle them through the appropriate workflow or native capability and keep them in the same completion ledger; this skill grants no extra write or publishing authority.
+- **Match the requested handoff.** Pasted-text rewrites need no explanation, except the per-sentence change list for the author's own finished draft. Repository edits need the scoped diff and verification; complete explicitly authorized commit/push steps under the project's rules. A prose-only output convention must not hide unfinished delivery.
 
-## Long-form Article Mode
+## Punctuation Gate
 
-长文（约 300 行以上，或多个 `##`、表格和图片）里，最大问题通常是结构重复，而不是单句不自然。
+Before returning any produced text (a rewrite, or generated release / reply / social copy), resolve the checker across install layouts and run it:
 
-流程：
+```bash
+GATE=""
+for candidate in \
+  "<skill-base-dir>/scripts/check-punctuation.sh" \
+  "<skill-base-dir>/skills/write/scripts/check-punctuation.sh"; do
+  [ -f "$candidate" ] && GATE="$candidate" && break
+done
+[ -f "${GATE:-}" ] || { echo "punctuation gate not found under the installed skill base; reinstall Waza" >&2; exit 1; }
+bash "$GATE" --lang <zh|en|ja|auto> <file>   # or pipe text via stdin
+```
 
-1. **Map first, read-only.** 先读完整文章，列出 `##` 章节、表格、列表和图片。标出三类问题：跨章节重复、复读表格、整段/整节冗余。
-2. **Propose cuts as change-points.** 每个结构删改都给 before -> after，让用户选。不要静默删除整节。
-3. **Then line-level de-AI.** 用户确认结构点后，再逐节做句子级去 AI 味。
-4. **Output is change-points.** 默认给变更点，不直接吐整篇重写稿。用户说“直接改”时才输出完整改稿。
+Replace `<skill-base-dir>` with the installed Write skill or Waza dispatcher directory. The first path covers direct/plugin installs; the second covers the inlined-root release ZIP.
 
-不要单轮重写 4 万字文章，那会覆盖作者手调的表达，也很难 review。
+It enforces character-level punctuation by locale and skips code, URLs, and link targets; the script header documents the rules, `--fix`, and `--lang auto` routing. Fix every finding while preserving meaning, and pass an explicit `--lang` for mixed-locale or predominantly-English text. Quote direction and other judgment calls stay with you and the reference files.
 
-## Bilingual Review Mode
+## Gotchas
 
-用于中英混排、Chinese copywriting、bilingual consistency、release notes。
-
-规则：
-
-- 中文和英文之间通常留空格，品牌名、命令、路径和代码除外。
-- 不把英文术语硬翻译成别扭中文；必要时保留英文。
-- 中英版本要事实一致、语气一致、编号一一对应。
-- Release notes 要工程师可读，不做营销腔。
-- 社交文案可以更口语，但不能夸大事实。
-
-## Product Localization Mode
-
-用于产品 UI、网站、应用商店、设置项、按钮、空状态、错误提示等本地化。
-
-检查：
-
-- 文案是否符合控件大小和状态。
-- 是否把功能承诺说过头。
-- 中文是否自然，英文是否像 native product copy。
-- 多语言是否保持同一事实，不逐字硬译。
-- 错误提示是否告诉用户下一步，而不是只解释失败。
-
-参考 `references/write-product-localization.md`。
-
-## English Editing
-
-英文编辑时不要把文字变得更“高级”。目标是更自然、更准确、更像人写。
-
-优先：
-
-- 删掉总结腔和过度连接词。
-- 把抽象名词改回具体动作。
-- 保留作者的直接语气。
-- 避免 em-dash、过密形容词和“not only... but also...”式模板。
-
-参考 `references/write-en.md`。
+| What happened | Rule |
+|---|---|
+| User flagged one word as "not my voice"; only that instance was fixed | A flagged word marks a smell class, not a typo. Sweep the whole text for the same class (same register, same template shape) before returning |
+| A copy-fix batch passed its checks but shipped new defects: a line now wider than its fixed-width slot, a boundary that lost its subject, a noun that reads two ways | Re-review the fix diff itself, starting with paragraphs that were rewritten or re-translated whole. Restored text carries its old defects too; flag them instead of silently re-editing the restoration |
 
 ## Output
 
-默认输出改好的文本本身。用户要求 review 时，输出：
-
-```text
-Verdict: ...
-
-Main issues:
-- ...
-
-Suggested rewrite:
-...
-```
-
-用户要求多个版本时，最多给 3 个，并说明每个版本的使用场景。
+Follow the Outcome Contract. For batch edits, reconcile the original article set and mirrors before reporting completion. State missing source or verification without treating it as a pass.

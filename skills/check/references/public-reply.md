@@ -1,25 +1,8 @@
-# Public Reply
+# Public Reply Mechanics (maintainer, issue or PR)
 
-用于 issue、PR、release comment 和 maintainer 回复。
+Used by Triage Mode and Ship / Release Follow-through for the actions around a reply. The reply body belongs to `/write` Public Reply Mode; without `/write`, open with `@<login>` and at most one short thanks, match the opener's language, and give one or two sentences naming the exact ship state and the reporter's next step, each true at the moment of posting. `AGENTS.md` or `CLAUDE.md` in the target repo overrides this shape.
 
-原则：
-
-- 先确认事实，再表达态度。
-- 短，具体，有下一步。
-- 不把内部推理、私有路径、token、机器状态或未公开上下文写出去。
-- 不承诺没有验证过的发布日期、性能数字或兼容范围。
-- 关闭 issue 时给出证据：commit、release、测试、复现结果或“needs info”。
-
-常用形态：
-
-```text
-Thanks for the report. I reproduced this with {command/version}. The fix is in {commit/PR}; it will be available in {release/version}.
-```
-
-```text
-I could not reproduce this yet. Please share {minimal info}. Without that, the next action would be guesswork.
-```
-
-```text
-This is outside the current scope because {one concrete boundary}. I am closing this to keep the tracker focused.
-```
+1. Resolve `@<login>` from `gh issue view` / `gh pr view --json author` before posting, and re-read the live item there rather than replying from memory. When requesting logs, crash dumps, screenshots, or local-state archives, ask only for the minimum non-sensitive public facts; use a private support channel only when the project's public context provides one. Choose a next step the reporter can perform with the reported failure or accessibility constraint still present; do not require disabling the assistive capability they need to follow it. This applies even when `/write` is unavailable.
+2. Edit your own comment in place (`PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}`) only while nobody has replied after it. Once the reporter or anyone else has replied, post a new comment instead of rewriting history; never delete and repost unless the old text must disappear.
+3. After posting or editing, re-read the comment body, author, target item, and issue/PR state. The public action is not complete without that receipt.
+4. Close only when the fix is shipped, already available in the latest release, the report is invalid, the report is a duplicate, or the maintainer explicitly asked for closure. Otherwise leave it open with the next-release acknowledgement.
