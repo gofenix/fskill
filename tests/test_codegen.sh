@@ -60,7 +60,8 @@ copy_repo "$tmpdir/regen"
 printf '%s\n' '{"plugins": []}' > "$tmpdir/regen/.claude-plugin/marketplace.json"
 rm -rf "$tmpdir/regen/.codex-plugin" "$tmpdir/regen/.agents" "$tmpdir/regen/plugins"
 (cd "$tmpdir/regen" && python3 scripts/build_metadata.py >"$tmpdir/regen.out")
-test "$(jq '.plugins | length' "$tmpdir/regen/.claude-plugin/marketplace.json")" -eq 21
+skill_count=$(find "$ROOT/skills" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ')
+test "$(jq '.plugins | length' "$tmpdir/regen/.claude-plugin/marketplace.json")" -eq "$((skill_count + 1))"
 test "$(jq -r '.name' "$tmpdir/regen/plugins/fskill/.codex-plugin/plugin.json")" = "fskill"
 test "$(jq -r '.skills' "$tmpdir/regen/plugins/fskill/.codex-plugin/plugin.json")" = "./skills/"
 test -f "$tmpdir/regen/plugins/fskill/skills/check/SKILL.md"

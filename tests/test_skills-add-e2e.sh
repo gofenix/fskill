@@ -25,7 +25,7 @@ copy_repo "$tmpdir/repo"
 test_home="$tmpdir/home"
 mkdir -p "$test_home"
 
-# Install all 8 skills into an isolated HOME against the local repo copy.
+# Install all skills into an isolated HOME against the local repo copy.
 # One retry absorbs transient npm-registry hiccups without hiding real breakage.
 if ! HOME="$test_home" npx --yes skills add "$tmpdir/repo" -a claude-code -g -y \
   >"$tmpdir/install.out" 2>&1; then
@@ -38,9 +38,9 @@ if ! HOME="$test_home" npx --yes skills add "$tmpdir/repo" -a claude-code -g -y 
   fi
 fi
 
-# All 8 SKILL.md files landed under ~/.claude/skills/.
-expected=(check health hunt learn read think ui write)
-for skill in "${expected[@]}"; do
+# Every source skill, including the mode entrypoint, must be installed.
+for source in "$ROOT"/skills/*/SKILL.md; do
+  skill="$(basename "$(dirname "$source")")"
   target="$test_home/.claude/skills/$skill/SKILL.md"
   if [ ! -f "$target" ]; then
     echo "skills add e2e smoke: missing $target after install"
@@ -48,6 +48,10 @@ for skill in "${expected[@]}"; do
     exit 1
   fi
 done
+
+# Standalone mode installs cannot depend on the source repository's RESOLVER.
+cmp "$ROOT/skills/mode/references/routing.md" \
+  "$test_home/.claude/skills/mode/references/routing.md"
 
 # Frontmatter survived the copy: re-run verify_skills.py against the installed
 # skill root and confirm the same name/description/version contract holds.

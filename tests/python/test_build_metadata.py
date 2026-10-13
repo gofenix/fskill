@@ -10,6 +10,21 @@ import pytest
 import build_metadata as bm
 
 
+def test_standalone_mode_carries_current_routing_without_repo_paths(tmp_path):
+    mode = tmp_path / "skills/mode"
+    mode.mkdir(parents=True)
+    (mode / "SKILL.md").write_text("Read references/routing.md")
+    resolver = tmp_path / "skills/RESOLVER.md"
+    resolver.write_text("| broken | `skills/hunt/SKILL.md` |\n")
+    assets = bm.collect_skill_shared_assets(tmp_path)
+    assert assets["skills/mode/references/routing.md"] == b"| broken | `hunt` |\n"
+    # A scope update must reach standalone installs as well as plugin mirrors.
+    resolver.write_text("| prose | `skills/write/SKILL.md` |\n")
+    assets = bm.collect_skill_shared_assets(tmp_path)
+    assert assets["skills/mode/references/routing.md"] == b"| prose | `write` |\n"
+    assert bm.shared_asset_source("skills/mode/references/routing.md") == "skills/RESOLVER.md"
+
+
 def test_render_readme_rewrites_main_to_latest_asset():
     body = "curl https://raw.githubusercontent.com/gofenix/fskill/main/scripts/setup-rule.sh"
     out = bm.render_readme(body)
