@@ -17,7 +17,7 @@ grep -q 'anti-patterns rule' "$home_dir/.claude/rules/anti-patterns.md"
 # Idempotent for Codex target: two runs leave exactly one marker.
 PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-rule.sh" anti-patterns codex >"$tmpdir/codex1.out"
 PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-rule.sh" anti-patterns codex >"$tmpdir/codex2.out"
-test "$(grep -c '<!-- Waza Anti-Patterns: start -->' "$home_dir/.codex/AGENTS.md")" -eq 1
+test "$(grep -c '<!-- fskill Anti-Patterns: start -->' "$home_dir/.codex/AGENTS.md")" -eq 1
 grep -q 'anti-patterns rule' "$home_dir/.codex/AGENTS.md"
 
 if PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-rule.sh" ../CLAUDE claude-code >"$tmpdir/traversal.out" 2>"$tmpdir/traversal.err"; then

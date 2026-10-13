@@ -36,7 +36,7 @@ python3 - "$home_dir/.codex/AGENTS.md" "$ROOT/rules/clarity.md" <<'PY'
 import sys
 from pathlib import Path
 target, source = map(Path, sys.argv[1:])
-expected = 'Keep my project instructions.\n\n<!-- Waza Clarity: start -->\n' + source.read_text().strip() + '\n<!-- Waza Clarity: end -->\n'
+expected = 'Keep my project instructions.\n\n<!-- fskill Clarity: start -->\n' + source.read_text().strip() + '\n<!-- fskill Clarity: end -->\n'
 assert target.read_text() == expected, 'Repeated install changed existing instructions or duplicated the rule'
 PY
 

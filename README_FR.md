@@ -12,24 +12,17 @@
 
 <br/>
 
-<div align="center">
-  <img src="assets/waza_skills.svg" width="1000" />
-</div>
-
 ## Compétences (Skills)
 
-Chaque réflexe d'ingénierie correspond à une compétence dédiée, un dossier autonome contenant documentation, scripts et retours d'expérience du terrain. Dans Claude Code, lancez la commande slash ; dans Codex, appelez la compétence directement par son nom.
+Chaque compétence est un dossier de références, de scripts et d'échecs réels. Elle ne démarre qu'avec `/name` ou `$name`. Un mot proche ne la lance pas. La forme vient de [tw93/Waza](https://github.com/tw93/Waza) ; le nom et le texte sont ceux de gofenix.
 
-| Compétence | Quand l'utiliser | Ce qu'elle fait |
+| Compétence | Groupe | Ce qu'elle fait |
 | :--- | :--- | :--- |
-| [`/think`](skills/think/SKILL.md) | Avant d'écrire du code | Remet en question le problème et produit un plan d'action complet, sans décision laissée en suspens, qu'un autre agent peut exécuter. |
-| [`/ui`](skills/ui/SKILL.md) | Création d'interfaces frontend | Conçoit des interfaces avec une direction visuelle affirmée plutôt que des templates par défaut, y compris par itérations sur captures d'écran. |
-| [`/check`](skills/check/SKILL.md) | Après une tâche, avant merge ou release | Passe en revue les diffs selon les règles du projet, valide les résultats et gère les actions de release et de maintenance approuvées. |
-| [`/hunt`](skills/hunt/SKILL.md) | Bogues et régressions | Débogage méthodique pour identifier la cause racine avant d'appliquer un correctif, surtout quand quelque chose fonctionnait avant. |
-| [`/write`](skills/write/SKILL.md) | Rédaction et révision | Réécrit les textes chinois et anglais pour un rendu naturel et supprime le ton robotique des IA. |
-| [`/learn`](skills/learn/SKILL.md) | Explorer un nouveau sujet | Recherche en six étapes : collecter, digérer, structurer, rédiger, affiner, puis relire et publier. |
-| [`/read`](skills/read/SKILL.md) | Lire des URL ou des PDF | Extrait un résumé concis ou du Markdown propre pour référence ou sauvegarde. |
-| [`/health`](skills/health/SKILL.md) | Audit des agents IA | Vérifie Codex, Claude Code, les instructions du projet, la sortie des vérificateurs et la maintenabilité par l'IA, avec un premier passage synthétique et économe en tokens avant l'inspection approfondie. |
+| [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Décider | Plan, interface, termes, carte entre sessions, découpes, essais, limites. |
+| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Faire | Tâches approuvées, cause racine, une mesure à la fois. |
+| [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Livrer | Revue avant merge, push et release, file d'issues, preuve. |
+| [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lire et écrire | Une URL ou un PDF, recherche multi-sources, prose. |
+| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | Réutiliser | Passation de session, leçons vérifiées, config d'agent, installation manuelle. |
 
 ## Installation
 
@@ -39,17 +32,17 @@ Chaque réflexe d'ingénierie correspond à une compétence dédiée, un dossier
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-Les compétences sont installées dans `~/.agents/skills`. Claude Code y accède via un lien symbolique ; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI et tout autre agent lisant ce dossier chargent automatiquement les 8 compétences. Les agents dotés d'un dossier de compétences privé prennent leur identifiant après `-a` (par exemple `antigravity-cli` ou `qwen-code`). Mise à jour via `npx skills update -g -y`. Vous pouvez aussi demander directement à votre agent de l'installer :
+Les compétences sont installées dans `~/.agents/skills`. Claude Code y accède via un lien symbolique ; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI et tout autre agent lisant ce dossier lisent les 20 compétences. Le parcours d'une compétence ne démarre qu'avec `/name` ou `$name`. Les agents dotés d'un dossier de compétences privé prennent leur identifiant après `-a` (par exemple `antigravity-cli` ou `qwen-code`). Mise à jour via `npx skills update -g -y`. Vous pouvez aussi demander directement à votre agent de l'installer :
 > Lis https://github.com/gofenix/fskill/blob/main/llms.txt et installe fskill pour moi
 
-**En tant que plugin hôte** (les compétences sont préfixées, ex. `/waza:check`) :
+**En tant que plugin hôte** (les compétences sont préfixées, ex. `/fskill:check`) :
 
 ```bash
-# Claude Code (mise à jour : claude plugin update waza)
+# Claude Code (mise à jour : claude plugin update fskill)
 /plugin marketplace add gofenix/fskill
 /plugin install fskill@fskill
 
-# Codex (mise à jour : codex plugin marketplace upgrade waza, puis codex plugin add fskill@fskill)
+# Codex (mise à jour : codex plugin marketplace upgrade fskill, puis codex plugin add fskill@fskill)
 codex plugin marketplace add gofenix/fskill
 codex plugin add fskill@fskill
 ```
@@ -60,7 +53,7 @@ codex plugin add fskill@fskill
 
 ## Enchaîner les compétences
 
-Vous décidez comment combiner les compétences. Chaque compétence s'arrête une fois l'objectif atteint ; un flux explicitement autorisé continue sans vous demander de valider chaque transition.
+Vous choisissez l'ordre. Chaque compétence s'arrête quand son résultat est là. La suivante se lance avec `/name` ou `$name`.
 
 **Flux courants :**
 
@@ -123,7 +116,7 @@ Les règles optionnelles s'appliquent au-delà des appels de compétences une fo
   # Anti-patterns : garde-fous permanents communs à toutes les compétences (lire avant d'agir, ne pas élargir le périmètre, pas de résumé non demandé)
   bash "$WAZA_RULE_SCRIPT" anti-patterns claude-code
 
-  # Indice de routage : indique aux hôtes autres que Claude de préférer les compétences fskill quand une requête correspond à leurs déclencheurs
+  # Indice de routage : les noms des compétences, et l'appel explicite, /name ou $name
   bash "$WAZA_RULE_SCRIPT" fskill-routing claude-code
 
   # Réponses claires au quotidien : termes cohérents, conditions explicites, incertitude préservée
@@ -140,11 +133,9 @@ Les règles optionnelles s'appliquent au-delà des appels de compétences une fo
 
 ## Pourquoi fskill
 
-fskill (技, わざ) désigne dans les arts martiaux une technique répétée jusqu'à devenir un réflexe. Un bon ingénieur fait bien plus qu'écrire du code : il remet en question les besoins, remonte jusqu'à la cause racine, relit ses propres diffs et lit les sources primaires. L'IA peut produire tout cela, mais sans structure, le résultat dérive vers un travail générique et imprécis. Chaque compétence fskill fixe le résultat attendu, les lignes rouges et la façon de vérifier, puis laisse le modèle choisir le chemin. À mesure que les modèles progressent, cette retenue rapporte des intérêts composés.
+fskill est le jeu de compétences de gofenix. La méthode vient de [tw93/Waza](https://github.com/tw93/Waza), pas le nom : Waza appartient à quelqu'un d'autre. Vingt compétences, cinq groupes : décider, faire, livrer, lire et écrire, réutiliser. Chacune nomme le résultat, la limite, et ce qui compte comme terminé.
 
-Des outils comme Superpowers et gstack sont puissants mais lourds : trop de compétences, trop de configuration. fskill reste sobre, huit compétences pour les réflexes qui comptent vraiment, chacune avec une seule mission et un déclencheur clair. Elles sont issues de vrais projets et affinées sur plus de 300 sessions dans 7 projets, et chaque mise en garde vient d'un échec réel. La compétence `/health` est née du cadre Claude Code en six couches présenté dans [cet article](https://tw93.fun/en/2026-03-12/claude.html).
-
-fskill fait partie d'une trilogie : [Kaku](https://github.com/gofenix/Kaku) (書く) écrit le code, [fskill](https://github.com/gofenix/fskill) (技) ancre les réflexes, [Kami](https://github.com/gofenix/Kami) (紙) produit les documents. Voyez-les comme une famille : Kaku est le père, fskill la grande sœur, Kami la petite sœur.
+L'appel est explicite : `/name` ou `$name`. Un mot proche ne lance pas le parcours.
 
 ## Désinstallation
 
@@ -161,17 +152,7 @@ Pour la barre d'état, supprimez aussi l'entrée `statusLine` de `~/.claude/sett
 
 ## Soutenir le projet
 
-- Le moyen le plus direct est d'acheter [Mole for Mac](https://mole.fit), mon application de nettoyage pour Mac
-- Si fskill vous est utile, donnez-lui une étoile, [partagez-le](https://twitter.com/intent/tweet?url=https://github.com/gofenix/fskill&text=fskill%20-%20gofenix%27s%20engineering%20habits%2C%20turned%20into%20your%20skills.) ou ouvrez une issue ou une PR
-- Vous pouvez aussi offrir une <a href="https://cats.tw93.fun?name=fskill" target="_blank">boîte de pâtée 🥩</a> à mes deux chats, TangYuan et Coke
-
-<details>
-<summary>Remerciements aux sponsors 🐱</summary>
-<br/>
-<div align="center">
-  <a href="https://cats.tw93.fun?name=fskill"><img src="https://cdn.jsdelivr.net/gh/tw93/sponsors@main/assets/sponsors.svg" width="1000" loading="lazy" /></a>
-</div>
-</details>
+Si fskill vous a aidé, mettez une étoile au dépôt ou ouvrez une issue.
 
 ## Licence
 

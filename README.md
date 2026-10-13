@@ -12,10 +12,6 @@
 
 <br/>
 
-<div align="center">
-  <img src="assets/waza_skills.svg" width="1000" />
-</div>
-
 ## Skills
 
 Each engineering habit gets an installed skill, a folder with reference docs, helper scripts, and gotchas from real failures. In Claude Code, type the slash command. In Codex, invoke the installed skill by name and follow the same playbook.
@@ -38,17 +34,17 @@ Commands are explicit (`/think`, `$think`). Saying a related word does not switc
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-One copy lands in `~/.agents/skills`, the shared skills directory. Claude Code is symlinked in; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI, and every other agent that reads that directory picks the eight skills up as `/check`, `/think`, and so on. Agents with a private skills directory take their id after `-a` (for example `antigravity-cli` or `qwen-code`). Update with `npx skills update -g -y`. You can also tell your agent to install it:
+One copy lands in `~/.agents/skills`, the shared skills directory. Claude Code is symlinked in; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI, and every other agent that reads that directory picks the twenty skills up as `/check`, `/think`, and so on. Agents with a private skills directory take their id after `-a` (for example `antigravity-cli` or `qwen-code`). Update with `npx skills update -g -y`. You can also tell your agent to install it:
 > Install fskill for me by reading https://github.com/gofenix/fskill/blob/main/llms.txt
 
-**Host plugin**, if you prefer the host's own update command (skills are namespaced, `/waza:check`)
+**Host plugin**, if you prefer the host's own update command (skills are namespaced, `/fskill:check`)
 
 ```bash
-# Claude Code (update: claude plugin update waza)
+# Claude Code (update: claude plugin update fskill)
 /plugin marketplace add gofenix/fskill
 /plugin install fskill@fskill
 
-# Codex (update: codex plugin marketplace upgrade waza, then codex plugin add fskill@fskill)
+# Codex (update: codex plugin marketplace upgrade fskill, then codex plugin add fskill@fskill)
 codex plugin marketplace add gofenix/fskill
 codex plugin add fskill@fskill
 ```
@@ -59,7 +55,7 @@ codex plugin add fskill@fskill
 
 ## Chaining Skills
 
-You decide how skills chain together. Each skill stops at the requested outcome; an explicitly authorized workflow continues without asking you to approve every transition.
+You decide the order. Each skill stops when its outcome is done. Call the next one with `/name` or `$name`.
 
 **Common workflows:**
 
@@ -122,7 +118,7 @@ Optional rules apply beyond skill invocations when installed into your agent's p
   # Anti-patterns: always-on cross-skill guardrails (read before acting, no scope creep, no unsolicited summaries)
   bash "$WAZA_RULE_SCRIPT" anti-patterns claude-code
 
-  # Routing hint: tells non-Claude hosts to prefer fskill skills when a request matches their triggers
+  # Routing hint: the skill names and the rule that invocation is explicit, /name or $name
   bash "$WAZA_RULE_SCRIPT" fskill-routing claude-code
 
   # Clear everyday replies: consistent terms, explicit conditions, preserved uncertainty
@@ -139,11 +135,9 @@ Optional rules apply beyond skill invocations when installed into your agent's p
 
 ## Why
 
-fskill (技, わざ) is a Japanese martial arts term for technique: a move practiced until it becomes instinct. A good engineer does more than write code. They pressure-test requirements, debug to root cause, review their own diffs, and read primary sources. AI has the raw output for all of it, but without structure that output drifts into generic, imprecise work. Each fskill skill states the outcome, the red lines, and how the result gets verified, then steps back and lets the model choose the path. As models improve, that restraint pays compound interest.
+fskill is gofenix's skill set. The working shape comes from [tw93/Waza](https://github.com/tw93/Waza); the name does not, because Waza belongs to someone else. There are twenty skills, in five groups: decide, build, ship, read and write, and leave something the next session can use. Each skill states the outcome, the lines it does not cross, and how you know it is done.
 
-Tools like Superpowers and gstack are powerful but heavy: too many skills, too much configuration. fskill stays small, eight skills for the habits that actually matter, each with one job and a clear trigger. The skills were built from real projects and refined through 300+ sessions across 7 projects, and every gotcha traces to a real failure. The `/health` skill grew from the six-layer Claude Code framework in [this post](https://tw93.fun/en/2026-03-12/claude.html).
-
-Part of a trilogy: [Kaku](https://github.com/gofenix/Kaku) (書く) writes code, [fskill](https://github.com/gofenix/fskill) (技) drills habits, [Kami](https://github.com/gofenix/Kami) (紙) ships documents. Think of them as a family: Kaku is the dad, fskill the big sister, Kami the little sister.
+You enter a skill with `/name` or `$name`. A similar word does not start that workflow.
 
 ## Uninstall
 
@@ -160,17 +154,7 @@ For the statusline, also remove the `statusLine` entry from `~/.claude/settings.
 
 ## Support
 
-- The most direct way to support me is getting [Mole for Mac](https://mole.fit), my paid Mac cleanup app
-- If fskill helped you, give it a star, [share it](https://twitter.com/intent/tweet?url=https://github.com/gofenix/fskill&text=fskill%20-%20gofenix%27s%20engineering%20habits%2C%20turned%20into%20your%20skills.), or open an issue or PR
-- I have two cats, TangYuan and Coke, and if fskill has been helpful to you, you can feed them <a href="https://cats.tw93.fun?name=fskill" target="_blank">canned food 🥩</a>
-
-<details>
-<summary>These lovely people already did 🐱</summary>
-<br/>
-<div align="center">
-  <a href="https://cats.tw93.fun?name=fskill"><img src="https://cdn.jsdelivr.net/gh/tw93/sponsors@main/assets/sponsors.svg" width="1000" loading="lazy" /></a>
-</div>
-</details>
+If fskill helped, star the repo or open an issue.
 
 ## License
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install a Waza rule into Claude Code (~/.claude/rules/<rule>.md) or Codex
+# Install an fskill rule into Claude Code (~/.claude/rules/<rule>.md) or Codex
 # (~/.codex/AGENTS.md, wrapped in markers so re-runs replace the block).
 #
 # Usage:
@@ -37,12 +37,12 @@ case "$WAZA_REF" in
     ;;
 esac
 
-RAW="https://raw.githubusercontent.com/tw93/Waza/${WAZA_REF}/rules/${RULE}.md"
+RAW="https://raw.githubusercontent.com/gofenix/fskill/${WAZA_REF}/rules/${RULE}.md"
 
 # Marker label = how the block appears in ~/.codex/AGENTS.md. Established names
 # kept verbatim so existing installs keep matching their original start/end
 # markers; new rules fall back to a Title Case rendering of the slug. The
-# waza-routing override avoids a double "Waza Waza Routing" in the marker.
+# fskill-routing override avoids a double "fskill fskill Routing" in the marker.
 case "$RULE" in
   english) MARKER_LABEL="English Coaching" ;;
   anti-patterns) MARKER_LABEL="Anti-Patterns" ;;
@@ -73,7 +73,7 @@ trap 'exit 143' TERM
 
 download_failed() {
   echo "Error: could not fetch $RAW (exit $1)." >&2
-  echo "Existing Waza files were left untouched." >&2
+  echo "Existing fskill files were left untouched." >&2
   exit "$1"
 }
 
@@ -89,7 +89,7 @@ case "$TARGET" in
   claude-code|claude)
     mkdir -p "$HOME/.claude/rules"
     download_rule_atomically "$HOME/.claude/rules/${RULE}.md" || download_failed $?
-    echo "Waza ${MARKER_LABEL} installed for Claude Code."
+    echo "fskill ${MARKER_LABEL} installed for Claude Code."
     ;;
 
   codex)
@@ -117,8 +117,8 @@ label = os.environ["MARKER_LABEL"]
 source = Path(sys.argv[1]).read_text().strip()
 target = Path(sys.argv[2])
 destination = target.resolve(strict=True) if target.is_symlink() else target
-start = f"<!-- Waza {label}: start -->"
-end = f"<!-- Waza {label}: end -->"
+start = f"<!-- fskill {label}: start -->"
+end = f"<!-- fskill {label}: end -->"
 block = f"{start}\n{source}\n{end}\n"
 text = destination.read_text() if destination.exists() else ""
 
@@ -145,13 +145,13 @@ except BaseException:
     temporary.unlink(missing_ok=True)
     raise
 PYEOF
-    echo "Waza ${MARKER_LABEL} installed for Codex."
+    echo "fskill ${MARKER_LABEL} installed for Codex."
     ;;
 
   antigravity-cli|antigravity|agy)
     mkdir -p "$HOME/.gemini/antigravity-cli/rules"
     download_rule_atomically "$HOME/.gemini/antigravity-cli/rules/${RULE}.md" || download_failed $?
-    echo "Waza ${MARKER_LABEL} installed for Antigravity."
+    echo "fskill ${MARKER_LABEL} installed for Antigravity."
     ;;
 
   *)

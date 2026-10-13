@@ -1,10 +1,10 @@
-"""Frontmatter parser for Waza skill files.
+"""Frontmatter parser for fskill skill files.
 
 Used by both `verify_skills.py` (validation pipeline) and `build_metadata.py`
 (codegen). Kept dependency-free (stdlib only) so first-run install does not
 require pip.
 
-Waza frontmatter is intentionally tiny: top-level scalars `name`,
+fskill frontmatter is intentionally tiny: top-level scalars `name`,
 `description`, `when_to_use`, `dispatch_intent`. The legacy `metadata.version`
 field is rejected by the verifier (single source of truth is the top-level
 VERSION file).

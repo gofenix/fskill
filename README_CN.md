@@ -12,24 +12,17 @@
 
 <br/>
 
-<div align="center">
-  <img src="assets/waza_skills.svg" width="1000" />
-</div>
-
 ## 技能
 
-每个工程习惯对应一个独立技能，技能目录里内置参考文档、辅助脚本以及真实踩坑沉淀的避坑指南，Claude Code 输入斜杠命令即可触发，Codex 则直接按技能名调用。
+每个技能是一个目录，里面有参考、脚本和踩过的坑。只在你输入 `/name` 或 `$name` 时进入；说到相关的词不会自动换技能。骨架来自 [tw93/Waza](https://github.com/tw93/Waza)，名字和正文是自己的。
 
-| 技能 | 触发时机 | 它做什么 |
+| 技能 | 分组 | 它做什么 |
 | :--- | :--- | :--- |
-| [`/think`](skills/think/SKILL.md) | 动手写新代码前 | 深入推敲方案并压测设计，产出决策完备且能直接落地的执行计划 |
-| [`/ui`](skills/ui/SKILL.md) | 构建前端界面 | 产出有明确设计方向的界面，不套默认模板，也能拿截图反复迭代视觉 |
-| [`/check`](skills/check/SKILL.md) | 任务完成后，合并或发布前 | 结合项目规范审查改动、验证结果，并在你授权后处理发布和维护动作 |
-| [`/hunt`](skills/hunt/SKILL.md) | 遇到 Bug 或异常行为 | 动手修之前先查清根本原因，尤其是面对以前正常运行的功能 |
-| [`/write`](skills/write/SKILL.md) | 撰写或修改文案 | 把中英文改得自然顺口，去掉生硬的套话和机器味 |
-| [`/learn`](skills/learn/SKILL.md) | 探索完全陌生的领域 | 按收集、消化、列提纲、补全、打磨、自审发布六个阶段调研，把陌生领域整理成文 |
-| [`/read`](skills/read/SKILL.md) | 阅读网页链接或 PDF | 提取精炼摘要，或转成方便引用归档的干净 Markdown |
-| [`/health`](skills/health/SKILL.md) | 审计 Agent 配置 | 检查 Codex、Claude Code、项目指令、校验输出和 AI 可维护性，先轻量概览再深入诊断 |
+| [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 想清楚 | 方案、界面、术语、跨会话地图、切片、试验、边界。 |
+| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 做出来 | 已批准的任务图、根因、一次只动一个指标。 |
+| [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 交出去 | 合并、推送和发布前的审查，问题队列，验证说明。 |
+| [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 读和写 | 一个链接或 PDF、多来源研究、把文字改顺。 |
+| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 下次还能用 | 会话交接、已经验证的教训、Agent 配置、人工安装。 |
 
 ## 安装
 
@@ -39,17 +32,17 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-技能统一存放在 `~/.agents/skills` 共享目录，Claude Code 通过软链接接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能读这个目录的 Agent 都会自动加载这 8 个技能。有自己技能目录的 Agent 在 `-a` 后面写上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，后续通过 `npx skills update -g -y` 保持更新。也可以直接告诉你的 Agent 帮你安装：
+技能统一存放在 `~/.agents/skills` 共享目录，Claude Code 通过软链接接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能读这个目录的 Agent 都会读到这 20 个技能。进入某个技能的流程仍要显式调用。有自己技能目录的 Agent 在 `-a` 后面写上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，后续通过 `npx skills update -g -y` 保持更新。也可以直接告诉你的 Agent 帮你安装：
 > 阅读 https://github.com/gofenix/fskill/blob/main/llms.txt 帮我安装 fskill
 
-**宿主插件方式**，如果你更习惯使用宿主自有的更新命令（技能带有命名空间前缀，如 `/waza:check`）：
+**宿主插件方式**，如果你更习惯使用宿主自有的更新命令（技能带有命名空间前缀，如 `/fskill:check`）：
 
 ```bash
-# Claude Code（更新命令：claude plugin update waza）
+# Claude Code（更新命令：claude plugin update fskill）
 /plugin marketplace add gofenix/fskill
 /plugin install fskill@fskill
 
-# Codex（更新命令：codex plugin marketplace upgrade waza，然后 codex plugin add fskill@fskill）
+# Codex（更新命令：codex plugin marketplace upgrade fskill，然后 codex plugin add fskill@fskill）
 codex plugin marketplace add gofenix/fskill
 codex plugin add fskill@fskill
 ```
@@ -60,7 +53,7 @@ codex plugin add fskill@fskill
 
 ## 技能串联
 
-技能串联由你做主，每个技能跑完既定目标就停下，拿到明确授权后会自动接力完成整套流程，不需要在每个环节反复确认。
+顺序由你决定。每个技能做完自己的结果就停下。下一步用 `/name` 或 `$name` 自己调用。
 
 **常见工作流：**
 
@@ -123,7 +116,7 @@ Codex 显示剩余额度，上方 Claude Code 状态栏显示已用百分比（�
   # 行为防错守则：全局常驻约束（先看再改、不随意扩大范围、不主动输出冗余总结）
   bash "$WAZA_RULE_SCRIPT" anti-patterns claude-code
 
-  # 技能路由提示：提示非 Claude 宿主在命中对应场景时优先调用 fskill 技能
+  # 技能路由提示：技能名单，以及只在 /name 或 $name 时进入
   bash "$WAZA_RULE_SCRIPT" fskill-routing claude-code
 
   # 日常清晰表达：术语统一、条件明确、保留不确定性
@@ -140,11 +133,9 @@ Codex 显示剩余额度，上方 Claude Code 状态栏显示已用百分比（�
 
 ## 为什么做 fskill
 
-fskill（技，わざ）在日本武术里指招式，是一个动作反复练到变成本能的那种功夫。好工程师不只是写代码，动手前会反复推敲需求，排查时会追到根因，提交前会自己过一遍 diff，查资料也会回到一手来源。这些事 AI 都能做，但没有结构约束，输出就会滑向泛泛而谈、不够精确。每个 fskill 技能只写清要什么结果、哪些红线不能碰、结果怎么验证，具体路径交给模型自己选，模型越强，这份克制就越值钱。
+fskill 是 gofenix 自己的技能集。工作方式来自 [tw93/Waza](https://github.com/tw93/Waza)，名字不沿用，因为 Waza 是别人的。现在是 20 个技能，分成想清楚、做出来、交出去、读和写、下次还能用。每个技能写清结果、不能碰的线，以及怎么算做完。
 
-Superpowers、gstack 这类工具很强，但也很重，技能太多，配置也太多。fskill 只留 8 个技能，每个只管一件事、触发条件清楚，都是在 7 个项目、300 多次真实会话里磨出来的，每条避坑指南都对应一次真实翻车。`/health` 技能就是从[这篇文章](https://tw93.fun/2026-03-12/claude.html)里讲的 Claude Code 六层框架长出来的。
-
-fskill 和另外两款工具组成三部曲，[Kaku](https://github.com/gofenix/Kaku)（書く）负责写代码，[fskill](https://github.com/gofenix/fskill)（技）负责磨习惯，[Kami](https://github.com/gofenix/Kami)（紙）负责出文档，可以把它们看成一家人，Kaku 是爸爸，fskill 是姐姐，Kami 是妹妹。
+调用是显式的：`/name` 或 `$name`。意思相近不会自动开始那套流程。
 
 ## 卸载
 
@@ -161,17 +152,7 @@ rm -f ~/.claude/rules/clarity.md
 
 ## 支持
 
-- 最直接的支持方式是购买 [Mole for Mac](https://mole.fit)，这是我开发的 Mac 清理应用
-- 如果 fskill 对你有帮助，欢迎点个 Star，[分享给朋友](https://twitter.com/intent/tweet?url=https://github.com/gofenix/fskill&text=fskill%20-%20gofenix%27s%20engineering%20habits%2C%20turned%20into%20your%20skills.)，或者提交 Issue 与 PR
-- 我养了两只猫，汤圆和可乐，如果 fskill 帮到了你，可以给她们加个 <a href="https://cats.tw93.fun?name=fskill" target="_blank">罐头 🥩</a>
-
-<details>
-<summary>已经赞助过的可爱朋友们 🐱</summary>
-<br/>
-<div align="center">
-  <a href="https://cats.tw93.fun?name=fskill"><img src="https://cdn.jsdelivr.net/gh/tw93/sponsors@main/assets/sponsors.svg" width="1000" loading="lazy" /></a>
-</div>
-</details>
+如果 fskill 有用，给仓库点个 Star，或者开一个 Issue。
 
 ## 许可证
 

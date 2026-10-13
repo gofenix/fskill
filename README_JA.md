@@ -12,24 +12,17 @@
 
 <br/>
 
-<div align="center">
-  <img src="assets/waza_skills.svg" width="1000" />
-</div>
-
 ## スキル一覧
 
-それぞれのエンジニアリング習慣が独立したスキルとして用意されており、各スキルはリファレンスドキュメント、補助スクリプト、実運用で得た回避策を同梱したディレクトリです。Claude Code ではスラッシュコマンドを入力し、Codex ではスキル名を指定して呼び出します。
+各スキルは参照、スクリプト、実際に踏んだ失敗をまとめたディレクトリです。入るのは `/name` または `$name` を入力したときだけです。近い言葉では切り替わりません。形は [tw93/Waza](https://github.com/tw93/Waza) から、名前と本文は自分のものです。
 
-| スキル | トリガーのタイミング | 役割 |
+| スキル | グループ | 役割 |
 | :--- | :--- | :--- |
-| [`/think`](skills/think/SKILL.md) | 新しいコードを書く前 | 要件と設計を検証し、そのまま実装可能な意思決定済みの計画を作成 |
-| [`/ui`](skills/ui/SKILL.md) | フロントエンドUI構築時 | デフォルトのテンプレートに頼らず明確なデザインの方向性でUIを作り、スクリーンショットを使ったビジュアルの反復にも対応 |
-| [`/check`](skills/check/SKILL.md) | 実装完了後・マージやリリース前 | プロジェクト規約に基づいて差分をレビューして結果を検証し、承認されたリリースやメンテナー作業を実行 |
-| [`/hunt`](skills/hunt/SKILL.md) | バグやデグレの発生時 | 修正前に根本原因を特定し、以前は動いていた機能が壊れた場合は特に徹底 |
-| [`/write`](skills/write/SKILL.md) | 文章の執筆や推敲時 | 中国語・英語の文章を自然にリライトし、機械的なAI感を排除 |
-| [`/learn`](skills/learn/SKILL.md) | 未知の分野の調査時 | 収集・要約・構成・執筆・推敲・レビューの6段階で体系的にリサーチ |
-| [`/read`](skills/read/SKILL.md) | WebリンクやPDFの閲覧時 | 要点を簡潔にまとめるか、引用や保存に適したクリーンなMarkdownを出力 |
-| [`/health`](skills/health/SKILL.md) | エージェント設定の監査時 | Codex、Claude Code、プロジェクト指示、検証出力、AI による保守性をチェックし、トークン消費を抑えた概要から詳細診断へ進む |
+| [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 決める | 計画、画面、用語、セッションをまたぐ地図、切り分け、試作、境界。 |
+| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 作る | 承認済みの作業、根本原因、指標は一度に一つ。 |
+| [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 渡す | マージ、push、リリース前の確認、課題の整理、検証の説明。 |
+| [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 読む・書く | 一つの URL か PDF、複数資料の調査、文章を整える。 |
+| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 次も使える | セッションの引き継ぎ、確認済みの教訓、エージェント設定、手動セットアップ。 |
 
 ## インストール
 
@@ -39,17 +32,17 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-スキルは共通の `~/.agents/skills` ディレクトリに保存されます。Claude Code はシンボリックリンク経由で連携し、Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI など、このディレクトリを読み込む各エージェントで自動的に利用可能になります。専用ディレクトリを持つエージェントは `-a` の後にID（例：`antigravity-cli`、`qwen-code`）を指定してください。更新は `npx skills update -g -y` で行います。AIエージェントに直接インストールを依頼することも可能です：
+スキルは共通の `~/.agents/skills` ディレクトリに保存されます。Claude Code はシンボリックリンク経由で連携し、Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI など、このディレクトリを読み込む各エージェントは 20 個のスキルを読み込みます。各スキルの手順は `/name` または `$name` のときだけ始まります。専用ディレクトリを持つエージェントは `-a` の後にID（例：`antigravity-cli`、`qwen-code`）を指定してください。更新は `npx skills update -g -y` で行います。AIエージェントに直接インストールを依頼することも可能です：
 > https://github.com/gofenix/fskill/blob/main/llms.txt を読んで fskill をインストールして
 
-**ホストのプラグイン機能を利用する場合**（スキル名に名前空間が付きます：`/waza:check`）：
+**ホストのプラグイン機能を利用する場合**（スキル名に名前空間が付きます：`/fskill:check`）：
 
 ```bash
-# Claude Code（更新：claude plugin update waza）
+# Claude Code（更新：claude plugin update fskill）
 /plugin marketplace add gofenix/fskill
 /plugin install fskill@fskill
 
-# Codex（更新：codex plugin marketplace upgrade waza、その後 codex plugin add fskill@fskill）
+# Codex（更新：codex plugin marketplace upgrade fskill、その後 codex plugin add fskill@fskill）
 codex plugin marketplace add gofenix/fskill
 codex plugin add fskill@fskill
 ```
@@ -60,7 +53,7 @@ codex plugin add fskill@fskill
 
 ## スキルの連携
 
-スキルの組み合わせは自由です。各スキルは要求された成果物を生成すると停止しますが、明確に承認されたワークフローであれば確認を挟まずにスムーズに次のステップへ引き継がれます。
+順番は自分で決めます。各スキルは自分の結果を出したら止まります。次は `/name` または `$name` で呼び出します。
 
 **一般的なワークフロー：**
 
@@ -123,7 +116,7 @@ Codex は残りの枠を、上の Claude Code ステータスラインは使用�
   # アンチパターン：スキル横断で常に効くガードレール（読んでから動く、範囲を広げない、頼まれていない要約をしない）
   bash "$WAZA_RULE_SCRIPT" anti-patterns claude-code
 
-  # ルーティングヒント：Claude 以外のホストに、トリガーに合うリクエストでは fskill スキルを優先させる
+  # ルーティングヒント：スキル名と、/name または $name のときだけ入るという規則
   bash "$WAZA_RULE_SCRIPT" fskill-routing claude-code
 
   # 明快な日常回答：用語の統一、条件の明示、不確かさの保持
@@ -140,11 +133,9 @@ Codex は残りの枠を、上の Claude Code ステータスラインは使用�
 
 ## 開発の背景
 
-fskill（技、わざ）は武道の用語で、本能になるまで繰り返し練習した技を指します。優れたエンジニアはコードを書くだけではありません。要件を突き詰めて検証し、根本原因までデバッグし、自分の差分をレビューし、一次情報を読みます。AI はこれらすべてをこなせますが、構造がなければ出力は汎用的で不正確なものに流れていきます。fskill の各スキルは、目指す成果、越えてはいけない一線、結果の検証方法だけを示し、進め方はモデルに任せます。モデルが賢くなるほど、この抑制が効いてきます。
+fskill は gofenix 自身のスキル集です。進め方は [tw93/Waza](https://github.com/tw93/Waza) から取り、名前は取りません。Waza は他人の名前だからです。スキルは 20 個で、決める、作る、渡す、読む・書く、次も使える、の五つに分かれます。各スキルは結果、越えない線、完了の判断だけを書きます。
 
-Superpowers や gstack のようなツールは強力ですが重く、スキルも設定も多すぎます。fskill は小さく保ち、本当に大事な習慣に絞った 8 つのスキルだけを置いています。どれも役割は一つで、呼び出すタイミングもはっきりしています。7 つのプロジェクトと 300 以上のセッションで磨いてきたもので、どの回避策も実際の失敗に由来します。`/health` スキルは[この記事](https://tw93.fun/en/2026-03-12/claude.html)で紹介した Claude Code の 6 層フレームワークから生まれました。
-
-[Kaku](https://github.com/gofenix/Kaku)（書く）がコードを書き、[fskill](https://github.com/gofenix/fskill)（技）が習慣を鍛え、[Kami](https://github.com/gofenix/Kami)（紙）がドキュメントを仕上げる、という三部作です。家族にたとえると、Kaku は父、fskill は姉、Kami は妹です。
+入り方は明示です。`/name` または `$name`。近い意味ではその手順は始まりません。
 
 ## アンインストール
 
@@ -161,17 +152,7 @@ rm -f ~/.claude/rules/clarity.md
 
 ## サポート
 
-- 私が作った有料の Mac クリーナー [Mole for Mac](https://mole.fit) を使っていただくのが、いちばん直接的な支援になります
-- fskill が役に立った場合は、Star を付けたり、[共有](https://twitter.com/intent/tweet?url=https://github.com/gofenix/fskill&text=fskill%20-%20gofenix%27s%20engineering%20habits%2C%20turned%20into%20your%20skills.)したり、Issue や PR を送ったりしていただけるとうれしいです
-- 飼い猫の「湯円（TangYuan）」と「コーラ（Coke）」に <a href="https://cats.tw93.fun?name=fskill" target="_blank">おやつ 🥩</a> をご馳走することもできます
-
-<details>
-<summary>スポンサー一覧 🐱</summary>
-<br/>
-<div align="center">
-  <a href="https://cats.tw93.fun?name=fskill"><img src="https://cdn.jsdelivr.net/gh/tw93/sponsors@main/assets/sponsors.svg" width="1000" loading="lazy" /></a>
-</div>
-</details>
+役に立ったら、リポジトリに Star を付けるか Issue を開いてください。
 
 ## ライセンス
 

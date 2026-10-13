@@ -12,24 +12,17 @@
 
 <br/>
 
-<div align="center">
-  <img src="assets/waza_skills.svg" width="1000" />
-</div>
-
 ## 스킬 목록
 
-각각의 엔지니어링 습관이 독립된 스킬로 구성되어 있으며, 각 스킬은 참조 문서, 헬퍼 스크립트, 실제 실패 사례에서 얻은 노하우가 담긴 독립된 디렉터리입니다. Claude Code에서는 슬래시 명령어로 실행하며, Codex에서는 스킬 이름으로 직접 호출합니다.
+각 스킬은 참고 문서, 스크립트, 실제로 겪은 실패를 담은 디렉터리입니다. `/name` 또는 `$name` 을 입력할 때만 들어갑니다. 비슷한 말로는 바뀌지 않습니다. 틀은 [tw93/Waza](https://github.com/tw93/Waza) 에서 왔고, 이름과 본문은 자신의 것입니다.
 
-| 스킬 | 실행 타이밍 | 역할 |
+| 스킬 | 묶음 | 역할 |
 | :--- | :--- | :--- |
-| [`/think`](skills/think/SKILL.md) | 새로운 코드를 작성하기 전 | 문제의 본질을 검증하고, 즉시 구현 가능한 완성도 높은 계획 수립 |
-| [`/ui`](skills/ui/SKILL.md) | 프론트엔드 UI 구축 시 | 기본 템플릿에 기대지 않고 분명한 디자인 방향으로 UI를 만들며, 스크린샷을 활용한 시각적 반복도 지원 |
-| [`/check`](skills/check/SKILL.md) | 작업 완료 후·머지 및 배포 전 | 프로젝트 규칙에 맞춰 변경 사항을 검토하고 결과를 검증하며, 승인된 배포와 유지보수 작업을 처리 |
-| [`/hunt`](skills/hunt/SKILL.md) | 버그 및 리그레션 발생 시 | 수정 전에 근본 원인을 확정하고, 이전에 잘 되던 기능이 깨졌을 때는 특히 철저히 추적 |
-| [`/write`](skills/write/SKILL.md) | 문서 작성 및 퇴고 시 | 중국어·영어 문장의 부자연스러운 AI 느낌을 없애고 매끄럽고 읽기 쉽게 다듬기 |
-| [`/learn`](skills/learn/SKILL.md) | 낯선 분야를 깊이 조사할 때 | 수집·요약·개요·작성·퇴고·검토의 6단계 워크플로우로 체계적 리서치 |
-| [`/read`](skills/read/SKILL.md) | 웹 링크나 PDF 문서를 읽을 때 | 핵심을 명확히 요약하거나 인용 및 저장에 적합한 깔끔한 Markdown 추출 |
-| [`/health`](skills/health/SKILL.md) | 에이전트 설정 점검 시 | Codex, Claude Code, 프로젝트 지침, 검증 출력, AI 유지보수성을 점검하고, 먼저 가볍게 훑은 뒤 깊이 점검 |
+| [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 정하기 | 계획, 화면, 용어, 세션을 넘는 지도, 쪼개기, 시험, 경계. |
+| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 만들기 | 승인된 작업, 근본 원인, 지표는 한 번에 하나. |
+| [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 넘기기 | 머지, push, 릴리스 전 검토, 이슈 정리, 검증 설명. |
+| [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 읽고 쓰기 | URL 또는 PDF 하나, 여러 자료 조사, 문장 다듬기. |
+| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 다음에 쓰기 | 세션 인수인계, 확인된 교훈, 에이전트 설정, 수동 설치. |
 
 ## 설치 방법
 
@@ -39,17 +32,17 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-스킬은 공유 디렉터리인 `~/.agents/skills`에 저장됩니다. Claude Code는 심볼릭 링크로 연결되며, Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI 등 해당 디렉터리를 읽는 에이전트에서 자동으로 활성화됩니다. 독립 디렉터리를 사용하는 에이전트는 `-a` 뒤에 ID(예: `antigravity-cli`, `qwen-code`)를 지정하세요. 업데이트는 `npx skills update -g -y`로 실행합니다. AI 에이전트에게 직접 설치를 요청할 수도 있습니다:
+스킬은 공유 디렉터리인 `~/.agents/skills`에 저장됩니다. Claude Code는 심볼릭 링크로 연결되며, Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI 등 해당 디렉터리를 읽는 에이전트는 20개 스킬을 읽습니다. 각 스킬의 절차는 `/name` 또는 `$name` 일 때만 시작합니다. 독립 디렉터리를 사용하는 에이전트는 `-a` 뒤에 ID(예: `antigravity-cli`, `qwen-code`)를 지정하세요. 업데이트는 `npx skills update -g -y`로 실행합니다. AI 에이전트에게 직접 설치를 요청할 수도 있습니다:
 > 다음 문서를 읽고 fskill를 설치해 줘: https://github.com/gofenix/fskill/blob/main/llms.txt
 
-**호스트 플러그인 방식** (네임스페이스 포함: `/waza:check`):
+**호스트 플러그인 방식** (네임스페이스 포함: `/fskill:check`):
 
 ```bash
-# Claude Code (업데이트: claude plugin update waza)
+# Claude Code (업데이트: claude plugin update fskill)
 /plugin marketplace add gofenix/fskill
 /plugin install fskill@fskill
 
-# Codex (업데이트: codex plugin marketplace upgrade waza 후 codex plugin add fskill@fskill)
+# Codex (업데이트: codex plugin marketplace upgrade fskill 후 codex plugin add fskill@fskill)
 codex plugin marketplace add gofenix/fskill
 codex plugin add fskill@fskill
 ```
@@ -60,7 +53,7 @@ codex plugin add fskill@fskill
 
 ## 스킬 연계 워크플로우
 
-스킬 간의 조합은 자유롭습니다. 각 스킬은 지정된 결과를 달성하면 정지하지만, 명시적으로 승인된 워크플로우라면 매 단계마다 묻지 않고 자연스럽게 다음 작업으로 이어집니다.
+순서는 직접 정합니다. 각 스킬은 자기 결과를 내면 멈춥니다. 다음은 `/name` 또는 `$name` 으로 호출합니다.
 
 **자주 쓰이는 워크플로우:**
 
@@ -123,7 +116,7 @@ Codex는 남은 한도를, 위의 Claude Code 상태 표시줄은 사용한 비�
   # 안티패턴: 모든 스킬에 항상 적용되는 가드레일 (먼저 읽고 행동, 범위 확장 금지, 요청하지 않은 요약 금지)
   bash "$WAZA_RULE_SCRIPT" anti-patterns claude-code
 
-  # 라우팅 힌트: Claude 외 호스트가 트리거에 맞는 요청에서 fskill 스킬을 우선 사용하도록 안내
+  # 라우팅 힌트: 스킬 이름, 그리고 /name 또는 $name 으로만 들어간다는 규칙
   bash "$WAZA_RULE_SCRIPT" fskill-routing claude-code
 
   # 명확한 일상 답변: 일관된 용어, 명시적인 조건, 불확실성 유지
@@ -140,11 +133,9 @@ Codex는 남은 한도를, 위의 Claude Code 상태 표시줄은 사용한 비�
 
 ## fskill를 만든 이유
 
-fskill(技, わざ)는 무술에서 끊임없이 연마하여 본능이 된 기술을 뜻합니다. 좋은 엔지니어는 코드만 쓰지 않습니다. 요구 사항을 따져 묻고, 근본 원인까지 디버깅하고, 자신의 변경 사항을 검토하고, 1차 자료를 읽습니다. AI는 이 모든 일을 해낼 수 있지만, 구조가 없으면 결과물이 평범하고 부정확한 쪽으로 흘러갑니다. fskill의 각 스킬은 목표 결과, 넘지 말아야 할 선, 결과 검증 방법만 정하고, 구체적인 경로는 모델이 고르게 둡니다. 모델이 좋아질수록 이 절제의 가치는 커집니다.
+fskill 은 gofenix 자신의 스킬 모음입니다. 일하는 방식은 [tw93/Waza](https://github.com/tw93/Waza) 에서 가져왔고, 이름은 가져오지 않았습니다. Waza 는 다른 사람의 이름입니다. 스킬은 20개이며, 정하기, 만들기, 넘기기, 읽고 쓰기, 다음에 쓰기로 나뉩니다. 각 스킬은 결과, 넘지 않을 선, 완료 기준만 적습니다.
 
-Superpowers나 gstack 같은 도구는 강력하지만 무겁고, 스킬도 설정도 너무 많습니다. fskill는 규모를 작게 유지합니다. 정말 중요한 습관만 담은 8개 스킬이 각자 한 가지 일과 분명한 실행 조건을 가집니다. 7개 프로젝트에서 300회 이상의 세션을 거치며 다듬었고, 모든 노하우는 실제 실패에서 나왔습니다. `/health` 스킬은 [이 글](https://tw93.fun/en/2026-03-12/claude.html)에서 소개한 Claude Code 6계층 프레임워크에서 출발했습니다.
-
-[Kaku](https://github.com/gofenix/Kaku)(書く)가 코드를 쓰고, [fskill](https://github.com/gofenix/fskill)(技)가 습관을 다지고, [Kami](https://github.com/gofenix/Kami)(紙)가 문서를 완성하는 3부작입니다. 가족으로 치면 Kaku는 아빠, fskill는 큰딸, Kami는 막내딸입니다.
+호출은 명시적입니다. `/name` 또는 `$name`. 비슷한 뜻으로는 그 절차가 시작되지 않습니다.
 
 ## 삭제 방법
 
@@ -161,17 +152,7 @@ rm -f ~/.claude/rules/clarity.md
 
 ## 후원 안내
 
-- 제가 만든 유료 Mac 클리너 앱 [Mole for Mac](https://mole.fit)을 이용해 주시는 것이 가장 직접적인 응원입니다
-- fskill가 도움이 되었다면 Star를 눌러 주시거나, [공유](https://twitter.com/intent/tweet?url=https://github.com/gofenix/fskill&text=fskill%20-%20gofenix%27s%20engineering%20habits%2C%20turned%20into%20your%20skills.)해 주시거나, Issue나 PR을 남겨 주세요
-- 고양이 탕위안(TangYuan)과 콜라(Coke)에게 <a href="https://cats.tw93.fun?name=fskill" target="_blank">간식 🥩</a>을 선물할 수도 있습니다
-
-<details>
-<summary>후원해 주신 분들 🐱</summary>
-<br/>
-<div align="center">
-  <a href="https://cats.tw93.fun?name=fskill"><img src="https://cdn.jsdelivr.net/gh/tw93/sponsors@main/assets/sponsors.svg" width="1000" loading="lazy" /></a>
-</div>
-</details>
+도움이 되었다면 저장소에 Star 를 누르거나 Issue 를 열어 주세요.
 
 ## 라이선스
 

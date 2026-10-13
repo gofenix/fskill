@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate Waza skill metadata, references, marketplace, and resolver invariants.
+"""Validate fskill skill metadata, references, marketplace, and resolver invariants.
 
 Driver only. Validation logic lives in sibling modules so it can be imported
 and unit-tested without invoking argparse:

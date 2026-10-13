@@ -12,24 +12,17 @@
 
 <br/>
 
-<div align="center">
-  <img src="assets/waza_skills.svg" width="1000" />
-</div>
-
 ## Skills
 
-Jede Entwicklergewohnheit entspricht einem eigenständigen Skill, einem Ordner mit Referenzdokumenten, Skripten und Fallstricken aus echten Fehlschlägen. In Claude Code rufst du ihn per Slash-Befehl auf, in Codex direkt über den Skill-Namen.
+Jeder Skill ist ein Ordner mit Referenzen, Skripten und echten Fehlern. Er startet nur bei `/name` oder `$name`. Ein ähnliches Wort schaltet nicht um. Die Form stammt von [tw93/Waza](https://github.com/tw93/Waza); Name und Text gehören gofenix.
 
-| Skill | Wann nutzen | Was er tut |
+| Skill | Gruppe | Was er tut |
 | :--- | :--- | :--- |
-| [`/think`](skills/think/SKILL.md) | Vor neuem Code | Hinterfragt Anforderungen und erstellt direkt umsetzbare, entscheidungsreife Pläne. |
-| [`/ui`](skills/ui/SKILL.md) | Frontend-UIs bauen | Entwickelt unverwechselbare UIs mit klarer gestalterischer Richtung statt Standard-Vorlagen, auf Wunsch auch mit Iteration anhand von Screenshots. |
-| [`/check`](skills/check/SKILL.md) | Nach einer Aufgabe, vor Merge oder Release | Prüft Diffs gegen Projektvorgaben, verifiziert Ergebnisse und übernimmt freigegebene Release- und Maintainer-Aufgaben. |
-| [`/hunt`](skills/hunt/SKILL.md) | Bugs und Regressionen | Systematisches Debugging: Ursache klären, bevor Code geändert wird, besonders wenn etwas vorher funktioniert hat. |
-| [`/write`](skills/write/SKILL.md) | Texte schreiben oder feilen | Formuliert chinesische und englische Texte natürlich um, entfernt hölzernen KI-Ton. |
-| [`/learn`](skills/learn/SKILL.md) | Unbekannte Themen erforschen | Recherche in sechs Phasen: sammeln, verdichten, gliedern, ausarbeiten, überarbeiten, dann selbst prüfen und veröffentlichen. |
-| [`/read`](skills/read/SKILL.md) | Webseiten oder PDFs lesen | Erstellt prägnante Zusammenfassungen oder sauberes Markdown für Zitate und Notizen. |
-| [`/health`](skills/health/SKILL.md) | Agenten-Konfiguration prüfen | Prüft Codex, Claude Code, Projektanweisungen, Verifier-Ausgaben und KI-Wartbarkeit, zuerst als ressourcenschonende Übersicht, dann im Detail. |
+| [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Entscheiden | Plan, Oberfläche, Begriffe, sitzungsübergreifende Karte, Schnitte, Versuche, Grenzen. |
+| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Bauen | Freigegebene Aufgaben, Ursache, eine Metrik auf einmal. |
+| [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Abgeben | Prüfung vor Merge, Push und Release, Issue-Warteschlange, Nachweis. |
+| [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lesen und schreiben | Eine URL oder ein PDF, Recherche aus mehreren Quellen, Text glätten. |
+| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | Wiederverwenden | Sitzungsübergabe, geprüfte Lehren, Agent-Konfiguration, manuelles Setup. |
 
 ## Installation
 
@@ -39,17 +32,17 @@ Jede Entwicklergewohnheit entspricht einem eigenständigen Skill, einem Ordner m
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-Skills landen zentral in `~/.agents/skills`. Claude Code bindet sie per Symlink ein; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI und alle Agenten, die dieses Verzeichnis nutzen, laden die 8 Skills automatisch. Agenten mit eigenem Skill-Verzeichnis gibst du nach `-a` mit ihrer ID an (zum Beispiel `antigravity-cli` oder `qwen-code`). Aktualisierung über `npx skills update -g -y`. Du kannst deinen Agenten auch direkt mit der Installation beauftragen:
+Skills landen zentral in `~/.agents/skills`. Claude Code bindet sie per Symlink ein; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI und alle Agenten, die dieses Verzeichnis nutzen, laden die 20 Skills. Der Ablauf eines Skills startet nur bei `/name` oder `$name`. Agenten mit eigenem Skill-Verzeichnis gibst du nach `-a` mit ihrer ID an (zum Beispiel `antigravity-cli` oder `qwen-code`). Aktualisierung über `npx skills update -g -y`. Du kannst deinen Agenten auch direkt mit der Installation beauftragen:
 > Lies https://github.com/gofenix/fskill/blob/main/llms.txt und installiere fskill für mich
 
-**Host-Plugin-Methode** (Skills erhalten ein Namespace-Präfix, z. B. `/waza:check`):
+**Host-Plugin-Methode** (Skills erhalten ein Namespace-Präfix, z. B. `/fskill:check`):
 
 ```bash
-# Claude Code (Update: claude plugin update waza)
+# Claude Code (Update: claude plugin update fskill)
 /plugin marketplace add gofenix/fskill
 /plugin install fskill@fskill
 
-# Codex (Update: codex plugin marketplace upgrade waza, dann codex plugin add fskill@fskill)
+# Codex (Update: codex plugin marketplace upgrade fskill, dann codex plugin add fskill@fskill)
 codex plugin marketplace add gofenix/fskill
 codex plugin add fskill@fskill
 ```
@@ -60,7 +53,7 @@ codex plugin add fskill@fskill
 
 ## Skill-Kombinationen
 
-Du entscheidest, wie Skills kombiniert werden. Jeder Skill stoppt nach Erreichen des Zielergebnisses; ausdrücklich freigegebene Workflows laufen weiter, ohne dass du jeden Übergang einzeln bestätigen musst.
+Du bestimmst die Reihenfolge. Jeder Skill stoppt, wenn sein Ergebnis da ist. Den nächsten rufst du mit `/name` oder `$name` auf.
 
 **Typische Workflows:**
 
@@ -123,7 +116,7 @@ Optionale Regeln wirken auch außerhalb von Skill-Aufrufen, sobald sie in den da
   # Anti-Patterns: stets aktive, skillübergreifende Leitplanken (erst lesen, dann handeln; kein Scope Creep; keine ungefragten Zusammenfassungen)
   bash "$WAZA_RULE_SCRIPT" anti-patterns claude-code
 
-  # Routing-Hinweis: weist Nicht-Claude-Hosts an, fskill-Skills zu bevorzugen, wenn eine Anfrage zu ihren Triggern passt
+  # Routing-Hinweis: Skill-Namen, und dass der Aufruf explizit ist, /name oder $name
   bash "$WAZA_RULE_SCRIPT" fskill-routing claude-code
 
   # Klare Alltagsantworten: einheitliche Begriffe, explizite Bedingungen, Unsicherheit bleibt erhalten
@@ -140,11 +133,9 @@ Optionale Regeln wirken auch außerhalb von Skill-Aufrufen, sobald sie in den da
 
 ## Warum fskill
 
-fskill (技, わざ) bezeichnet in den Kampfkünsten eine Technik, die durch ständiges Üben zur instinktiven Gewohnheit wird. Gute Entwickler schreiben nicht nur Code. Sie hinterfragen Anforderungen, debuggen bis zur Ursache, prüfen ihre eigenen Diffs und lesen Primärquellen. KI kann all das leisten, driftet ohne Struktur aber ins Beliebige und Ungenaue ab. Jeder fskill-Skill legt das Ziel, die roten Linien und die Art der Überprüfung fest und überlässt den Lösungsweg dem Modell. Je besser die Modelle werden, desto mehr zahlt sich diese Zurückhaltung aus.
+fskill ist gofenix' eigenes Skill-Set. Die Arbeitsweise kommt von [tw93/Waza](https://github.com/tw93/Waza), der Name nicht, denn Waza gehört jemand anderem. Es sind zwanzig Skills in fünf Gruppen: entscheiden, bauen, abgeben, lesen und schreiben, wiederverwenden. Jeder Skill nennt das Ergebnis, die Grenze und woran man Fertig erkennt.
 
-Tools wie Superpowers und gstack sind mächtig, aber schwer: zu viele Skills, zu viel Konfiguration. fskill bleibt klein, acht Skills für die Gewohnheiten, die wirklich zählen, jeder mit einer Aufgabe und einem klaren Auslöser. fskill ist aus echten Projekten entstanden und in über 300 Sitzungen über 7 Projekte hinweg verfeinert worden, jeder Fallstrick geht auf einen echten Fehlschlag zurück. Der `/health`-Skill ist aus dem sechsschichtigen Claude-Code-Framework aus [diesem Beitrag](https://tw93.fun/en/2026-03-12/claude.html) entstanden.
-
-Teil einer Trilogie: [Kaku](https://github.com/gofenix/Kaku) (書く) schreibt Code, [fskill](https://github.com/gofenix/fskill) (技) trainiert Gewohnheiten, [Kami](https://github.com/gofenix/Kami) (紙) liefert Dokumente. Als Familie gedacht ist Kaku der Vater, fskill die große Schwester und Kami die kleine Schwester.
+Der Aufruf ist explizit: `/name` oder `$name`. Ein ähnliches Wort startet den Ablauf nicht.
 
 ## Deinstallation
 
@@ -161,17 +152,7 @@ Für die Statusleiste entfernst du außerdem den Eintrag `statusLine` aus `~/.cl
 
 ## Unterstützung
 
-- Die direkteste Unterstützung ist der Kauf meiner Mac-Bereinigungs-App [Mole for Mac](https://mole.fit)
-- Wenn dir fskill hilft, freue ich mich über einen Stern, eine [Weiterempfehlung](https://twitter.com/intent/tweet?url=https://github.com/gofenix/fskill&text=fskill%20-%20gofenix%27s%20engineering%20habits%2C%20turned%20into%20your%20skills.) oder ein Issue bzw. einen PR
-- Du kannst auch meinen beiden Katzen TangYuan und Coke eine <a href="https://cats.tw93.fun?name=fskill" target="_blank">Dose Futter 🥩</a> spendieren
-
-<details>
-<summary>Diese lieben Menschen haben es schon getan 🐱</summary>
-<br/>
-<div align="center">
-  <a href="https://cats.tw93.fun?name=fskill"><img src="https://cdn.jsdelivr.net/gh/tw93/sponsors@main/assets/sponsors.svg" width="1000" loading="lazy" /></a>
-</div>
-</details>
+Wenn fskill geholfen hat, gib dem Repo einen Star oder öffne ein Issue.
 
 ## Lizenz
 

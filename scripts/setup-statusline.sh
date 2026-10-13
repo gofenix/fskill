@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install Waza statusline into Claude Code
+# Install the fskill statusline into Claude Code
 set -euo pipefail
 
 CLAUDE_DIR="$HOME/.claude"
@@ -15,7 +15,7 @@ case "$WAZA_REF" in
     ;;
 esac
 
-RAW="https://raw.githubusercontent.com/tw93/Waza/${WAZA_REF}/scripts/statusline.sh"
+RAW="https://raw.githubusercontent.com/gofenix/fskill/${WAZA_REF}/scripts/statusline.sh"
 
 if ! command -v curl &>/dev/null; then
   echo "Error: curl is required but not installed." >&2
@@ -87,7 +87,7 @@ except Exception as exc:
 PYEOF
 fi
 
-# Check for existing statusLine (skip if already Waza)
+# Check for existing statusLine (skip if already fskill)
 EXISTING=$(SETTINGS_FILE="$SETTINGS_FILE" python3 -c "
 import json, os
 path = os.environ['SETTINGS_FILE']
@@ -105,9 +105,9 @@ if [ -n "$EXISTING" ]; then
   ans=""
   prompted=0
   if [ -t 0 ]; then
-    printf "Replace it with Waza statusline? [Y/n] "
+    printf "Replace it with the fskill statusline? [Y/n] "
     if read -r ans; then prompted=1; fi
-  elif { printf "Replace it with Waza statusline? [Y/n] " >/dev/tty; } 2>/dev/null \
+  elif { printf "Replace it with the fskill statusline? [Y/n] " >/dev/tty; } 2>/dev/null \
       && read -r ans </dev/tty 2>/dev/null; then
     prompted=1
   fi
@@ -150,5 +150,5 @@ with os.fdopen(fd, "w") as f:
 os.replace(tmp_path, path)
 PYEOF
 
-echo "Waza statusline installed. Restart Claude Code to activate."
+echo "fskill statusline installed. Restart Claude Code to activate."
 echo "Tip: if you see a 513 error after switching Claude accounts, remove the statusLine entry from ~/.claude/settings.json, restart Claude Code, then re-run this script."

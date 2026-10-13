@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "fskill",
-  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi: think, check, hunt, ui, read, write, learn, and health for agent config and AI maintainability audits.",
+  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi. Twenty skills in five groups. Invocation is explicit: /name or $name.",
   "owner": {
     "name": "gofenix",
     "email": "gofenix@users.noreply.github.com"

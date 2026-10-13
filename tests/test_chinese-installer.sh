@@ -17,7 +17,7 @@ grep -q 'test rule' "$home_dir/.claude/rules/chinese.md"
 # Idempotent for Codex target: two runs leave exactly one marker.
 PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-rule.sh" chinese codex >"$tmpdir/codex1.out"
 PATH="$bin_dir" HOME="$home_dir" /bin/bash "$ROOT/scripts/setup-rule.sh" chinese codex >"$tmpdir/codex2.out"
-test "$(grep -c '<!-- Waza Chinese: start -->' "$home_dir/.codex/AGENTS.md")" -eq 1
+test "$(grep -c '<!-- fskill Chinese: start -->' "$home_dir/.codex/AGENTS.md")" -eq 1
 grep -q 'test rule' "$home_dir/.codex/AGENTS.md"
 
 echo "Chinese installer smoke: ok"

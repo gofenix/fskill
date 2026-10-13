@@ -1,4 +1,4 @@
-"""Validation checks for Waza skills: facade over the domain modules.
+"""Validation checks for fskill skills: facade over the domain modules.
 
 Check implementations live in three sibling modules, split by surface:
   - checks_content.py       skill files, prose, references, catalogs

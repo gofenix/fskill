@@ -56,8 +56,8 @@ CLAUDE_MARKETPLACE_TOP = {
     "name": "fskill",
     "description": (
         "Personal skill collection for Claude Code, Codex, Antigravity, "
-        "OpenCode, and Pi: think, check, hunt, ui, read, write, learn, "
-        "and health for agent config and AI maintainability audits."
+        "OpenCode, and Pi. Twenty skills in five groups. Invocation is "
+        "explicit: /name or $name."
     ),
     "owner": {
         "name": "gofenix",
@@ -84,8 +84,8 @@ AUTHOR = {
 }
 
 CODEX_DESCRIPTION = (
-    "Engineering workflow skills for Codex: think, check, hunt, ui, read, "
-    "write, learn, and health."
+    "Engineering workflow skills for Codex. Twenty skills in five groups. "
+    "Invocation is explicit: /name or $name."
 )
 # Shared durable-context preamble: source of truth in rules/, copied into each
 # referencing skill's references/ so direct installs resolve the link locally.
@@ -178,11 +178,10 @@ def build_codex_plugin(version: str) -> dict:
             "displayName": "fskill",
             "shortDescription": "Engineering workflow skills for Codex",
             "longDescription": (
-                "fskill packages eight engineering habits as Codex skills: "
-                "think for planning, check for review, hunt for debugging, "
-                "ui for frontend work, read for source intake, write for "
-                "prose, learn for domain research, and health for agent "
-                "configuration audits."
+                "fskill packages twenty engineering skills in five groups: "
+                "decide, build, ship, read and write, and leave something "
+                "the next session can use. Enter a skill with /name or "
+                "$name. A similar word does not start that workflow."
             ),
             "developerName": "gofenix",
             "category": CODEX_CATEGORY,
