@@ -49,7 +49,7 @@ codex plugin add fskill@fskill
 
 **Claude Desktop**: [fskill.zip](https://github.com/gofenix/fskill/releases/latest/download/fskill.zip)을 다운로드한 뒤 Customize > Skills > "+" > Create skill에서 업로드합니다. 업데이트할 때는 카드에서 "..." > Replace를 선택해 최신 ZIP을 다시 업로드하세요.
 
-**Pi**: `pi install npm:fskill`, 업데이트는 `pi update npm:fskill`로 실행합니다.
+**Pi**: `pi install npm:@gofenix/fskill`, 업데이트는 `pi update npm:@gofenix/fskill`로 실행합니다.
 
 ## 스킬 연계 워크플로우
 

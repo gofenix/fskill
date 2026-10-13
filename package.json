@@ -1,5 +1,5 @@
 {
-  "name": "fskill",
+  "name": "@gofenix/fskill",
   "version": "3.39.0",
   "description": "fskill engineering skills for Claude Code, Codex, Antigravity, OpenCode, Pi, and compatible coding agents.",
   "license": "MIT",

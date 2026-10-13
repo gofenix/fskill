@@ -8,7 +8,7 @@ tmpdir=$(make_tmpdir)
 copy_repo "$tmpdir/repo"
 
 version=$(cat "$tmpdir/repo/VERSION")
-test "$(jq -r '.name' "$tmpdir/repo/package.json")" = "fskill"
+test "$(jq -r '.name' "$tmpdir/repo/package.json")" = "@gofenix/fskill"
 test "$(jq -r '.homepage' "$tmpdir/repo/package.json")" = "https://github.com/gofenix/fskill"
 test "$(jq -r '.files | index("llms.txt") != null' "$tmpdir/repo/package.json")" = "true"
 test "$(jq -r '.version' "$tmpdir/repo/package.json")" = "$version"

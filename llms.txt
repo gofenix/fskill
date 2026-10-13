@@ -3,7 +3,7 @@
 > Twenty engineering skills for AI coding agents, in five groups. Enter a skill with `/name` or `$name`. A similar word does not start that workflow.
 
 Source code: https://github.com/gofenix/fskill
-npm package: https://www.npmjs.com/package/fskill
+npm package: https://www.npmjs.com/package/@gofenix/fskill
 Latest release: https://github.com/gofenix/fskill/releases/latest
 Author: gofenix, https://github.com/gofenix
 
@@ -58,7 +58,7 @@ All skills:
 
 Pi package:
 
-`pi install npm:fskill`
+`pi install npm:@gofenix/fskill`
 
 Claude Desktop:
 

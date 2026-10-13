@@ -367,7 +367,7 @@ def check_readme_install_command(root: Path):
             f"{expected_codex_install!r}\n"
             f"  The Codex marketplace entry must document the plugin install selector."
         )
-    expected_pi = "pi install npm:fskill"
+    expected_pi = "pi install npm:@gofenix/fskill"
     if expected_pi not in text:
         fail(
             f"README PI INSTALL COMMAND: README.md must include {expected_pi!r}\n"
@@ -398,7 +398,7 @@ def check_release_workflow_npm_surface(root: Path):
     text = workflow.read_text()
     required = {
         "npm publish": "publishes fskill during release",
-        "npm view fskill": "re-reads the npm registry after publish",
+        "npm view @gofenix/fskill": "re-reads the npm registry after publish",
         "id-token: write": "allows npm trusted publishing through GitHub OIDC",
         "node-version: 24": "uses a Node/npm runtime that supports trusted publishing",
         "package-manager-cache: false": "keeps release publish jobs from caching credentials or package state",

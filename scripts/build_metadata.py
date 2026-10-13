@@ -233,7 +233,7 @@ def build_codex_marketplace() -> dict:
 
 def build_package_json(version: str) -> str:
     package = {
-        "name": "fskill",
+        "name": "@gofenix/fskill",
         "version": version,
         "description": (
             "fskill engineering skills for Claude Code, Codex, Antigravity, "

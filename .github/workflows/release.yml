@@ -70,7 +70,7 @@ jobs:
           set -euo pipefail
           version="$(cat VERSION)"
           test "${{ github.event.release.tag_name }}" = "v${version}"
-          test "$(node -p "require('./package.json').name")" = "fskill"
+          test "$(node -p "require('./package.json').name")" = "@gofenix/fskill"
           test "$(node -p "require('./package.json').version")" = "$version"
           test "$(node -p "require('./package.json').pi.skills[0]")" = "./skills"
       - name: Pack npm package
@@ -79,8 +79,8 @@ jobs:
         run: |
           set -euo pipefail
           version="$(cat VERSION)"
-          if npm view "fskill@${version}" version >/dev/null 2>&1; then
-            echo "fskill@${version} already published"
+          if npm view "@gofenix/fskill@${version}" version >/dev/null 2>&1; then
+            echo "@gofenix/fskill@${version} already published"
           else
             npm publish --access public
           fi
@@ -94,16 +94,16 @@ jobs:
           # a red run and invites a re-publish that must never happen. Wait for
           # the registry rather than for the loop: 30 tries at 30s is 15 minutes.
           for attempt in $(seq 1 30); do
-            published="$(npm view "fskill@${version}" version 2>/dev/null || true)"
-            latest="$(npm view fskill dist-tags.latest 2>/dev/null || true)"
+            published="$(npm view "@gofenix/fskill@${version}" version 2>/dev/null || true)"
+            latest="$(npm view @gofenix/fskill dist-tags.latest 2>/dev/null || true)"
             if [ "$published" = "$version" ] && [ "$latest" = "$version" ]; then
-              echo "npm fskill@${version} is published and latest"
+              echo "npm @gofenix/fskill@${version} is published and latest"
               exit 0
             fi
-            echo "waiting for npm fskill@${version}; published=${published:-missing} latest=${latest:-missing}"
+            echo "waiting for npm @gofenix/fskill@${version}; published=${published:-missing} latest=${latest:-missing}"
             sleep 30
           done
-          echo "npm fskill@${version} still not readable after 15 minutes." >&2
-          echo "The publish step already succeeded if it printed + fskill@${version}." >&2
-          echo "Check https://www.npmjs.com/package/fskill before re-running anything; do not re-publish." >&2
+          echo "npm @gofenix/fskill@${version} still not readable after 15 minutes." >&2
+          echo "The publish step already succeeded if it printed + @gofenix/fskill@${version}." >&2
+          echo "Check https://www.npmjs.com/package/@gofenix/fskill before re-running anything; do not re-publish." >&2
           exit 1

@@ -39,7 +39,7 @@ printf '%s\n' '{"pi":{"skills":["./skills"]}}' > "$project/package.json"
 {
   printf '%s\n' '{'
   printf '%s\n' '  "skills": ["core"],'
-  printf '%s\n' '  "packages": ["npm:fskill"],'
+  printf '%s\n' '  "packages": ["npm:@gofenix/fskill"],'
   printf '%s\n' '  "apiToken": "PI_TOKEN_SHOULD_NOT_LEAK"'
   printf '%s\n' '}'
 } > "$home_dir/.pi/agent/settings.json"
@@ -68,7 +68,7 @@ grep -q '^global_agents_skill_roots: 1$' "$tmpdir/context.out"
 grep -q '  ./skills' "$tmpdir/context.out"
 grep -q '  global_settings.skills: core' "$tmpdir/context.out"
 grep -q '  project_settings.skills: local' "$tmpdir/context.out"
-grep -q '  global_settings.packages: npm:fskill' "$tmpdir/context.out"
+grep -q '  global_settings.packages: npm:@gofenix/fskill' "$tmpdir/context.out"
 grep -q '  project_settings.packages: project-package' "$tmpdir/context.out"
 grep -q 'global_settings.apiToken=\[REDACTED\]' "$tmpdir/context.out"
 grep -q 'project_settings.password=\[REDACTED\]' "$tmpdir/context.out"
