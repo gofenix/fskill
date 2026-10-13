@@ -1,6 +1,6 @@
 ---
 name: think
-description: "把想法变成决策完整的计划，也支持简短修复方案或高压追问。在显式调用或已开启的 fskill mode 选中时使用：/think、$think 或 fskill 限定调用。不用于根因调试、实施本身，或对照代码审查已写好的 spec。"
+description: "把想法变成决策完整的计划，也支持简短修复方案或高压追问。在显式调用或已开启的 f-mode 选中时使用：/think、$think 或 fskill 限定调用。不用于根因调试、实施本身，或对照代码审查已写好的 spec。"
 when_to_use: "/think, $think, 调用 fskill 的 think, 用 fskill think skill, invoke fskill think, use fskill think skill"
 disable-model-invocation: true
 dispatch_intent: "新功能、架构方案、价值判断、动手前设计、决策完整实施计划"
@@ -16,7 +16,7 @@ dispatch_intent: "新功能、架构方案、价值判断、动手前设计、�
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/think`、`$think`、`调用 fskill 的 think`、`用 fskill think skill`、`invoke fskill think`、`use fskill think skill`，或 Desktop 根分发器已从 `/fskill think` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/think`、`$think`、`调用 fskill 的 think`、`用 fskill think skill`、`invoke fskill think`、`use fskill think skill`，或 Desktop 根分发器已从 `/fskill think` 选中本技能，或当前会话里用户已进入 `/f-mode` 且 f-mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；f-mode 关闭时，新任务或切换技能仍需显式调用；f-mode 开启时可由 f-mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

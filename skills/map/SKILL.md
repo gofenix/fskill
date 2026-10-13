@@ -1,6 +1,6 @@
 ---
 name: map
-description: "把跨会话且路线未明的目标组织成共享决策图，逐步消除不确定性并保持依赖和上下文可恢复。在显式调用或已开启的 fskill mode 选中时使用：/map、$map 或 fskill 限定调用。不用于路线已清晰的普通方案、实施任务拆分或自动执行产品开发。"
+description: "把跨会话且路线未明的目标组织成共享决策图，逐步消除不确定性并保持依赖和上下文可恢复。在显式调用或已开启的 f-mode 选中时使用：/map、$map 或 fskill 限定调用。不用于路线已清晰的普通方案、实施任务拆分或自动执行产品开发。"
 when_to_use: "/map, $map, 调用 fskill 的 map, 用 fskill map skill, invoke fskill map, use fskill map skill"
 disable-model-invocation: true
 dispatch_intent: "跨会话决策图、路线未明目标、共享决策票、依赖前沿、范围内迷雾、决策上下文恢复"
@@ -14,7 +14,7 @@ dispatch_intent: "跨会话决策图、路线未明目标、共享决策票、�
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/map`、`$map`、`调用 fskill 的 map`、`用 fskill map skill`、`invoke fskill map`、`use fskill map skill`，或 Desktop 根分发器已从 `/fskill map` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/map`、`$map`、`调用 fskill 的 map`、`用 fskill map skill`、`invoke fskill map`、`use fskill map skill`，或 Desktop 根分发器已从 `/fskill map` 选中本技能，或当前会话里用户已进入 `/f-mode` 且 f-mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；f-mode 关闭时，新任务或切换技能仍需显式调用；f-mode 开启时可由 f-mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

@@ -18,16 +18,16 @@ Each engineering habit gets an installed skill, a folder with reference docs, he
 
 | Skill | When | What it does |
 | :--- | :--- | :--- |
-| [`/mode`](skills/mode/SKILL.md) | Route | Enter explicitly, then pick one skill below. Direct commands still work. |
+| [`/f-mode`](skills/f-mode/SKILL.md) | Route | Enter explicitly, then pick one skill below. Direct commands still work. |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Decide | Plan, interface, terms, cross-session map, slices, experiments, boundaries. |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Build | Approved task graph, root cause, one-metric experiments. |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Ship | Diff and release review, issue queue, verification guide. |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Read and write | One URL or PDF, multi-source research, prose. |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | Keep | Session handoff, verified lessons, agent config, human setup. |
 
-Enter `/mode` (Codex: `$mode`; plugin: `/fskill:mode`) once, then describe your tasks normally. It routes within this session until `/mode off`; `/mode status` reports state. Direct commands such as `/hunt` take priority without closing mode. New sessions start off. Mode selects workflows, not action permissions.
+Enter `/f-mode` (Codex: `$f-mode`; plugin: `/fskill:f-mode`) once, then describe your tasks normally. It routes within this session until `/f-mode off`; `/f-mode status` reports state. Direct commands such as `/hunt` take priority without closing f-mode. New sessions start off. Mode selects workflows, not action permissions.
 
-Direct commands stay explicit (`/think`, `$think`). `/mode` is the only router, and only after you enter it. Saying a related word does not switch skills and does not enter mode. Refined from [tw93/Waza](https://github.com/tw93/Waza).
+Direct commands stay explicit (`/think`, `$think`). `/f-mode` is the only router, and only after you enter it. Saying a related word does not switch skills and does not enter f-mode. Refined from [tw93/Waza](https://github.com/tw93/Waza).
 
 ## Install
 
@@ -58,7 +58,7 @@ codex plugin add fskill@fskill
 
 ## Chaining Skills
 
-Outside mode, you decide the order. Each skill stops when its outcome is done. Call the next one with `/name` or `$name`.
+Outside f-mode, you decide the order. Each skill stops when its outcome is done. Call the next one with `/name` or `$name`.
 
 **Common workflows:**
 
@@ -121,7 +121,7 @@ Optional rules apply beyond skill invocations when installed into your agent's p
   # Anti-patterns: always-on cross-skill guardrails (read before acting, no scope creep, no unsolicited summaries)
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # Routing hint: explicit commands by default, goal-based routing inside /mode
+  # Routing hint: explicit commands by default, goal-based routing inside /f-mode
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # Clear everyday replies: consistent terms, explicit conditions, preserved uncertainty
@@ -138,7 +138,7 @@ Optional rules apply beyond skill invocations when installed into your agent's p
 
 ## Why
 
-fskill is gofenix's skill set. The working shape comes from [tw93/Waza](https://github.com/tw93/Waza); the name does not, because Waza belongs to someone else. There are twenty skills, in five groups: decide, build, ship, read and write, and leave something the next session can use. `/mode` is the explicit router on top of them. Each skill states the outcome, the lines it does not cross, and how you know it is done.
+fskill is gofenix's skill set. The working shape comes from [tw93/Waza](https://github.com/tw93/Waza); the name does not, because Waza belongs to someone else. There are twenty skills, in five groups: decide, build, ship, read and write, and leave something the next session can use. `/f-mode` is the explicit router on top of them. Each skill states the outcome, the lines it does not cross, and how you know it is done.
 
 You enter a skill with `/name` or `$name`. A similar word does not start that workflow.
 

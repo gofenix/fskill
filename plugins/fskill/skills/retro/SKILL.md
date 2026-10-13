@@ -1,6 +1,6 @@
 ---
 name: retro
-description: "复盘已验证的修复、用户纠偏和工程经验，把改进沉淀到正确上下文层。在显式调用或已开启的 fskill mode 选中时使用：/retro、$retro 或 fskill 限定调用。不用于尚在进行的调试、未定架构取舍或常规文档写作。"
+description: "复盘已验证的修复、用户纠偏和工程经验，把改进沉淀到正确上下文层。在显式调用或已开启的 f-mode 选中时使用：/retro、$retro 或 fskill 限定调用。不用于尚在进行的调试、未定架构取舍或常规文档写作。"
 when_to_use: "/retro, $retro, 调用 fskill 的 retro, 用 fskill retro skill, invoke fskill retro, use fskill retro skill"
 disable-model-invocation: true
 dispatch_intent: "工程复盘、改进沉淀、防复发经验、已确认术语与决策、可复用项目上下文、规则分流"
@@ -14,7 +14,7 @@ dispatch_intent: "工程复盘、改进沉淀、防复发经验、已确认术�
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/retro`、`$retro`、`调用 fskill 的 retro`、`用 fskill retro skill`、`invoke fskill retro`、`use fskill retro skill`，或 Desktop 根分发器已从 `/fskill retro` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/retro`、`$retro`、`调用 fskill 的 retro`、`用 fskill retro skill`、`invoke fskill retro`、`use fskill retro skill`，或 Desktop 根分发器已从 `/fskill retro` 选中本技能，或当前会话里用户已进入 `/f-mode` 且 f-mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；f-mode 关闭时，新任务或切换技能仍需显式调用；f-mode 开启时可由 f-mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

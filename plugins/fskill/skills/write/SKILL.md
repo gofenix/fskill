@@ -1,6 +1,6 @@
 ---
 name: write
-description: "改写和润色中英文自然语言、技术说明与本地化文案，消除歧义和 AI 味，保留原意。在显式调用或已开启的 fskill mode 选中时使用：/write、$write 或 fskill 限定调用。不用于方案、PRD、spec、代码注释、提交说明或行内文档的技术正确性审查。"
+description: "改写和润色中英文自然语言、技术说明与本地化文案，消除歧义和 AI 味，保留原意。在显式调用或已开启的 f-mode 选中时使用：/write、$write 或 fskill 限定调用。不用于方案、PRD、spec、代码注释、提交说明或行内文档的技术正确性审查。"
 when_to_use: "/write, $write, 调用 fskill 的 write, 用 fskill write skill, invoke fskill write, use fskill write skill"
 disable-model-invocation: true
 dispatch_intent: "写作、改稿、润色、技术说明消歧、release notes、launch/social copy、去 AI 味"
@@ -14,7 +14,7 @@ dispatch_intent: "写作、改稿、润色、技术说明消歧、release notes�
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/write`、`$write`、`调用 fskill 的 write`、`用 fskill write skill`、`invoke fskill write`、`use fskill write skill`，或 Desktop 根分发器已从 `/fskill write` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/write`、`$write`、`调用 fskill 的 write`、`用 fskill write skill`、`invoke fskill write`、`use fskill write skill`，或 Desktop 根分发器已从 `/fskill write` 选中本技能，或当前会话里用户已进入 `/f-mode` 且 f-mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；f-mode 关闭时，新任务或切换技能仍需显式调用；f-mode 开启时可由 f-mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

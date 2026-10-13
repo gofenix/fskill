@@ -1,6 +1,6 @@
 ---
 name: domain
-description: "主动厘清项目领域词汇、事件、行为和上下文边界，用代码与具体反例检验概念是否一致。在显式调用或已开启的 fskill mode 选中时使用：/domain、$domain 或 fskill 限定调用。不用于单纯查询术语、普通方案设计或复盘已证实的工程经验。"
+description: "主动厘清项目领域词汇、事件、行为和上下文边界，用代码与具体反例检验概念是否一致。在显式调用或已开启的 f-mode 选中时使用：/domain、$domain 或 fskill 限定调用。不用于单纯查询术语、普通方案设计或复盘已证实的工程经验。"
 when_to_use: "/domain, $domain, 调用 fskill 的 domain, 用 fskill domain skill, invoke fskill domain, use fskill domain skill"
 disable-model-invocation: true
 dispatch_intent: "主动领域建模、统一领域语言、术语歧义、行为与事件、bounded context、领域概念边界"
@@ -14,7 +14,7 @@ dispatch_intent: "主动领域建模、统一领域语言、术语歧义、行�
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/domain`、`$domain`、`调用 fskill 的 domain`、`用 fskill domain skill`、`invoke fskill domain`、`use fskill domain skill`，或 Desktop 根分发器已从 `/fskill domain` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/domain`、`$domain`、`调用 fskill 的 domain`、`用 fskill domain skill`、`invoke fskill domain`、`use fskill domain skill`，或 Desktop 根分发器已从 `/fskill domain` 选中本技能，或当前会话里用户已进入 `/f-mode` 且 f-mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；f-mode 关闭时，新任务或切换技能仍需显式调用；f-mode 开启时可由 f-mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

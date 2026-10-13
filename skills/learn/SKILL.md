@@ -1,6 +1,6 @@
 ---
 name: learn
-description: "把陌生领域、代码系统与历史决策整理成可引用研究输出。在显式调用或已开启的 fskill mode 选中时使用：/learn、$learn 或 fskill 限定调用。不用于单文件阅读、持续教学、根因调试或普通无需研究的查询。"
+description: "把陌生领域、代码系统与历史决策整理成可引用研究输出。在显式调用或已开启的 f-mode 选中时使用：/learn、$learn 或 fskill 限定调用。不用于单文件阅读、持续教学、根因调试或普通无需研究的查询。"
 when_to_use: "/learn, $learn, 调用 fskill 的 learn, 用 fskill learn skill, invoke fskill learn, use fskill learn skill"
 disable-model-invocation: true
 dispatch_intent: "陌生领域深度研究、多来源综合、代码心智模型、历史决策研究、从材料到可发布输出"
@@ -14,7 +14,7 @@ dispatch_intent: "陌生领域深度研究、多来源综合、代码心智模�
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/learn`、`$learn`、`调用 fskill 的 learn`、`用 fskill learn skill`、`invoke fskill learn`、`use fskill learn skill`，或 Desktop 根分发器已从 `/fskill learn` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/learn`、`$learn`、`调用 fskill 的 learn`、`用 fskill learn skill`、`invoke fskill learn`、`use fskill learn skill`，或 Desktop 根分发器已从 `/fskill learn` 选中本技能，或当前会话里用户已进入 `/f-mode` 且 f-mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；f-mode 关闭时，新任务或切换技能仍需显式调用；f-mode 开启时可由 f-mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

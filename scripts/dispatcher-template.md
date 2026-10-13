@@ -1,13 +1,13 @@
 ---
 name: fskill
-description: 'Dispatch explicit fskill commands, or route engineering requests within the current session after the user explicitly enters /mode. Direct skill commands remain available; /mode off stops automatic routing.'
+description: 'Dispatch explicit fskill commands, or route engineering requests within the current session after the user explicitly enters /f-mode. Direct skill commands remain available; /f-mode off stops automatic routing.'
 ---
 
 # fskill: Engineering Skills Dispatcher
 
 Prefix your first line with 🥷 inline, not as its own paragraph.
 
-Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing a command or matching a topic does not invoke it. `/mode` explicitly enables session routing; `/mode off` disables it, and `/mode status` only reports state. New sessions start with mode off. Read the mode section for its session rules; direct commands take priority without disabling mode.
+Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing a command or matching a topic does not invoke it. `/f-mode` explicitly enables session routing; `/f-mode off` disables it, and `/f-mode status` only reports state. New sessions start with f-mode off. Read the f-mode section for its session rules; direct commands take priority without disabling f-mode.
 
 ## Routing Table
 
@@ -16,8 +16,8 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 
 ## How This Works
 
-1. Process explicit mode control or skill commands first. Outside mode, ordinary requests stay ordinary requests.
-2. Inside active mode, match the user's goal to a working skill from the table, then read its section in full. Do not route mode back into itself.
+1. Process explicit f-mode control or skill commands first. Outside f-mode, ordinary requests stay ordinary requests.
+2. Inside active f-mode, match the user's goal to a working skill from the table, then read its section in full. Do not route f-mode back into itself.
 3. Execute within the requested scope and existing authorization. Routing does not authorize extra actions.
 
 If the message could match multiple skills, use these disambiguation rules:
@@ -38,6 +38,6 @@ In this distribution, sub-skill scripts live at `skills/{name}/scripts/`. Resolv
 
 ## Chaining
 
-Each skill stops at the requested outcome. Inside active mode, select the next skill only when needed for that outcome; otherwise switching requires a direct command. Complete an already authorized workflow without approval at every transition. Do not infer authorization to implement a planning-only request, publish a fix, or write durable lessons.
+Each skill stops at the requested outcome. Inside active f-mode, select the next skill only when needed for that outcome; otherwise switching requires a direct command. Complete an already authorized workflow without approval at every transition. Do not infer authorization to implement a planning-only request, publish a fix, or write durable lessons.
 
 Common chains: `/think` -> implement approved plan -> `/check` | `/hunt` -> fix -> `/check` -> release/push/issue follow-through | `/read` -> `/learn` -> `/write`

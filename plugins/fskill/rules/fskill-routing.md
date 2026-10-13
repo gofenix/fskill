@@ -1,10 +1,10 @@
 # fskill Routing
 
-fskill ships twenty workflow skills plus a mode entrypoint. Outside mode, call a skill with `/name` or `$name`. Explicit `/mode` enables routing for the current session; `/mode off` disables it, `/mode status` reports it. Direct commands take priority without closing mode. New sessions start off. A similar word or quoted command does not enter mode. Read mode before routing, and load only the selected skill. Routing never expands action authorization.
+fskill ships twenty workflow skills plus an f-mode entrypoint. Outside f-mode, call a skill with `/name` or `$name`. Explicit `/f-mode` enables routing for the current session; `/f-mode off` disables it, `/f-mode status` reports it. Direct commands take priority without closing f-mode. New sessions start off. A similar word or quoted command does not enter f-mode. Read f-mode before routing, and load only the selected skill. Routing never expands action authorization.
 
 | skill      | use when                                                                 |
 |------------|--------------------------------------------------------------------------|
-| mode       | the user already entered `/mode` or `$mode`; pick one other skill       |
+| f-mode    | the user already entered `/f-mode` or `$f-mode`; pick one other skill       |
 | think      | turn an idea into an executable plan                                     |
 | ui         | pages, components, and screenshot polish                                 |
 | domain     | a term or behavior boundary is blocking a decision                       |

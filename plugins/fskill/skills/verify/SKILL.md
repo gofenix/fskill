@@ -1,6 +1,6 @@
 ---
 name: verify
-description: "建立并维护项目可复用的验证指南、操作 harness 和用户功能地图。在显式调用或已开启的 fskill mode 选中时使用：/verify、$verify 或 fskill 限定调用。不用于普通测试运行、产品缺陷修复或验证面健康审计。"
+description: "建立并维护项目可复用的验证指南、操作 harness 和用户功能地图。在显式调用或已开启的 f-mode 选中时使用：/verify、$verify 或 fskill 限定调用。不用于普通测试运行、产品缺陷修复或验证面健康审计。"
 when_to_use: "/verify, $verify, 调用 fskill 的 verify, 用 fskill verify skill, invoke fskill verify, use fskill verify skill"
 disable-model-invocation: true
 dispatch_intent: "项目验证资产搭建、验证指南维护、launch/doctor/drive/evidence/cleanup、用户功能地图、harness漂移与现场覆盖"
@@ -14,7 +14,7 @@ dispatch_intent: "项目验证资产搭建、验证指南维护、launch/doctor/
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/verify`、`$verify`、`调用 fskill 的 verify`、`用 fskill verify skill`、`invoke fskill verify`、`use fskill verify skill`，或 Desktop 根分发器已从 `/fskill verify` 选中本技能，或当前会话里用户已进入 `/mode` 且 mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；mode 关闭时，新任务或切换技能仍需显式调用；mode 开启时可由 mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+首次进入本技能时，须由用户显式输入 `/verify`、`$verify`、`调用 fskill 的 verify`、`用 fskill verify skill`、`invoke fskill verify`、`use fskill verify skill`，或 Desktop 根分发器已从 `/fskill verify` 选中本技能，或当前会话里用户已进入 `/f-mode` 且 f-mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；f-mode 关闭时，新任务或切换技能仍需显式调用；f-mode 开启时可由 f-mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
 
 ## 交付约定
 

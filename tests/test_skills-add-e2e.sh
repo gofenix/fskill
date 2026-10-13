@@ -50,8 +50,8 @@ for source in "$ROOT"/skills/*/SKILL.md; do
 done
 
 # Standalone mode installs cannot depend on the source repository's RESOLVER.
-cmp "$ROOT/skills/mode/references/routing.md" \
-  "$test_home/.claude/skills/mode/references/routing.md"
+cmp "$ROOT/skills/f-mode/references/routing.md" \
+  "$test_home/.claude/skills/f-mode/references/routing.md"
 
 # Frontmatter survived the copy: re-run verify_skills.py against the installed
 # skill root and confirm the same name/description/version contract holds.

@@ -4,7 +4,7 @@ This file is the canonical agent guide for the fskill repository. `CLAUDE.md` is
 
 ## Project
 
-fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty workflow skills plus a `mode` entrypoint live flat under `skills/<name>/`. Default invocation is explicit: `/name` or `$name`. After explicit `/mode`, route within the current session until `/mode off`; direct commands take priority without closing mode. A similar word never enables mode.
+fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty workflow skills plus an `f-mode` entrypoint live flat under `skills/<name>/`. Default invocation is explicit: `/name` or `$name`. After explicit `/f-mode`, route within the current session until `/f-mode off`; direct commands take priority without closing f-mode. A similar word never enables f-mode.
 
 - 想清楚: `think`, `ui`, `domain`, `map`, `slice`, `prototype`, `architect`
 - 做出来: `implement`, `hunt`, `optimize`
@@ -16,7 +16,7 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty wo
 
 - `VERSION` - single source of truth for the lock-step version. Marketplace entries, `package.json`, and installer `FSKILL_REF` defaults must agree with this file (codegen-enforced). Per-skill frontmatter carries no version field; the verifier rejects a stale `metadata.version`.
 - `skills/RESOLVER.md` - trigger and routing table for the skill set.
-- `skills/mode/references/routing.md` - generated portable copy of `skills/RESOLVER.md` for standalone mode installs; never hand-edit.
+- `skills/f-mode/references/routing.md` - generated portable copy of `skills/RESOLVER.md` for standalone f-mode installs; never hand-edit.
 - `skills/*/SKILL.md` - individual skill entrypoints.
 - `skills/*/agents/` - specialist reviewer or inspector prompts.
 - `skills/*/references/` - supporting references loaded only when needed.
@@ -36,7 +36,7 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty wo
 
 ## Issue And Pull Request Maintenance
 
-- Use the official GitHub CLI/API for this repository's issue and PR queue. Read the complete discussion and use [check triage guidance](skills/check/references/mode-triage.md) for disposition and release evidence.
+- Use the official GitHub CLI/API for this repository's issue and PR queue. Read the complete discussion and use [check triage guidance](skills/check/references/f-mode-triage.md) for disposition and release evidence.
 - Before modifying an item, check relevant local and remote commits, associated PRs, branches/worktrees, and accessible existing agent conversations or task inventories. Report the deduplication evidence and owner first. Verify an existing fix; if another session owns ongoing work, report its verifiable ID/status and leave implementation there. Record unread or inaccessible history as a coverage gap, not evidence that no owner exists.
 - Preserve concurrent and uncommitted work; use an independent branch/worktree for fixes, isolated fixtures for reproduction, and targeted verification. Missing evidence keeps an item pending; an empty queue requires no manufactured changes.
 - Public replies, closure, commits, pushes, merges, and releases follow current task authorization. Historical conversation requests and saved queue snapshots do not grant permission or establish current state. Before implementing any change to user-visible interfaces, visual effects, interaction, user parameters, or configuration defaults, present the concrete before/after behavior and obtain explicit user confirmation; general fix or push authorization does not cover those changes. Pause and isolate any such unconfirmed work already in progress; report already-pushed changes without independently reverting them.

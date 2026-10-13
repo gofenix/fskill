@@ -18,14 +18,14 @@
 
 | スキル | グループ | 役割 |
 | :--- | :--- | :--- |
-| [`/mode`](skills/mode/SKILL.md) | 経路 | 明示的に入ってから、下のスキルを一つ選ぶ。単体のコマンドもそのまま使える。 |
+| [`/f-mode`](skills/f-mode/SKILL.md) | 経路 | 明示的に入ってから、下のスキルを一つ選ぶ。単体のコマンドもそのまま使える。 |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 決める | 計画、画面、用語、セッションをまたぐ地図、切り分け、試作、境界。 |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 作る | 承認済みの作業、根本原因、指標は一度に一つ。 |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 渡す | マージ、push、リリース前の確認、課題の整理、検証の説明。 |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 読む・書く | 一つの URL か PDF、複数資料の調査、文章を整える。 |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 次も使える | セッションの引き継ぎ、確認済みの教訓、エージェント設定、手動セットアップ。 |
 
-`/mode`（Codex: `$mode`、プラグイン: `/fskill:mode`）で開始し、通常の言葉で依頼できます。現在の会話で `/mode off` まで自動選択が続きます。`/mode status` で状態を確認。直接コマンドを優先し、mode は維持します。新しい会話では無効です。操作の権限は変わりません。
+`/f-mode`（Codex: `$f-mode`、プラグイン: `/fskill:f-mode`）で開始し、通常の言葉で依頼できます。現在の会話で `/f-mode off` まで自動選択が続きます。`/f-mode status` で状態を確認。直接コマンドを優先し、f-mode は維持します。新しい会話では無効です。操作の権限は変わりません。
 
 ## インストール
 
@@ -136,7 +136,7 @@ Codex は残りの枠を、上の Claude Code ステータスラインは使用�
 
 ## 開発の背景
 
-fskill は gofenix 自身のスキル集です。進め方は [tw93/Waza](https://github.com/tw93/Waza) から取り、名前は取りません。Waza は他人の名前だからです。スキルは 20 個で、決める、作る、渡す、読む・書く、次も使える、の五つに分かれます。その上に明示的な入口 `/mode` があります。各スキルは結果、越えない線、完了の判断だけを書きます。
+fskill は gofenix 自身のスキル集です。進め方は [tw93/Waza](https://github.com/tw93/Waza) から取り、名前は取りません。Waza は他人の名前だからです。スキルは 20 個で、決める、作る、渡す、読む・書く、次も使える、の五つに分かれます。その上に明示的な入口 `/f-mode` があります。各スキルは結果、越えない線、完了の判断だけを書きます。
 
 入り方は明示です。`/name` または `$name`。近い意味ではその手順は始まりません。
 

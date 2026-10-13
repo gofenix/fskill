@@ -18,14 +18,14 @@
 
 | 技能 | 分組 | 它做什麼 |
 | :--- | :--- | :--- |
-| [`/mode`](skills/mode/SKILL.md) | 路由 | 先顯式進入，再從下面的技能裡選一條。單條仍然可以直接用。 |
+| [`/f-mode`](skills/f-mode/SKILL.md) | 路由 | 先顯式進入，再從下面的技能裡選一條。單條仍然可以直接用。 |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 想清楚 | 方案、介面、術語、跨會話地圖、切片、試驗、邊界。 |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 做出來 | 已批准的任務圖、根因、一次只動一個指標。 |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 交出去 | 合併、推送和發布前的審查，問題佇列，驗證說明。 |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 讀和寫 | 一個連結或 PDF、多來源研究、把文字改順。 |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 下次還能用 | 會話交接、已經驗證的教訓、Agent 設定、人工安裝。 |
 
-輸入 `/mode`（Codex 用 `$mode`，外掛用 `/fskill:mode`）進入，再直接描述任務；目前會話內持續自動選技能。`/mode off` 退出，`/mode status` 查看狀態。直接 `/hunt` 等命令優先，不關閉 mode。新會話預設關閉；選路不擴大操作授權。
+輸入 `/f-mode`（Codex 用 `$f-mode`，外掛用 `/fskill:f-mode`）進入，再直接描述任務；目前會話內持續自動選技能。`/f-mode off` 退出，`/f-mode status` 查看狀態。直接 `/hunt` 等命令優先，不關閉 f-mode。新會話預設關閉；選路不擴大操作授權。
 
 ## 安裝
 
@@ -136,7 +136,7 @@ Codex 顯示剩餘額度，上方 Claude Code 狀態列顯示已用百分比（�
 
 ## 為什麼做 fskill
 
-fskill 是 gofenix 自己的技能集。工作方式來自 [tw93/Waza](https://github.com/tw93/Waza)，名字不沿用，因為 Waza 是別人的。現在是 20 個技能，分成想清楚、做出來、交出去、讀和寫、下次還能用。上面再加一個顯式入口 `/mode`。每個技能寫清結果、不能碰的線，以及怎麼算做完。
+fskill 是 gofenix 自己的技能集。工作方式來自 [tw93/Waza](https://github.com/tw93/Waza)，名字不沿用，因為 Waza 是別人的。現在是 20 個技能，分成想清楚、做出來、交出去、讀和寫、下次還能用。上面再加一個顯式入口 `/f-mode`。每個技能寫清結果、不能碰的線，以及怎麼算做完。
 
 呼叫是顯式的：`/name` 或 `$name`。意思相近不會自動開始那套流程。
 

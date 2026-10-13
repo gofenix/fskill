@@ -1,13 +1,13 @@
 ---
 name: fskill
-description: 'Dispatch explicit fskill commands, or route engineering requests within the current session after the user explicitly enters /mode. Direct skill commands remain available; /mode off stops automatic routing.'
+description: 'Dispatch explicit fskill commands, or route engineering requests within the current session after the user explicitly enters /f-mode. Direct skill commands remain available; /f-mode off stops automatic routing.'
 ---
 
 # fskill: Engineering Skills Dispatcher
 
 Prefix your first line with 🥷 inline, not as its own paragraph.
 
-Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing a command or matching a topic does not invoke it. `/mode` explicitly enables session routing; `/mode off` disables it, and `/mode status` only reports state. New sessions start with mode off. Read the mode section for its session rules; direct commands take priority without disabling mode.
+Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing a command or matching a topic does not invoke it. `/f-mode` explicitly enables session routing; `/f-mode off` disables it, and `/f-mode status` only reports state. New sessions start with f-mode off. Read the f-mode section for its session rules; direct commands take priority without disabling f-mode.
 
 ## Routing Table
 
@@ -17,13 +17,13 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 | 主动架构机会识别、代码边界改进、模块深化、调用方认知成本、依赖与测试接缝、备选接口比较 | architect | `skills/architect/SKILL.md` |
 | 代码与技术文档审查、合并前检查、已有PR状态与持续跟进、发布门禁、平台打包产物、mac 打包、macOS/Android 产物、release asset、commit/push/release 收尾、项目质量审计 | check | `skills/check/SKILL.md` |
 | 主动领域建模、统一领域语言、术语歧义、行为与事件、bounded context、领域概念边界 | domain | `skills/domain/SKILL.md` |
+| 显式开启或关闭 f-mode，在会话内自动选择已安装技能 | f-mode | `skills/f-mode/SKILL.md` |
 | 交接文档、handoff、会话总结、接入恢复、本人相关历史与当前状态核对 | handoff | `skills/handoff/SKILL.md` |
 | Agent 配置审计、Codex/Claude/Pi 指令漂移、hooks/MCP、验证面、AI 可维护性 | health | `skills/health/SKILL.md` |
 | 错误、崩溃、回归、失败测试、异常行为、根因定位 | hunt | `skills/hunt/SKILL.md` |
 | 批准任务图实施、ready frontier、coordinator、隔离worktree、integration branch、merger、阻塞解锁、实施恢复与集成验证 | implement | `skills/implement/SKILL.md` |
 | 陌生领域深度研究、多来源综合、代码心智模型、历史决策研究、从材料到可发布输出 | learn | `skills/learn/SKILL.md` |
 | 跨会话决策图、路线未明目标、共享决策票、依赖前沿、范围内迷雾、决策上下文恢复 | map | `skills/map/SKILL.md` |
-| 显式开启或关闭 fskill mode，在会话内自动选择已安装技能 | mode | `skills/mode/SKILL.md` |
 | 持续指标优化、hillclimb、性能与成本改善、评测分数提升、可信测量基线、单假设实验、收益与回归门禁、保留撤回 | optimize | `skills/optimize/SKILL.md` |
 | 一次性实验、领域状态与行为演示、UI 结构方案比较、验证明确设计假设 | prototype | `skills/prototype/SKILL.md` |
 | URL 或 PDF 读取、网页抓取、链接摘要、Markdown 提取 | read | `skills/read/SKILL.md` |
@@ -39,8 +39,8 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 
 ## How This Works
 
-1. Process explicit mode control or skill commands first. Outside mode, ordinary requests stay ordinary requests.
-2. Inside active mode, match the user's goal to a working skill from the table, then read its section in full. Do not route mode back into itself.
+1. Process explicit f-mode control or skill commands first. Outside f-mode, ordinary requests stay ordinary requests.
+2. Inside active f-mode, match the user's goal to a working skill from the table, then read its section in full. Do not route f-mode back into itself.
 3. Execute within the requested scope and existing authorization. Routing does not authorize extra actions.
 
 If the message could match multiple skills, use these disambiguation rules:
@@ -61,6 +61,6 @@ In this distribution, sub-skill scripts live at `skills/{name}/scripts/`. Resolv
 
 ## Chaining
 
-Each skill stops at the requested outcome. Inside active mode, select the next skill only when needed for that outcome; otherwise switching requires a direct command. Complete an already authorized workflow without approval at every transition. Do not infer authorization to implement a planning-only request, publish a fix, or write durable lessons.
+Each skill stops at the requested outcome. Inside active f-mode, select the next skill only when needed for that outcome; otherwise switching requires a direct command. Complete an already authorized workflow without approval at every transition. Do not infer authorization to implement a planning-only request, publish a fix, or write durable lessons.
 
 Common chains: `/think` -> implement approved plan -> `/check` | `/hunt` -> fix -> `/check` -> release/push/issue follow-through | `/read` -> `/learn` -> `/write`
