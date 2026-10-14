@@ -14,7 +14,7 @@
 
 ## 스킬 목록
 
-각 스킬은 참고 문서, 스크립트, 실제로 겪은 실패를 담은 디렉터리입니다. 기본적으로 `/name` 또는 `$name` 으로 시작합니다. 비슷한 말로는 바뀌지 않습니다. 틀은 [tw93/Waza](https://github.com/tw93/Waza) 에서 왔고, 이름과 본문은 자신의 것입니다.
+각 스킬은 참고 문서, 스크립트, 실제로 겪은 실패를 담은 디렉터리입니다. 기본적으로 `/name` 또는 `$name` 으로 시작합니다. 비슷한 말로는 바뀌지 않습니다. Waza, Matt Pocock skills, pstack을 기반으로 합니다. 출처는 라이선스 항목을 참고하세요.
 
 | 스킬 | 묶음 | 역할 |
 | :--- | :--- | :--- |
@@ -159,4 +159,4 @@ rm -f ~/.claude/rules/clarity.md
 
 ## 라이선스
 
-MIT License. Please feel free to use and contribute to the development.
+MIT. [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills), [pstack](https://github.com/cursor/plugins/tree/main/pstack)에 감사합니다. fskill은 이들의 절차를 통합, 번역, 조정합니다. [LICENSE](LICENSE)를 원본으로 관리하며 `make regenerate`가 각 스킬의 `NOTICE.md`에 전체 선언을 복사합니다. 개별 설치와 Multica에도 포함됩니다. gofenix의 표기는 독자적인 추가 및 수정에, 원저자의 표기는 각 재사용 자료에 적용됩니다.

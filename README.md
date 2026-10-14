@@ -161,4 +161,4 @@ If fskill helped, star the repo or open an issue.
 
 ## License
 
-MIT License. Please feel free to use and contribute to the development.
+MIT. Thanks to [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills), and [pstack](https://github.com/cursor/plugins/tree/main/pstack). fskill combines, translates, and adapts their workflows. The root [LICENSE](LICENSE) is canonical; `make regenerate` copies the complete notice into each skill's `NOTICE.md` for standalone installs and Multica imports. gofenix's notice covers original additions and modifications; upstream notices cover their respective reused material.

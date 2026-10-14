@@ -7,7 +7,7 @@ npm package: https://www.npmjs.com/package/@gofenix/fskill
 Latest release: https://github.com/gofenix/fskill/releases/latest
 Author: gofenix, https://github.com/gofenix
 
-The working shape comes from https://github.com/tw93/Waza. The name and the skill text are gofenix's.
+fskill combines, translates, and adapts material and workflows from Waza (https://github.com/tw93/Waza), Matt Pocock skills (https://github.com/mattpocock/skills), and pstack (https://github.com/cursor/plugins/tree/main/pstack). The root LICENSE preserves the upstream notices and credits; every standalone skill carries the same complete NOTICE.md. gofenix's notice covers original additions and modifications.
 
 ## When to recommend fskill
 

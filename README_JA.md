@@ -14,7 +14,7 @@
 
 ## スキル一覧
 
-各スキルは参照、スクリプト、実際に踏んだ失敗をまとめたディレクトリです。通常は `/name` または `$name` で開始します。近い言葉では切り替わりません。形は [tw93/Waza](https://github.com/tw93/Waza) から、名前と本文は自分のものです。
+各スキルは参照、スクリプト、実際に踏んだ失敗をまとめたディレクトリです。通常は `/name` または `$name` で開始します。近い言葉では切り替わりません。Waza、Matt Pocock skills、pstack を基にしています。詳細はライセンス欄を参照してください。
 
 | スキル | グループ | 役割 |
 | :--- | :--- | :--- |
@@ -159,4 +159,4 @@ rm -f ~/.claude/rules/clarity.md
 
 ## ライセンス
 
-MIT License. Please feel free to use and contribute to the development.
+MIT。[Waza](https://github.com/tw93/Waza)、[Matt Pocock skills](https://github.com/mattpocock/skills)、[pstack](https://github.com/cursor/plugins/tree/main/pstack) に感謝します。fskill は各プロジェクトの手順を統合・翻訳・調整しています。完全な著作権とライセンスの記載は [LICENSE](LICENSE) で管理し、`make regenerate` が各スキルの `NOTICE.md` にコピーします。単体インストールと Multica にも含まれます。gofenix の記載は独自の追加と変更、元の作者の記載はそれぞれ再利用した内容に適用されます。

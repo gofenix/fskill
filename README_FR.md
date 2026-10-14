@@ -14,7 +14,7 @@
 
 ## Compétences (Skills)
 
-Chaque compétence est un dossier de références, de scripts et d'échecs réels. Par défaut, elle démarre avec `/name` ou `$name`. Un mot proche ne la lance pas. La forme vient de [tw93/Waza](https://github.com/tw93/Waza) ; le nom et le texte sont ceux de gofenix.
+Chaque compétence est un dossier de références, de scripts et d'échecs réels. Par défaut, elle démarre avec `/name` ou `$name`. Un mot proche ne la lance pas. Les procédures viennent de Waza, Matt Pocock skills et pstack ; voir les sources dans la section licence.
 
 | Compétence | Groupe | Ce qu'elle fait |
 | :--- | :--- | :--- |
@@ -159,4 +159,4 @@ Si fskill vous a aidé, mettez une étoile au dépôt ou ouvrez une issue.
 
 ## Licence
 
-MIT License. Please feel free to use and contribute to the development.
+MIT. Merci à [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills) et [pstack](https://github.com/cursor/plugins/tree/main/pstack). fskill combine, traduit et adapte leurs procédures. [LICENSE](LICENSE) est la source unique ; `make regenerate` copie la déclaration complète dans chaque `NOTICE.md` pour les installations individuelles et Multica. La mention de gofenix couvre les ajouts et modifications originaux ; les mentions en amont couvrent leurs contenus respectifs réutilisés.

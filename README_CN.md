@@ -14,7 +14,7 @@
 
 ## 技能
 
-每个技能是一个目录，里面有参考、脚本和踩过的坑。默认通过 `/name` 或 `$name` 进入单条技能。`/f-mode` 是唯一会自己选路的入口，而且要先显式进入。说到相关的词不会自动换技能，也不会进入 f-mode。骨架来自 [tw93/Waza](https://github.com/tw93/Waza)，名字和正文是自己的。
+每个技能是一个目录，里面有参考、脚本和踩过的坑。默认通过 `/name` 或 `$name` 进入单条技能。`/f-mode` 是唯一会自己选路的入口，而且要先显式进入。说到相关的词不会自动换技能，也不会进入 f-mode。基于 Waza，并融合 Matt Pocock skills 和 pstack 的流程；完整来源见下方许可证说明。
 
 | 技能 | 分组 | 它做什么 |
 | :--- | :--- | :--- |
@@ -159,4 +159,4 @@ rm -f ~/.claude/rules/clarity.md
 
 ## 许可证
 
-MIT License. Please feel free to use and contribute to the development.
+MIT 许可。感谢 [Waza](https://github.com/tw93/Waza)、[Matt Pocock skills](https://github.com/mattpocock/skills)、[pstack](https://github.com/cursor/plugins/tree/main/pstack)。fskill 在这些项目基础上融合流程、中文化并调整技能边界。完整版权与许可声明统一维护在根目录 [LICENSE](LICENSE)，`make regenerate` 为每个技能生成同内容的 `NOTICE.md`，以便单独安装和 Multica 导入时保留。gofenix 的署名对应原创新增和修改，上游署名对应各自沿用的材料。

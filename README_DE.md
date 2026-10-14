@@ -14,7 +14,7 @@
 
 ## Skills
 
-Jeder Skill ist ein Ordner mit Referenzen, Skripten und echten Fehlern. Standardmäßig startet er bei `/name` oder `$name`. Ein ähnliches Wort schaltet nicht um. Die Form stammt von [tw93/Waza](https://github.com/tw93/Waza); Name und Text gehören gofenix.
+Jeder Skill ist ein Ordner mit Referenzen, Skripten und echten Fehlern. Standardmäßig startet er bei `/name` oder `$name`. Ein ähnliches Wort schaltet nicht um. Die Abläufe beruhen auf Waza, Matt Pocock skills und pstack; Quellen stehen im Lizenzabschnitt.
 
 | Skill | Gruppe | Was er tut |
 | :--- | :--- | :--- |
@@ -159,4 +159,4 @@ Wenn fskill geholfen hat, gib dem Repo einen Star oder öffne ein Issue.
 
 ## Lizenz
 
-MIT License. Please feel free to use and contribute to the development.
+MIT. Dank an [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills) und [pstack](https://github.com/cursor/plugins/tree/main/pstack). fskill kombiniert, übersetzt und überarbeitet ihre Abläufe. Die vollständigen Hinweise stehen zentral in [LICENSE](LICENSE); `make regenerate` kopiert sie für Einzelinstallationen und Multica in die `NOTICE.md` jedes Skills. gofenix steht für eigene Ergänzungen und Änderungen, die ursprünglichen Autoren für ihre übernommenen Inhalte.

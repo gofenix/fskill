@@ -14,7 +14,7 @@
 
 ## 技能
 
-每個技能是一個目錄，裡面有參考、腳本和踩過的坑。預設透過 `/name` 或 `$name` 進入；說到相關的詞不會自動換技能。骨架來自 [tw93/Waza](https://github.com/tw93/Waza)，名字和正文是自己的。
+每個技能是一個目錄，裡面有參考、腳本和踩過的坑。預設透過 `/name` 或 `$name` 進入；說到相關的詞不會自動換技能。以 Waza 為基礎，並融合 Matt Pocock skills 和 pstack 的流程；完整來源見下方授權說明。
 
 | 技能 | 分組 | 它做什麼 |
 | :--- | :--- | :--- |
@@ -159,4 +159,4 @@ rm -f ~/.claude/rules/clarity.md
 
 ## 授權條款
 
-MIT License. Please feel free to use and contribute to the development.
+MIT 授權。感謝 [Waza](https://github.com/tw93/Waza)、[Matt Pocock skills](https://github.com/mattpocock/skills)、[pstack](https://github.com/cursor/plugins/tree/main/pstack)。fskill 融合這些專案的流程並中文化、調整技能邊界。完整版權與授權聲明統一維護於根目錄 [LICENSE](LICENSE)，`make regenerate` 為每個技能產生相同的 `NOTICE.md`，供獨立安裝與 Multica 匯入。gofenix 的署名適用於原創新增與修改，上游署名適用於各自沿用的材料。
