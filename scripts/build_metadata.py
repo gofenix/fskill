@@ -364,8 +364,14 @@ def collect_skill_shared_assets(root: Path) -> dict[str, bytes]:
     generated: dict[str, bytes] = {}
     durable_source = root / DURABLE_CONTEXT_RULE
     durable_bytes = durable_source.read_bytes() if durable_source.exists() else None
+    license_source = root / "LICENSE"
+    license_bytes = license_source.read_bytes() if license_source.exists() else None
     for skill_file in sorted((root / "skills").glob("*/SKILL.md")):
         skill_dir = skill_file.parent.relative_to(root)
+        if license_bytes is not None:
+            # NOTICE.md carries the full license through standalone installs
+            # and importers that intentionally filter files named LICENSE.
+            generated[(skill_dir / "NOTICE.md").as_posix()] = license_bytes
         if DURABLE_CONTEXT_COPY.as_posix() in skill_file.read_text():
             if durable_bytes is None:
                 raise SystemExit(
@@ -384,6 +390,8 @@ def collect_skill_shared_assets(root: Path) -> dict[str, bytes]:
 
 
 def shared_asset_source(rel: str) -> str:
+    if rel.endswith("/NOTICE.md"):
+        return "LICENSE"
     if rel == "skills/f-mode/references/routing.md":
         return "skills/RESOLVER.md"
     return DURABLE_CONTEXT_RULE.as_posix()

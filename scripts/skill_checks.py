@@ -50,6 +50,7 @@ from checks_content import (  # noqa: F401
     check_trigger_overlap,
 )
 from checks_distribution import (  # noqa: F401
+    check_license_notices,
     check_marketplace,
     check_claude_marketplace,
     check_codex_plugin,

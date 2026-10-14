@@ -18,6 +18,7 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty wo
 - `skills/RESOLVER.md` - trigger and routing table for the skill set.
 - `skills/f-mode/references/routing.md` - generated portable copy of `skills/RESOLVER.md` for standalone f-mode installs; never hand-edit.
 - `skills/*/SKILL.md` - individual skill entrypoints.
+- `LICENSE` - canonical MIT license, upstream copyright notices, and acknowledgements for Waza, Matt Pocock skills, and pstack. `make regenerate` copies it verbatim to every `skills/<name>/NOTICE.md`; edit the root file only. The notice filename survives Multica imports that filter LICENSE files.
 - `skills/*/agents/` - specialist reviewer or inspector prompts.
 - `skills/*/references/` - supporting references loaded only when needed.
 - `skills/*/scripts/` - deterministic helper scripts.
@@ -27,7 +28,7 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty wo
 - `.codex-plugin/plugin.json` - **generated** Codex plugin manifest. `skills` is `./skills/`. Do not add a `plugins/fskill` copy of the skill tree.
 - `packaging.allowlist` - default-deny list of paths that ship in `fskill.zip`. New shippable assets must be added here explicitly; everything else is excluded.
 - `.github/workflows/` - public test and release automation. `release.yml` runs `make test` before `make package` so the tagged commit is gated by the same suite as PRs.
-- `scripts/build_metadata.py` - codegen for Claude and Codex marketplace metadata, README install URLs, Codex plugin mirror files, skill-local durable-context copies, and installer-script `FSKILL_REF` defaults. Run via `make regenerate`; CI checks drift via `make verify-generated`.
+- `scripts/build_metadata.py` - codegen for marketplace and plugin metadata, README install URLs, skill-local license notices and durable-context copies, and installer-script `FSKILL_REF` defaults. Run via `make regenerate`; CI checks drift via `make verify-generated`.
 - `scripts/verify_skills.py` - the only validator entrypoint; a driver over the check inventory in `scripts/skill_checks.py` (content, distribution, and routing checks). The facade's import list is the canonical inventory; do not re-enumerate it here.
 - `scripts/package-skill.sh` + `scripts/packaging_filter.py` - build `dist/fskill.zip` from `packaging.allowlist`.
 - `scripts/setup-rule.sh` + `scripts/setup-statusline.sh` - public install helpers; `FSKILL_REF` defaults are codegen-pinned to the current release tag.
@@ -95,7 +96,7 @@ Examples: `verify_skills.py` is a script; `rules/english.md` and `rules/chinese.
 - Skill names stay short verbs (`check`, `think`). Decline requests to rename them or to prefix the skill names with `fskill-`. The `fskill-<name>` per-skill plugin ids in `.claude-plugin/marketplace.json` are the host's install namespace, not skill names. Short commands stay `/think`; the plugin namespace is `/fskill:check`.
 - fskill `check` must remain project-aware without depending on unpublished local files. It extracts commands, generated artifacts, risk areas, and release rules from the target diff, public docs, manifests, CI config, and user-provided context.
 - Keep distribution files self-contained for Claude Desktop and plugin installs. The release ZIP may inline sub-skill bodies into a generated root `SKILL.md`; source-of-truth skill content remains under `skills/*/SKILL.md`.
-- Keep the README easy to enter: a new reader should understand fskill in 30 seconds. The voice is gofenix's. Credit tw93/Waza as lineage only. Preserve the accepted structure and useful examples; remove repetition without imposing a shorter overall length. Detailed workflow rules belong in `skills/<name>/SKILL.md`, `rules/*.md`, or this file. Do not stack promotional sections at the top, and close promotional or provider-advertising PRs (banners, model lists, UTM links) in one sentence instead of merging; the README stays short and provider-neutral.
+- Keep the README easy to enter: a new reader should understand fskill in 30 seconds. The voice is gofenix's. Credit Waza, Matt Pocock skills, and pstack as upstream sources, with their notices preserved in LICENSE. Preserve the accepted structure and useful examples; remove repetition without imposing a shorter overall length. Detailed workflow rules belong in `skills/<name>/SKILL.md`, `rules/*.md`, or this file. Do not stack promotional sections at the top, and close promotional or provider-advertising PRs (banners, model lists, UTM links) in one sentence instead of merging; the README stays short and provider-neutral.
 
 ## Adding Or Changing A Skill
 
@@ -136,6 +137,7 @@ Use this path for any new skill or meaningful behavior change:
 - `scripts/package-skill.sh` builds a public archive with exactly one generated root `SKILL.md`; nested `skills/*/SKILL.md` files are inlined for packaged installs.
 - Do not make packaged skills resolve scripts or references through personal home-directory caches or machine paths. Resolve relative to the installed fskill directory.
 - Rules under `rules/` are shared public behavior, not project-private memory.
+- Every standalone skill and packaged distribution carries the complete unified notice. Credits supplement the preserved copyright and MIT permission text. Never replace upstream copyright holders with the fskill maintainer's name.
 
 ## Verification
 

@@ -10,6 +10,21 @@ import pytest
 import build_metadata as bm
 
 
+def test_notices_follow_license_updates_for_every_standalone_skill(tmp_path):
+    for name in ("read", "f-mode"):
+        directory = tmp_path / "skills" / name
+        directory.mkdir(parents=True)
+        (directory / "SKILL.md").write_text("skill body")
+    license_file = tmp_path / "LICENSE"
+    license_file.write_text("original notice\n")
+    assets = bm.collect_skill_shared_assets(tmp_path)
+    assert assets["skills/read/NOTICE.md"] == assets["skills/f-mode/NOTICE.md"] == b"original notice\n"
+    license_file.write_text("updated notice\n")
+    assets = bm.collect_skill_shared_assets(tmp_path)
+    assert assets["skills/read/NOTICE.md"] == assets["skills/f-mode/NOTICE.md"] == b"updated notice\n"
+    assert bm.shared_asset_source("skills/read/NOTICE.md") == "LICENSE"
+
+
 def test_standalone_mode_carries_current_routing_without_repo_paths(tmp_path):
     mode = tmp_path / "skills/f-mode"
     mode.mkdir(parents=True)

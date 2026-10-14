@@ -12,6 +12,34 @@ from pathlib import Path
 from skill_frontmatter import fail
 
 
+def check_license_notices(root: Path, skill_files: list[Path]):
+    """Standalone skill installs must retain the complete shared notice."""
+    source = root / "LICENSE"
+    if not source.is_file():
+        source = next((path.parent / "NOTICE.md" for path in skill_files
+                       if (path.parent / "NOTICE.md").is_file()), source)
+    if not source.is_file():
+        fail("MISSING LICENSE NOTICE: expected LICENSE or an installed NOTICE.md")
+    canonical = source.read_bytes()
+    for required in (b"MIT License",
+                     b"Permission is hereby granted", b"permission notice shall be included"):
+        if required not in canonical:
+            fail(f"INCOMPLETE LICENSE NOTICE: {source} missing {required.decode()}")
+    for holder in (b"gofenix", b"Tw93", b"Matt Pocock", b"Lauren Tan"):
+        if not any(line.startswith(b"Copyright (c) ") and holder in line
+                   for line in canonical.splitlines()):
+            fail(f"MISSING COPYRIGHT NOTICE: {source} missing {holder.decode()}")
+    for path in skill_files:
+        notice = path.parent / "NOTICE.md"
+        if not notice.is_file():
+            fail(f"MISSING SKILL NOTICE: {notice}; run make regenerate")
+        if notice.read_bytes() != canonical:
+            fail(f"SKILL NOTICE DRIFT: {notice}; run make regenerate")
+        if (path.parent / "LICENSE").exists():
+            fail(f"STALE SKILL LICENSE: {path.parent / 'LICENSE'}; use the unified NOTICE.md")
+    print(f"ok: complete unified license notices ({len(skill_files)} skills)")
+
+
 def check_marketplace(root: Path, expected_version: str, skill_names: set[str], skill_descriptions: dict[str, str]):
     """Validate generated Claude Code and Codex marketplace metadata."""
     check_claude_marketplace(root, expected_version, skill_names, skill_descriptions)

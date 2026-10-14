@@ -12,6 +12,15 @@ zipinfo -1 "$tmpdir/fskill.zip" >"$tmpdir/manifest"
 grep -qx 'SKILL.md' "$tmpdir/manifest"
 test "$(zipinfo -1 "$tmpdir/fskill.zip" | grep -ciE '(^|/)skill\.md$')" -eq 1
 
+# Root and standalone components retain the same complete license notice.
+unzip -p "$tmpdir/fskill.zip" LICENSE > "$tmpdir/root-license"
+cmp "$ROOT/LICENSE" "$tmpdir/root-license"
+for source in "$ROOT"/skills/*/SKILL.md; do
+  skill="$(basename "$(dirname "$source")")"
+  unzip -p "$tmpdir/fskill.zip" "skills/$skill/NOTICE.md" > "$tmpdir/notice"
+  cmp "$ROOT/LICENSE" "$tmpdir/notice"
+done
+
 # RESOLVER.md is routing for direct installs; the ZIP root dispatcher already
 # inlines the routing table, so shipping it would be dead weight.
 if grep -qx 'skills/RESOLVER.md' "$tmpdir/manifest"; then
