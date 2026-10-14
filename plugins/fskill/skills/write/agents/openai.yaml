@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill write"
-  short_description: "改写和润色中英文自然语言、技术说明与本地化文案，消除歧义和 AI 味，保留原意"
-  default_prompt: "使用 $write 完成用户显式选择的 fskill 工作流。"
-policy:
-  allow_implicit_invocation: false

@@ -7,11 +7,11 @@ Source of truth:
 
 Generated files:
   - .claude-plugin/marketplace.json    full plugin manifest
-  - plugins/fskill/.codex-plugin/plugin.json
-                                        Codex plugin manifest
-  - plugins/fskill/skills/               Codex plugin skill mirror
-  - plugins/fskill/rules/                Codex plugin rule mirror
+  - .codex-plugin/plugin.json          Codex plugin manifest at the repo root
+  - plugin.json                        Antigravity plugin manifest at the repo root
   - .agents/plugins/marketplace.json   Codex repo marketplace
+                                        (source path is the repository root; skills/ is
+                                        the only skill tree)
   - README.md                          installer URLs on latest release assets
   - package.json                       npm/Pi package metadata pinned to VERSION
   - skills/*/references/durable-context.md
@@ -42,11 +42,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from skill_frontmatter import (  # noqa: E402
-    iter_codex_plugin_files,
-    iter_codex_source_files,
-    parse_frontmatter,
-)
+from skill_frontmatter import parse_frontmatter  # noqa: E402
 
 
 # Hand-maintained marketplace/plugin constants. Kept here (not in frontmatter)
@@ -220,7 +216,7 @@ def build_codex_marketplace() -> dict:
                 "name": "fskill",
                 "source": {
                     "source": "local",
-                    "path": "./plugins/fskill",
+                    "path": "./",
                 },
                 "policy": {
                     "installation": "AVAILABLE",
@@ -399,27 +395,18 @@ def collect_codex_plugin_tree(
     agy_plugin_rendered: str,
     generated_skill_files: dict[str, bytes],
 ) -> dict[str, bytes]:
-    """Build the generated file set for the Codex and Antigravity plugin directory.
-
-    Codex installs only the directory referenced by marketplace source.path, so
-    the plugin tree contains real copies of the skill and rule files instead of
-    symlinks or references back to the repository root.
-    """
-    generated = {
-        "plugins/fskill/.codex-plugin/plugin.json": codex_plugin_rendered.encode(),
-        "plugins/fskill/plugin.json": agy_plugin_rendered.encode(),
-    }
+    """Manifests only. Codex installs the repository root, so skills/ is the
+    skill tree. Do not copy skills or rules under plugins/fskill."""
+    del generated_skill_files
     for source_name in ("skills", "rules"):
         if not (root / source_name).exists():
             raise SystemExit(
-                f"ERROR: missing required Codex plugin source tree {root / source_name}"
+                f"ERROR: missing required source tree {root / source_name}"
             )
-    for _source_name, _source_rel, path in iter_codex_source_files(root):
-        rel = path.relative_to(root).as_posix()
-        generated[f"plugins/fskill/{rel}"] = path.read_bytes()
-    for rel, content in generated_skill_files.items():
-        generated[f"plugins/fskill/{rel}"] = content
-    return generated
+    return {
+        ".codex-plugin/plugin.json": codex_plugin_rendered.encode(),
+        "plugin.json": agy_plugin_rendered.encode(),
+    }
 
 
 def main() -> int:
@@ -517,19 +504,13 @@ def main() -> int:
                 )
                 sys.stderr.write(bytes_diff(rel, expected, actual))
                 drift = True
-        codex_plugin_root = root / "plugins" / "fskill"
-        if codex_plugin_root.exists():
-            expected_paths = set(codex_plugin_tree)
-            for _plugin_rel, path in iter_codex_plugin_files(codex_plugin_root):
-                rel = path.relative_to(root).as_posix()
-                if rel not in expected_paths:
-                    print(
-                        f"DRIFT: {rel} is an extra file in the generated "
-                        "Codex plugin tree.\n"
-                        f"Run scripts/build_metadata.py (no flags) to regenerate.",
-                        file=sys.stderr,
-                    )
-                    drift = True
+        if (root / "plugins" / "fskill").exists():
+            print(
+                "DRIFT: plugins/fskill duplicates skills/.\n"
+                "Delete plugins/fskill. Codex installs the repository root.",
+                file=sys.stderr,
+            )
+            drift = True
         if readme_actual != readme_rendered:
             print(
                 "DRIFT: README.md installer URLs must use latest release assets.\n"
@@ -582,7 +563,7 @@ def main() -> int:
             return 1
         for generated_path, _, _ in generated_json_files:
             print(f"ok: {generated_path.relative_to(root)} matches generator")
-        print("ok: plugins/fskill Codex plugin tree matches generator")
+        print("ok: Codex plugin manifests match generator")
         print("ok: README.md install URLs use latest release assets")
         print(f"ok: package.json pinned to v{version}")
         print(f"ok: installer defaults pinned to v{version}")
@@ -594,13 +575,15 @@ def main() -> int:
         generated_path.parent.mkdir(parents=True, exist_ok=True)
         generated_path.write_text(expected)
         print(f"wrote: {generated_path.relative_to(root)} ({len(expected)} bytes)")
-    codex_plugin_root = root / "plugins" / "fskill"
-    shutil.rmtree(codex_plugin_root, ignore_errors=True)
+    shutil.rmtree(root / "plugins" / "fskill", ignore_errors=True)
+    plugins_dir = root / "plugins"
+    if plugins_dir.is_dir() and not any(plugins_dir.iterdir()):
+        plugins_dir.rmdir()
     for rel, expected in codex_plugin_tree.items():
         path = root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(expected)
-    print(f"wrote: plugins/fskill ({len(codex_plugin_tree)} generated files)")
+    print(f"wrote: Codex plugin manifests ({len(codex_plugin_tree)} files)")
     if package_actual != package_rendered:
         package_json.write_text(package_rendered)
         print(f"wrote: package.json (pinned version to v{version})")

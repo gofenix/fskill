@@ -268,17 +268,12 @@ def test_outcome_contract_missing_field_rejected(tmp_path, capsys):
 
 
 def write_codex_manifest(root, version="1.2.3", display_name="fskill"):
-    plugin_root = root / "plugins" / "fskill"
-    plugin_dir = plugin_root / ".codex-plugin"
+    plugin_dir = root / ".codex-plugin"
     plugin_dir.mkdir(parents=True)
     (root / "skills" / "check").mkdir(parents=True)
     (root / "skills" / "check" / "SKILL.md").write_text("skill body\n")
     (root / "rules").mkdir()
     (root / "rules" / "fskill-routing.md").write_text("routing rule\n")
-    (plugin_root / "skills" / "check").mkdir(parents=True)
-    (plugin_root / "skills" / "check" / "SKILL.md").write_text("skill body\n")
-    (plugin_root / "rules").mkdir()
-    (plugin_root / "rules" / "fskill-routing.md").write_text("routing rule\n")
     (plugin_dir / "plugin.json").write_text(
         """{
   "name": "fskill",
@@ -302,10 +297,10 @@ def write_codex_manifest(root, version="1.2.3", display_name="fskill"):
     )
 
 
-def write_codex_marketplace(root, source_path="./plugins/fskill"):
+def write_codex_marketplace(root, source_path="./"):
     market_dir = root / ".agents" / "plugins"
     market_dir.mkdir(parents=True)
-    plugin_json = root / "plugins" / "fskill" / ".codex-plugin" / "plugin.json"
+    plugin_json = root / ".codex-plugin" / "plugin.json"
     plugin_json.parent.mkdir(parents=True, exist_ok=True)
     plugin_json.write_text("{}\n")
     (market_dir / "marketplace.json").write_text(

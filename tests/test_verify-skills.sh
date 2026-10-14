@@ -6,13 +6,6 @@ source "$SCRIPT_DIR/test_helpers.sh"
 
 tmpdir=$(make_tmpdir)
 
-sync_codex_mirror() {
-  local repo="$1"
-  rm -rf "$repo/plugins/fskill/skills" "$repo/plugins/fskill/rules"
-  cp -R "$repo/skills" "$repo/plugins/fskill/skills"
-  cp -R "$repo/rules" "$repo/plugins/fskill/rules"
-}
-
 # Case 1: missing closing frontmatter delimiter.
 copy_repo "$tmpdir/repo"
 version=$(cat "$tmpdir/repo/VERSION")
@@ -68,7 +61,6 @@ from pathlib import Path
 p = Path('$tmpdir/repo4/skills/check/SKILL.md')
 p.write_text(p.read_text() + '\n[broken](missing-target.md)\n')
 "
-sync_codex_mirror "$tmpdir/repo4"
 if (cd "$tmpdir/repo4" && python3 scripts/verify_skills.py --root . >"$tmpdir/link.out" 2>"$tmpdir/link.err"); then
   echo "verify-skills should reject broken markdown links"; exit 1
 fi
@@ -77,7 +69,6 @@ grep -q 'BROKEN MARKDOWN LINK' "$tmpdir/link.err"
 # Case 5: RESOLVER.md references a skill directory that doesn't exist.
 copy_repo "$tmpdir/repo5"
 printf '\n| trigger | skills/ghost/SKILL.md |\n' >> "$tmpdir/repo5/skills/RESOLVER.md"
-sync_codex_mirror "$tmpdir/repo5"
 if (cd "$tmpdir/repo5" && python3 scripts/verify_skills.py --root . >"$tmpdir/resolver.out" 2>"$tmpdir/resolver.err"); then
   echo "verify-skills should reject stale RESOLVER references"; exit 1
 fi
@@ -86,7 +77,6 @@ grep -q 'RESOLVER REFERENCES MISSING SKILL: ghost' "$tmpdir/resolver.err"
 # Case 6: unescaped pipe in a markdown table data row.
 copy_repo "$tmpdir/repo6"
 printf '\n| Col1 | Col2 |\n| --- | --- |\n| a | b | c |\n' >> "$tmpdir/repo6/skills/check/SKILL.md"
-sync_codex_mirror "$tmpdir/repo6"
 if (cd "$tmpdir/repo6" && python3 scripts/verify_skills.py --root . >"$tmpdir/pipe.out" 2>"$tmpdir/pipe.err"); then
   echo "verify-skills should reject unescaped pipe in table data row"; exit 1
 fi
@@ -112,7 +102,7 @@ grep -q 'VERSION DRIFT: fskill bundle' "$tmpdir/bundle.err"
 copy_repo "$tmpdir/repo7b"
 python3 -c "
 import json
-p = '$tmpdir/repo7b/plugins/fskill/.codex-plugin/plugin.json'
+p = '$tmpdir/repo7b/.codex-plugin/plugin.json'
 d = json.load(open(p))
 d['version'] = '3.0.0'
 open(p,'w').write(json.dumps(d, indent=2) + '\n')
@@ -128,7 +118,7 @@ python3 -c "
 import json
 p = '$tmpdir/repo7c/.agents/plugins/marketplace.json'
 d = json.load(open(p))
-d['plugins'][0]['source']['path'] = './'
+d['plugins'][0]['source']['path'] = './plugins/fskill'
 open(p,'w').write(json.dumps(d, indent=2) + '\n')
 "
 if (cd "$tmpdir/repo7c" && python3 scripts/verify_skills.py --root . >"$tmpdir/codex-market.out" 2>"$tmpdir/codex-market.err"); then
@@ -145,7 +135,6 @@ t = p.read_text()
 t = t.replace('显式调用', '调用', 1)
 p.write_text(t)
 "
-sync_codex_mirror "$tmpdir/repo8"
 if (cd "$tmpdir/repo8" && python3 scripts/verify_skills.py --root . >"$tmpdir/usewhen.out" 2>"$tmpdir/usewhen.err"); then
   echo "verify-skills should reject descriptions without Use when trigger cues"; exit 1
 fi
@@ -154,7 +143,6 @@ grep -q 'DESCRIPTION MISSING USE-WHEN CUE: read' "$tmpdir/usewhen.err"
 # Case 8b: Chinese descriptions are allowed when they still name the explicit
 # invocation and the exclusion.
 copy_repo "$tmpdir/repo8b"
-sync_codex_mirror "$tmpdir/repo8b"
 if ! (cd "$tmpdir/repo8b" && python3 scripts/verify_skills.py --root . >"$tmpdir/cjk-desc.out" 2>"$tmpdir/cjk-desc.err"); then
   echo "verify-skills should accept Chinese descriptions with 显式调用 and 不用于"; exit 1
 fi
@@ -168,7 +156,6 @@ t = p.read_text()
 t = t.rstrip() + '\n| read | 「读一个不存在的触发词」 |\n'
 p.write_text(t)
 "
-sync_codex_mirror "$tmpdir/repo9"
 if (cd "$tmpdir/repo9" && python3 scripts/verify_skills.py --root . >"$tmpdir/routing.out" 2>"$tmpdir/routing.err"); then
   echo "verify-skills should reject ungrounded 「」 routing triggers"; exit 1
 fi

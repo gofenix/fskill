@@ -1,4 +1,4 @@
-"""Distribution-surface checks: marketplaces, Codex plugin mirror, packaging, npm, shared assets.
+"""Distribution-surface checks: marketplaces, Codex plugin manifest, packaging, npm, shared assets.
 
 Split from skill_checks.py; import through skill_checks (the facade) so the
 check inventory stays visible in one place.
@@ -9,10 +9,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from skill_frontmatter import (
-    fail,
-    should_include_codex_mirror_file,
-)
+from skill_frontmatter import fail
 
 
 def check_marketplace(root: Path, expected_version: str, skill_names: set[str], skill_descriptions: dict[str, str]):
@@ -121,19 +118,18 @@ def check_claude_marketplace(root: Path, expected_version: str, skill_names: set
 
 
 def check_codex_plugin(root: Path, expected_version: str):
-    """Validate the Codex plugin surface: manifest shape, then mirror integrity."""
+    """Validate the Codex plugin surface: manifest shape, then no skill mirror."""
     check_codex_plugin_manifest(root, expected_version)
     check_codex_plugin_mirror(root)
 
 
 def check_codex_plugin_manifest(root: Path, expected_version: str):
     """Validate Codex plugin manifest shape."""
-    plugin_root = root / "plugins" / "fskill"
-    manifest_path = plugin_root / ".codex-plugin" / "plugin.json"
+    manifest_path = root / ".codex-plugin" / "plugin.json"
     if not manifest_path.exists():
         fail(
             "MISSING CODEX PLUGIN MANIFEST: expected "
-            "plugins/fskill/.codex-plugin/plugin.json "
+            ".codex-plugin/plugin.json "
             "so Codex can install fskill as a plugin from the repo marketplace"
         )
     manifest = json.loads(manifest_path.read_text())
@@ -149,17 +145,17 @@ def check_codex_plugin_manifest(root: Path, expected_version: str):
         actual = manifest.get(key)
         if actual != expected:
             fail(
-                f"CODEX PLUGIN FIELD DRIFT: plugins/fskill/.codex-plugin/plugin.json {key}="
+                f"CODEX PLUGIN FIELD DRIFT: .codex-plugin/plugin.json {key}="
                 f"{actual!r} expected {expected!r}"
             )
     if not (manifest.get("description") or "").strip():
-        fail("CODEX PLUGIN DESCRIPTION: plugins/fskill/.codex-plugin/plugin.json needs description")
+        fail("CODEX PLUGIN DESCRIPTION: .codex-plugin/plugin.json needs description")
     author = manifest.get("author")
     if not isinstance(author, dict) or not author.get("name"):
-        fail("CODEX PLUGIN AUTHOR: plugins/fskill/.codex-plugin/plugin.json needs author.name")
+        fail("CODEX PLUGIN AUTHOR: .codex-plugin/plugin.json needs author.name")
     interface = manifest.get("interface")
     if not isinstance(interface, dict):
-        fail("CODEX PLUGIN INTERFACE: plugins/fskill/.codex-plugin/plugin.json needs interface object")
+        fail("CODEX PLUGIN INTERFACE: .codex-plugin/plugin.json needs interface object")
     interface_required = {
         "displayName": "fskill",
         "developerName": "gofenix",
@@ -170,7 +166,7 @@ def check_codex_plugin_manifest(root: Path, expected_version: str):
         actual = interface.get(key)
         if actual != expected:
             fail(
-                f"CODEX PLUGIN INTERFACE DRIFT: plugins/fskill/.codex-plugin/plugin.json "
+                f"CODEX PLUGIN INTERFACE DRIFT: .codex-plugin/plugin.json "
                 f"interface.{key}={actual!r} expected {expected!r}"
             )
     default_prompt = interface.get("defaultPrompt")
@@ -184,59 +180,23 @@ def check_codex_plugin_manifest(root: Path, expected_version: str):
             "CODEX PLUGIN DEFAULT PROMPTS: interface.defaultPrompt must contain "
             "1-3 strings, each <=128 chars"
         )
-    if not (plugin_root / "skills").is_dir():
+    if not (root / "skills").is_dir():
         fail(
-            "CODEX PLUGIN SKILLS PATH: plugins/fskill/.codex-plugin/plugin.json "
-            "points at missing plugins/fskill/skills/"
+            "CODEX PLUGIN SKILLS PATH: .codex-plugin/plugin.json "
+            "points at missing skills/"
         )
     print(f"ok: Codex plugin manifest pinned to {expected_version}")
 
 
 def check_codex_plugin_mirror(root: Path):
-    """Byte-compare skills/ and rules/ against the generated plugin mirror.
-
-    The verifier owns its traversal independently from codegen, while both
-    share only the declarative cache/noise filter. A broken generator walk
-    must not make its oracle agree on an incomplete tree."""
-    plugin_root = root / "plugins" / "fskill"
-    for source_name in ("skills", "rules"):
-        source_root = root / source_name
-        for source_path in sorted(source_root.rglob("*")):
-            if not source_path.is_file():
-                continue
-            source_rel = source_path.relative_to(source_root)
-            if not should_include_codex_mirror_file(source_rel):
-                continue
-            mirror_path = plugin_root / source_name / source_rel
-            if not mirror_path.exists():
-                fail(
-                    f"CODEX PLUGIN MIRROR MISSING: {mirror_path.relative_to(root)} "
-                    f"must mirror {source_path.relative_to(root)}"
-                )
-            if mirror_path.read_bytes() != source_path.read_bytes():
-                fail(
-                    f"CODEX PLUGIN MIRROR DRIFT: {mirror_path.relative_to(root)} "
-                    f"differs from {source_path.relative_to(root)}"
-                )
-    # Reverse direction: a mirror file with no source counterpart is stale
-    # output that regeneration would delete.
-    for source_name in ("skills", "rules"):
-        mirror_root = plugin_root / source_name
-        if not mirror_root.exists():
-            continue
-        for mirror_path in sorted(mirror_root.rglob("*")):
-            if not mirror_path.is_file():
-                continue
-            mirror_rel = mirror_path.relative_to(mirror_root)
-            if not should_include_codex_mirror_file(mirror_rel):
-                continue
-            if not (root / source_name / mirror_rel).exists():
-                fail(
-                    f"CODEX PLUGIN MIRROR EXTRA: {mirror_path.relative_to(root)} "
-                    f"has no source under {source_name}/. "
-                    f"Run scripts/build_metadata.py (no flags) to regenerate."
-                )
-    print("ok: Codex plugin mirror matches skills/ and rules/")
+    """Reject a second skill tree. Codex installs the repository root."""
+    mirror = root / "plugins" / "fskill"
+    if mirror.exists():
+        fail(
+            "SKILL MIRROR: plugins/fskill duplicates skills/. "
+            "Delete it. Codex installs the repository root."
+        )
+    print("ok: no plugins/fskill skill mirror")
 
 
 def check_codex_marketplace(root: Path):
@@ -264,7 +224,7 @@ def check_codex_marketplace(root: Path):
         "name": "fskill",
         "source": {
             "source": "local",
-            "path": "./plugins/fskill",
+            "path": "./",
         },
         "policy": {
             "installation": "AVAILABLE",
@@ -277,9 +237,9 @@ def check_codex_marketplace(root: Path):
             "CODEX MARKETPLACE ENTRY DRIFT: .agents/plugins/marketplace.json "
             f"plugins[0]={entry!r} expected {expected_entry!r}"
         )
-    if not (root / "plugins" / "fskill" / ".codex-plugin" / "plugin.json").exists():
+    if not (root / ".codex-plugin" / "plugin.json").exists():
         fail(
-            "CODEX MARKETPLACE SOURCE: source.path './plugins/fskill' must resolve to a plugin "
+            "CODEX MARKETPLACE SOURCE: source.path './' must resolve to a plugin "
             "root containing .codex-plugin/plugin.json"
         )
     print("ok: Codex marketplace exposes fskill plugin")

@@ -8,7 +8,7 @@
       "name": "fskill",
       "source": {
         "source": "local",
-        "path": "./plugins/fskill"
+        "path": "./"
       },
       "policy": {
         "installation": "AVAILABLE",

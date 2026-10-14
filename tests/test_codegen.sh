@@ -31,7 +31,7 @@ grep -q 'DRIFT:' "$tmpdir/drift.err"
 copy_repo "$tmpdir/codex-drift"
 python3 -c "
 import json
-p = '$tmpdir/codex-drift/plugins/fskill/.codex-plugin/plugin.json'
+p = '$tmpdir/codex-drift/.codex-plugin/plugin.json'
 d = json.load(open(p))
 d['interface']['displayName'] = 'Tampered'
 open(p, 'w').write(json.dumps(d, indent=2) + '\n')
@@ -43,17 +43,17 @@ open(p, 'w').write(json.dumps(d, indent=2) + '\n')
 if (cd "$tmpdir/codex-drift" && python3 scripts/build_metadata.py --check >"$tmpdir/codex-drift.out" 2>"$tmpdir/codex-drift.err"); then
   echo "build_metadata --check should detect tampered Codex plugin metadata"; exit 1
 fi
-grep -q 'plugins/fskill/.codex-plugin/plugin.json is out of sync' "$tmpdir/codex-drift.err"
+grep -q '.codex-plugin/plugin.json is out of sync' "$tmpdir/codex-drift.err"
 grep -q '.agents/plugins/marketplace.json is out of sync' "$tmpdir/codex-drift.err"
 
 # Extra files in the generated Codex plugin tree must not linger.
 copy_repo "$tmpdir/codex-extra"
-mkdir -p "$tmpdir/codex-extra/plugins/fskill/tmp"
-printf '%s\n' 'stale' > "$tmpdir/codex-extra/plugins/fskill/tmp/stale.txt"
+mkdir -p "$tmpdir/codex-extra/plugins/fskill/skills"
+printf '%s\n' 'stale' > "$tmpdir/codex-extra/plugins/fskill/skills/stale.md"
 if (cd "$tmpdir/codex-extra" && python3 scripts/build_metadata.py --check >"$tmpdir/codex-extra.out" 2>"$tmpdir/codex-extra.err"); then
-  echo "build_metadata --check should detect extra generated Codex plugin files"; exit 1
+  echo "build_metadata --check should detect a plugins/fskill skill mirror"; exit 1
 fi
-grep -q 'extra file in the generated Codex plugin tree' "$tmpdir/codex-extra.err"
+grep -q 'plugins/fskill duplicates skills/' "$tmpdir/codex-extra.err"
 
 # Default --write mode regenerates from frontmatter + VERSION.
 copy_repo "$tmpdir/regen"
@@ -62,11 +62,11 @@ rm -rf "$tmpdir/regen/.codex-plugin" "$tmpdir/regen/.agents" "$tmpdir/regen/plug
 (cd "$tmpdir/regen" && python3 scripts/build_metadata.py >"$tmpdir/regen.out")
 skill_count=$(find "$ROOT/skills" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ')
 test "$(jq '.plugins | length' "$tmpdir/regen/.claude-plugin/marketplace.json")" -eq "$((skill_count + 1))"
-test "$(jq -r '.name' "$tmpdir/regen/plugins/fskill/.codex-plugin/plugin.json")" = "fskill"
-test "$(jq -r '.skills' "$tmpdir/regen/plugins/fskill/.codex-plugin/plugin.json")" = "./skills/"
-test -f "$tmpdir/regen/plugins/fskill/skills/check/SKILL.md"
-test -f "$tmpdir/regen/plugins/fskill/rules/fskill-routing.md"
-test "$(jq -r '.plugins[0].source.path' "$tmpdir/regen/.agents/plugins/marketplace.json")" = "./plugins/fskill"
+test "$(jq -r '.name' "$tmpdir/regen/.codex-plugin/plugin.json")" = "fskill"
+test "$(jq -r '.skills' "$tmpdir/regen/.codex-plugin/plugin.json")" = "./skills/"
+test -f "$tmpdir/regen/skills/check/SKILL.md"
+test ! -e "$tmpdir/regen/plugins/fskill"
+test "$(jq -r '.plugins[0].source.path' "$tmpdir/regen/.agents/plugins/marketplace.json")" = "./"
 test "$(jq -r '.plugins[0].policy.installation' "$tmpdir/regen/.agents/plugins/marketplace.json")" = "AVAILABLE"
 test "$(jq -r '.name' "$tmpdir/regen/package.json")" = "@gofenix/fskill"
 test "$(jq -r '.homepage' "$tmpdir/regen/package.json")" = "https://github.com/gofenix/fskill"

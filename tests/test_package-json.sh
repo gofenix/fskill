@@ -53,7 +53,8 @@ if unexpected:
 forbidden = {
     ".claude-plugin/marketplace.json",
     ".agents/plugins/marketplace.json",
-    "plugins/fskill/.codex-plugin/plugin.json",
+    ".codex-plugin/plugin.json",
+    "plugin.json",
     ".github/workflows/test.yml",
     "dist/fskill.zip",
     "tests/test_package.sh",

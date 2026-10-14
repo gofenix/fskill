@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill read"
-  short_description: "读取 URL 和 PDF，按来源选择抓取方法，并按需输出摘要、引用或干净 Markdown"
-  default_prompt: "使用 $read 完成用户显式选择的 fskill 工作流。"
-policy:
-  allow_implicit_invocation: false

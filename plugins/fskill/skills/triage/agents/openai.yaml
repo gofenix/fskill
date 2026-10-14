@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill triage"
-  short_description: "持续处理 issue/外部 PR 队列，区分类别与生命周期状态，产出可接手的行为契约"
-  default_prompt: "使用 $triage 完成用户显式选择的 fskill 工作流。"
-policy:
-  allow_implicit_invocation: false

@@ -107,7 +107,7 @@ def test_build_codex_marketplace_points_at_plugin_root():
     assert marketplace["name"] == "fskill"
     entry = marketplace["plugins"][0]
     assert entry["name"] == "fskill"
-    assert entry["source"] == {"source": "local", "path": "./plugins/fskill"}
+    assert entry["source"] == {"source": "local", "path": "./"}
     assert entry["policy"] == {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL",
@@ -130,9 +130,10 @@ def test_collect_codex_plugin_tree_ignores_local_cache_files(tmp_path):
 
     tree = bm.collect_codex_plugin_tree(tmp_path, "{}\n", "{}\n", {})
 
-    assert "plugins/fskill/skills/check/scripts/run.py" in tree
-    assert "plugins/fskill/rules/fskill-routing.md" in tree
-    assert "plugins/fskill/plugin.json" in tree
+    assert ".codex-plugin/plugin.json" in tree
+    assert "plugin.json" in tree
+    assert "plugins/fskill/skills/check/scripts/run.py" not in tree
+    assert "plugins/fskill/rules/fskill-routing.md" not in tree
     assert all("__pycache__" not in path for path in tree)
     assert all(not path.endswith((".pyc", ".DS_Store")) for path in tree)
 

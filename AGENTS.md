@@ -23,8 +23,8 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty wo
 - `skills/*/scripts/` - deterministic helper scripts.
 - `rules/` - shared writing and behavior rules used by install and validation flows. `rules/durable-context.md` is the shared Durable Context Preflight preamble; codegen copies it into each referencing skill as `skills/<name>/references/durable-context.md` (direct installs get only the skill directory), and the six skills with optional memory context link to that skill-local copy.
 - `.claude-plugin/marketplace.json` - **generated**. Edit `VERSION` or per-skill `SKILL.md` frontmatter and run `make regenerate`; never hand-edit.
-- `.agents/plugins/marketplace.json` - **generated** Codex repo marketplace. Points Codex at `plugins/fskill` for plugin installs; never hand-edit.
-- `plugins/fskill/` - **generated** Codex plugin tree. Mirrors `skills/` and `rules/` plus `plugins/fskill/.codex-plugin/plugin.json`; edit source files and run `make regenerate`.
+- `.agents/plugins/marketplace.json` - **generated** Codex repo marketplace. Points Codex at the repository root; never hand-edit.
+- `.codex-plugin/plugin.json` - **generated** Codex plugin manifest. `skills` is `./skills/`. Do not add a `plugins/fskill` copy of the skill tree.
 - `packaging.allowlist` - default-deny list of paths that ship in `fskill.zip`. New shippable assets must be added here explicitly; everything else is excluded.
 - `.github/workflows/` - public test and release automation. `release.yml` runs `make test` before `make package` so the tagged commit is gated by the same suite as PRs.
 - `scripts/build_metadata.py` - codegen for Claude and Codex marketplace metadata, README install URLs, Codex plugin mirror files, skill-local durable-context copies, and installer-script `FSKILL_REF` defaults. Run via `make regenerate`; CI checks drift via `make verify-generated`.
@@ -128,9 +128,9 @@ Use this path for any new skill or meaningful behavior change:
 
 ## Distribution Rules
 
-- `.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`, `plugins/fskill/.codex-plugin/plugin.json`, `skills/RESOLVER.md`, and every `skills/*/SKILL.md` must agree on skill names, descriptions, and source paths; versions march in lock-step with `VERSION` through the generated metadata.
+- `.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`, `.codex-plugin/plugin.json`, `skills/RESOLVER.md`, and every `skills/*/SKILL.md` must agree on skill names, descriptions, and source paths; versions march in lock-step with `VERSION` through the generated metadata.
 - `npx skills add gofenix/fskill` should install the twenty-one skills by default. Do not add a source-root `SKILL.md`; it prevents nested skill discovery.
-- Codex marketplace entries must resolve to `plugins/fskill`, not the repository root. After Codex marketplace, plugin manifest, or plugin mirror changes, verify an isolated install flow rather than only checking JSON shape.
+- Codex marketplace entries resolve to `./`, the repository root, where `skills/` is the only skill tree. Do not recreate `plugins/fskill`. After Codex marketplace or plugin manifest changes, verify an isolated install flow rather than only checking JSON shape.
 - Plugin mirror generation must filter local cache and noise files in both generator and verifier paths, including `__pycache__`, `*.pyc`, `.pytest_cache`, `.ruff_cache`, `.mypy_cache`, and `.DS_Store`.
 - Claude Desktop uses the release ZIP built by `scripts/package-skill.sh`.
 - `scripts/package-skill.sh` builds a public archive with exactly one generated root `SKILL.md`; nested `skills/*/SKILL.md` files are inlined for packaged installs.
