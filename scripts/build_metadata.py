@@ -52,8 +52,8 @@ CLAUDE_MARKETPLACE_TOP = {
     "name": "fskill",
     "description": (
         "Personal skill collection for Claude Code, Codex, Antigravity, "
-        "OpenCode, and Pi. Twenty workflow skills plus an explicit /f-mode "
-        "entrypoint for session routing. Direct commands remain available."
+        "OpenCode, and Pi. Twenty workflow skills plus /f-help for guidance "
+        "and explicit /f-mode session routing. Direct commands remain available."
     ),
     "owner": {
         "name": "gofenix",
@@ -81,7 +81,7 @@ AUTHOR = {
 
 CODEX_DESCRIPTION = (
     "Engineering workflow skills for Codex. Twenty workflow skills plus "
-    "explicit /f-mode session routing. Direct commands remain available."
+    "/f-help guidance and explicit /f-mode session routing. Direct commands remain available."
 )
 # Shared durable-context preamble: source of truth in rules/, copied into each
 # referencing skill's references/ so direct installs resolve the link locally.
@@ -176,7 +176,7 @@ def build_codex_plugin(version: str) -> dict:
             "longDescription": (
                 "fskill packages twenty engineering skills in five groups: "
                 "decide, build, ship, read and write, and leave something "
-                "the next session can use. /f-mode routes only after you "
+                "the next session can use. /f-help explains the toolkit. /f-mode routes only after you "
                 "enter it. Enter any skill with /name or $name. A similar "
                 "word does not start that workflow."
             ),
@@ -379,20 +379,21 @@ def collect_skill_shared_assets(root: Path) -> dict[str, bytes]:
                     f"{DURABLE_CONTEXT_RULE} does not exist"
                 )
             generated[(skill_dir / DURABLE_CONTEXT_COPY).as_posix()] = durable_bytes
-    mode = root / "skills/f-mode/SKILL.md"
-    if mode.exists() and "references/routing.md" in mode.read_text():
-        resolver = root / "skills/RESOLVER.md"
-        # Direct installs carry only this skill's directory. The host catalog
-        # resolves each installed skill name in this portable routing copy.
-        routing = re.sub(r"`skills/([a-z][a-z0-9_-]*)/SKILL\.md`", r"`\1`", resolver.read_text())
-        generated["skills/f-mode/references/routing.md"] = routing.encode("utf-8")
+    for name in ("f-mode", "f-help"):
+        entrypoint = root / f"skills/{name}/SKILL.md"
+        if entrypoint.exists() and "references/routing.md" in entrypoint.read_text():
+            resolver = root / "skills/RESOLVER.md"
+            # Standalone installs carry only this skill's directory. Resolve
+            # installed skill names through the host catalog, not repo paths.
+            routing = re.sub(r"`skills/([a-z][a-z0-9_-]*)/SKILL\.md`", r"`\1`", resolver.read_text())
+            generated[f"skills/{name}/references/routing.md"] = routing.encode("utf-8")
     return generated
 
 
 def shared_asset_source(rel: str) -> str:
     if rel.endswith("/NOTICE.md"):
         return "LICENSE"
-    if rel == "skills/f-mode/references/routing.md":
+    if rel in ("skills/f-mode/references/routing.md", "skills/f-help/references/routing.md"):
         return "skills/RESOLVER.md"
     return DURABLE_CONTEXT_RULE.as_posix()
 

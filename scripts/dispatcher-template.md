@@ -17,6 +17,7 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 ## How This Works
 
 1. Process explicit f-mode control or skill commands first. Outside f-mode, ordinary requests stay ordinary requests.
+   `/f-help` answers usage questions without changing f-mode state or starting the recommended workflow; a separate explicit work request keeps its existing authorization.
 2. Inside active f-mode, match the user's goal to a working skill from the table, then read its section in full. Do not route f-mode back into itself.
 3. Execute within the requested scope and existing authorization. Routing does not authorize extra actions.
 

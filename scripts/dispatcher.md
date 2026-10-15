@@ -17,6 +17,7 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 | 主动架构机会识别、代码边界改进、模块深化、调用方认知成本、依赖与测试接缝、备选接口比较 | architect | `skills/architect/SKILL.md` |
 | 代码与技术文档审查、合并前检查、已有PR状态与持续跟进、发布门禁、平台打包产物、mac 打包、macOS/Android 产物、release asset、commit/push/release 收尾、项目质量审计 | check | `skills/check/SKILL.md` |
 | 主动领域建模、统一领域语言、术语歧义、行为与事件、bounded context、领域概念边界 | domain | `skills/domain/SKILL.md` |
+| 解答 fskill 用法、推荐技能、解释模式和定制方式 | f-help | `skills/f-help/SKILL.md` |
 | 显式开启或关闭 f-mode，在会话内自动选择已安装技能 | f-mode | `skills/f-mode/SKILL.md` |
 | 交接文档、handoff、会话总结、接入恢复、本人相关历史与当前状态核对 | handoff | `skills/handoff/SKILL.md` |
 | Agent 配置审计、Codex/Claude/Pi 指令漂移、hooks/MCP、验证面、AI 可维护性 | health | `skills/health/SKILL.md` |
@@ -40,6 +41,7 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 ## How This Works
 
 1. Process explicit f-mode control or skill commands first. Outside f-mode, ordinary requests stay ordinary requests.
+   `/f-help` answers usage questions without changing f-mode state or starting the recommended workflow; a separate explicit work request keeps its existing authorization.
 2. Inside active f-mode, match the user's goal to a working skill from the table, then read its section in full. Do not route f-mode back into itself.
 3. Execute within the requested scope and existing authorization. Routing does not authorize extra actions.
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "fskill",
-  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi. Twenty workflow skills plus an explicit /f-mode entrypoint for session routing. Direct commands remain available.",
+  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi. Twenty workflow skills plus /f-help for guidance and explicit /f-mode session routing. Direct commands remain available.",
   "owner": {
     "name": "gofenix",
     "email": "gofenix@users.noreply.github.com"
@@ -45,6 +45,18 @@
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/domain",
+      "homepage": "https://github.com/gofenix/fskill",
+      "skills": [
+        "./"
+      ],
+      "strict": false
+    },
+    {
+      "name": "fskill-f-help",
+      "description": "解答 fskill 的选技、调用、安装、排障与定制问题，给出有依据的说明和可直接使用的提示词。在显式调用或已开启的 f-mode 选中时使用：/f-help、$f-help 或 fskill 限定调用。不用于直接实施工程任务或一般技术问答。",
+      "version": "3.39.0",
+      "category": "development",
+      "source": "./skills/f-help",
       "homepage": "https://github.com/gofenix/fskill",
       "skills": [
         "./"

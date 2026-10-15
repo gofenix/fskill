@@ -1,12 +1,13 @@
 # fskill Skill Resolver
 
-20 个工作技能，加一个 f-mode 入口。默认显式调用 `/name` 或 `$name`，话题相近不会启动流程。显式进入 `/f-mode` 后，当前会话内可按目标自动选技能；`/f-mode off` 退出。单条命令优先，不关闭 f-mode。
+20 个工作技能，加 f-mode 路由和 f-help 帮助入口。默认显式调用 `/name` 或 `$name`，话题相近不会启动流程。显式进入 `/f-mode` 后，当前会话内可按目标自动选技能；`/f-mode off` 退出。单条命令优先，不关闭 f-mode。
 
 ## 路由
 
 | 触发 | 技能 |
 |------|------|
 | 用户显式进入 f-mode，然后按下面各表点名一条 | `skills/f-mode/SKILL.md` |
+| 询问 fskill 用法、该选哪条、模式机制、安装排障或定制 | `skills/f-help/SKILL.md` |
 
 ## 想清楚
 
