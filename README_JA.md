@@ -19,11 +19,14 @@
 | スキル | グループ | 役割 |
 | :--- | :--- | :--- |
 | [`/f-mode`](skills/f-mode/SKILL.md) | 経路 | 明示的に入ってから、下のスキルを一つ選ぶ。単体のコマンドもそのまま使える。 |
+| [`/f-help`](skills/f-help/SKILL.md) | ヘルプ | fskill の使い方、スキル選び、設定やカスタマイズを質問する。 |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 決める | 計画、画面、用語、セッションをまたぐ地図、切り分け、試作、境界。 |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 作る | 承認済みの作業、根本原因、指標は一度に一つ。 |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 渡す | マージ、push、リリース前の確認、課題の整理、検証の説明。 |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 読む・書く | 一つの URL か PDF、複数資料の調査、文章を整える。 |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 次も使える | セッションの引き継ぎ、確認済みの教訓、エージェント設定、手動セットアップ。 |
+
+迷ったら `/f-help この作業にはどのスキルが合う？`（Codex: `$f-help`、プラグイン: `/fskill:f-help`）。
 
 `/f-mode`（Codex: `$f-mode`、プラグイン: `/fskill:f-mode`）で開始し、通常の言葉で依頼できます。現在の会話で `/f-mode off` まで自動選択が続きます。`/f-mode status` で状態を確認。直接コマンドを優先し、f-mode は維持します。新しい会話では無効です。操作の権限は変わりません。
 
@@ -35,7 +38,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-スキルは共通の `~/.agents/skills` ディレクトリに保存されます。Claude Code はシンボリックリンク経由で連携し、Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI など、このディレクトリを読み込む各エージェントは 21 個のスキルを読み込みます。各スキルの手順は `/name` または `$name` のときだけ始まります。専用ディレクトリを持つエージェントは `-a` の後にID（例：`antigravity-cli`、`qwen-code`）を指定してください。更新は `npx skills update -g -y` で行います。AIエージェントに直接インストールを依頼することも可能です：
+スキルは共通の `~/.agents/skills` ディレクトリに保存されます。Claude Code はシンボリックリンク経由で連携し、Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI など、このディレクトリを読み込む各エージェントは 22 個のスキルを読み込みます。各スキルの手順は `/name` または `$name` のときだけ始まります。専用ディレクトリを持つエージェントは `-a` の後にID（例：`antigravity-cli`、`qwen-code`）を指定してください。更新は `npx skills update -g -y` で行います。AIエージェントに直接インストールを依頼することも可能です：
 > https://github.com/gofenix/fskill/blob/main/llms.txt を読んで fskill をインストールして
 
 **ホストのプラグイン機能を利用する場合**（スキル名に名前空間が付きます：`/fskill:check`）：

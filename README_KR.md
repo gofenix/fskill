@@ -19,11 +19,14 @@
 | 스킬 | 묶음 | 역할 |
 | :--- | :--- | :--- |
 | [`/f-mode`](skills/f-mode/SKILL.md) | 경로 | 명시적으로 들어온 뒤 아래 스킬 중 하나를 고른다. 개별 명령도 그대로 쓸 수 있다. |
+| [`/f-help`](skills/f-help/SKILL.md) | 도움말 | fskill 사용법, 스킬 선택, 설치 문제와 맞춤 설정을 묻는다. |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 정하기 | 계획, 화면, 용어, 세션을 넘는 지도, 쪼개기, 시험, 경계. |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 만들기 | 승인된 작업, 근본 원인, 지표는 한 번에 하나. |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 넘기기 | 머지, push, 릴리스 전 검토, 이슈 정리, 검증 설명. |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 읽고 쓰기 | URL 또는 PDF 하나, 여러 자료 조사, 문장 다듬기. |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 다음에 쓰기 | 세션 인수인계, 확인된 교훈, 에이전트 설정, 수동 설치. |
+
+어디서 시작할지 모르겠다면 `/f-help 이 작업에 어떤 스킬이 맞나요?`(Codex: `$f-help`, 플러그인: `/fskill:f-help`).
 
 `/f-mode`(Codex: `$f-mode`, 플러그인: `/fskill:f-mode`)로 시작한 뒤 평소처럼 요청하세요. 현재 대화에서 `/f-mode off`까지 자동 선택합니다. `/f-mode status`로 상태를 확인합니다. 직접 명령을 우선하며 f-mode는 유지됩니다. 새 대화에서는 꺼져 있습니다. 작업 권한은 바뀌지 않습니다.
 
@@ -35,7 +38,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-스킬은 공유 디렉터리인 `~/.agents/skills`에 저장됩니다. Claude Code는 심볼릭 링크로 연결되며, Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI 등 해당 디렉터리를 읽는 에이전트는 21개 스킬을 읽습니다. 각 스킬의 절차는 `/name` 또는 `$name` 일 때만 시작합니다. 독립 디렉터리를 사용하는 에이전트는 `-a` 뒤에 ID(예: `antigravity-cli`, `qwen-code`)를 지정하세요. 업데이트는 `npx skills update -g -y`로 실행합니다. AI 에이전트에게 직접 설치를 요청할 수도 있습니다:
+스킬은 공유 디렉터리인 `~/.agents/skills`에 저장됩니다. Claude Code는 심볼릭 링크로 연결되며, Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI 등 해당 디렉터리를 읽는 에이전트는 22개 스킬을 읽습니다. 각 스킬의 절차는 `/name` 또는 `$name` 일 때만 시작합니다. 독립 디렉터리를 사용하는 에이전트는 `-a` 뒤에 ID(예: `antigravity-cli`, `qwen-code`)를 지정하세요. 업데이트는 `npx skills update -g -y`로 실행합니다. AI 에이전트에게 직접 설치를 요청할 수도 있습니다:
 > 다음 문서를 읽고 fskill를 설치해 줘: https://github.com/gofenix/fskill/blob/main/llms.txt
 
 **호스트 플러그인 방식** (네임스페이스 포함: `/fskill:check`):

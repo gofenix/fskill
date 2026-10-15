@@ -19,11 +19,14 @@
 | 技能 | 分組 | 它做什麼 |
 | :--- | :--- | :--- |
 | [`/f-mode`](skills/f-mode/SKILL.md) | 路由 | 先顯式進入，再從下面的技能裡選一條。單條仍然可以直接用。 |
+| [`/f-help`](skills/f-help/SKILL.md) | 幫助 | 了解 fskill 用法、選擇技能、排障與自訂。 |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 想清楚 | 方案、介面、術語、跨會話地圖、切片、試驗、邊界。 |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 做出來 | 已批准的任務圖、根因、一次只動一個指標。 |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 交出去 | 合併、推送和發布前的審查，問題佇列，驗證說明。 |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 讀和寫 | 一個連結或 PDF、多來源研究、把文字改順。 |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 下次還能用 | 會話交接、已經驗證的教訓、Agent 設定、人工安裝。 |
+
+不知道從哪開始？試試 `/f-help 我這個任務該用哪個技能？`（Codex 用 `$f-help`，外掛用 `/fskill:f-help`）。
 
 輸入 `/f-mode`（Codex 用 `$f-mode`，外掛用 `/fskill:f-mode`）進入，再直接描述任務；目前會話內持續自動選技能。`/f-mode off` 退出，`/f-mode status` 查看狀態。直接 `/hunt` 等命令優先，不關閉 f-mode。新會話預設關閉；選路不擴大操作授權。
 
@@ -35,7 +38,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-技能統一存放在 `~/.agents/skills` 共享目錄，Claude Code 透過符號連結接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能讀這個目錄的 Agent 都會讀到這 21 個技能。進入某個技能的流程仍要顯式呼叫。有自己技能目錄的 Agent 在 `-a` 後面寫上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，後續透過 `npx skills update -g -y` 保持更新。也可以直接告訴你的 Agent 幫你安裝：
+技能統一存放在 `~/.agents/skills` 共享目錄，Claude Code 透過符號連結接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能讀這個目錄的 Agent 都會讀到這 22 個技能。進入某個技能的流程仍要顯式呼叫。有自己技能目錄的 Agent 在 `-a` 後面寫上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，後續透過 `npx skills update -g -y` 保持更新。也可以直接告訴你的 Agent 幫你安裝：
 > 閱讀 https://github.com/gofenix/fskill/blob/main/llms.txt 幫我安裝 fskill
 
 **宿主外掛方式**，如果你更習慣使用宿主自有的更新指令（技能帶有命名空間前綴，如 `/fskill:check`）：

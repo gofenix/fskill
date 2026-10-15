@@ -19,11 +19,14 @@
 | 技能 | 分组 | 它做什么 |
 | :--- | :--- | :--- |
 | [`/f-mode`](skills/f-mode/SKILL.md) | 路由 | 先显式进入，再从下面的技能里选一条。单条仍然可以直接用。 |
+| [`/f-help`](skills/f-help/SKILL.md) | 帮助 | 了解 fskill 用法、选择技能、排障与定制。 |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 想清楚 | 方案、界面、术语、跨会话地图、切片、试验、边界。 |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 做出来 | 已批准的任务图、根因、一次只动一个指标。 |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 交出去 | 合并、推送和发布前的审查，问题队列，验证说明。 |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 读和写 | 一个链接或 PDF、多来源研究、把文字改顺。 |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 下次还能用 | 会话交接、已经验证的教训、Agent 配置、人工安装。 |
+
+不知道从哪开始？试试 `/f-help 我这个任务该用哪个技能？`（Codex 用 `$f-help`，插件用 `/fskill:f-help`）。
 
 输入 `/f-mode`（Codex 用 `$f-mode`，插件用 `/fskill:f-mode`）进入，再直接描述任务；当前会话内持续自动选技能。`/f-mode off` 退出，`/f-mode status` 查看状态。直接 `/hunt` 等命令优先，不关闭 f-mode。新会话默认关闭；选路不扩大操作授权。
 
@@ -35,7 +38,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-技能统一存放在 `~/.agents/skills` 共享目录，Claude Code 通过软链接接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能读这个目录的 Agent 都会读到这 21 个技能。进入某个技能的流程仍要显式调用。有自己技能目录的 Agent 在 `-a` 后面写上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，后续通过 `npx skills update -g -y` 保持更新。也可以直接告诉你的 Agent 帮你安装：
+技能统一存放在 `~/.agents/skills` 共享目录，Claude Code 通过软链接接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能读这个目录的 Agent 都会读到这 22 个技能。进入某个技能的流程仍要显式调用。有自己技能目录的 Agent 在 `-a` 后面写上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，后续通过 `npx skills update -g -y` 保持更新。也可以直接告诉你的 Agent 帮你安装：
 > 阅读 https://github.com/gofenix/fskill/blob/main/llms.txt 帮我安装 fskill
 
 **宿主插件方式**，如果你更习惯使用宿主自有的更新命令（技能带有命名空间前缀，如 `/fskill:check`）：

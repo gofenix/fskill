@@ -19,11 +19,14 @@ Jeder Skill ist ein Ordner mit Referenzen, Skripten und echten Fehlern. Standard
 | Skill | Gruppe | Was er tut |
 | :--- | :--- | :--- |
 | [`/f-mode`](skills/f-mode/SKILL.md) | Route | Erst ausdrücklich eintreten, dann eine Fähigkeit unten wählen. Einzelbefehle bleiben direkt nutzbar. |
+| [`/f-help`](skills/f-help/SKILL.md) | Hilfe | Fragen zu fskill, Skill-Auswahl, Einrichtung und Anpassung beantworten. |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Entscheiden | Plan, Oberfläche, Begriffe, sitzungsübergreifende Karte, Schnitte, Versuche, Grenzen. |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Bauen | Freigegebene Aufgaben, Ursache, eine Metrik auf einmal. |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Abgeben | Prüfung vor Merge, Push und Release, Issue-Warteschlange, Nachweis. |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lesen und schreiben | Eine URL oder ein PDF, Recherche aus mehreren Quellen, Text glätten. |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | Wiederverwenden | Sitzungsübergabe, geprüfte Lehren, Agent-Konfiguration, manuelles Setup. |
+
+Unsicher? Frage `/f-help Welcher Skill passt zu meiner Aufgabe?` (Codex: `$f-help`, Plugin: `/fskill:f-help`).
 
 Mit `/f-mode` (Codex: `$f-mode`, Plugin: `/fskill:f-mode`) starten und Aufgaben normal beschreiben. Die Auswahl bleibt in dieser Sitzung bis `/f-mode off` aktiv. `/f-mode status` zeigt den Zustand. Direkte Befehle haben Vorrang und lassen f-mode aktiv. Neue Sitzungen starten ohne f-mode. Aktionsberechtigungen bleiben unverändert.
 
@@ -35,7 +38,7 @@ Mit `/f-mode` (Codex: `$f-mode`, Plugin: `/fskill:f-mode`) starten und Aufgaben 
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-Skills landen zentral in `~/.agents/skills`. Claude Code bindet sie per Symlink ein; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI und alle Agenten, die dieses Verzeichnis nutzen, laden die 21 Skills. Der Ablauf eines Skills startet nur bei `/name` oder `$name`. Agenten mit eigenem Skill-Verzeichnis gibst du nach `-a` mit ihrer ID an (zum Beispiel `antigravity-cli` oder `qwen-code`). Aktualisierung über `npx skills update -g -y`. Du kannst deinen Agenten auch direkt mit der Installation beauftragen:
+Skills landen zentral in `~/.agents/skills`. Claude Code bindet sie per Symlink ein; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI und alle Agenten, die dieses Verzeichnis nutzen, laden die 22 Skills. Der Ablauf eines Skills startet nur bei `/name` oder `$name`. Agenten mit eigenem Skill-Verzeichnis gibst du nach `-a` mit ihrer ID an (zum Beispiel `antigravity-cli` oder `qwen-code`). Aktualisierung über `npx skills update -g -y`. Du kannst deinen Agenten auch direkt mit der Installation beauftragen:
 > Lies https://github.com/gofenix/fskill/blob/main/llms.txt und installiere fskill für mich
 
 **Host-Plugin-Methode** (Skills erhalten ein Namespace-Präfix, z. B. `/fskill:check`):

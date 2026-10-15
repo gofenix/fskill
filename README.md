@@ -19,11 +19,14 @@ Each engineering habit gets an installed skill, a folder with reference docs, he
 | Skill | When | What it does |
 | :--- | :--- | :--- |
 | [`/f-mode`](skills/f-mode/SKILL.md) | Route | Enter explicitly, then pick one skill below. Direct commands still work. |
+| [`/f-help`](skills/f-help/SKILL.md) | Help | Ask how fskill works, which skill to use, or how to customize it. |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Decide | Plan, interface, terms, cross-session map, slices, experiments, boundaries. |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Build | Approved task graph, root cause, one-metric experiments. |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Ship | Diff and release review, issue queue, verification guide. |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Read and write | One URL or PDF, multi-source research, prose. |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | Keep | Session handoff, verified lessons, agent config, human setup. |
+
+Not sure where to start? Try `/f-help Which skill fits my task?` (Codex: `$f-help`; plugin: `/fskill:f-help`).
 
 Enter `/f-mode` (Codex: `$f-mode`; plugin: `/fskill:f-mode`) once, then describe your tasks normally. It routes within this session until `/f-mode off`; `/f-mode status` reports state. Direct commands such as `/hunt` take priority without closing f-mode. New sessions start off. Mode selects workflows, not action permissions.
 
@@ -37,7 +40,7 @@ Direct commands stay explicit (`/think`, `$think`). `/f-mode` is the only router
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-One copy lands in `~/.agents/skills`, the shared skills directory. Claude Code is symlinked in; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI, and every other agent that reads that directory picks the twenty-one skills up as `/check`, `/think`, and so on. Agents with a private skills directory take their id after `-a` (for example `antigravity-cli` or `qwen-code`). Update with `npx skills update -g -y`. You can also tell your agent to install it:
+One copy lands in `~/.agents/skills`, the shared skills directory. Claude Code is symlinked in; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI, and every other agent that reads that directory picks the twenty-two skills up as `/check`, `/think`, and so on. Agents with a private skills directory take their id after `-a` (for example `antigravity-cli` or `qwen-code`). Update with `npx skills update -g -y`. You can also tell your agent to install it:
 > Install fskill for me by reading https://github.com/gofenix/fskill/blob/main/llms.txt
 
 **Host plugin**, if you prefer the host's own update command (skills are namespaced, `/fskill:check`)
