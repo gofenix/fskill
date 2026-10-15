@@ -162,4 +162,4 @@ rm -f ~/.claude/rules/clarity.md
 
 ## 授權條款
 
-MIT 授權。感謝 [Waza](https://github.com/tw93/Waza)、[Matt Pocock skills](https://github.com/mattpocock/skills)、[pstack](https://github.com/cursor/plugins/tree/main/pstack)。fskill 融合這些專案的流程並中文化、調整技能邊界。完整版權與授權聲明統一維護於根目錄 [LICENSE](LICENSE)，`make regenerate` 為每個技能產生相同的 `NOTICE.md`，供獨立安裝與 Multica 匯入。gofenix 的署名適用於原創新增與修改，上游署名適用於各自沿用的材料。
+MIT 授權，UI 參考含 Apache-2.0 材料。感謝 [Waza](https://github.com/tw93/Waza)、[Matt Pocock skills](https://github.com/mattpocock/skills)、[pstack](https://github.com/cursor/plugins/tree/main/pstack)。UI 方法亦改寫自 [Impeccable](https://github.com/pbakaus/impeccable)、[taste-skill](https://github.com/Leonxlnx/taste-skill) 與 [apple-design](https://github.com/emilkowalski/skills)。來源版本、改寫說明與完整授權統一維護於根目錄 [LICENSE](LICENSE)，`make regenerate` 為每個技能產生相同的 `NOTICE.md`，供獨立安裝與 Multica 匯入。gofenix 的署名適用於原創新增與修改，上游署名適用於各自沿用的材料。

@@ -14,7 +14,7 @@
 | 触发 | 技能 |
 |------|------|
 | 把想法收成能执行的计划，包含追问和值不值得做 | `skills/think/SKILL.md` |
-| 页面、组件、截图审美 | `skills/ui/SKILL.md` |
+| 从需求设计新界面，或评审、打磨现有页面、组件与截图 | `skills/ui/SKILL.md` |
 | 一个词或一种行为的边界说不清，而且挡着当前决定 | `skills/domain/SKILL.md` |
 | 目标会跨多次会话，路线还没清 | `skills/map/SKILL.md` |
 | 规格已经定了，拆成能单独演示的纵切 | `skills/slice/SKILL.md` |

@@ -20,7 +20,7 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty wo
 - `skills/f-mode/references/principles.md` - short trigger-to-source index of existing engineering principles; details stay in the owning skill, and citations describe actual changed decisions.
 - `skills/f-help/references/guide.md` - usage guide for setup, session routing, troubleshooting, customization, and engineering principles.
 - `skills/*/SKILL.md` - individual skill entrypoints.
-- `LICENSE` - canonical MIT license, upstream copyright notices, and acknowledgements for Waza, Matt Pocock skills, and pstack. `make regenerate` copies it verbatim to every `skills/<name>/NOTICE.md`; edit the root file only. The notice filename survives Multica imports that filter LICENSE files.
+- `LICENSE` - canonical MIT license, third-party Apache-2.0 terms, upstream copyright notices, and acknowledgements. UI adaptations credit Impeccable, taste-skill, and Emil Kowalski's apple-design. `make regenerate` copies it verbatim to every `skills/<name>/NOTICE.md`; edit the root file only. The notice filename survives Multica imports that filter LICENSE files.
 - `skills/*/agents/` - specialist reviewer or inspector prompts.
 - `skills/*/references/` - supporting references loaded only when needed.
 - `skills/*/scripts/` - deterministic helper scripts.
