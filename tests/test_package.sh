@@ -30,6 +30,7 @@ fi
 
 # Required helper scripts are bundled.
 for required in \
+  skills/f-mode/references/principles.md \
   skills/check/scripts/audit_signals.py \
   skills/read/scripts/fetch.sh \
   skills/health/scripts/block-pipe-to-shell.py \

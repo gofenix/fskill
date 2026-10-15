@@ -17,6 +17,7 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty wo
 - `VERSION` - single source of truth for the lock-step version. Marketplace entries, `package.json`, and installer `FSKILL_REF` defaults must agree with this file (codegen-enforced). Per-skill frontmatter carries no version field; the verifier rejects a stale `metadata.version`.
 - `skills/RESOLVER.md` - trigger and routing table for the skill set.
 - `skills/{f-mode,f-help}/references/routing.md` - generated portable copies of `skills/RESOLVER.md` for standalone installs; never hand-edit.
+- `skills/f-mode/references/principles.md` - short trigger-to-source index of existing engineering principles; details stay in the owning skill, and citations describe actual changed decisions.
 - `skills/f-help/references/guide.md` - usage guide for setup, session routing, troubleshooting, customization, and engineering principles.
 - `skills/*/SKILL.md` - individual skill entrypoints.
 - `LICENSE` - canonical MIT license, upstream copyright notices, and acknowledgements for Waza, Matt Pocock skills, and pstack. `make regenerate` copies it verbatim to every `skills/<name>/NOTICE.md`; edit the root file only. The notice filename survives Multica imports that filter LICENSE files.

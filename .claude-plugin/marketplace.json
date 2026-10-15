@@ -65,7 +65,7 @@
     },
     {
       "name": "fskill-f-mode",
-      "description": "显式进入 f-mode 后，按请求选择已安装技能并在授权范围内执行；支持退出和单条直调。仅在显式调用 /f-mode、$f-mode 或用户明确要求进入 f-mode 时使用。不用于普通话题的自动接管，也不改变宿主权限。",
+      "description": "显式进入 f-mode 后，按请求选择已安装技能，按需应用工程原则并在授权范围内执行；支持退出和单条直调。仅在显式调用 /f-mode、$f-mode 或用户明确要求进入 f-mode 时使用。不用于普通话题的自动接管，也不改变宿主权限。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/f-mode",

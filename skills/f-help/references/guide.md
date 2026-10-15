@@ -75,10 +75,12 @@
 
 ## 工程原则与工作流
 
-原则说明一次选择为什么改变；工作流说明要交付什么。把经验压成短原则有助于控制上下文，但不需要为了凑到 10–20 行而删掉真正影响决策的约束。
+f-mode 用[短原则索引](https://github.com/gofenix/fskill/blob/main/skills/f-mode/references/principles.md)连接现有正文：先减后增、质疑前提、真实验收、行为测试、解释数字、结构性防复发。工程任务按条件读取，普通问答和模式开关省略。索引只负责发现，详细规则继续维护在各自技能里。
 
-有用的解释是“先证实根因：复现后发现是过期请求覆盖新状态，因此加请求序号隔离”；只有原则名字而没有改变的选择，无法检查是否真正用到了它。用户询问采用了什么原则时，结合这次证据回答。
+可以这样定向纠偏：`/f-mode 用“质疑前提”重新检查这两次修复失败的原因；只诊断，不改文件。` 仅点名原则不会开启 f-mode。只读适用正文，读取不等于启动所属技能的流程；缺少对应技能时说明缺口，不自动安装。
 
-当前 fskill 的工程约束分布在技能正文和通用规则里，没有独立 `/principle-*` 命令，也没有统一的“使用的原则”自动报告协议。pstack 的 `/poteto-help`、角色模型配置和 Custom Mode 属于其自身能力，不能直接当成 fskill 命令推荐。
+原则真正改变选择时，f-mode 会结合证据说明，例如“质疑前提 → 放弃第三次调参数，先核对是否重复提交；日志中同一操作出现两次”。只引用本轮实际读过并应用的正文，没有影响就不凑报告栏目。没有独立 `/principle-*` 命令；pstack 的角色模型配置和 Custom Mode 也不属于 fskill。
+
+压缩技能先合并重复提醒和模板，保留适用条件、操作边界、完成条件与单技能安装约束，用代表性任务对照后再删减；不把 10–20 行当硬指标。
 
 说明与来源：[f-mode](https://github.com/gofenix/fskill/blob/main/skills/f-mode/SKILL.md)、[通用行为规则](https://github.com/gofenix/fskill/blob/main/rules/anti-patterns.md)、[贡献与分发约定](https://github.com/gofenix/fskill/blob/main/AGENTS.md)。

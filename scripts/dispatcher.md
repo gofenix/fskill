@@ -18,7 +18,7 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 | 代码与技术文档审查、合并前检查、已有PR状态与持续跟进、发布门禁、平台打包产物、mac 打包、macOS/Android 产物、release asset、commit/push/release 收尾、项目质量审计 | check | `skills/check/SKILL.md` |
 | 主动领域建模、统一领域语言、术语歧义、行为与事件、bounded context、领域概念边界 | domain | `skills/domain/SKILL.md` |
 | 解答 fskill 用法、推荐技能、解释模式和定制方式 | f-help | `skills/f-help/SKILL.md` |
-| 显式开启或关闭 f-mode，在会话内自动选择已安装技能 | f-mode | `skills/f-mode/SKILL.md` |
+| 显式开启或关闭 f-mode，在会话内选择技能并按需应用工程原则 | f-mode | `skills/f-mode/SKILL.md` |
 | 交接文档、handoff、会话总结、接入恢复、本人相关历史与当前状态核对 | handoff | `skills/handoff/SKILL.md` |
 | Agent 配置审计、Codex/Claude/Pi 指令漂移、hooks/MCP、验证面、AI 可维护性 | health | `skills/health/SKILL.md` |
 | 错误、崩溃、回归、失败测试、异常行为、根因定位 | hunt | `skills/hunt/SKILL.md` |

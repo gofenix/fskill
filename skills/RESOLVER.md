@@ -6,7 +6,7 @@
 
 | 触发 | 技能 |
 |------|------|
-| 用户显式进入 f-mode，然后按下面各表点名一条 | `skills/f-mode/SKILL.md` |
+| 用户显式进入 f-mode，按目标选技能，并按需读取工程原则 | `skills/f-mode/SKILL.md` |
 | 询问 fskill 用法、该选哪条、模式机制、安装排障或定制 | `skills/f-help/SKILL.md` |
 
 ## 想清楚
