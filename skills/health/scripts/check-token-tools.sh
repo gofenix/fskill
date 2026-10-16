@@ -84,6 +84,8 @@ safe_health_text() {
 
 display_path() {
   local path="$1" shown="$1"
+  # Report a literal home abbreviation, not an expanded filesystem path.
+  # shellcheck disable=SC2088
   case "$path" in
     "$HOME"/*) shown="~/${path#"$HOME"/}" ;;
     "$HEALTH_HOME"/*) shown="~/${path#"$HEALTH_HOME"/}" ;;

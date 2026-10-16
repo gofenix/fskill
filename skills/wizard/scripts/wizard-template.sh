@@ -150,15 +150,15 @@ set_var() {
 # The authored verifier must exercise the actual consumer, not just list names.
 # Credentials belong in its environment/stdin; command arguments are non-secret.
 verify_secret() {
-  local name="$1" item ready=no
+  local name="$1" item secret_ready=no
   local remaining=()
   shift
   _input_key "$name" || return 1
   [[ $# -gt 0 ]] || { die "消费端验证需要明确命令"; return 1; }
   for item in ${WIZARD_SECRET_READY[@]+"${WIZARD_SECRET_READY[@]}"}; do
-    [[ "$item" != "$name" ]] || ready=yes
+    [[ "$item" != "$name" ]] || secret_ready=yes
   done
-  if [[ "$ready" != yes ]]; then
+  if [[ "$secret_ready" != yes ]]; then
     WIZARD_SKIPPED+=("GitHub secret ${name}：本次写入请求及名称回读尚未成功，未运行消费端验证")
     return 2
   fi
