@@ -4,9 +4,10 @@ This file is the canonical agent guide for the fskill repository. `CLAUDE.md` is
 
 ## Project
 
-fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty workflow skills plus `f-mode` routing and `f-help` guidance live flat under `skills/<name>/`. Default invocation is explicit: `/name` or `$name`. After explicit `/f-mode`, route within the current session until `/f-mode off`; direct commands take priority without closing f-mode. A similar word never enables f-mode.
+fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty-one workflow skills plus `catchup` reporting, `f-mode` routing and `f-help` guidance live flat under `skills/<name>/`. Default invocation is explicit: `/name` or `$name`. After explicit `/f-mode`, route within the current session until `/f-mode off`; direct commands take priority without closing f-mode. A similar word never enables f-mode.
 
-- 想清楚: `think`, `ui`, `domain`, `map`, `slice`, `prototype`, `architect`
+- 想清楚: `sharpen`, `think`, `ui`, `domain`, `map`, `slice`, `prototype`, `architect`
+- 进展汇报: `catchup`
 - 做出来: `implement`, `hunt`, `optimize`
 - 交出去: `check`, `triage`, `verify`
 - 读和写: `read`, `learn`, `write`
@@ -18,8 +19,9 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty wo
 - `skills/RESOLVER.md` - trigger and routing table for the skill set.
 - `skills/{f-mode,f-help}/references/routing.md` - generated portable copies of `skills/RESOLVER.md` for standalone installs; never hand-edit.
 - `skills/f-mode/references/principles.md` - short trigger-to-source index of existing engineering principles; details stay in the owning skill, and citations describe actual changed decisions.
+- `rules/delegation-budget.md` - shared delegation policy, generated into each linking skill, for example `skills/implement/references/delegation-budget.md`, so direct installs remain self-contained. Edit the rule, not its copies.
 - `skills/f-help/references/guide.md` - usage guide for setup, session routing, troubleshooting, customization, and engineering principles.
-- `skills/*/SKILL.md` - individual skill entrypoints.
+- `skills/*/SKILL.md` - individual skill entrypoints. `catchup` reports progress and `sharpen` calibrates then performs an authorized task; both are standalone skills, not f-mode parameters.
 - `LICENSE` - canonical MIT license, third-party Apache-2.0 terms, upstream copyright notices, and acknowledgements. UI adaptations credit Impeccable, taste-skill, and Emil Kowalski's apple-design. `make regenerate` copies it verbatim to every `skills/<name>/NOTICE.md`; edit the root file only. The notice filename survives Multica imports that filter LICENSE files.
 - `skills/*/agents/` - specialist reviewer or inspector prompts.
 - `skills/*/references/` - supporting references loaded only when needed.
@@ -92,7 +94,7 @@ Examples: `verify_skills.py` is a script; `rules/english.md` and `rules/chinese.
 - `SKILL.md` carries what every run of that skill needs; a body only some runs need belongs in `references/`, reached from a picker row or a conditional line that names the trigger. Mutually exclusive modes are the clearest case: a diff review should not pay for the release, triage, and audit playbooks. Deterministic checks keep going to `scripts/`; this rule is about where the judgment prose loads, not about splitting a skill.
 - Keep every `SKILL.md` on one skeleton so they read as a set: a `🥷` first line inlined, then `## 交付约定` (目标, 完成条件, 依据, 交付形式), then `## 长期上下文预检` for skills that read memory, then the lines the skill does not cross (`不用于`). Invocation stays explicit: `/name` or `$name`. Tables are compact `| a | b |` with no hand-aligned spacing; a numbered step sequence stays contiguous, with side-checks grouped under a step rather than wedged between two.
 - Avoid broad skills that mix unrelated workflows.
-- The set is the twenty-two skills under `skills/`. Do not add, rename, or split a skill without an explicit decision. Behavior additions land in `references/`, `rules/`, `scripts/`, or `rules/anti-patterns.md`.
+- The set is the twenty-four skills under `skills/`. Do not add, rename, or split a skill without an explicit decision. Behavior additions land in `references/`, `rules/`, `scripts/`, or `rules/anti-patterns.md`.
 - Keep generic programmer capabilities in fskill. Project-specific constraints should be extracted from public repository context or user-provided task context.
 - Treat `code-review` as an invocation alias for fskill `check`, not as a separate generic skill.
 - Skill names stay short verbs (`check`, `think`). Decline requests to rename them or to prefix the skill names with `fskill-`. The `fskill-<name>` per-skill plugin ids in `.claude-plugin/marketplace.json` are the host's install namespace, not skill names. Short commands stay `/think`; the plugin namespace is `/fskill:check`.
@@ -132,7 +134,7 @@ Use this path for any new skill or meaningful behavior change:
 ## Distribution Rules
 
 - `.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`, `.codex-plugin/plugin.json`, `skills/RESOLVER.md`, and every `skills/*/SKILL.md` must agree on skill names, descriptions, and source paths; versions march in lock-step with `VERSION` through the generated metadata.
-- `npx skills add gofenix/fskill` should install the twenty-two skills by default. Do not add a source-root `SKILL.md`; it prevents nested skill discovery.
+- `npx skills add gofenix/fskill` should install the twenty-four skills by default. Do not add a source-root `SKILL.md`; it prevents nested skill discovery.
 - Codex marketplace entries resolve to `./`, the repository root, where `skills/` is the only skill tree. Do not recreate `plugins/fskill`. After Codex marketplace or plugin manifest changes, verify an isolated install flow rather than only checking JSON shape.
 - Plugin mirror generation must filter local cache and noise files in both generator and verifier paths, including `__pycache__`, `*.pyc`, `.pytest_cache`, `.ruff_cache`, `.mypy_cache`, and `.DS_Store`.
 - Claude Desktop uses the release ZIP built by `scripts/package-skill.sh`.

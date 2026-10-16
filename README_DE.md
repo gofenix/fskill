@@ -20,6 +20,8 @@ Jeder Skill ist ein Ordner mit Referenzen, Skripten und echten Fehlern. Standard
 | :--- | :--- | :--- |
 | [`/f-mode`](skills/f-mode/SKILL.md) | Route | Erst ausdrücklich eintreten, dann eine Fähigkeit unten wählen. Einzelbefehle bleiben direkt nutzbar. |
 | [`/f-help`](skills/f-help/SKILL.md) | Hilfe | Fragen zu fskill, Skill-Auswahl, Einrichtung und Anpassung beantworten. |
+| [`/catchup`](skills/catchup/SKILL.md) | Bericht | Fortschritt und offene Entscheidungen prüfen, ohne Änderungen vorzunehmen. |
+| [`/sharpen`](skills/sharpen/SKILL.md) | Planen | Methode, Ziel und Vorgaben prüfen, dann den autorisierten Auftrag ausführen. |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Entscheiden | Plan, Oberfläche, Begriffe, sitzungsübergreifende Karte, Schnitte, Versuche, Grenzen. |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Bauen | Freigegebene Aufgaben, Ursache, eine Metrik auf einmal. |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Abgeben | Prüfung vor Merge, Push und Release, Issue-Warteschlange, Nachweis. |
@@ -38,7 +40,7 @@ Mit `/f-mode` (Codex: `$f-mode`, Plugin: `/fskill:f-mode`) starten und Aufgaben 
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-Skills landen zentral in `~/.agents/skills`. Claude Code bindet sie per Symlink ein; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI und alle Agenten, die dieses Verzeichnis nutzen, laden die 22 Skills. Der Ablauf eines Skills startet nur bei `/name` oder `$name`. Agenten mit eigenem Skill-Verzeichnis gibst du nach `-a` mit ihrer ID an (zum Beispiel `antigravity-cli` oder `qwen-code`). Aktualisierung über `npx skills update -g -y`. Du kannst deinen Agenten auch direkt mit der Installation beauftragen:
+Skills landen zentral in `~/.agents/skills`. Claude Code bindet sie per Symlink ein; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI und alle Agenten, die dieses Verzeichnis nutzen, laden die 24 Skills. Der Ablauf eines Skills startet nur bei `/name` oder `$name`. Agenten mit eigenem Skill-Verzeichnis gibst du nach `-a` mit ihrer ID an (zum Beispiel `antigravity-cli` oder `qwen-code`). Aktualisierung über `npx skills update -g -y`. Du kannst deinen Agenten auch direkt mit der Installation beauftragen:
 > Lies https://github.com/gofenix/fskill/blob/main/llms.txt und installiere fskill für mich
 
 **Host-Plugin-Methode** (Skills erhalten ein Namespace-Präfix, z. B. `/fskill:check`):
@@ -139,7 +141,7 @@ Optionale Regeln wirken auch außerhalb von Skill-Aufrufen, sobald sie in den da
 
 ## Warum fskill
 
-fskill ist gofenix' eigenes Skill-Set. Die Arbeitsweise kommt von [tw93/Waza](https://github.com/tw93/Waza), der Name nicht, denn Waza gehört jemand anderem. Es sind zwanzig Skills in fünf Gruppen: entscheiden, bauen, abgeben, lesen und schreiben, wiederverwenden. Darüber liegt der ausdrückliche Einstieg `/f-mode`. Jeder Skill nennt das Ergebnis, die Grenze und woran man Fertig erkennt.
+fskill ist gofenix' eigenes Skill-Set. Die Arbeitsweise kommt von [tw93/Waza](https://github.com/tw93/Waza), der Name nicht, denn Waza gehört jemand anderem. Es sind einundzwanzig Workflow-Skills in fünf Gruppen: entscheiden, bauen, abgeben, lesen und schreiben, wiederverwenden. Darüber liegt der ausdrückliche Einstieg `/f-mode`. Jeder Skill nennt das Ergebnis, die Grenze und woran man Fertig erkennt.
 
 Der Aufruf ist explizit: `/name` oder `$name`. Ein ähnliches Wort startet den Ablauf nicht.
 

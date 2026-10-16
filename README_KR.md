@@ -20,6 +20,8 @@
 | :--- | :--- | :--- |
 | [`/f-mode`](skills/f-mode/SKILL.md) | 경로 | 명시적으로 들어온 뒤 아래 스킬 중 하나를 고른다. 개별 명령도 그대로 쓸 수 있다. |
 | [`/f-help`](skills/f-help/SKILL.md) | 도움말 | fskill 사용법, 스킬 선택, 설치 문제와 맞춤 설정을 묻는다. |
+| [`/catchup`](skills/catchup/SKILL.md) | 보고 | 진행 상황, 변경 사항과 사용자 결정이 필요한 항목을 읽기 전용으로 확인. |
+| [`/sharpen`](skills/sharpen/SKILL.md) | 구상 | 방법, 목표와 제약을 점검한 뒤 허가된 작업을 실행. |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 정하기 | 계획, 화면, 용어, 세션을 넘는 지도, 쪼개기, 시험, 경계. |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 만들기 | 승인된 작업, 근본 원인, 지표는 한 번에 하나. |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 넘기기 | 머지, push, 릴리스 전 검토, 이슈 정리, 검증 설명. |
@@ -38,7 +40,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-스킬은 공유 디렉터리인 `~/.agents/skills`에 저장됩니다. Claude Code는 심볼릭 링크로 연결되며, Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI 등 해당 디렉터리를 읽는 에이전트는 22개 스킬을 읽습니다. 각 스킬의 절차는 `/name` 또는 `$name` 일 때만 시작합니다. 독립 디렉터리를 사용하는 에이전트는 `-a` 뒤에 ID(예: `antigravity-cli`, `qwen-code`)를 지정하세요. 업데이트는 `npx skills update -g -y`로 실행합니다. AI 에이전트에게 직접 설치를 요청할 수도 있습니다:
+스킬은 공유 디렉터리인 `~/.agents/skills`에 저장됩니다. Claude Code는 심볼릭 링크로 연결되며, Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI 등 해당 디렉터리를 읽는 에이전트는 24개 스킬을 읽습니다. 각 스킬의 절차는 `/name` 또는 `$name` 일 때만 시작합니다. 독립 디렉터리를 사용하는 에이전트는 `-a` 뒤에 ID(예: `antigravity-cli`, `qwen-code`)를 지정하세요. 업데이트는 `npx skills update -g -y`로 실행합니다. AI 에이전트에게 직접 설치를 요청할 수도 있습니다:
 > 다음 문서를 읽고 fskill를 설치해 줘: https://github.com/gofenix/fskill/blob/main/llms.txt
 
 **호스트 플러그인 방식** (네임스페이스 포함: `/fskill:check`):
@@ -139,7 +141,7 @@ Codex는 남은 한도를, 위의 Claude Code 상태 표시줄은 사용한 비�
 
 ## fskill를 만든 이유
 
-fskill 은 gofenix 자신의 스킬 모음입니다. 일하는 방식은 [tw93/Waza](https://github.com/tw93/Waza) 에서 가져왔고, 이름은 가져오지 않았습니다. Waza 는 다른 사람의 이름입니다. 스킬은 20개이며, 정하기, 만들기, 넘기기, 읽고 쓰기, 다음에 쓰기로 나뉩니다. 그 위에 명시적 입구 `/f-mode` 가 있습니다. 각 스킬은 결과, 넘지 않을 선, 완료 기준만 적습니다.
+fskill 은 gofenix 자신의 스킬 모음입니다. 일하는 방식은 [tw93/Waza](https://github.com/tw93/Waza) 에서 가져왔고, 이름은 가져오지 않았습니다. Waza 는 다른 사람의 이름입니다. 작업 스킬은 21개이며, 정하기, 만들기, 넘기기, 읽고 쓰기, 다음에 쓰기로 나뉩니다. 그 위에 명시적 입구 `/f-mode` 가 있습니다. 각 스킬은 결과, 넘지 않을 선, 완료 기준만 적습니다.
 
 호출은 명시적입니다. `/name` 또는 `$name`. 비슷한 뜻으로는 그 절차가 시작되지 않습니다.
 

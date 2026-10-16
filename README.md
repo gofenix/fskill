@@ -20,6 +20,8 @@ Each engineering habit gets an installed skill, a folder with reference docs, he
 | :--- | :--- | :--- |
 | [`/f-mode`](skills/f-mode/SKILL.md) | Route | Enter explicitly, then pick one skill below. Direct commands still work. |
 | [`/f-help`](skills/f-help/SKILL.md) | Help | Ask how fskill works, which skill to use, or how to customize it. |
+| [`/catchup`](skills/catchup/SKILL.md) | Report | Read-only progress and decisions awaiting you. |
+| [`/sharpen`](skills/sharpen/SKILL.md) | Decide | Calibrate the method, goal and constraints, then do the authorized task. |
 | [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Decide | Plan, interface, terms, cross-session map, slices, experiments, boundaries. |
 | [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Build | Approved task graph, root cause, one-metric experiments. |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Ship | Diff and release review, issue queue, verification guide. |
@@ -40,7 +42,7 @@ Direct commands stay explicit (`/think`, `$think`). `/f-mode` is the only router
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-One copy lands in `~/.agents/skills`, the shared skills directory. Claude Code is symlinked in; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI, and every other agent that reads that directory picks the twenty-two skills up as `/check`, `/think`, and so on. Agents with a private skills directory take their id after `-a` (for example `antigravity-cli` or `qwen-code`). Update with `npx skills update -g -y`. You can also tell your agent to install it:
+One copy lands in `~/.agents/skills`, the shared skills directory. Claude Code is symlinked in; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI, and every other agent that reads that directory picks the twenty-four skills up as `/check`, `/think`, and so on. Agents with a private skills directory take their id after `-a` (for example `antigravity-cli` or `qwen-code`). Update with `npx skills update -g -y`. You can also tell your agent to install it:
 > Install fskill for me by reading https://github.com/gofenix/fskill/blob/main/llms.txt
 
 **Host plugin**, if you prefer the host's own update command (skills are namespaced, `/fskill:check`)
@@ -141,7 +143,7 @@ Optional rules apply beyond skill invocations when installed into your agent's p
 
 ## Why
 
-fskill is gofenix's skill set. The working shape comes from [tw93/Waza](https://github.com/tw93/Waza); the name does not, because Waza belongs to someone else. There are twenty skills, in five groups: decide, build, ship, read and write, and leave something the next session can use. `/f-mode` is the explicit router on top of them. Each skill states the outcome, the lines it does not cross, and how you know it is done.
+fskill is gofenix's skill set. The working shape comes from [tw93/Waza](https://github.com/tw93/Waza); the name does not, because Waza belongs to someone else. There are twenty-one workflow skills, in five groups: decide, build, ship, read and write, and leave something the next session can use. `/f-mode` is the explicit router on top of them. Each skill states the outcome, the lines it does not cross, and how you know it is done.
 
 You enter a skill with `/name` or `$name`. A similar word does not start that workflow.
 
