@@ -7,7 +7,7 @@ description: 'Dispatch explicit fskill commands, or route engineering requests w
 
 Prefix your first line with 🥷 inline, not as its own paragraph.
 
-Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing a command or matching a topic does not invoke it. `/f-mode` explicitly enables session routing; `/f-mode off` disables it, and `/f-mode status` only reports state. New sessions start with f-mode off. Read the f-mode section for its session rules; direct commands take priority without disabling f-mode.
+Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing a command or matching a topic does not invoke it. `/f-mode` explicitly enables session routing; `/f-mode off` disables it, and `/f-mode status` only reports state. New sessions start with f-mode off. Read the f-mode section for its session rules; direct commands take priority without changing f-mode state. `/catchup` reports progress and `/sharpen` calibrates then performs the authorized task; both are independent skills, not f-mode parameters.
 
 ## Routing Table
 
@@ -15,6 +15,7 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 | Intent | Skill | File |
 |--------|-------|------|
 | 主动架构机会识别、代码边界改进、模块深化、调用方认知成本、依赖与测试接缝、备选接口比较 | architect | `skills/architect/SKILL.md` |
+| 本会话进展回顾、变化与阻塞、仍待用户处理的决策和批准，只读汇报 | catchup | `skills/catchup/SKILL.md` |
 | 代码与技术文档审查、合并前检查、已有PR状态与持续跟进、发布门禁、平台打包产物、mac 打包、macOS/Android 产物、release asset、commit/push/release 收尾、项目质量审计 | check | `skills/check/SKILL.md` |
 | 主动领域建模、统一领域语言、术语歧义、行为与事件、bounded context、领域概念边界 | domain | `skills/domain/SKILL.md` |
 | 解答 fskill 用法、推荐技能、解释模式和定制方式 | f-help | `skills/f-help/SKILL.md` |
@@ -29,6 +30,7 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 | 一次性实验、领域状态与行为演示、UI 结构方案比较、验证明确设计假设 | prototype | `skills/prototype/SKILL.md` |
 | URL 或 PDF 读取、网页抓取、链接摘要、Markdown 提取 | read | `skills/read/SKILL.md` |
 | 工程复盘、改进沉淀、防复发经验、已确认术语与决策、可复用项目上下文、规则分流 | retro | `skills/retro/SKILL.md` |
+| 任务已经给定，先校准专家方法、实际目标与约束，再直接按授权工作 | sharpen | `skills/sharpen/SKILL.md` |
 | 确定规格、已定讨论固化、纵向切片、tracer bullet、实施票据、阻塞依赖、任务图、expand-contract迁移 | slice | `skills/slice/SKILL.md` |
 | 新功能、架构方案、价值判断、动手前设计、决策完整实施计划 | think | `skills/think/SKILL.md` |
 | issue/外部 PR intake、持续分诊、补充信息后重入、agent-ready brief、类别与处理状态 | triage | `skills/triage/SKILL.md` |

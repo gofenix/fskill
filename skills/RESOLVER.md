@@ -1,6 +1,6 @@
 # fskill Skill Resolver
 
-20 个工作技能，加 f-mode 路由和 f-help 帮助入口。默认显式调用 `/name` 或 `$name`，话题相近不会启动流程。显式进入 `/f-mode` 后，当前会话内可按目标自动选技能；`/f-mode off` 退出。单条命令优先，不关闭 f-mode。
+21 个工作技能，加 catchup 汇报、f-mode 路由和 f-help 帮助入口。默认显式调用 `/name` 或 `$name`，话题相近不会启动流程。显式进入 `/f-mode` 后，当前会话内可按目标自动选技能；`/f-mode off` 退出。单条命令优先，不关闭 f-mode。
 
 ## 路由
 
@@ -8,11 +8,13 @@
 |------|------|
 | 用户显式进入 f-mode，按目标选技能，并按需读取工程原则 | `skills/f-mode/SKILL.md` |
 | 询问 fskill 用法、该选哪条、模式机制、安装排障或定制 | `skills/f-help/SKILL.md` |
+| 只读核对本会话进展、变化、阻塞及仍待用户处理的事项 | `skills/catchup/SKILL.md` |
 
 ## 想清楚
 
 | 触发 | 技能 |
 |------|------|
+| 任务已经给定，校准方法、目标与约束后直接按授权工作 | `skills/sharpen/SKILL.md` |
 | 把想法收成能执行的计划，包含追问和值不值得做 | `skills/think/SKILL.md` |
 | 从需求设计新界面，或评审、打磨现有页面、组件与截图 | `skills/ui/SKILL.md` |
 | 一个词或一种行为的边界说不清，而且挡着当前决定 | `skills/domain/SKILL.md` |

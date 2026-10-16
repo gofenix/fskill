@@ -52,7 +52,7 @@ CLAUDE_MARKETPLACE_TOP = {
     "name": "fskill",
     "description": (
         "Personal skill collection for Claude Code, Codex, Antigravity, "
-        "OpenCode, and Pi. Twenty workflow skills plus /f-help for guidance "
+        "OpenCode, and Pi. Workflow skills with /catchup reporting, /sharpen task calibration, and /f-help for guidance "
         "and explicit /f-mode session routing. Direct commands remain available."
     ),
     "owner": {
@@ -80,13 +80,15 @@ AUTHOR = {
 }
 
 CODEX_DESCRIPTION = (
-    "Engineering workflow skills for Codex. Twenty workflow skills plus "
+    "Engineering workflow skills for Codex, with /catchup reporting, /sharpen task calibration, and "
     "/f-help guidance and explicit /f-mode session routing. Direct commands remain available."
 )
 # Shared durable-context preamble: source of truth in rules/, copied into each
 # referencing skill's references/ so direct installs resolve the link locally.
 DURABLE_CONTEXT_RULE = Path("rules/durable-context.md")
 DURABLE_CONTEXT_COPY = Path("references/durable-context.md")
+DELEGATION_BUDGET_RULE = Path("rules/delegation-budget.md")
+DELEGATION_BUDGET_COPY = Path("references/delegation-budget.md")
 
 
 def read_version(root: Path) -> str:
@@ -174,7 +176,7 @@ def build_codex_plugin(version: str) -> dict:
             "displayName": "fskill",
             "shortDescription": "Engineering workflow skills for Codex",
             "longDescription": (
-                "fskill packages twenty engineering skills in five groups: "
+                "fskill packages engineering skills in five groups: "
                 "decide, build, ship, read and write, and leave something "
                 "the next session can use. /f-help explains the toolkit. /f-mode routes only after you "
                 "enter it. Enter any skill with /name or $name. A similar "
@@ -358,12 +360,14 @@ def collect_skill_shared_assets(root: Path) -> dict[str, bytes]:
     """Per-skill copies of shared assets that direct installs need locally.
 
     `npx skills add` copies only each skill directory, so every skill whose
-    SKILL.md links the shared durable-context preamble carries a references/
-    copy of it.
+    SKILL.md links a shared durable-context or delegation-budget rule carries
+    a references/ copy of it.
     """
     generated: dict[str, bytes] = {}
     durable_source = root / DURABLE_CONTEXT_RULE
     durable_bytes = durable_source.read_bytes() if durable_source.exists() else None
+    budget_source = root / DELEGATION_BUDGET_RULE
+    budget_bytes = budget_source.read_bytes() if budget_source.exists() else None
     license_source = root / "LICENSE"
     license_bytes = license_source.read_bytes() if license_source.exists() else None
     for skill_file in sorted((root / "skills").glob("*/SKILL.md")):
@@ -379,6 +383,13 @@ def collect_skill_shared_assets(root: Path) -> dict[str, bytes]:
                     f"{DURABLE_CONTEXT_RULE} does not exist"
                 )
             generated[(skill_dir / DURABLE_CONTEXT_COPY).as_posix()] = durable_bytes
+        if DELEGATION_BUDGET_COPY.as_posix() in skill_file.read_text():
+            if budget_bytes is None:
+                raise SystemExit(
+                    f"ERROR: {skill_file} links {DELEGATION_BUDGET_COPY} but "
+                    f"{DELEGATION_BUDGET_RULE} does not exist"
+                )
+            generated[(skill_dir / DELEGATION_BUDGET_COPY).as_posix()] = budget_bytes
     for name in ("f-mode", "f-help"):
         entrypoint = root / f"skills/{name}/SKILL.md"
         if entrypoint.exists() and "references/routing.md" in entrypoint.read_text():
@@ -395,6 +406,8 @@ def shared_asset_source(rel: str) -> str:
         return "LICENSE"
     if rel in ("skills/f-mode/references/routing.md", "skills/f-help/references/routing.md"):
         return "skills/RESOLVER.md"
+    if rel.endswith("/references/delegation-budget.md"):
+        return DELEGATION_BUDGET_RULE.as_posix()
     return DURABLE_CONTEXT_RULE.as_posix()
 
 

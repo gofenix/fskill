@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "fskill",
-  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi. Twenty workflow skills plus /f-help for guidance and explicit /f-mode session routing. Direct commands remain available.",
+  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi. Workflow skills with /catchup reporting, /sharpen task calibration, and /f-help for guidance and explicit /f-mode session routing. Direct commands remain available.",
   "owner": {
     "name": "gofenix",
     "email": "gofenix@users.noreply.github.com"
@@ -21,6 +21,18 @@
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/architect",
+      "homepage": "https://github.com/gofenix/fskill",
+      "skills": [
+        "./"
+      ],
+      "strict": false
+    },
+    {
+      "name": "fskill-catchup",
+      "description": "只读核对本会话的变化、当前进展与待用户事项，给出简短汇报。在显式调用 /catchup、$catchup 或已开启的 f-mode 选中时使用。不用于交接文档、重新启动工作或执行待决操作。",
+      "version": "3.39.0",
+      "category": "development",
+      "source": "./skills/catchup",
       "homepage": "https://github.com/gofenix/fskill",
       "skills": [
         "./"
@@ -189,6 +201,18 @@
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/retro",
+      "homepage": "https://github.com/gofenix/fskill",
+      "skills": [
+        "./"
+      ],
+      "strict": false
+    },
+    {
+      "name": "fskill-sharpen",
+      "description": "开工前校准方法、真实目标和约束，再按已有授权完成任务。在显式调用 /sharpen、$sharpen 或已开启的 f-mode 选中时使用。不用于只要复述理解、完整实施计划或提示词改写。",
+      "version": "3.39.0",
+      "category": "development",
+      "source": "./skills/sharpen",
       "homepage": "https://github.com/gofenix/fskill",
       "skills": [
         "./"

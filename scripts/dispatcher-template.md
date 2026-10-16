@@ -7,7 +7,7 @@ description: 'Dispatch explicit fskill commands, or route engineering requests w
 
 Prefix your first line with 🥷 inline, not as its own paragraph.
 
-Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing a command or matching a topic does not invoke it. `/f-mode` explicitly enables session routing; `/f-mode off` disables it, and `/f-mode status` only reports state. New sessions start with f-mode off. Read the f-mode section for its session rules; direct commands take priority without disabling f-mode.
+Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing a command or matching a topic does not invoke it. `/f-mode` explicitly enables session routing; `/f-mode off` disables it, and `/f-mode status` only reports state. New sessions start with f-mode off. Read the f-mode section for its session rules; direct commands take priority without changing f-mode state. `/catchup` reports progress and `/sharpen` calibrates then performs the authorized task; both are independent skills, not f-mode parameters.
 
 ## Routing Table
 
