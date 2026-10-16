@@ -33,6 +33,8 @@ dispatch_intent: "批准任务图实施、ready frontier、coordinator、隔离w
 
 进入实施或恢复前读取 [编排与恢复](references/orchestration.md)。只有用户要求 test-first、风险需要回归测试或现有测试需要扩展时，读取 [行为验证](references/testing.md)；TDD 不独立成技能，也不强制用于每张票。
 
+实际委派前读取 [委派预算](references/delegation-budget.md)，按任务难度与风险选择宿主和授权允许的单次参数；不因配置了预算就获得委派权限。
+
 先读取项目已有 `AGENTS.md`、相关 docs 和 tracker 映射，沿用领域术语、验证入口和已有批准。缺少 tracker 配置时用本地 Markdown 与协调账本，不要求 setup。缺少已批准范围或可验收票据时，指出最小缺口；不把普通代码请求自行扩展成任务图编排。
 
 ## 实施流程

@@ -10,6 +10,31 @@ import pytest
 import build_metadata as bm
 
 
+def test_delegation_policy_copies_follow_source_and_only_linking_skills(tmp_path):
+    for name, body in (("worker", "Read references/delegation-budget.md"), ("reader", "Read sources")):
+        directory = tmp_path / "skills" / name
+        directory.mkdir(parents=True)
+        (directory / "SKILL.md").write_text(body)
+    source = tmp_path / "rules/delegation-budget.md"
+    source.parent.mkdir()
+    source.write_bytes(b"original policy\n")
+    assets = bm.collect_skill_shared_assets(tmp_path)
+    target = "skills/worker/references/delegation-budget.md"
+    assert assets[target] == b"original policy\n"
+    assert "skills/reader/references/delegation-budget.md" not in assets
+    source.write_bytes(b"updated policy\n")
+    assert bm.collect_skill_shared_assets(tmp_path)[target] == b"updated policy\n"
+    assert bm.shared_asset_source(target) == "rules/delegation-budget.md"
+
+
+def test_missing_delegation_policy_fails_instead_of_shipping_broken_reference(tmp_path):
+    directory = tmp_path / "skills/worker"
+    directory.mkdir(parents=True)
+    (directory / "SKILL.md").write_text("Read references/delegation-budget.md")
+    with pytest.raises(SystemExit, match="rules/delegation-budget.md does not exist"):
+        bm.collect_skill_shared_assets(tmp_path)
+
+
 def test_notices_follow_license_updates_for_every_standalone_skill(tmp_path):
     for name in ("read", "f-mode"):
         directory = tmp_path / "skills" / name

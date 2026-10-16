@@ -87,7 +87,7 @@ fskill 的审查能力必须独立、公开、可移植，不依赖私有机器�
 
 规范和需求是两个独立视角：符合项目标准不能证明需求做对，满足需求也不能豁免规范。按需求逐项找实现与验证，再从代码检查规范、回归和额外行为。复杂变更可分别委派，最终按严重度合并同根因发现，不强制两名 reviewer 或固定篇幅。
 
-diff 涉及安全前提、重复故障、视觉对比、异步完成、删减归并、安装与重试、破坏性匹配、重复计算、测试路径失真或依赖变更时，按需读取 [references/review-patterns.md](references/review-patterns.md) 的对应段落；复杂独立审查的分片与裁决也在该参考。TypeScript 变更按需读取 [references/typescript.md](references/typescript.md)，沿目标项目的类型、解析与兼容约定检查。
+diff 涉及安全前提、重复故障、视觉对比、异步完成、删减归并、安装与重试、破坏性匹配、重复计算、测试路径失真、依赖变更或验证门槛调整时，按需读取 [references/review-patterns.md](references/review-patterns.md) 的对应段落；复杂独立审查的分片与裁决也在该参考。实际委派 reviewer 前读取 [委派预算](references/delegation-budget.md)，配置不授予委派权限。TypeScript 变更按需读取 [references/typescript.md](references/typescript.md)，沿目标项目的类型、解析与兼容约定检查。
 
 问题格式：
 

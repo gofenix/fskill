@@ -8,6 +8,7 @@
 | 质疑前提 | 多个修法在同一门槛失败 | `hunt` | references/logging-techniques.md |
 | 真实验收 | 准备声称功能、产物或流程已经完成 | `check` | SKILL.md 的“验证” |
 | 行为测试 | 新增、修改测试或判断测试价值 | `implement` | references/testing.md |
+| 委派预算 | 已获准委派，需按任务难度与风险选择可用推理预算 | `implement` | references/delegation-budget.md |
 | 解释数字 | 依据性能、成本或评测数字作决定 | `optimize` | references/measurement.md |
 | 结构性防复发 | 本任务已包含复盘或防复发，且有已验证的纠偏或复发证据 | `retro` | references/structural-prevention.md |
 

@@ -69,6 +69,8 @@ Agent 配置 -> 指令面 -> 工具与运行时 -> 验证器 -> 可维护性
 
 每份检查提示词都要带着具体问题读，不要把它们当作固定仪式。
 
+实际委派 inspector 前读取 [委派预算](references/delegation-budget.md)，仍限于本次获准的只读审计，不因预算规则扩大扫描或启动检查者。
+
 指令反复被误读、阶段过早结束或 reference 未被正确加载时，读取 `references/instruction-design.md`。检查指针、阶段完成条件与执行层；委派时把适用指导和原始证据一起给 inspector，其结论仍受本技能只报告的边界约束。
 
 辅助脚本：
