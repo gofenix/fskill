@@ -1,21 +1,21 @@
-# Durable Context Preflight
+# 长期上下文预检
 
-Shared preamble for every skill that reads optional memory or prior-decision context. Each `SKILL.md` links to this file and then adds skill-specific guidance.
+供需要选读记忆或历史决策的技能共用。各技能的 `SKILL.md` 引用此文件，再补充自身的使用规则。
 
-## Scope
+## 读取范围
 
-Read durable context when the user names memory, a prior decision, or a memory path, or when the project exposes an obvious local memory summary (a `MEMORY.md` or a documented memory directory). List titles first and open at most one or two summaries; do not hard-code machine-specific memory roots, and do not read raw transcripts. Treat cross-project entries as transferable patterns, not as facts about this project.
+用户提到记忆、历史决策或记忆路径，或项目有明确的本地记忆摘要（`MEMORY.md` 或文档说明的记忆目录）时，读取长期上下文。先列标题，最多打开一两份摘要；不硬编码某台机器的记忆根目录，不读取原始对话记录。跨项目条目只作为可借鉴的模式，不当作当前项目的事实。
 
-## Current state wins
+## 当前现场优先
 
-Current code, diff, screenshots, logs, tests, docs, CI, remote state, and live probes always override memory, including memory the runtime injects on its own. A remembered fact is a lead to re-verify, never evidence. When current state conflicts with a remembered claim, name the conflict and follow current state.
+当前代码、diff、截图、日志、测试、文档、CI、远端状态和实时探查优先于记忆，包括运行时自动注入的记忆。记忆中的事实只能作为重新核实的线索，不能作为证据。现场与记忆冲突时，说明冲突，以现场为准。
 
-## Memory is not authorization
+## 记忆不授予权限
 
-Memory may explain preferences, but it must never grant or broaden authorization for writes, commits, pushes, publishing, public replies, deletion, or other state changes. Live task instructions and current project rules decide authorization, including explicit authorization still in force for the same unfinished goal. Historical phrases such as `push` or `check` are context to re-evaluate, not reusable action tokens.
+记忆可以说明偏好，但不得授予或扩大写入、提交、推送、发布、公开回复、删除等状态变更的权限。权限由当前任务指令和项目规则决定，包括同一未完成目标下仍然有效的明确授权。历史记录里的 `push`、`check` 等用语需要结合当前任务重新判断，不能直接当作本轮授权。
 
-## Redaction gate
+## 脱敏边界
 
-When turning prior chats, durable memory, or cross-project notes into reusable fskill guidance, promote only workflow rules. Strip raw transcript text, screenshots, local paths, project-specific commands, issue or PR numbers, release tags, commit hashes, private product boundaries, paid or license details, support routing, user names, and one-machine state.
+把历史聊天、长期记忆或跨项目笔记整理为可复用的 fskill 指导时，只提炼工作流规则。移除原始对话文本、截图、本地路径、项目专用命令、issue 或 PR 编号、发布标签、提交哈希、私有产品边界、付费或许可细节、支持渠道、用户名，以及单台机器的状态。
 
-If an example is necessary, use neutral placeholders such as `ExampleCLI`, `ExampleApp`, `<issue>`, `<release>`, or `<command>`. Do not copy a private answer, maintainer reply, screenshot observation, or project-specific incident as a durable rule.
+确需举例时，使用 `ExampleCLI`、`ExampleApp`、`<issue>`、`<release>`、`<command>` 等中性占位符。不把私密回答、维护者回复、截图观察或某个项目的具体事件直接写成长效规则。

@@ -1,34 +1,34 @@
-# fskill Routing
+# fskill 路由
 
-fskill ships twenty-one workflow skills plus catchup reporting, f-mode routing and f-help guidance. Outside f-mode, call a skill with `/name` or `$name`. Explicit `/f-mode` enables routing for the current session; `/f-mode off` disables it, `/f-mode status` reports it. Direct commands take priority without changing f-mode state. New sessions start off. A similar word or quoted command does not enter f-mode. Read f-mode before routing, and load only the selected skill. Routing never expands action authorization.
+fskill 提供 21 个工作流技能，以及 catchup 进展汇报、f-mode 路由和 f-help 使用指南。未开启 f-mode 时，用 `/name` 或 `$name` 调用技能。显式输入 `/f-mode` 后，为当前会话开启路由；`/f-mode off` 关闭路由，`/f-mode status` 查询状态。直接命令优先，不改变 f-mode 的开关。新会话默认关闭路由。相似词或引用的命令不会开启 f-mode。路由前先读取 f-mode，只加载选中的技能。路由不扩大操作权限。
 
-| skill      | use when                                                                 |
-|------------|--------------------------------------------------------------------------|
-| f-mode    | explicit session controls or routing after entry                         |
-| f-help | explain fskill usage, choose a skill, or answer setup and customization questions |
-| catchup | read-only progress, changes, blockers and decisions awaiting the user |
-| sharpen | calibrate the method, goal and constraints, then do the authorized task |
-| think      | turn an idea into an executable plan                                     |
-| ui         | pages, components, and screenshot polish                                 |
-| domain     | a term or behavior boundary is blocking a decision                       |
-| map        | the goal spans sessions and the route is still unclear                   |
-| slice      | the spec is settled and needs vertical slices                            |
-| prototype  | a throwaway experiment for one hypothesis                                |
-| architect  | decide whether a code boundary should split, merge, or deepen            |
-| implement  | carry out an approved task graph                                         |
-| hunt       | something is already broken; prove the cause before fixing               |
-| optimize   | one metric is fixed; try one hypothesis at a time                        |
-| check      | review a diff, a spec, or the state before merge, push, or release       |
-| triage     | sort an issue or external PR queue                                       |
-| verify     | maintain the project's verification guide and harness                    |
-| read       | fetch one URL or PDF                                                     |
-| learn      | research an unfamiliar domain, codebase, or decision history             |
-| write      | rewrite prose and remove AI tone                                         |
-| handoff    | hand off or resume the current session                                   |
-| retro      | write down a verified lesson that would change the next run              |
-| health     | audit agent config, instruction drift, and hooks                         |
-| wizard     | guide a setup or migration a person must perform                         |
+| 技能 | 使用场景 |
+|---|---|
+| f-mode | 显式控制会话路由，或开启后按目标选择技能 |
+| f-help | 了解 fskill 用法、选择技能，或询问安装与定制 |
+| catchup | 只读核对进展、变化、阻塞和待用户决定的事项 |
+| sharpen | 校准方法、目标与约束，再完成已授权的任务 |
+| think | 把想法变成可执行计划 |
+| ui | 构建页面、组件，并按截图打磨视觉 |
+| domain | 术语或行为边界阻碍决策 |
+| map | 目标跨多个会话，推进路线还不清楚 |
+| slice | 规格已经确定，需要拆成纵向切片 |
+| prototype | 用可丢弃的实验检验一个假设 |
+| architect | 判断代码边界是否需要拆分、合并或加深 |
+| implement | 执行已批准的任务图 |
+| hunt | 已有故障，修复前先证明根因 |
+| optimize | 指标已经确定，每次检验一个假设 |
+| check | 审查 diff、规格，或核对合并、推送、发布前的状态 |
+| triage | 分类处理 issue 或外部 PR 队列 |
+| verify | 维护项目验证指南和验证工具 |
+| read | 抓取一个 URL 或 PDF |
+| learn | 研究陌生领域、代码库或决策历史 |
+| write | 改写文案，去掉 AI 味 |
+| handoff | 交接或恢复当前会话 |
+| retro | 记录经过验证、能改变下次做法的经验 |
+| health | 审计 Agent 配置、指令漂移和 hooks |
+| wizard | 指导必须由人完成的配置或迁移 |
 
-When two skills both match, read both SKILL.md exclusion lines. Still ambiguous, ask the user.
+两个技能都匹配时，读取各自 `SKILL.md` 的排除范围。仍无法判断，再询问用户。
 
-Full routing table: <https://github.com/gofenix/fskill/blob/main/skills/RESOLVER.md>
+完整路由表：<https://github.com/gofenix/fskill/blob/main/skills/RESOLVER.md>

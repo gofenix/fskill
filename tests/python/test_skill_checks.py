@@ -14,6 +14,8 @@ from skill_checks import (
     check_codex_plugin,
     check_context_classifier_literals,
     check_description_conformance,
+    check_durable_context,
+    check_english_coaching_guard,
     check_markdown_links,
     check_no_automatic_update_checks,
     check_outcome_contract,
@@ -405,6 +407,65 @@ def test_anti_patterns_contract_rejects_stale_specialization(tmp_path, capsys):
     with pytest.raises(SystemExit):
         check_anti_patterns_contract(tmp_path)
     assert "ANTI-PATTERN STALE SPECIALIZATION" in capsys.readouterr().err
+
+
+# ---- localized rule guards ----------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "guards",
+    [
+        ("Chinese-only messages", "already-natural English, stay silent"),
+        ("纯中文消息不附加纠正", "已经自然的英文不附加纠正"),
+    ],
+)
+def test_english_coaching_accepts_each_language(tmp_path, guards):
+    rules = tmp_path / "rules"
+    rules.mkdir()
+    rule = rules / "english.md"
+    rule.write_text("\n".join(guards))
+
+    check_english_coaching_guard(tmp_path)
+
+
+@pytest.mark.parametrize(
+    "guards",
+    [
+        ("Chinese-only messages", "already-natural English, stay silent"),
+        ("纯中文消息不附加纠正", "已经自然的英文不附加纠正"),
+    ],
+)
+@pytest.mark.parametrize("missing_index", [0, 1])
+def test_english_coaching_rejects_each_missing_guard(tmp_path, guards, missing_index, capsys):
+    rules = tmp_path / "rules"
+    rules.mkdir()
+    (rules / "english.md").write_text(guards[1 - missing_index])
+
+    with pytest.raises(SystemExit):
+        check_english_coaching_guard(tmp_path)
+
+    assert "ENGLISH COACHING GUARD" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("guard", ["do not read raw transcripts", "不读取原始对话记录"])
+def test_durable_context_accepts_each_language(tmp_path, guard):
+    rules = tmp_path / "rules"
+    rules.mkdir()
+    (rules / "durable-context.md").write_text(guard)
+
+    check_durable_context(tmp_path, [])
+
+
+@pytest.mark.parametrize("prose", ["Read local summaries.", "只读本地摘要。"])
+def test_durable_context_rejects_missing_transcript_guard(tmp_path, prose, capsys):
+    rules = tmp_path / "rules"
+    rules.mkdir()
+    (rules / "durable-context.md").write_text(prose)
+
+    with pytest.raises(SystemExit):
+        check_durable_context(tmp_path, [])
+
+    assert "SHARED RULE MAY OVERREAD" in capsys.readouterr().err
 
 
 # ---- check_context_classifier_literals -----------------------------------

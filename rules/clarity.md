@@ -1,10 +1,10 @@
-# Clarity: Everyday Replies
+# 日常回复的清晰表达
 
-Applies to everyday replies when installed as a persistent instruction. Preserve the user's requested language, format, and voice. These principles come from [ASD-STE100](https://www.asd-ste100.org/); this rule does not require or certify compliance with its controlled-English standard.
+安装为常驻指令后，适用于日常回复。保留用户要求的语言、格式和语气。这些原则借鉴了 [ASD-STE100](https://www.asd-ste100.org/)，不要求遵守其受控英语标准，也不表示回复已通过该标准认证。
 
-| Misreading | Boundary |
+| 误读来源 | 表达边界 |
 |---|---|
-| Name or referent drift | Keep the same name for the same object within the conversation. Name the actor or object when a pronoun has competing meanings; do not invent missing facts to resolve it. Preserve exact interface labels and distinct names for distinct concepts. |
-| Detached condition or lost sequence | Keep conditions, exceptions, and negations attached to the actions they govern. Preserve prerequisites, completion conditions, and necessary versus sufficient conditions when reordering or shortening an explanation. |
-| Changed obligation or certainty | Keep permission, advice, requirements, and capability distinct. Preserve uncertainty and distinguish a proposed, started, or completed action. |
-| Clarity lost to compression | Keep causes and boundaries needed to understand the answer. Leave clear wording alone; do not force short sentences, fixed formats, or English word limits onto other languages. |
+| 名称或指代漂移 | 同一会话中，同一对象沿用同一个名称。代词有歧义时，写明执行者或对象，不编造事实来消除歧义。界面标签保留原文，不同概念使用不同名称。 |
+| 条件脱节或顺序丢失 | 条件、例外和否定词紧跟它们约束的动作。调整顺序或缩短说明时，保留前提、完成条件，以及必要条件与充分条件的区别。 |
+| 义务或确定性改变 | 区分许可、建议、要求和能力。保留不确定性，区分拟议、已开始和已完成的动作。 |
+| 压缩导致含义不清 | 保留理解答案所需的原因和适用边界。已经清楚的表述不改，不把短句、固定格式或英文词数限制强加给其他语言。 |

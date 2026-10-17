@@ -264,7 +264,7 @@ def check_durable_context(root: Path, skill_files: list[Path]):
             f"  Durable context preamble must live at rules/durable-context.md."
         )
     rules_text = rules_path.read_text().lower()
-    if "raw transcripts" not in rules_text:
+    if not any(marker in rules_text for marker in ("raw transcripts", "不读取原始对话记录")):
         fail(
             f"SHARED RULE MAY OVERREAD: {rules_path}\n"
             f"  rules/durable-context.md must forbid reading raw transcripts by default."
@@ -539,11 +539,11 @@ def check_english_coaching_guard(root: Path):
     if not english_rule.exists():
         fail(f"MISSING {english_rule}")
     text = english_rule.read_text()
-    missing = []
-    if "Chinese-only messages" not in text:
-        missing.append("'Chinese-only messages'")
-    if "already-natural English, stay silent" not in text:
-        missing.append("'already-natural English, stay silent'")
+    guards = (
+        ("Chinese-only messages", "纯中文消息不附加纠正"),
+        ("already-natural English, stay silent", "已经自然的英文不附加纠正"),
+    )
+    missing = [" / ".join(markers) for markers in guards if not any(marker in text for marker in markers)]
     if missing:
         fail(
             "ENGLISH COACHING GUARD: rules/english.md must suppress no-op output. "

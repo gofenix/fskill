@@ -53,9 +53,9 @@ for safe_pr_command in \
   }
 done
 
-grep -q 'Read-only request as write authorization' "$rules"
-grep -q '## Memory is not authorization' "$durable_context"
-grep -q 'must never grant or broaden authorization' "$durable_context"
+grep -q '把只读请求当作写入授权' "$rules"
+grep -q '## 记忆不授予权限' "$durable_context"
+grep -q '不得授予或扩大' "$durable_context"
 grep -q 'git status --short --branch -uall' "$rules"
 grep -q '读取 diff，基于证据报告问题' "$skill"
 grep -q '修改前按自动修复边界核对授权' "$skill"
