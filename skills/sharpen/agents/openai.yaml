@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill sharpen"
-  short_description: "校准方法、目标和约束后，直接按授权完成任务"
-  default_prompt: "使用 $sharpen 校准当前任务的做法，并完成已授权的工作。"
-policy:
-  allow_implicit_invocation: false
