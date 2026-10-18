@@ -83,9 +83,9 @@ sharpen 不交回改写后的提示词，不增加固定问卷或批准轮次，
 
 源码只有仓库顶层 `skills/<name>/` 一份。正文改 `SKILL.md`，按需材料进 `references/`，确定性逻辑进 `scripts/`。通用行为规则在 `rules/`；项目约束留在目标项目。
 
-改作用域或触发词时同步 `skills/RESOLVER.md`。在仓库根运行 `make regenerate` 更新清单、路由副本和统一许可声明，再运行 `make test`；需要分发时用 `make package` 生成 ZIP。不要重建 `plugins/fskill` 技能镜像，也不要手改生成的路由或 NOTICE.md。修改仓库后，按实际渠道更新安装副本。
+改作用域或触发词时同步 `skills/RESOLVER.md`。在仓库根运行 `make regenerate` 更新清单和路由副本，再运行 `make test`；需要分发时用 `make package` 生成 ZIP。不要重建 `plugins/fskill` 技能镜像，也不要手改生成的路由副本。修改仓库后，按实际渠道更新安装副本。
 
-复盘已经验证的纠偏可用 `/retro`；不要把一次临时任务或未经验证的猜测固化成全局规则。许可证维护源是根 LICENSE，单技能携带生成的 NOTICE.md；致谢不替代原许可声明。
+复盘已经验证的纠偏可用 `/retro`；不要把一次临时任务或未经验证的猜测固化成全局规则。完整许可与来源署名集中维护在根目录 `LICENSE`；致谢不替代原许可声明。
 
 ## 工程原则与工作流
 

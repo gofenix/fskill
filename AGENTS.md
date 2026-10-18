@@ -22,7 +22,7 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty-on
 - `rules/delegation-budget.md` - shared delegation policy, generated into each linking skill, for example `skills/implement/references/delegation-budget.md`, so direct installs remain self-contained. Edit the rule, not its copies.
 - `skills/f-help/references/guide.md` - usage guide for setup, session routing, troubleshooting, customization, and engineering principles.
 - `skills/*/SKILL.md` - individual skill entrypoints. `catchup` reports progress and `sharpen` calibrates then performs an authorized task; both are standalone skills, not f-mode parameters.
-- `LICENSE` - canonical MIT license, third-party Apache-2.0 terms, upstream copyright notices, and acknowledgements. UI adaptations credit Impeccable, taste-skill, and Emil Kowalski's apple-design. `make regenerate` copies it verbatim to every `skills/<name>/NOTICE.md`; edit the root file only. The notice filename survives Multica imports that filter LICENSE files.
+- `LICENSE` - canonical MIT license, third-party Apache-2.0 terms, upstream copyright notices, and acknowledgements, maintained once at the repository root. UI adaptations credit Impeccable, taste-skill, and Emil Kowalski's apple-design. Do not duplicate the license under individual skills.
 - `skills/*/agents/` - specialist reviewer or inspector prompts.
 - `skills/*/references/` - supporting references loaded only when needed.
 - `skills/*/scripts/` - deterministic helper scripts.
@@ -32,7 +32,7 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty-on
 - `.codex-plugin/plugin.json` - **generated** Codex plugin manifest. `skills` is `./skills/`. Do not add a `plugins/fskill` copy of the skill tree.
 - `packaging.allowlist` - default-deny list of paths that ship in `fskill.zip`. New shippable assets must be added here explicitly; everything else is excluded.
 - `.github/workflows/` - public test and release automation. `release.yml` runs `make test` before `make package` so the tagged commit is gated by the same suite as PRs.
-- `scripts/build_metadata.py` - codegen for marketplace and plugin metadata, README install URLs, skill-local license notices and durable-context copies, and installer-script `FSKILL_REF` defaults. Run via `make regenerate`; CI checks drift via `make verify-generated`.
+- `scripts/build_metadata.py` - codegen for marketplace and plugin metadata, README install URLs, skill-local shared-context copies, and installer-script `FSKILL_REF` defaults. Run via `make regenerate`; CI checks drift via `make verify-generated`.
 - `scripts/verify_skills.py` - the only validator entrypoint; a driver over the check inventory in `scripts/skill_checks.py` (content, distribution, and routing checks). The facade's import list is the canonical inventory; do not re-enumerate it here.
 - `scripts/package-skill.sh` + `scripts/packaging_filter.py` - build `dist/fskill.zip` from `packaging.allowlist`.
 - `scripts/setup-rule.sh` + `scripts/setup-statusline.sh` - public install helpers; `FSKILL_REF` defaults are codegen-pinned to the current release tag.
@@ -141,7 +141,7 @@ Use this path for any new skill or meaningful behavior change:
 - `scripts/package-skill.sh` builds a public archive with exactly one generated root `SKILL.md`; nested `skills/*/SKILL.md` files are inlined for packaged installs.
 - Do not make packaged skills resolve scripts or references through personal home-directory caches or machine paths. Resolve relative to the installed fskill directory.
 - Rules under `rules/` are shared public behavior, not project-private memory.
-- Every standalone skill and packaged distribution carries the complete unified notice. Credits supplement the preserved copyright and MIT permission text. Never replace upstream copyright holders with the fskill maintainer's name.
+- Keep the complete unified license at the repository root and include it once at the root of packaged distributions. Credits supplement the preserved copyright and MIT permission text. Never replace upstream copyright holders with the fskill maintainer's name.
 
 ## Verification
 

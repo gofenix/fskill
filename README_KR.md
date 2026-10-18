@@ -164,4 +164,4 @@ rm -f ~/.claude/rules/clarity.md
 
 ## 라이선스
 
-MIT이며 UI 참고 자료에는 Apache-2.0 자료가 포함됩니다. [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills), [pstack](https://github.com/cursor/plugins/tree/main/pstack)에 감사합니다. UI 방법은 [Impeccable](https://github.com/pbakaus/impeccable), [taste-skill](https://github.com/Leonxlnx/taste-skill), [apple-design](https://github.com/emilkowalski/skills)도 번역하고 재구성했습니다. 원본 버전, 변경 사항과 전체 라이선스는 [LICENSE](LICENSE)에서 관리하며 `make regenerate`가 각 스킬의 `NOTICE.md`에 복사합니다. 개별 설치와 Multica에도 포함됩니다. gofenix의 표기는 독자적인 추가 및 수정에, 원저자의 표기는 각 재사용 자료에 적용됩니다.
+MIT이며 UI 참고 자료에는 Apache-2.0 자료가 포함됩니다. [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills), [pstack](https://github.com/cursor/plugins/tree/main/pstack)에 감사합니다. UI 방법은 [Impeccable](https://github.com/pbakaus/impeccable), [taste-skill](https://github.com/Leonxlnx/taste-skill), [apple-design](https://github.com/emilkowalski/skills)도 번역하고 재구성했습니다. 원본 버전, 변경 사항과 전체 라이선스는 루트 [LICENSE](LICENSE)에서 관리합니다. gofenix의 표기는 독자적인 추가 및 수정에, 원저자의 표기는 각 재사용 자료에 적용됩니다.

@@ -164,4 +164,4 @@ rm -f ~/.claude/rules/clarity.md
 
 ## 许可证
 
-MIT 许可，UI 参考含 Apache-2.0 材料。感谢 [Waza](https://github.com/tw93/Waza)、[Matt Pocock skills](https://github.com/mattpocock/skills)、[pstack](https://github.com/cursor/plugins/tree/main/pstack)。UI 方法还吸收了 [Impeccable](https://github.com/pbakaus/impeccable)、[taste-skill](https://github.com/Leonxlnx/taste-skill) 和 [apple-design](https://github.com/emilkowalski/skills)。来源版本、改写说明与完整许可统一维护在根目录 [LICENSE](LICENSE)，`make regenerate` 为每个技能生成同内容的 `NOTICE.md`，以便单独安装和 Multica 导入时保留。gofenix 的署名对应原创新增和修改，上游署名对应各自沿用的材料。
+MIT 许可，UI 参考含 Apache-2.0 材料。感谢 [Waza](https://github.com/tw93/Waza)、[Matt Pocock skills](https://github.com/mattpocock/skills)、[pstack](https://github.com/cursor/plugins/tree/main/pstack)。UI 方法还吸收了 [Impeccable](https://github.com/pbakaus/impeccable)、[taste-skill](https://github.com/Leonxlnx/taste-skill) 和 [apple-design](https://github.com/emilkowalski/skills)。来源版本、改写说明与完整许可统一维护在根目录 [LICENSE](LICENSE)。gofenix 的署名对应原创新增和修改，上游署名对应各自沿用的材料。

@@ -164,4 +164,4 @@ rm -f ~/.claude/rules/clarity.md
 
 ## ライセンス
 
-MIT。UI の参考資料には Apache-2.0 の内容を含みます。[Waza](https://github.com/tw93/Waza)、[Matt Pocock skills](https://github.com/mattpocock/skills)、[pstack](https://github.com/cursor/plugins/tree/main/pstack) に感謝します。UI の手法は [Impeccable](https://github.com/pbakaus/impeccable)、[taste-skill](https://github.com/Leonxlnx/taste-skill)、[apple-design](https://github.com/emilkowalski/skills) も参考に翻訳・再構成しています。元の版、変更内容、完全なライセンスは [LICENSE](LICENSE) で管理し、`make regenerate` が各スキルの `NOTICE.md` にコピーします。単体インストールと Multica にも含まれます。gofenix の記載は独自の追加と変更、元の作者の記載はそれぞれ再利用した内容に適用されます。
+MIT。UI の参考資料には Apache-2.0 の内容を含みます。[Waza](https://github.com/tw93/Waza)、[Matt Pocock skills](https://github.com/mattpocock/skills)、[pstack](https://github.com/cursor/plugins/tree/main/pstack) に感謝します。UI の手法は [Impeccable](https://github.com/pbakaus/impeccable)、[taste-skill](https://github.com/Leonxlnx/taste-skill)、[apple-design](https://github.com/emilkowalski/skills) も参考に翻訳・再構成しています。元の版、変更内容、完全なライセンスはルートの [LICENSE](LICENSE) で管理します。gofenix の記載は独自の追加と変更、元の作者の記載はそれぞれ再利用した内容に適用されます。
