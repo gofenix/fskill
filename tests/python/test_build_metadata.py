@@ -35,7 +35,7 @@ def test_missing_delegation_policy_fails_instead_of_shipping_broken_reference(tm
         bm.collect_skill_shared_assets(tmp_path)
 
 
-def test_notices_follow_license_updates_for_every_standalone_skill(tmp_path):
+def test_shared_assets_do_not_copy_root_license_into_skills(tmp_path):
     for name in ("read", "f-mode"):
         directory = tmp_path / "skills" / name
         directory.mkdir(parents=True)
@@ -43,11 +43,10 @@ def test_notices_follow_license_updates_for_every_standalone_skill(tmp_path):
     license_file = tmp_path / "LICENSE"
     license_file.write_text("original notice\n")
     assets = bm.collect_skill_shared_assets(tmp_path)
-    assert assets["skills/read/NOTICE.md"] == assets["skills/f-mode/NOTICE.md"] == b"original notice\n"
+    assert not any(path.endswith("/NOTICE.md") for path in assets)
     license_file.write_text("updated notice\n")
     assets = bm.collect_skill_shared_assets(tmp_path)
-    assert assets["skills/read/NOTICE.md"] == assets["skills/f-mode/NOTICE.md"] == b"updated notice\n"
-    assert bm.shared_asset_source("skills/read/NOTICE.md") == "LICENSE"
+    assert not any(path.endswith("/NOTICE.md") for path in assets)
 
 
 @pytest.mark.parametrize("skill", ["f-mode", "f-help"])

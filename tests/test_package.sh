@@ -12,14 +12,13 @@ zipinfo -1 "$tmpdir/fskill.zip" >"$tmpdir/manifest"
 grep -qx 'SKILL.md' "$tmpdir/manifest"
 test "$(zipinfo -1 "$tmpdir/fskill.zip" | grep -ciE '(^|/)skill\.md$')" -eq 1
 
-# Root and standalone components retain the same complete license notice.
+# The complete license ships once, at the archive root.
 unzip -p "$tmpdir/fskill.zip" LICENSE > "$tmpdir/root-license"
 cmp "$ROOT/LICENSE" "$tmpdir/root-license"
-for source in "$ROOT"/skills/*/SKILL.md; do
-  skill="$(basename "$(dirname "$source")")"
-  unzip -p "$tmpdir/fskill.zip" "skills/$skill/NOTICE.md" > "$tmpdir/notice"
-  cmp "$ROOT/LICENSE" "$tmpdir/notice"
-done
+if grep -qiE '(^|/)NOTICE\.md$' "$tmpdir/manifest"; then
+  echo "package contains duplicate NOTICE.md files"
+  exit 1
+fi
 
 # RESOLVER.md is routing for direct installs; the ZIP root dispatcher already
 # inlines the routing table, so shipping it would be dead weight.
@@ -31,8 +30,6 @@ fi
 # Required helper scripts are bundled.
 for required in \
   skills/f-mode/references/principles.md \
-  skills/catchup/agents/openai.yaml \
-  skills/sharpen/agents/openai.yaml \
   skills/implement/references/delegation-budget.md \
   skills/check/scripts/audit_signals.py \
   skills/read/scripts/fetch.sh \

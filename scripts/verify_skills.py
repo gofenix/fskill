@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from skill_frontmatter import fail  # noqa: E402
 from skill_checks import (  # noqa: E402
-    check_license_notices,
+    check_root_license,
     check_anti_patterns_contract,
     check_attribution_leak,
     check_description_conformance,
@@ -78,7 +78,6 @@ def main() -> int:
     skill_names = set(skill_descriptions)
     check_description_conformance(skill_descriptions)
     check_outcome_contract(skill_files)
-    check_license_notices(root, skill_files)
     check_context_classifier_literals(root, skill_files)
     check_portable_invocations(root, skill_files)
     if (root / "rules" / "durable-context.md").exists():
@@ -90,6 +89,8 @@ def main() -> int:
         # marketplace.json, RESOLVER.md, or the repo README. Stop here.
         print(f"ok: skills-only verification passed for {len(skill_files)} skills")
         return 0
+
+    check_root_license(root)
 
     version_file = root / "VERSION"
     if not version_file.exists():

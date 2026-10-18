@@ -47,7 +47,6 @@ for source in "$ROOT"/skills/*/SKILL.md; do
     cat "$tmpdir/install.out" >&2
     exit 1
   fi
-  cmp "$ROOT/LICENSE" "$test_home/.claude/skills/$skill/NOTICE.md"
 done
 
 # Standalone mode installs cannot depend on the source repository's RESOLVER.
