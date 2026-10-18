@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill hunt"
-  short_description: "在修复前先找到错误、崩溃、回归、失败测试和异常行为的根因"
-  default_prompt: "使用 $hunt 完成用户显式选择的 fskill 工作流。"
-policy:
-  allow_implicit_invocation: false

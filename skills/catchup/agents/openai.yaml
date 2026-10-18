@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill catchup"
-  short_description: "只读核对进展、变化与待用户处理的事项"
-  default_prompt: "使用 $catchup 汇报本会话的进展与待决事项。"
-policy:
-  allow_implicit_invocation: false

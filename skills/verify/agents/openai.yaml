@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill verify"
-  short_description: "建立并维护项目可复用的验证指南、操作 harness 和用户功能地图"
-  default_prompt: "使用 $verify 完成用户显式选择的 fskill 工作流。"
-policy:
-  allow_implicit_invocation: false

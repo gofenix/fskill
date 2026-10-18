@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill check"
-  short_description: "审查代码、技术方案、PRD、spec、发布产物和项目质量"
-  default_prompt: "使用 $check 完成用户显式选择的 fskill 工作流。"
-policy:
-  allow_implicit_invocation: false

@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill implement"
-  short_description: "协调已批准任务图的实施、隔离工作、合入验证与状态收尾，由一个协调者负责完整生命周期"
-  default_prompt: "使用 $implement 完成用户显式选择的 fskill 工作流。"
-policy:
-  allow_implicit_invocation: false

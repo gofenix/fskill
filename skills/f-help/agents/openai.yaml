@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill f-help"
-  short_description: "解释 fskill 用法、选择合适技能，并给出可以直接使用的调用示例"
-  default_prompt: "使用 $f-help 解答我的 fskill 用法问题，并给出合适的调用示例。"
-policy:
-  allow_implicit_invocation: false
