@@ -1136,3 +1136,38 @@ def test_both_mode_still_hides_nested_when_claude_md_aliases_agents(tmp_path: Pa
     )
     out = run_context(project, home)
     assert "a root CLAUDE.md hides 1 nested AGENTS.md from Claude" in out
+
+
+@pytest.mark.parametrize("runtime", [".claude", ".agents", ".codex"])
+@pytest.mark.parametrize("scope", ["project", "home"])
+@pytest.mark.parametrize("shape", ["directory", "entrypoint", "root"])
+def test_broken_skill_symlinks_are_reported(tmp_path: Path, runtime, scope, shape):
+    project, home = tmp_path / "project", tmp_path / "home"
+    project.mkdir()
+    home.mkdir()
+    base = project if scope == "project" else home
+    skill_root = base / runtime / "skills"
+    link = skill_root if shape == "root" else skill_root / "broken"
+    if shape == "entrypoint":
+        link = link / "SKILL.md"
+    link.parent.mkdir(parents=True)
+    link.symlink_to(base / "missing-target", target_is_directory=shape != "entrypoint")
+    output = run_context(project, home)
+    assert "broken_skill_links: 1" in output
+    prefix = "project:/" if scope == "project" else "~/"
+    assert f"{prefix}{link.relative_to(base).as_posix()}" in output
+    assert "missing-target" not in output
+    assert "conflict_status: WARN" in output
+
+
+def test_valid_skill_link_is_not_reported_broken(tmp_path: Path):
+    project, home = tmp_path / "project", tmp_path / "home"
+    project.mkdir()
+    source = home / "source" / "SKILL.md"
+    write_skill(source, "demo")
+    link = home / ".agents" / "skills" / "demo"
+    link.parent.mkdir(parents=True)
+    link.symlink_to(source.parent, target_is_directory=True)
+    output = run_context(project, home)
+    assert "broken_skill_links: 0" in output
+    assert "skill_files_scanned: 1" in output

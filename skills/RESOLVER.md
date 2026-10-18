@@ -43,7 +43,7 @@
 
 | 触发 | 技能 |
 |------|------|
-| 一份已经给出来的 URL 或 PDF | `skills/read/SKILL.md` |
+| 请求读取、抓取、引用、转换或保存一份 URL 或 PDF | `skills/read/SKILL.md` |
 | 陌生领域、一套代码或一串历史决策 | `skills/learn/SKILL.md` |
 | 改稿、润色、去掉 AI 味 | `skills/write/SKILL.md` |
 

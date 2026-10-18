@@ -471,3 +471,17 @@ def test_health_shell_trust_helpers_stay_aligned():
     for name in ("sanitize_health_path", "canonical_health_executable"):
         bodies = {function_body(path, name) for path in scripts}
         assert len(bodies) == 1, f"{name} drifted across Health entrypoints"
+
+
+@pytest.mark.parametrize("scope", ["instructions", "auto"])
+def test_documented_deep_command_preserves_selected_scope(tmp_path: Path, scope):
+    import re
+
+    analyze = section(SKILL.read_text(), "深入检查")
+    command = re.search(r'`(BASH_ENV= ENV= /bin/bash -p [^`]+)`', analyze).group(1)
+    collector = tmp_path / "collect.sh"
+    collector.write_text('printf "%s\\n" "$@"\n')
+    env = dict(os.environ, HEALTH_SCRIPT=str(collector), HEALTH_SCOPE=scope)
+    result = subprocess.run(["/bin/bash", "-c", command], env=env, text=True,
+                            capture_output=True, check=True)
+    assert result.stdout.splitlines() == [scope, "deep"]

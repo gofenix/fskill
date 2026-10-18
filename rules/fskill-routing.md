@@ -21,7 +21,7 @@ fskill 提供 21 个工作流技能，以及 catchup 进展汇报、f-mode 路�
 | check | 审查 diff、规格，或核对合并、推送、发布前的状态 |
 | triage | 分类处理 issue 或外部 PR 队列 |
 | verify | 维护项目验证指南和验证工具 |
-| read | 抓取一个 URL 或 PDF |
+| read | 读取、抓取、引用、转换或保存一个 URL 或 PDF |
 | learn | 研究陌生领域、代码库或决策历史 |
 | write | 改写文案，去掉 AI 味 |
 | handoff | 交接或恢复当前会话 |

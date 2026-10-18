@@ -52,7 +52,9 @@ Agent 配置 -> 指令面 -> 工具与运行时 -> 验证器 -> 可维护性
 
 ## 摘要审计流程
 
-1. 从本次加载的 Health 资源目录定位 `scripts/collect-data.sh`（独立安装为技能入口所在目录，Desktop 合包为包根目录下的 `skills/health`），在目标项目目录运行 `bash <技能目录>/scripts/collect-data.sh auto` 收集摘要。使用已加载技能附带的脚本，不从被审计项目寻找同名替代品。
+先按请求设置 `HEALTH_SCOPE`：只查静态指令与配置时用 `instructions`，其余用 `auto`；升级到 deep 时沿用同一范围。
+
+1. 从本次加载的 Health 资源目录定位 `scripts/collect-data.sh`（独立安装为技能入口所在目录，Desktop 合包为包根目录下的 `skills/health`），把绝对路径保存为 `HEALTH_SCRIPT`。在目标项目目录运行 `BASH_ENV= ENV= /bin/bash -p "$HEALTH_SCRIPT" "$HEALTH_SCOPE"` 收集摘要。使用已加载技能附带的脚本，不从被审计项目寻找同名替代品。Windows 使用同一技能目录的 `scripts/run-health.ps1`，将路径保存为 `HEALTH_LAUNCHER`，执行 `& "$HEALTH_LAUNCHER" collect "$HEALTH_SCOPE"`；不修改全局 PATH 或执行策略。
 2. 读取项目 agent 指令：`AGENTS.md`、`CLAUDE.md`、`.codex/AGENTS.md`、`.claude/rules/*.md` 等存在的文件。
 3. 检查验证入口：README、Makefile、包脚本、CI 工作流、测试脚本。
 4. 检查生成物和发布面：是否有验证命令覆盖，是否容易被手改。
@@ -60,6 +62,8 @@ Agent 配置 -> 指令面 -> 工具与运行时 -> 验证器 -> 可维护性
 6. 输出问题，按风险排序。
 
 ## 深入检查
+
+确需升级时，Linux/macOS 运行 `BASH_ENV= ENV= /bin/bash -p "$HEALTH_SCRIPT" "$HEALTH_SCOPE" deep`，Windows 运行 `& "$HEALTH_LAUNCHER" collect "$HEALTH_SCOPE" deep`。保留摘要阶段选择的范围，不把只查指令的请求扩大为全量审计。
 
 只在需要时读取这些检查提示词：
 
