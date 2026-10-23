@@ -21,9 +21,10 @@ Chaque compétence est un dossier de références, de scripts et d'échecs réel
 | [`/f-mode`](skills/f-mode/SKILL.md) | Route | Entrer explicitement, puis choisir une compétence ci-dessous. Les commandes seules restent directes. |
 | [`/f-help`](skills/f-help/SKILL.md) | Aide | Comprendre fskill, choisir une compétence, dépanner ou personnaliser. |
 | [`/catchup`](skills/catchup/SKILL.md) | Bilan | Vérifier les progrès et les décisions en attente, sans rien modifier. |
-| [`/sharpen`](skills/sharpen/SKILL.md) | Préparer | Vérifier la méthode, le but et les contraintes, puis réaliser le travail autorisé. |
-| [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Décider | Plan, interface, termes, carte entre sessions, découpes, essais, limites. |
-| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Faire | Tâches approuvées, cause racine, une mesure à la fois. |
+| [`/sharpen`](skills/sharpen/SKILL.md) | Calibrer, puis faire | Vérifier la méthode, le but et les contraintes, puis réaliser le travail autorisé. |
+| [`/think`](skills/think/SKILL.md) [`/map`](skills/map/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/slice`](skills/slice/SKILL.md) | Direction | Plan, carte entre sessions, termes, découpes. |
+| [`/prototype`](skills/prototype/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Limite | Essai jetable, interface livrable, limites du code. |
+| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Faire | Graphe de tâches déjà approuvé seulement ; une modification ordinaire ne passe pas par `/implement`. Cause racine. Une mesure à la fois. |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Livrer | Revue avant merge, push et release, file d'issues, preuve. |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lire et écrire | Une URL ou un PDF, recherche multi-sources, prose. |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | Réutiliser | Passation de session, leçons vérifiées, config d'agent, installation manuelle. |
@@ -65,7 +66,7 @@ Vous choisissez l'ordre. Chaque compétence s'arrête quand son résultat est l�
 
 **Flux courants :**
 
-- **Nouvelle fonctionnalité** : `/think` pour cadrer, puis implémentation, puis `/check` pour valider et fusionner
+- **Nouvelle fonctionnalité** : `/think` pour cadrer. Après accord, l'agent en cours réalise le travail. `/implement` seulement pour un graphe de tâches déjà approuvé, en général après `/slice`. Puis `/check` pour valider et fusionner
 - **Correction de bogue** : `/hunt` pour trouver la cause, puis correction, puis `/check` pour revoir les diffs et publier si besoin
 - **Recherche et rédaction** : `/read` pour collecter, `/learn` pour structurer, `/write` pour polir
 
@@ -141,7 +142,7 @@ Les règles optionnelles s'appliquent au-delà des appels de compétences une fo
 
 ## Pourquoi fskill
 
-fskill est le jeu de compétences de gofenix. La méthode vient de [tw93/Waza](https://github.com/tw93/Waza), pas le nom : Waza appartient à quelqu'un d'autre. Vingt et une compétences de travail, cinq groupes : décider, faire, livrer, lire et écrire, réutiliser. `/f-mode` est l'entrée explicite au-dessus. Chacune nomme le résultat, la limite, et ce qui compte comme terminé.
+fskill est le jeu de compétences de gofenix. La méthode vient de [tw93/Waza](https://github.com/tw93/Waza), pas le nom : Waza appartient à quelqu'un d'autre. Vingt et une compétences de travail, sept groupes : calibrer puis faire, fixer la direction, essayer une limite, faire, livrer, lire et écrire, réutiliser. `/f-mode` est l'entrée explicite au-dessus. Chacune nomme le résultat, la limite, et ce qui compte comme terminé.
 
 L'appel est explicite : `/name` ou `$name`. Un mot proche ne lance pas le parcours.
 

@@ -3,7 +3,7 @@ name: think
 description: "把想法变成决策完整的计划，也支持简短修复方案或高压追问。在显式调用或已开启的 f-mode 选中时使用：/think、$think 或 fskill 限定调用。不用于根因调试、实施本身，或对照代码审查已写好的 spec。"
 when_to_use: "/think, $think, 调用 fskill 的 think, 用 fskill think skill, invoke fskill think, use fskill think skill"
 disable-model-invocation: true
-dispatch_intent: "新功能、架构方案、价值判断、动手前设计、决策完整实施计划"
+dispatch_intent: "新功能、价值判断、动手前设计、决策完整实施计划"
 ---
 
 # Think: 动手前先把方向想透
@@ -64,7 +64,7 @@ dispatch_intent: "新功能、架构方案、价值判断、动手前设计、�
 
 如果结论是**转向**，每个方向单独一行，必须可行动。如果结论是**放弃**或大改，列出影响范围：文件、依赖、迁移成本；这项判断本身不授权删除或重构，实施仍按“授权与交接”处理。
 
-## 分诊模式
+## 范围分类模式
 
 本模式只帮助选择本次需求包的范围；持续 issue/外部 PR 队列、状态迁移和补充信息重入属于 `/triage`。
 

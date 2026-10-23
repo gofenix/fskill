@@ -21,9 +21,10 @@
 | [`/f-mode`](skills/f-mode/SKILL.md) | 路由 | 先显式进入，再从下面的技能里选一条。单条仍然可以直接用。 |
 | [`/f-help`](skills/f-help/SKILL.md) | 帮助 | 了解 fskill 用法、选择技能、排障与定制。 |
 | [`/catchup`](skills/catchup/SKILL.md) | 汇报 | 只读核对进展、变化与待你处理的事项。 |
-| [`/sharpen`](skills/sharpen/SKILL.md) | 想清楚 | 校准方法、目标和约束，再直接完成已授权任务。 |
-| [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 想清楚 | 方案、界面、术语、跨会话地图、切片、试验、边界。 |
-| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 做出来 | 已批准的任务图、根因、一次只动一个指标。 |
+| [`/sharpen`](skills/sharpen/SKILL.md) | 校准后就做 | 校准方法、目标和约束，再直接完成已授权任务。 |
+| [`/think`](skills/think/SKILL.md) [`/map`](skills/map/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/slice`](skills/slice/SKILL.md) | 定方向 | 方案、跨会话地图、术语、切片。 |
+| [`/prototype`](skills/prototype/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 试边界 | 一次性试验、可交付界面、代码边界。 |
+| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 做出来 | 已批准任务图，普通改动不走 `/implement`；根因；一次只动一个指标。 |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 交出去 | 合并、推送和发布前的审查，问题队列，验证说明。 |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 读和写 | 一个链接或 PDF、多来源研究、把文字改顺。 |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 下次还能用 | 会话交接、已经验证的教训、Agent 配置、人工安装。 |
@@ -65,7 +66,7 @@ codex plugin add fskill@fskill
 
 **常见工作流：**
 
-- **做新功能**：`/think` 想透方案，确认后动手实现，再用 `/check` 把关合并
+- **做新功能**：`/think` 想透方案。确认后由当前 Agent 动手。`/implement` 只接已经批准的任务图，通常来自 `/slice`。再用 `/check` 把关合并。
 - **排查修复**：`/hunt` 查清根因，动手修复，再用 `/check` 审查改动，需要时一并发布
 - **调研成文**：`/read` 读取素材，`/learn` 消化梳理，`/write` 润色文字
 
@@ -141,7 +142,7 @@ Codex 显示剩余额度，上方 Claude Code 状态栏显示已用百分比（�
 
 ## 为什么做 fskill
 
-fskill 是 gofenix 自己的技能集。工作方式来自 [tw93/Waza](https://github.com/tw93/Waza)，名字不沿用，因为 Waza 是别人的。现在是 21 个工作技能，分成想清楚、做出来、交出去、读和写、下次还能用。上面再加一个显式入口 `/f-mode`。每个技能写清结果、不能碰的线，以及怎么算做完。
+fskill 是 gofenix 自己的技能集。工作方式来自 [tw93/Waza](https://github.com/tw93/Waza)，名字不沿用，因为 Waza 是别人的。现在是 21 个工作技能，分成校准后就做、定方向、试边界、做出来、交出去、读和写、下次还能用。上面再加一个显式入口 `/f-mode`。每个技能写清结果、不能碰的线，以及怎么算做完。
 
 调用是显式的：`/name` 或 `$name`。意思相近不会自动开始那套流程。
 

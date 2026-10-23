@@ -6,7 +6,9 @@ This file is the canonical agent guide for the fskill repository. `CLAUDE.md` is
 
 fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twenty-one workflow skills plus `catchup` reporting, `f-mode` routing and `f-help` guidance live flat under `skills/<name>/`. Default invocation is explicit: `/name` or `$name`. After explicit `/f-mode`, route within the current session until `/f-mode off`; direct commands take priority without closing f-mode. A similar word never enables f-mode.
 
-- 想清楚: `sharpen`, `think`, `ui`, `domain`, `map`, `slice`, `prototype`, `architect`
+- 校准后就做: `sharpen`
+- 定方向: `think`, `map`, `domain`, `slice`
+- 试边界: `prototype`, `ui`, `architect`
 - 进展汇报: `catchup`
 - 做出来: `implement`, `hunt`, `optimize`
 - 交出去: `check`, `triage`, `verify`

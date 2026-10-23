@@ -32,7 +32,7 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 | 工程复盘、改进沉淀、防复发经验、已确认术语与决策、可复用项目上下文、规则分流 | retro | `skills/retro/SKILL.md` |
 | 任务已经给定，先校准专家方法、实际目标与约束，再直接按授权工作 | sharpen | `skills/sharpen/SKILL.md` |
 | 确定规格、已定讨论固化、纵向切片、tracer bullet、实施票据、阻塞依赖、任务图、expand-contract迁移 | slice | `skills/slice/SKILL.md` |
-| 新功能、架构方案、价值判断、动手前设计、决策完整实施计划 | think | `skills/think/SKILL.md` |
+| 新功能、价值判断、动手前设计、决策完整实施计划 | think | `skills/think/SKILL.md` |
 | issue/外部 PR intake、持续分诊、补充信息后重入、agent-ready brief、类别与处理状态 | triage | `skills/triage/SKILL.md` |
 | UI、组件、页面、视觉界面、前端、截图审美问题 | ui | `skills/ui/SKILL.md` |
 | 项目验证资产搭建、验证指南维护、launch/doctor/drive/evidence/cleanup、用户功能地图、harness漂移与现场覆盖 | verify | `skills/verify/SKILL.md` |

@@ -20,12 +20,13 @@
 
 | 容易混淆 | 区别 |
 |---|---|
-| think / map / slice / implement | 想清普通方案 / 跨会话探索路线 / 将已定规格切成任务 / 协调已批准任务图的实施 |
+| think / map / slice / implement | 想清普通方案 / 跨会话探索路线 / 将已定规格切成任务 / 只协调已批准任务图。普通改动由当前 Agent 直接做 |
+| think / architect | 把想法收成可批准的方案 / 判断现有代码边界该保持、拆开、合并还是加深 |
 | sharpen / think | 任务已经给定，校准后直接按授权工作 / 交付决策完整的方案；不为校准强制完整规划 |
-| hunt / check / health | 证明故障根因 / 审已有改动或方案 / 审 Agent 配置、指令和可维护性 |
+| hunt / check / health | 证明故障根因 / 审已有改动、方案、发布和项目代码体检 / 审 Agent 配置、指令漂移和验证入口 |
 | ui / prototype | 完成交付界面 / 用可丢弃的实验降低一个不确定性 |
 | read / learn / write | 读取单个来源 / 形成研究结论 / 改写已有文字 |
-| verify / check | 维护可复用验证指南与 harness / 判断这次改动能否交付；普通跑测试无需强套 verify |
+| verify / check / health | 建立并维护可复用操作指南 / 判断这次改动和项目代码能否交付 / 审计验证入口是否失真。普通跑测试无需强套 verify |
 | handoff / retro | 交接或恢复现场 / 把已经验证的经验沉淀到合适位置 |
 | catchup / handoff | 给用户简短汇报本会话进展 / 给接手 Agent 保留或恢复完整现场 |
 

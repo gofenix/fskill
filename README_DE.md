@@ -21,9 +21,10 @@ Jeder Skill ist ein Ordner mit Referenzen, Skripten und echten Fehlern. Standard
 | [`/f-mode`](skills/f-mode/SKILL.md) | Route | Erst ausdrücklich eintreten, dann eine Fähigkeit unten wählen. Einzelbefehle bleiben direkt nutzbar. |
 | [`/f-help`](skills/f-help/SKILL.md) | Hilfe | Fragen zu fskill, Skill-Auswahl, Einrichtung und Anpassung beantworten. |
 | [`/catchup`](skills/catchup/SKILL.md) | Bericht | Fortschritt und offene Entscheidungen prüfen, ohne Änderungen vorzunehmen. |
-| [`/sharpen`](skills/sharpen/SKILL.md) | Planen | Methode, Ziel und Vorgaben prüfen, dann den autorisierten Auftrag ausführen. |
-| [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Entscheiden | Plan, Oberfläche, Begriffe, sitzungsübergreifende Karte, Schnitte, Versuche, Grenzen. |
-| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Bauen | Freigegebene Aufgaben, Ursache, eine Metrik auf einmal. |
+| [`/sharpen`](skills/sharpen/SKILL.md) | Kalibrieren, dann tun | Methode, Ziel und Vorgaben prüfen, dann den autorisierten Auftrag ausführen. |
+| [`/think`](skills/think/SKILL.md) [`/map`](skills/map/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/slice`](skills/slice/SKILL.md) | Richtung | Plan, sitzungsübergreifende Karte, Begriffe, Schnitte. |
+| [`/prototype`](skills/prototype/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Grenze prüfen | Wegwerfversuch, lieferbare Oberfläche, Codegrenzen. |
+| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Bauen | Nur ein freigegebener Aufgabengraph; gewöhnliche Änderungen nicht über `/implement`. Ursache. Eine Metrik auf einmal. |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Abgeben | Prüfung vor Merge, Push und Release, Issue-Warteschlange, Nachweis. |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lesen und schreiben | Eine URL oder ein PDF, Recherche aus mehreren Quellen, Text glätten. |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | Wiederverwenden | Sitzungsübergabe, geprüfte Lehren, Agent-Konfiguration, manuelles Setup. |
@@ -65,7 +66,7 @@ Außerhalb von f-mode bestimmst du die Reihenfolge. Jeder Skill stoppt, wenn sei
 
 **Typische Workflows:**
 
-- **Neues Feature**: `/think` prüft den Plan, nach Freigabe implementieren, dann mit `/check` prüfen und mergen
+- **Neues Feature**: `/think` legt den Plan fest. Nach Freigabe setzt der aktuelle Agent um. `/implement` nur für einen freigegebenen Aufgabengraphen, meist nach `/slice`. Danach mit `/check` prüfen und mergen
 - **Bugfix**: `/hunt` findet die Ursache, dann beheben, dann mit `/check` die Diffs prüfen und bei Bedarf releasen
 - **Recherche**: `/read` holt das Material, `/learn` strukturiert es, `/write` formuliert aus
 
@@ -141,7 +142,7 @@ Optionale Regeln wirken auch außerhalb von Skill-Aufrufen, sobald sie in den da
 
 ## Warum fskill
 
-fskill ist gofenix' eigenes Skill-Set. Die Arbeitsweise kommt von [tw93/Waza](https://github.com/tw93/Waza), der Name nicht, denn Waza gehört jemand anderem. Es sind einundzwanzig Workflow-Skills in fünf Gruppen: entscheiden, bauen, abgeben, lesen und schreiben, wiederverwenden. Darüber liegt der ausdrückliche Einstieg `/f-mode`. Jeder Skill nennt das Ergebnis, die Grenze und woran man Fertig erkennt.
+fskill ist gofenix' eigenes Skill-Set. Die Arbeitsweise kommt von [tw93/Waza](https://github.com/tw93/Waza), der Name nicht, denn Waza gehört jemand anderem. Es sind einundzwanzig Workflow-Skills in sieben Gruppen: kalibrieren und ausführen, Richtung festlegen, Grenzen prüfen, bauen, abgeben, lesen und schreiben, wiederverwenden. Darüber liegt der ausdrückliche Einstieg `/f-mode`. Jeder Skill nennt das Ergebnis, die Grenze und woran man Fertig erkennt.
 
 Der Aufruf ist explizit: `/name` oder `$name`. Ein ähnliches Wort startet den Ablauf nicht.
 

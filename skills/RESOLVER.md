@@ -10,24 +10,34 @@
 | 询问 fskill 用法、该选哪条、模式机制、安装排障或定制 | `skills/f-help/SKILL.md` |
 | 只读核对本会话进展、变化、阻塞及仍待用户处理的事项 | `skills/catchup/SKILL.md` |
 
-## 想清楚
+## 校准后就做
 
 | 触发 | 技能 |
 |------|------|
 | 任务已经给定，校准方法、目标与约束后直接按授权工作 | `skills/sharpen/SKILL.md` |
+
+## 定方向
+
+| 触发 | 技能 |
+|------|------|
 | 把想法收成能执行的计划，包含追问和值不值得做 | `skills/think/SKILL.md` |
-| 从需求设计新界面，或评审、打磨现有页面、组件与截图 | `skills/ui/SKILL.md` |
 | 一个词或一种行为的边界说不清，而且挡着当前决定 | `skills/domain/SKILL.md` |
 | 目标会跨多次会话，路线还没清 | `skills/map/SKILL.md` |
 | 规格已经定了，拆成能单独演示的纵切 | `skills/slice/SKILL.md` |
+
+## 试边界
+
+| 触发 | 技能 |
+|------|------|
 | 用一次性实验验证一个具体假设 | `skills/prototype/SKILL.md` |
+| 从需求设计新界面，或评审、打磨现有页面、组件与截图 | `skills/ui/SKILL.md` |
 | 看代码边界该保持、拆开、合并还是加深 | `skills/architect/SKILL.md` |
 
 ## 做出来
 
 | 触发 | 技能 |
 |------|------|
-| 按已经批准的任务图实施、合入、验证 | `skills/implement/SKILL.md` |
+| 按已经批准的任务图实施、合入、验证。普通代码修改由当前 Agent 直接做 | `skills/implement/SKILL.md` |
 | 已经坏了，先证明根因再修 | `skills/hunt/SKILL.md` |
 | 指标已经定了，一次只试一个假设 | `skills/optimize/SKILL.md` |
 
@@ -62,4 +72,6 @@
 - 上下文装不下走 `skills/handoff/SKILL.md`。路线还没清走 `skills/map/SKILL.md`。
 - 已确认的术语和 ADR 走 `skills/retro/SKILL.md`。还在厘清概念走 `skills/domain/SKILL.md`。
 - 已经坏了走 `skills/hunt/SKILL.md`。没有故障、要看 diff 能不能交，走 `skills/check/SKILL.md`。
-- 方案设计走 `skills/think/SKILL.md`。界面走 `skills/ui/SKILL.md`。
+- 方案设计走 `skills/think/SKILL.md`。代码边界的保持、拆开、合并或加深走 `skills/architect/SKILL.md`。可交付界面走 `skills/ui/SKILL.md`。一次性实验走 `skills/prototype/SKILL.md`。
+- 普通代码修改由当前 Agent 直接做。已批准的任务图走 `skills/implement/SKILL.md`。
+- 项目代码体检、diff、方案和发布走 `skills/check/SKILL.md`。Agent 配置、指令漂移和验证入口走 `skills/health/SKILL.md`。建立可复用操作指南走 `skills/verify/SKILL.md`。

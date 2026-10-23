@@ -21,9 +21,10 @@ Each engineering habit gets an installed skill, a folder with reference docs, he
 | [`/f-mode`](skills/f-mode/SKILL.md) | Route | Enter explicitly, then pick one skill below. Direct commands still work. |
 | [`/f-help`](skills/f-help/SKILL.md) | Help | Ask how fskill works, which skill to use, or how to customize it. |
 | [`/catchup`](skills/catchup/SKILL.md) | Report | Read-only progress and decisions awaiting you. |
-| [`/sharpen`](skills/sharpen/SKILL.md) | Decide | Calibrate the method, goal and constraints, then do the authorized task. |
-| [`/think`](skills/think/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/map`](skills/map/SKILL.md) [`/slice`](skills/slice/SKILL.md) [`/prototype`](skills/prototype/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Decide | Plan, interface, terms, cross-session map, slices, experiments, boundaries. |
-| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Build | Approved task graph, root cause, one-metric experiments. |
+| [`/sharpen`](skills/sharpen/SKILL.md) | Calibrate, then do | Calibrate the method, goal and constraints, then do the authorized task. |
+| [`/think`](skills/think/SKILL.md) [`/map`](skills/map/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/slice`](skills/slice/SKILL.md) | Set direction | Plan, cross-session map, terms, slices. |
+| [`/prototype`](skills/prototype/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Try a boundary | Throwaway experiment, deliverable interface, code boundaries. |
+| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Build | Approved task graph only; ordinary edits stay with the current agent. Root cause. One metric at a time. |
 | [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Ship | Diff and release review, issue queue, verification guide. |
 | [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Read and write | One URL or PDF, multi-source research, prose. |
 | [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | Keep | Session handoff, verified lessons, agent config, human setup. |
@@ -67,7 +68,7 @@ Outside f-mode, you decide the order. Each skill stops when its outcome is done.
 
 **Common workflows:**
 
-- **Plan a feature**: `/think` to settle the plan, implement after approval, then `/check` before merging
+- **Plan a feature**: `/think` settles the plan. After approval, the current agent does the work. Use `/implement` only for an approved task graph, usually from `/slice`. Then `/check` before merging.
 - **Ship a fix**: `/hunt` to find the root cause, fix it, then `/check` to review the changes and, when needed, handle release, publish, push, and issue follow-through
 - **Research and write**: `/read` to fetch sources, `/learn` to synthesize, `/write` to polish
 
@@ -143,7 +144,7 @@ Optional rules apply beyond skill invocations when installed into your agent's p
 
 ## Why
 
-fskill is gofenix's skill set. The working shape comes from [tw93/Waza](https://github.com/tw93/Waza); the name does not, because Waza belongs to someone else. There are twenty-one workflow skills, in five groups: decide, build, ship, read and write, and leave something the next session can use. `/f-mode` is the explicit router on top of them. Each skill states the outcome, the lines it does not cross, and how you know it is done.
+fskill is gofenix's skill set. The working shape comes from [tw93/Waza](https://github.com/tw93/Waza); the name does not, because Waza belongs to someone else. There are twenty-one workflow skills, in seven groups: calibrate then do, set direction, try a boundary, build, ship, read and write, and leave something the next session can use. `/f-mode` is the explicit router on top of them. Each skill states the outcome, the lines it does not cross, and how you know it is done.
 
 You enter a skill with `/name` or `$name`. A similar word does not start that workflow.
 

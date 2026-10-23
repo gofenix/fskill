@@ -15,18 +15,18 @@ fskill 提供 21 个工作流技能，以及 catchup 进展汇报、f-mode 路�
 | slice | 规格已经确定，需要拆成纵向切片 |
 | prototype | 用可丢弃的实验检验一个假设 |
 | architect | 判断代码边界是否需要拆分、合并或加深 |
-| implement | 执行已批准的任务图 |
+| implement | 只执行已批准的任务图。普通代码修改由当前 Agent 直接做 |
 | hunt | 已有故障，修复前先证明根因 |
 | optimize | 指标已经确定，每次检验一个假设 |
-| check | 审查 diff、规格，或核对合并、推送、发布前的状态 |
+| check | 审查 diff、规格和项目代码体检，或核对合并、推送、发布前的状态 |
 | triage | 分类处理 issue 或外部 PR 队列 |
-| verify | 维护项目验证指南和验证工具 |
+| verify | 建立并维护可复用的验证指南和操作入口 |
 | read | 读取、抓取、引用、转换或保存一个 URL 或 PDF |
 | learn | 研究陌生领域、代码库或决策历史 |
 | write | 改写文案，去掉 AI 味 |
 | handoff | 交接或恢复当前会话 |
 | retro | 记录经过验证、能改变下次做法的经验 |
-| health | 审计 Agent 配置、指令漂移和 hooks |
+| health | 审计 Agent 配置、指令漂移、hooks 和验证入口 |
 | wizard | 指导必须由人完成的配置或迁移 |
 
 两个技能都匹配时，读取各自 `SKILL.md` 的排除范围。仍无法判断，再询问用户。
