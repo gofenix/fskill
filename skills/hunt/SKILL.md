@@ -1,9 +1,9 @@
 ---
 name: hunt
-description: "在修复前先找到错误、崩溃、回归、失败测试和异常行为的根因。在显式调用或已开启的 f-mode 选中时使用：/hunt、$hunt 或 fskill 限定调用。不用于代码审查或新功能开发。"
+description: "在修复前找到错误、崩溃、回归和异常行为的根因；指标已经定时一次只试一个假设。在显式调用或已开启的 f-mode 选中时使用：/hunt、$hunt 或 fskill 限定调用。不用于代码审查或尚未定性的新功能方案。"
 when_to_use: "/hunt, $hunt, 调用 fskill 的 hunt, 用 fskill hunt skill, invoke fskill hunt, use fskill hunt skill"
 disable-model-invocation: true
-dispatch_intent: "错误、崩溃、回归、失败测试、异常行为、根因定位"
+dispatch_intent: "错误、崩溃、回归、失败测试、异常行为、根因定位、指标优化、可信测量基线、单假设实验、收益与回归门禁"
 ---
 
 # Hunt: 先抓根因，再动刀
@@ -22,6 +22,8 @@ Hunt 的核心是：先证明为什么坏，再修。不要看到报错就猜修
 - 完成条件: 反馈信号、根因、修复点和验证命令都在本轮被说明；如果不能修，阻塞条件具体可复现。
 - 依据: 错误日志、测试输出、trace、相关代码、最近 diff、生成物、运行时状态、截图或用户给出的复现步骤。
 - 交付形式: 根因说明 + 修复或补丁摘要 + 验证结果；仅诊断请求只输出诊断。
+
+指标已经定、要比较前后收益时，读取 [指标改进](references/modes/optimize/MODE.md)，一次只试一个假设。实际委派前读取 [委派预算](references/delegation-budget.md)。已经坏了、还没有选定指标时，用下文的根因流程。
 
 ## 长期上下文预检
 

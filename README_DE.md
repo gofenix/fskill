@@ -21,13 +21,12 @@ Jeder Skill ist ein Ordner mit Referenzen, Skripten und echten Fehlern. Standard
 | [`/f-mode`](skills/f-mode/SKILL.md) | Route | Erst ausdrücklich eintreten, dann eine Fähigkeit unten wählen. Einzelbefehle bleiben direkt nutzbar. |
 | [`/f-help`](skills/f-help/SKILL.md) | Hilfe | Fragen zu fskill, Skill-Auswahl, Einrichtung und Anpassung beantworten. |
 | [`/catchup`](skills/catchup/SKILL.md) | Bericht | Fortschritt und offene Entscheidungen prüfen, ohne Änderungen vorzunehmen. |
-| [`/sharpen`](skills/sharpen/SKILL.md) | Kalibrieren, dann tun | Methode, Ziel und Vorgaben prüfen, dann den autorisierten Auftrag ausführen. |
-| [`/think`](skills/think/SKILL.md) [`/map`](skills/map/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/slice`](skills/slice/SKILL.md) | Richtung | Plan, sitzungsübergreifende Karte, Begriffe, Schnitte. |
-| [`/prototype`](skills/prototype/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Grenze prüfen | Wegwerfversuch, lieferbare Oberfläche, Codegrenzen. |
-| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Bauen | Nur ein freigegebener Aufgabengraph; gewöhnliche Änderungen nicht über `/implement`. Ursache. Eine Metrik auf einmal. |
-| [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Abgeben | Prüfung vor Merge, Push und Release, Issue-Warteschlange, Nachweis. |
-| [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lesen und schreiben | Eine URL oder ein PDF, Recherche aus mehreren Quellen, Text glätten. |
-| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | Wiederverwenden | Sitzungsübergabe, geprüfte Lehren, Agent-Konfiguration, manuelles Setup. |
+| [`/think`](skills/think/SKILL.md) | Richtung | Plan, Begriffe, Route, Schnitte, Wegwerfversuch, Codegrenzen, kalibrieren und ausführen, freigegebener Aufgabengraph. Gewöhnliche Änderungen macht der aktuelle Agent. |
+| [`/hunt`](skills/hunt/SKILL.md) | Problem finden | Ursache, oder eine Hypothese, wenn die Metrik feststeht. |
+| [`/check`](skills/check/SKILL.md) | Prüfen | Prüfung vor Merge und Release, Issue-Warteschlange, wiederverwendbarer Nachweis. |
+| [`/ui`](skills/ui/SKILL.md) | Oberfläche | Lieferbare Seite, Komponente oder Screenshot. |
+| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lesen und schreiben | Eine URL oder ein PDF, Recherche aus mehreren Quellen, Text glätten. |
+| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) | Wiederverwenden | Sitzungsübergabe, geprüfte Lehren, Agent-Konfiguration, manuelles Setup. |
 
 Unsicher? Frage `/f-help Welcher Skill passt zu meiner Aufgabe?` (Codex: `$f-help`, Plugin: `/fskill:f-help`).
 
@@ -41,7 +40,7 @@ Mit `/f-mode` (Codex: `$f-mode`, Plugin: `/fskill:f-mode`) starten und Aufgaben 
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-Skills landen zentral in `~/.agents/skills`. Claude Code bindet sie per Symlink ein; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI und alle Agenten, die dieses Verzeichnis nutzen, laden die 24 Skills. Der Ablauf eines Skills startet nur bei `/name` oder `$name`. Agenten mit eigenem Skill-Verzeichnis gibst du nach `-a` mit ihrer ID an (zum Beispiel `antigravity-cli` oder `qwen-code`). Aktualisierung über `npx skills update -g -y`. Du kannst deinen Agenten auch direkt mit der Installation beauftragen:
+Skills landen zentral in `~/.agents/skills`. Claude Code bindet sie per Symlink ein; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI und alle Agenten, die dieses Verzeichnis nutzen, laden die 12 Skills. Der Ablauf eines Skills startet nur bei `/name` oder `$name`. Agenten mit eigenem Skill-Verzeichnis gibst du nach `-a` mit ihrer ID an (zum Beispiel `antigravity-cli` oder `qwen-code`). Aktualisierung über `npx skills update -g -y`. Du kannst deinen Agenten auch direkt mit der Installation beauftragen:
 > Lies https://github.com/gofenix/fskill/blob/main/llms.txt und installiere fskill für mich
 
 **Host-Plugin-Methode** (Skills erhalten ein Namespace-Präfix, z. B. `/fskill:check`):
@@ -66,9 +65,9 @@ Außerhalb von f-mode bestimmst du die Reihenfolge. Jeder Skill stoppt, wenn sei
 
 **Typische Workflows:**
 
-- **Neues Feature**: `/think` legt den Plan fest. Nach Freigabe setzt der aktuelle Agent um. `/implement` nur für einen freigegebenen Aufgabengraphen, meist nach `/slice`. Danach mit `/check` prüfen und mergen
-- **Bugfix**: `/hunt` findet die Ursache, dann beheben, dann mit `/check` die Diffs prüfen und bei Bedarf releasen
-- **Recherche**: `/read` holt das Material, `/learn` strukturiert es, `/write` formuliert aus
+- **Neues Feature**: `/think` legt den Plan fest. Nach Freigabe setzt der aktuelle Agent um, auch einen freigegebenen Aufgabengraphen. Danach mit `/check` prüfen und mergen
+- **Bugfix**: `/hunt` findet die Ursache oder prüft eine festgelegte Metrik, dann beheben, dann mit `/check` die Diffs prüfen und bei Bedarf releasen
+- **Recherche**: `/learn` liest eine Quelle oder mehrere, `/write` formuliert aus
 
 ## Projekt-Kontext
 
@@ -142,7 +141,7 @@ Optionale Regeln wirken auch außerhalb von Skill-Aufrufen, sobald sie in den da
 
 ## Warum fskill
 
-fskill ist gofenix' eigenes Skill-Set. Die Arbeitsweise kommt von [tw93/Waza](https://github.com/tw93/Waza), der Name nicht, denn Waza gehört jemand anderem. Es sind einundzwanzig Workflow-Skills in sieben Gruppen: kalibrieren und ausführen, Richtung festlegen, Grenzen prüfen, bauen, abgeben, lesen und schreiben, wiederverwenden. Darüber liegt der ausdrückliche Einstieg `/f-mode`. Jeder Skill nennt das Ergebnis, die Grenze und woran man Fertig erkennt.
+fskill ist gofenix' eigenes Skill-Set. Die Arbeitsweise kommt von [tw93/Waza](https://github.com/tw93/Waza), der Name nicht, denn Waza gehört jemand anderem. Es sind zehn Workflow-Skills: think, hunt, check, ui, learn, write, handoff, catchup, retro und health. Darüber liegen der ausdrückliche Einstieg `/f-mode` und die Hilfe `/f-help`. Feinere Abläufe sind Modi innerhalb eines Befehls. Jeder Skill nennt das Ergebnis, die Grenze und woran man Fertig erkennt.
 
 Der Aufruf ist explizit: `/name` oder `$name`. Ein ähnliches Wort startet den Ablauf nicht.
 

@@ -30,9 +30,9 @@ fi
 # Required helper scripts are bundled.
 for required in \
   skills/f-mode/references/principles.md \
-  skills/implement/references/delegation-budget.md \
+  skills/think/references/delegation-budget.md \
   skills/check/scripts/audit_signals.py \
-  skills/read/scripts/fetch.sh \
+  skills/learn/scripts/fetch.sh \
   skills/health/scripts/block-pipe-to-shell.py \
   skills/health/scripts/check-agent-context.sh \
   skills/health/scripts/check-doc-refs.sh \

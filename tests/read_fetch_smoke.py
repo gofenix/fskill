@@ -55,8 +55,8 @@ def main():
         thread = threading.Thread(target=server.serve_forever, daemon=True)
         thread.start()
         base = f"http://127.0.0.1:{server.server_port}"
-        fetch = ["bash", str(ROOT / "skills/read/scripts/fetch.sh")]
-        local = [sys.executable, str(ROOT / "skills/read/scripts/fetch_local.py"),
+        fetch = ["bash", str(ROOT / "skills/learn/scripts/fetch.sh")]
+        local = [sys.executable, str(ROOT / "skills/learn/scripts/fetch_local.py"),
                  "--prefer", "stdlib"]
 
         def run(command, path, success, marker):

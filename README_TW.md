@@ -21,13 +21,12 @@
 | [`/f-mode`](skills/f-mode/SKILL.md) | 路由 | 先顯式進入，再從下面的技能裡選一條。單條仍然可以直接用。 |
 | [`/f-help`](skills/f-help/SKILL.md) | 幫助 | 了解 fskill 用法、選擇技能、排障與自訂。 |
 | [`/catchup`](skills/catchup/SKILL.md) | 彙報 | 唯讀核對進展、變化與待你處理的事項。 |
-| [`/sharpen`](skills/sharpen/SKILL.md) | 校準後就做 | 校準方法、目標和約束，再直接完成已授權任務。 |
-| [`/think`](skills/think/SKILL.md) [`/map`](skills/map/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/slice`](skills/slice/SKILL.md) | 定方向 | 方案、跨會話地圖、術語、切片。 |
-| [`/prototype`](skills/prototype/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/architect`](skills/architect/SKILL.md) | 試邊界 | 一次性試驗、可交付介面、程式邊界。 |
-| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | 做出來 | 已批准任務圖，普通改動不走 `/implement`；根因；一次只動一個指標。 |
-| [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | 交出去 | 合併、推送和發布前的審查，問題佇列，驗證說明。 |
-| [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 讀和寫 | 一個連結或 PDF、多來源研究、把文字改順。 |
-| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | 下次還能用 | 會話交接、已經驗證的教訓、Agent 設定、人工安裝。 |
+| [`/think`](skills/think/SKILL.md) | 想清楚 | 方案、術語、路線、切片、一次性實驗、程式邊界、校準後按授權做完、已批准任務圖。普通改動由目前的 Agent 直接做。 |
+| [`/hunt`](skills/hunt/SKILL.md) | 找問題 | 先證明根因；指標已經定時一次只試一個假設。 |
+| [`/check`](skills/check/SKILL.md) | 做檢查 | 審查、問題佇列、可重用的驗證說明。 |
+| [`/ui`](skills/ui/SKILL.md) | 介面 | 做可交付的頁面、元件，或按截圖打磨。 |
+| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 讀和寫 | 一個連結或 PDF、多來源研究、把文字改順。 |
+| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) | 下次還能用 | 會話交接、已經驗證的教訓、Agent 設定和人工安裝。 |
 
 不知道從哪開始？試試 `/f-help 我這個任務該用哪個技能？`（Codex 用 `$f-help`，外掛用 `/fskill:f-help`）。
 
@@ -41,7 +40,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-技能統一存放在 `~/.agents/skills` 共享目錄，Claude Code 透過符號連結接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能讀這個目錄的 Agent 都會讀到這 24 個技能。進入某個技能的流程仍要顯式呼叫。有自己技能目錄的 Agent 在 `-a` 後面寫上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，後續透過 `npx skills update -g -y` 保持更新。也可以直接告訴你的 Agent 幫你安裝：
+技能統一存放在 `~/.agents/skills` 共享目錄，Claude Code 透過符號連結接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能讀這個目錄的 Agent 都會讀到這 12 個技能。進入某個技能的流程仍要顯式呼叫。有自己技能目錄的 Agent 在 `-a` 後面寫上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，後續透過 `npx skills update -g -y` 保持更新。也可以直接告訴你的 Agent 幫你安裝：
 > 閱讀 https://github.com/gofenix/fskill/blob/main/llms.txt 幫我安裝 fskill
 
 **宿主外掛方式**，如果你更習慣使用宿主自有的更新指令（技能帶有命名空間前綴，如 `/fskill:check`）：
@@ -66,9 +65,9 @@ codex plugin add fskill@fskill
 
 **常見工作流程：**
 
-- **做新功能**：`/think` 想透方案。確認後由目前的 Agent 動手。`/implement` 只接已經批准的任務圖，通常來自 `/slice`。再用 `/check` 把關合併。
-- **排查修復**：`/hunt` 查清根因，動手修復，再用 `/check` 審查改動，需要時一併發布
-- **研究成文**：`/read` 讀取素材，`/learn` 消化梳理，`/write` 潤色文字
+- **做新功能**：`/think` 想透方案。確認後由目前的 Agent 動手，已批准的任務圖也在 `/think` 裡協調。再用 `/check` 把關。
+- **排查修復**：`/hunt` 查清根因或試一個已定指標，動手修復，再用 `/check` 審查改動，需要時一併發布
+- **研究成文**：`/learn` 讀取一份材料或消化多來源，`/write` 潤色文字
 
 ## 專案上下文
 
@@ -142,7 +141,7 @@ Codex 顯示剩餘額度，上方 Claude Code 狀態列顯示已用百分比（�
 
 ## 為什麼做 fskill
 
-fskill 是 gofenix 自己的技能集。工作方式來自 [tw93/Waza](https://github.com/tw93/Waza)，名字不沿用，因為 Waza 是別人的。現在是 21 個工作技能，分成校準後就做、定方向、試邊界、做出來、交出去、讀和寫、下次還能用。上面再加一個顯式入口 `/f-mode`。每個技能寫清結果、不能碰的線，以及怎麼算做完。
+fskill 是 gofenix 自己的技能集。工作方式來自 [tw93/Waza](https://github.com/tw93/Waza)，名字不沿用，因為 Waza 是別人的。現在是 10 個工作技能：think、hunt、check、ui、learn、write、handoff、catchup、retro、health。上面再加顯式入口 `/f-mode` 和幫助 `/f-help`。更細的做法是這些命令裡的模式。每個技能寫清結果、不能碰的線，以及怎麼算做完。
 
 呼叫是顯式的：`/name` 或 `$name`。意思相近不會自動開始那套流程。
 

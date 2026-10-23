@@ -27,14 +27,13 @@ stage=$(make_tmpdir)
 python3 "$ROOT/scripts/validate_package.py" "$stage" >/dev/null
 echo "  validate_package clean stage: ok"
 
-# A leaked nested ref for a skill OTHER than check/think must be rejected.
-# Pre-fix this probed only ("check","think") and let skills/read/SKILL.md slip.
+# A leaked nested ref for a skill other than the first entries must be rejected.
 cp "$stage/SKILL.md" "$stage/SKILL.leak.md"
-printf '\nsee skills/read/SKILL.md for details\n' >> "$stage/SKILL.leak.md"
+printf '\nsee skills/learn/SKILL.md for details\n' >> "$stage/SKILL.leak.md"
 leak_stage=$(make_tmpdir)
 cp "$stage/SKILL.leak.md" "$leak_stage/SKILL.md"
 if python3 "$ROOT/scripts/validate_package.py" "$leak_stage" >/dev/null 2>"$leak_stage/err"; then
-  echo "FAIL: validate_package accepted leaked skills/read/SKILL.md ref" >&2
+  echo "FAIL: validate_package accepted leaked skills/learn/SKILL.md ref" >&2
   exit 1
 fi
 grep -q "nested" "$leak_stage/err" || {
@@ -42,7 +41,7 @@ grep -q "nested" "$leak_stage/err" || {
   cat "$leak_stage/err" >&2
   exit 1
 }
-echo "  validate_package straggler (read): ok"
+echo "  validate_package straggler (learn): ok"
 
 # --- packaging_filter.py -----------------------------------------------------
 flt=$(make_tmpdir)

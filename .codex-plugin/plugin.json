@@ -1,7 +1,7 @@
 {
   "name": "fskill",
   "version": "3.39.0",
-  "description": "Engineering workflow skills for Codex, with /catchup reporting, /sharpen task calibration, and /f-help guidance and explicit /f-mode session routing. Direct commands remain available.",
+  "description": "Engineering workflow skills for Codex, with /catchup reporting, /think for planning and calibration, and /f-help guidance and explicit /f-mode session routing. Direct commands remain available.",
   "author": {
     "name": "gofenix",
     "email": "gofenix@users.noreply.github.com",

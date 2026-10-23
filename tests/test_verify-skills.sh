@@ -130,7 +130,7 @@ grep -q 'CODEX MARKETPLACE ENTRY DRIFT' "$tmpdir/codex-market.err"
 copy_repo "$tmpdir/repo8"
 python3 -c "
 from pathlib import Path
-p = Path('$tmpdir/repo8/skills/read/SKILL.md')
+p = Path('$tmpdir/repo8/skills/learn/SKILL.md')
 t = p.read_text()
 t = t.replace('显式调用', '调用', 1)
 p.write_text(t)
@@ -138,7 +138,7 @@ p.write_text(t)
 if (cd "$tmpdir/repo8" && python3 scripts/verify_skills.py --root . >"$tmpdir/usewhen.out" 2>"$tmpdir/usewhen.err"); then
   echo "verify-skills should reject descriptions without Use when trigger cues"; exit 1
 fi
-grep -q 'DESCRIPTION MISSING USE-WHEN CUE: read' "$tmpdir/usewhen.err"
+grep -q 'DESCRIPTION MISSING USE-WHEN CUE: learn' "$tmpdir/usewhen.err"
 
 # Case 8b: Chinese descriptions are allowed when they still name the explicit
 # invocation and the exclusion.
@@ -153,7 +153,7 @@ python3 -c "
 from pathlib import Path
 p = Path('$tmpdir/repo9/rules/fskill-routing.md')
 t = p.read_text()
-t = t.rstrip() + '\n| read | 「读一个不存在的触发词」 |\n'
+t = t.rstrip() + '\n| learn | 「读一个不存在的触发词」 |\n'
 p.write_text(t)
 "
 if (cd "$tmpdir/repo9" && python3 scripts/verify_skills.py --root . >"$tmpdir/routing.out" 2>"$tmpdir/routing.err"); then

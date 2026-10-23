@@ -1,18 +1,34 @@
 ---
 name: think
-description: "把想法变成决策完整的计划，也支持简短修复方案或高压追问。在显式调用或已开启的 f-mode 选中时使用：/think、$think 或 fskill 限定调用。不用于根因调试、实施本身，或对照代码审查已写好的 spec。"
+description: "想清楚再动手：计划、术语、跨会话路线、切片、一次性实验、代码边界，以及已给定任务的校准和已批准任务图。在显式调用或已开启的 f-mode 选中时使用：/think、$think 或 fskill 限定调用。不用于界面交付、根因调试、审查或润色。"
 when_to_use: "/think, $think, 调用 fskill 的 think, 用 fskill think skill, invoke fskill think, use fskill think skill"
 disable-model-invocation: true
-dispatch_intent: "新功能、价值判断、动手前设计、决策完整实施计划"
+dispatch_intent: "新功能、价值判断、动手前设计、决策完整计划、术语边界、跨会话路线、纵向切片、一次性实验、代码边界、校准后按授权完成、已批准任务图实施"
 ---
 
 # Think: 动手前先把方向想透
 
 首行内联带上 🥷，不要单独起段。
 
-把一个模糊想法变成能被批准、能直接实施的计划。规划阶段交付方案；后续实施遵循下文的授权与交接边界。
+把一个模糊想法变成能被批准、能直接实施的计划。普通改动在获准后由当前 Agent 直接做，不另设实现命令。
 
 直接给判断。说清你推荐什么、为什么，以及什么证据会改变这个判断。不要用空泛开场。
+
+## 模式
+
+先选一个模式，读对应正文并只执行那一节。没有命中时用下文的计划流程。实际委派前读取 [委派预算](references/delegation-budget.md)；没有委派就不读。
+
+| 情况 | 读取 |
+|---|---|
+| 任务已经给定，校准方法后按授权做完 | [校准后就做](references/modes/sharpen/MODE.md) |
+| 一个词或一种行为挡着决定 | [术语与边界](references/modes/domain/MODE.md) |
+| 目标跨会话，路线还没清 | [路线](references/modes/map/MODE.md) |
+| 规格已经定了，拆成能单独演示的纵切 | [切片](references/modes/slice/MODE.md) |
+| 用一次性实验验证一个假设 | [实验](references/modes/prototype/MODE.md) |
+| 看代码边界该保持、拆开、合并还是加深 | [代码边界](references/modes/architect/MODE.md) |
+| 已有批准的任务图，要协调实施和合入 | [任务图](references/modes/implement/MODE.md) |
+
+界面交付用 `/ui`。根因用 `/hunt`。审查用 `/check`。
 
 ## 调用边界
 

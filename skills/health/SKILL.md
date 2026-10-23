@@ -1,9 +1,9 @@
 ---
 name: health
-description: "审计 Agent 指令、配置漂移、hooks/MCP、验证面和 AI 可维护性。在显式调用或已开启的 f-mode 选中时使用：/health、$health 或 fskill 限定调用。不用于用户代码调试或 PR 审查。"
+description: "审计 Agent 配置、指令、hooks/MCP 和验证入口，并把必须由人完成的配置或迁移做成向导。在显式调用或已开启的 f-mode 选中时使用：/health、$health 或 fskill 限定调用。不用于用户代码调试或 PR 审查。"
 when_to_use: "/health, $health, 调用 fskill 的 health, 用 fskill health skill, invoke fskill health, use fskill health skill"
 disable-model-invocation: true
-dispatch_intent: "Agent 配置审计、Codex/Claude/Pi 指令漂移、hooks/MCP、验证面、AI 可维护性"
+dispatch_intent: "Agent 配置审计、指令漂移、hooks/MCP、验证入口、AI 可维护性、必须由人完成的配置或迁移向导"
 ---
 
 # Health: Agent 辅助工程体检
@@ -14,7 +14,7 @@ dispatch_intent: "Agent 配置审计、Codex/Claude/Pi 指令漂移、hooks/MCP�
 
 Agent 配置 -> 指令面 -> 工具与运行时 -> 验证器 -> 可维护性
 
-目标是找出错位层，而不是把项目“打扮得更复杂”。
+目标是找出错位层，而不是把项目“打扮得更复杂”。必须由人亲手完成的配置或迁移，读取 [向导](references/modes/wizard/MODE.md)，不要替用户执行向导里的真人步骤。
 
 ## 调用边界
 

@@ -73,15 +73,15 @@
   },
   {
     "id": "task-calibration-preserves-request",
-    "skill": "sharpen",
-    "request": "$sharpen. f-mode is off. Diagnose this fixture regression from its logs and current source. Keep the public API and dependencies fixed; do not modify files. The fixture contains a direct probe that can disprove the apparent cause.",
+    "skill": "think",
+    "request": "$think. f-mode is off. Diagnose this fixture regression from its logs and current source. Keep the public API and dependencies fixed; do not modify files. The fixture contains a direct probe that can disprove the apparent cause.",
     "evidence": "Inspect sources, actual probe calls, delivered diagnosis and unchanged fixture hashes; compare with a separately authorized implementation request.",
     "accept": "Uses evidence and an independent check within the read-only scope, preserves explicit constraints, and completes authorized implementation in the positive control without returning a rewritten prompt or adding a mandatory approval round.",
     "reject": "Removes a user constraint, edits during diagnosis, only narrates three questions, or returns a prompt for the user to resend."
   },
   {
     "id": "delegation-budget-controls",
-    "skill": "implement",
+    "skill": "think",
     "request": "Implement the approved two-ticket fixture using its isolated delegation adapter. One ticket is a mechanical rename; the other fixes a cross-module race. The host exposes separate effort and speed fields. The user permits single-call adjustment up to high and keeps the role's model family fixed. Nobody is blocked and all checks pass. Keep the verifier's configured budget and speed.",
     "evidence": "Inspect accepted calls recorded by the fixture adapter, not prose claims. Repeat with inherited configuration, unavailable effort control, and an adapter that rejects the proposed adjustment but accepts the original role configuration.",
     "accept": "Uses task-sensitive budgets within the ceiling, preserves family and verifier settings, avoids unnecessary fast mode, preserves inherited defaults, and falls back once to the original configuration after rejection.",

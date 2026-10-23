@@ -1,9 +1,9 @@
 ---
 name: check
-description: "审查代码、技术方案、PRD、spec、发布产物和项目质量。在显式调用或已开启的 f-mode 选中时使用：/check、$check 或 fskill 限定调用。不用于尚未确定的设计取舍、根因调试或文字润色。"
+description: "审查代码、方案、发布和项目质量，处理 issue 与外部 PR 队列，并维护可复用的验证指南。在显式调用或已开启的 f-mode 选中时使用：/check、$check 或 fskill 限定调用。不用于尚未确定的设计取舍、根因调试或文字润色。"
 when_to_use: "/check, $check, 调用 fskill 的 check, 用 fskill check skill, invoke fskill check, use fskill check skill"
 disable-model-invocation: true
-dispatch_intent: "代码与技术文档审查、合并前检查、已有PR状态与持续跟进、发布门禁、平台打包产物、mac 打包、macOS/Android 产物、release asset、commit/push/release 收尾、项目质量审计"
+dispatch_intent: "代码与技术文档审查、合并前检查、发布门禁、项目质量审计、issue与外部PR队列、可复用验证指南与harness"
 ---
 
 # Check: 交付前把关
@@ -52,7 +52,8 @@ PR 检查优先用不会切换工作区的命令：`gh pr view`、`gh pr diff`�
 | diff 或 PR 已准备好，review、看看代码、合并前 | 默认审查 |
 | 查已有 PR 状态、处理未决讨论或持续推进到就绪 | PR 跟进，按实际请求区分只读状态、讨论处理与持续推进 |
 | 已成稿技术方案、PRD、spec 的正确性、一致性、完整性审查 | 技术文档审查 |
-| issues/外部 PR 队列分类、补充信息重入、准备实施契约 | 建议用户显式调用 `/triage`；已有 diff 的审查仍在本技能完成 |
+| issues/外部 PR 队列分类、补充信息重入、准备实施契约 | 读取 [队列](references/modes/triage/MODE.md)；已有 diff 的审查仍走默认审查 |
+| 建立或维护可复用的验证指南和操作入口 | 读取 [验证指南](references/modes/verify/MODE.md)。只跑一次已有测试不进入这一节 |
 | 值不值得发版、is this worth a release | 发版价值判断 |
 | commit、push、publish、release、close issue、发布表情 | 交付与发布收尾 |
 | 打包、mac 包、dmg、notarize、apk、aab、release asset | 发布产物检查 |

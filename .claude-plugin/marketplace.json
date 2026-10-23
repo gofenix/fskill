@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "fskill",
-  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi. Workflow skills with /catchup reporting, /sharpen task calibration, and /f-help for guidance and explicit /f-mode session routing. Direct commands remain available.",
+  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi. Workflow skills with /catchup reporting, /think for planning and calibration, and /f-help for guidance and explicit /f-mode session routing. Direct commands remain available.",
   "owner": {
     "name": "gofenix",
     "email": "gofenix@users.noreply.github.com"
@@ -14,18 +14,6 @@
       "category": "development",
       "source": "./",
       "homepage": "https://github.com/gofenix/fskill"
-    },
-    {
-      "name": "fskill-architect",
-      "description": "从真实调用、变更热点和测试难点识别值得改进的代码边界，比较保持、拆分、合并或深化的收益与取舍。在显式调用或已开启的 f-mode 选中时使用：/architect、$architect 或 fskill 限定调用。不用于既成 diff 审查或已明确需求的普通实现方案。",
-      "version": "3.39.0",
-      "category": "development",
-      "source": "./skills/architect",
-      "homepage": "https://github.com/gofenix/fskill",
-      "skills": [
-        "./"
-      ],
-      "strict": false
     },
     {
       "name": "fskill-catchup",
@@ -41,22 +29,10 @@
     },
     {
       "name": "fskill-check",
-      "description": "审查代码、技术方案、PRD、spec、发布产物和项目质量。在显式调用或已开启的 f-mode 选中时使用：/check、$check 或 fskill 限定调用。不用于尚未确定的设计取舍、根因调试或文字润色。",
+      "description": "审查代码、方案、发布和项目质量，处理 issue 与外部 PR 队列，并维护可复用的验证指南。在显式调用或已开启的 f-mode 选中时使用：/check、$check 或 fskill 限定调用。不用于尚未确定的设计取舍、根因调试或文字润色。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/check",
-      "homepage": "https://github.com/gofenix/fskill",
-      "skills": [
-        "./"
-      ],
-      "strict": false
-    },
-    {
-      "name": "fskill-domain",
-      "description": "主动厘清项目领域词汇、事件、行为和上下文边界，用代码与具体反例检验概念是否一致。在显式调用或已开启的 f-mode 选中时使用：/domain、$domain 或 fskill 限定调用。不用于单纯查询术语、普通方案设计或复盘已证实的工程经验。",
-      "version": "3.39.0",
-      "category": "development",
-      "source": "./skills/domain",
       "homepage": "https://github.com/gofenix/fskill",
       "skills": [
         "./"
@@ -101,7 +77,7 @@
     },
     {
       "name": "fskill-health",
-      "description": "审计 Agent 指令、配置漂移、hooks/MCP、验证面和 AI 可维护性。在显式调用或已开启的 f-mode 选中时使用：/health、$health 或 fskill 限定调用。不用于用户代码调试或 PR 审查。",
+      "description": "审计 Agent 配置、指令、hooks/MCP 和验证入口，并把必须由人完成的配置或迁移做成向导。在显式调用或已开启的 f-mode 选中时使用：/health、$health 或 fskill 限定调用。不用于用户代码调试或 PR 审查。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/health",
@@ -113,7 +89,7 @@
     },
     {
       "name": "fskill-hunt",
-      "description": "在修复前先找到错误、崩溃、回归、失败测试和异常行为的根因。在显式调用或已开启的 f-mode 选中时使用：/hunt、$hunt 或 fskill 限定调用。不用于代码审查或新功能开发。",
+      "description": "在修复前找到错误、崩溃、回归和异常行为的根因；指标已经定时一次只试一个假设。在显式调用或已开启的 f-mode 选中时使用：/hunt、$hunt 或 fskill 限定调用。不用于代码审查或尚未定性的新功能方案。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/hunt",
@@ -124,71 +100,11 @@
       "strict": false
     },
     {
-      "name": "fskill-implement",
-      "description": "协调已批准任务图的实施、隔离工作、合入验证与状态收尾，由一个协调者负责完整生命周期。在显式调用或已开启的 f-mode 选中时使用：/implement、$implement 或 fskill 限定调用。不用于未定规格、拆票或没有任务图的普通代码修改。",
-      "version": "3.39.0",
-      "category": "development",
-      "source": "./skills/implement",
-      "homepage": "https://github.com/gofenix/fskill",
-      "skills": [
-        "./"
-      ],
-      "strict": false
-    },
-    {
       "name": "fskill-learn",
-      "description": "把陌生领域、代码系统与历史决策整理成可引用研究输出。在显式调用或已开启的 f-mode 选中时使用：/learn、$learn 或 fskill 限定调用。不用于单文件阅读、持续教学、根因调试或普通无需研究的查询。",
+      "description": "把陌生领域、代码、历史决策，或一份 URL、PDF 整理成可引用输出。在显式调用或已开启的 f-mode 选中时使用：/learn、$learn 或 fskill 限定调用。不用于持续教学、根因调试或普通无需材料的闲聊。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/learn",
-      "homepage": "https://github.com/gofenix/fskill",
-      "skills": [
-        "./"
-      ],
-      "strict": false
-    },
-    {
-      "name": "fskill-map",
-      "description": "把跨会话且路线未明的目标组织成共享决策图，逐步消除不确定性并保持依赖和上下文可恢复。在显式调用或已开启的 f-mode 选中时使用：/map、$map 或 fskill 限定调用。不用于路线已清晰的普通方案、实施任务拆分或自动执行产品开发。",
-      "version": "3.39.0",
-      "category": "development",
-      "source": "./skills/map",
-      "homepage": "https://github.com/gofenix/fskill",
-      "skills": [
-        "./"
-      ],
-      "strict": false
-    },
-    {
-      "name": "fskill-optimize",
-      "description": "围绕既定性能、成本或评测指标，建立可信基线，逐个假设实验并按收益与回归门禁保留或撤回。在显式调用或已开启的 f-mode 选中时使用：/optimize、$optimize 或 fskill 限定调用。不用于异常根因定位、一次性方案原型或普通统计查询。",
-      "version": "3.39.0",
-      "category": "development",
-      "source": "./skills/optimize",
-      "homepage": "https://github.com/gofenix/fskill",
-      "skills": [
-        "./"
-      ],
-      "strict": false
-    },
-    {
-      "name": "fskill-prototype",
-      "description": "用一次性可运行实验降低明确的领域逻辑或 UI 结构不确定性。在显式调用或已开启的 f-mode 选中时使用：/prototype、$prototype 或 fskill 限定调用。不用于视觉 polish、常规实现或把 mock 结果当成集成验收。",
-      "version": "3.39.0",
-      "category": "development",
-      "source": "./skills/prototype",
-      "homepage": "https://github.com/gofenix/fskill",
-      "skills": [
-        "./"
-      ],
-      "strict": false
-    },
-    {
-      "name": "fskill-read",
-      "description": "读取 URL 和 PDF，按来源选择抓取方法，并按需输出摘要、引用或干净 Markdown。在显式调用或已开启的 f-mode 选中时使用：/read、$read 或 fskill 限定调用。不用于读取仓库中已有的本地文本文件。",
-      "version": "3.39.0",
-      "category": "development",
-      "source": "./skills/read",
       "homepage": "https://github.com/gofenix/fskill",
       "skills": [
         "./"
@@ -208,47 +124,11 @@
       "strict": false
     },
     {
-      "name": "fskill-sharpen",
-      "description": "开工前校准方法、真实目标和约束，再按已有授权完成任务。在显式调用 /sharpen、$sharpen 或已开启的 f-mode 选中时使用。不用于只要复述理解、完整实施计划或提示词改写。",
-      "version": "3.39.0",
-      "category": "development",
-      "source": "./skills/sharpen",
-      "homepage": "https://github.com/gofenix/fskill",
-      "skills": [
-        "./"
-      ],
-      "strict": false
-    },
-    {
-      "name": "fskill-slice",
-      "description": "把已确定的规格或讨论整理为可演示的纵向切片、验收票据和阻塞任务图。在显式调用或已开启的 f-mode 选中时使用：/slice、$slice 或 fskill 限定调用。不用于尚未确定目标的需求访谈、架构选型或代码实施。",
-      "version": "3.39.0",
-      "category": "development",
-      "source": "./skills/slice",
-      "homepage": "https://github.com/gofenix/fskill",
-      "skills": [
-        "./"
-      ],
-      "strict": false
-    },
-    {
       "name": "fskill-think",
-      "description": "把想法变成决策完整的计划，也支持简短修复方案或高压追问。在显式调用或已开启的 f-mode 选中时使用：/think、$think 或 fskill 限定调用。不用于根因调试、实施本身，或对照代码审查已写好的 spec。",
+      "description": "想清楚再动手：计划、术语、跨会话路线、切片、一次性实验、代码边界，以及已给定任务的校准和已批准任务图。在显式调用或已开启的 f-mode 选中时使用：/think、$think 或 fskill 限定调用。不用于界面交付、根因调试、审查或润色。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/think",
-      "homepage": "https://github.com/gofenix/fskill",
-      "skills": [
-        "./"
-      ],
-      "strict": false
-    },
-    {
-      "name": "fskill-triage",
-      "description": "持续处理 issue/外部 PR 队列，区分类别与生命周期状态，产出可接手的行为契约。在显式调用或已开启的 f-mode 选中时使用：/triage、$triage 或 fskill 限定调用。不用于既成 diff 的代码审查、根因调试或直接实施。",
-      "version": "3.39.0",
-      "category": "development",
-      "source": "./skills/triage",
       "homepage": "https://github.com/gofenix/fskill",
       "skills": [
         "./"
@@ -261,30 +141,6 @@
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/ui",
-      "homepage": "https://github.com/gofenix/fskill",
-      "skills": [
-        "./"
-      ],
-      "strict": false
-    },
-    {
-      "name": "fskill-verify",
-      "description": "建立并维护项目可复用的验证指南、操作 harness 和用户功能地图。在显式调用或已开启的 f-mode 选中时使用：/verify、$verify 或 fskill 限定调用。不用于普通测试运行、产品缺陷修复或验证面健康审计。",
-      "version": "3.39.0",
-      "category": "development",
-      "source": "./skills/verify",
-      "homepage": "https://github.com/gofenix/fskill",
-      "skills": [
-        "./"
-      ],
-      "strict": false
-    },
-    {
-      "name": "fskill-wizard",
-      "description": "把必须由人完成的配置或迁移步骤做成可运行的交互式向导。在显式调用或已开启的 f-mode 选中时使用：/wizard、$wizard 或 fskill 限定调用。不用于 Agent 可直接完成的操作、普通 setup 文档或代替用户运行真人向导。",
-      "version": "3.39.0",
-      "category": "development",
-      "source": "./skills/wizard",
       "homepage": "https://github.com/gofenix/fskill",
       "skills": [
         "./"

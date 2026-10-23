@@ -7,36 +7,24 @@ description: 'Dispatch explicit fskill commands, or route engineering requests w
 
 Prefix your first line with 🥷 inline, not as its own paragraph.
 
-Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing a command or matching a topic does not invoke it. `/f-mode` explicitly enables session routing; `/f-mode off` disables it, and `/f-mode status` only reports state. New sessions start with f-mode off. Read the f-mode section for its session rules; direct commands take priority without changing f-mode state. `/catchup` reports progress and `/sharpen` calibrates then performs the authorized task; both are independent skills, not f-mode parameters.
+Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing a command or matching a topic does not invoke it. `/f-mode` explicitly enables session routing; `/f-mode off` disables it, and `/f-mode status` only reports state. New sessions start with f-mode off. Read the f-mode section for its session rules; direct commands take priority without changing f-mode state. `/catchup` reports progress. Calibration and an approved task graph are modes inside `/think`, not separate commands.
 
 ## Routing Table
 
 <!-- routing-table:start -->
 | Intent | Skill | File |
 |--------|-------|------|
-| 主动架构机会识别、代码边界改进、模块深化、调用方认知成本、依赖与测试接缝、备选接口比较 | architect | `skills/architect/SKILL.md` |
 | 本会话进展回顾、变化与阻塞、仍待用户处理的决策和批准，只读汇报 | catchup | `skills/catchup/SKILL.md` |
-| 代码与技术文档审查、合并前检查、已有PR状态与持续跟进、发布门禁、平台打包产物、mac 打包、macOS/Android 产物、release asset、commit/push/release 收尾、项目质量审计 | check | `skills/check/SKILL.md` |
-| 主动领域建模、统一领域语言、术语歧义、行为与事件、bounded context、领域概念边界 | domain | `skills/domain/SKILL.md` |
+| 代码与技术文档审查、合并前检查、发布门禁、项目质量审计、issue与外部PR队列、可复用验证指南与harness | check | `skills/check/SKILL.md` |
 | 解答 fskill 用法、推荐技能、解释模式和定制方式 | f-help | `skills/f-help/SKILL.md` |
 | 显式开启或关闭 f-mode，在会话内选择技能并按需应用工程原则 | f-mode | `skills/f-mode/SKILL.md` |
 | 交接文档、handoff、会话总结、接入恢复、本人相关历史与当前状态核对 | handoff | `skills/handoff/SKILL.md` |
-| Agent 配置审计、Codex/Claude/Pi 指令漂移、hooks/MCP、验证面、AI 可维护性 | health | `skills/health/SKILL.md` |
-| 错误、崩溃、回归、失败测试、异常行为、根因定位 | hunt | `skills/hunt/SKILL.md` |
-| 批准任务图实施、ready frontier、coordinator、隔离worktree、integration branch、merger、阻塞解锁、实施恢复与集成验证 | implement | `skills/implement/SKILL.md` |
-| 陌生领域深度研究、多来源综合、代码心智模型、历史决策研究、从材料到可发布输出 | learn | `skills/learn/SKILL.md` |
-| 跨会话决策图、路线未明目标、共享决策票、依赖前沿、范围内迷雾、决策上下文恢复 | map | `skills/map/SKILL.md` |
-| 持续指标优化、hillclimb、性能与成本改善、评测分数提升、可信测量基线、单假设实验、收益与回归门禁、保留撤回 | optimize | `skills/optimize/SKILL.md` |
-| 一次性实验、领域状态与行为演示、UI 结构方案比较、验证明确设计假设 | prototype | `skills/prototype/SKILL.md` |
-| URL 或 PDF 读取、网页抓取、链接摘要、Markdown 提取 | read | `skills/read/SKILL.md` |
+| Agent 配置审计、指令漂移、hooks/MCP、验证入口、AI 可维护性、必须由人完成的配置或迁移向导 | health | `skills/health/SKILL.md` |
+| 错误、崩溃、回归、失败测试、异常行为、根因定位、指标优化、可信测量基线、单假设实验、收益与回归门禁 | hunt | `skills/hunt/SKILL.md` |
+| 陌生领域深度研究、多来源综合、代码心智模型、历史决策研究、URL或PDF读取、网页抓取、链接摘要 | learn | `skills/learn/SKILL.md` |
 | 工程复盘、改进沉淀、防复发经验、已确认术语与决策、可复用项目上下文、规则分流 | retro | `skills/retro/SKILL.md` |
-| 任务已经给定，先校准专家方法、实际目标与约束，再直接按授权工作 | sharpen | `skills/sharpen/SKILL.md` |
-| 确定规格、已定讨论固化、纵向切片、tracer bullet、实施票据、阻塞依赖、任务图、expand-contract迁移 | slice | `skills/slice/SKILL.md` |
-| 新功能、价值判断、动手前设计、决策完整实施计划 | think | `skills/think/SKILL.md` |
-| issue/外部 PR intake、持续分诊、补充信息后重入、agent-ready brief、类别与处理状态 | triage | `skills/triage/SKILL.md` |
+| 新功能、价值判断、动手前设计、决策完整计划、术语边界、跨会话路线、纵向切片、一次性实验、代码边界、校准后按授权完成、已批准任务图实施 | think | `skills/think/SKILL.md` |
 | UI、组件、页面、视觉界面、前端、截图审美问题 | ui | `skills/ui/SKILL.md` |
-| 项目验证资产搭建、验证指南维护、launch/doctor/drive/evidence/cleanup、用户功能地图、harness漂移与现场覆盖 | verify | `skills/verify/SKILL.md` |
-| 人工操作交接、交互式配置向导、凭据采集、依赖有序的人工迁移步骤 | wizard | `skills/wizard/SKILL.md` |
 | 写作、改稿、润色、技术说明消歧、release notes、launch/social copy、去 AI 味 | write | `skills/write/SKILL.md` |
 <!-- routing-table:end -->
 

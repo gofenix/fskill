@@ -1,9 +1,9 @@
 ---
 name: learn
-description: "把陌生领域、代码系统与历史决策整理成可引用研究输出。在显式调用或已开启的 f-mode 选中时使用：/learn、$learn 或 fskill 限定调用。不用于单文件阅读、持续教学、根因调试或普通无需研究的查询。"
+description: "把陌生领域、代码、历史决策，或一份 URL、PDF 整理成可引用输出。在显式调用或已开启的 f-mode 选中时使用：/learn、$learn 或 fskill 限定调用。不用于持续教学、根因调试或普通无需材料的闲聊。"
 when_to_use: "/learn, $learn, 调用 fskill 的 learn, 用 fskill learn skill, invoke fskill learn, use fskill learn skill"
 disable-model-invocation: true
-dispatch_intent: "陌生领域深度研究、多来源综合、代码心智模型、历史决策研究、从材料到可发布输出"
+dispatch_intent: "陌生领域深度研究、多来源综合、代码心智模型、历史决策研究、URL或PDF读取、网页抓取、链接摘要"
 ---
 
 # Learn: 把陌生领域研究到能输出
@@ -35,7 +35,8 @@ dispatch_intent: "陌生领域深度研究、多来源综合、代码心智模�
 
 不要使用 `/learn`：
 
-- 只需要读一个链接，可建议 `/read`，不自动切换。
+- 只有一份 URL 或 PDF 时，读取 [单份材料](references/modes/read/MODE.md)，用本技能 `scripts/` 里的抓取脚本，不另起技能。
+- 只需要读一个链接时就走单份材料，不把深度研究流程套上去。
 - 普通查询无需研究交付时按原请求处理；决策所需窄问题查证按 `references/focused-research.md` 收敛。
 - 只是改写已有稿子，用 `/write`。
 - 只是调试代码，用 `/hunt`。
@@ -46,7 +47,7 @@ dispatch_intent: "陌生领域深度研究、多来源综合、代码心智模�
 实际委派研究者前读取 [委派预算](references/delegation-budget.md)，沿用当前任务的只读、范围与授权边界；普通研究不因此强制委派。
 
 1. **界定范围**：明确研究问题、目标读者、输出形态、时间边界、必须覆盖和明确不覆盖的内容。
-2. **收集来源**：收集一手来源优先。网页、PDF、论文、代码仓库用当前可用工具取回干净内容；代码机制或历史原因研究读取 [代码系统与历史决策](references/code-investigation.md)，分别追踪行为与动机。只有用户同时显式调用 `/read` 时才运行该技能。
+2. **收集来源**：收集一手来源优先。网页、PDF、论文、代码仓库用当前可用工具取回干净内容；只有一份材料时读取 [单份材料](references/modes/read/MODE.md)。代码机制或历史原因研究读取 [代码系统与历史决策](references/code-investigation.md)，分别追踪行为与动机。
 3. **消化材料**：把来源分成事实、解释、观点、案例、数据和未证实说法。记录冲突点。
 4. **组织结构**：先做骨架，再填内容。避免按来源逐篇复述。
 5. **写作**：用读者能跟上的顺序输出，关键术语第一次出现要解释。

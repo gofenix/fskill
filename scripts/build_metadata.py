@@ -52,7 +52,7 @@ CLAUDE_MARKETPLACE_TOP = {
     "name": "fskill",
     "description": (
         "Personal skill collection for Claude Code, Codex, Antigravity, "
-        "OpenCode, and Pi. Workflow skills with /catchup reporting, /sharpen task calibration, and /f-help for guidance "
+        "OpenCode, and Pi. Workflow skills with /catchup reporting, /think for planning and calibration, and /f-help for guidance "
         "and explicit /f-mode session routing. Direct commands remain available."
     ),
     "owner": {
@@ -80,7 +80,7 @@ AUTHOR = {
 }
 
 CODEX_DESCRIPTION = (
-    "Engineering workflow skills for Codex, with /catchup reporting, /sharpen task calibration, and "
+    "Engineering workflow skills for Codex, with /catchup reporting, /think for planning and calibration, and "
     "/f-help guidance and explicit /f-mode session routing. Direct commands remain available."
 )
 # Shared durable-context preamble: source of truth in rules/, copied into each

@@ -21,13 +21,12 @@ Chaque compétence est un dossier de références, de scripts et d'échecs réel
 | [`/f-mode`](skills/f-mode/SKILL.md) | Route | Entrer explicitement, puis choisir une compétence ci-dessous. Les commandes seules restent directes. |
 | [`/f-help`](skills/f-help/SKILL.md) | Aide | Comprendre fskill, choisir une compétence, dépanner ou personnaliser. |
 | [`/catchup`](skills/catchup/SKILL.md) | Bilan | Vérifier les progrès et les décisions en attente, sans rien modifier. |
-| [`/sharpen`](skills/sharpen/SKILL.md) | Calibrer, puis faire | Vérifier la méthode, le but et les contraintes, puis réaliser le travail autorisé. |
-| [`/think`](skills/think/SKILL.md) [`/map`](skills/map/SKILL.md) [`/domain`](skills/domain/SKILL.md) [`/slice`](skills/slice/SKILL.md) | Direction | Plan, carte entre sessions, termes, découpes. |
-| [`/prototype`](skills/prototype/SKILL.md) [`/ui`](skills/ui/SKILL.md) [`/architect`](skills/architect/SKILL.md) | Limite | Essai jetable, interface livrable, limites du code. |
-| [`/implement`](skills/implement/SKILL.md) [`/hunt`](skills/hunt/SKILL.md) [`/optimize`](skills/optimize/SKILL.md) | Faire | Graphe de tâches déjà approuvé seulement ; une modification ordinaire ne passe pas par `/implement`. Cause racine. Une mesure à la fois. |
-| [`/check`](skills/check/SKILL.md) [`/triage`](skills/triage/SKILL.md) [`/verify`](skills/verify/SKILL.md) | Livrer | Revue avant merge, push et release, file d'issues, preuve. |
-| [`/read`](skills/read/SKILL.md) [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lire et écrire | Une URL ou un PDF, recherche multi-sources, prose. |
-| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) [`/wizard`](skills/wizard/SKILL.md) | Réutiliser | Passation de session, leçons vérifiées, config d'agent, installation manuelle. |
+| [`/think`](skills/think/SKILL.md) | Décider | Plan, termes, route, découpes, essai jetable, limites du code, calibrer puis faire, graphe de tâches déjà approuvé. Une modification ordinaire reste à l'agent en cours. |
+| [`/hunt`](skills/hunt/SKILL.md) | Trouver le problème | Cause racine, ou une hypothèse quand la mesure est déjà fixée. |
+| [`/check`](skills/check/SKILL.md) | Vérifier | Revue avant merge et release, file d'issues, guide de vérification réutilisable. |
+| [`/ui`](skills/ui/SKILL.md) | Interface | Page, composant ou capture à livrer. |
+| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lire et écrire | Une URL ou un PDF, recherche multi-sources, prose. |
+| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) | Réutiliser | Passation de session, leçons vérifiées, config d'agent, installation manuelle. |
 
 Pour commencer : `/f-help Quelle compétence convient à ma tâche ?` (Codex : `$f-help`, plugin : `/fskill:f-help`).
 
@@ -41,7 +40,7 @@ Entrez `/f-mode` (Codex : `$f-mode`, plugin : `/fskill:f-mode`), puis décrivez 
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-Les compétences sont installées dans `~/.agents/skills`. Claude Code y accède via un lien symbolique ; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI et tout autre agent lisant ce dossier lisent les 24 compétences. Le parcours d'une compétence ne démarre qu'avec `/name` ou `$name`. Les agents dotés d'un dossier de compétences privé prennent leur identifiant après `-a` (par exemple `antigravity-cli` ou `qwen-code`). Mise à jour via `npx skills update -g -y`. Vous pouvez aussi demander directement à votre agent de l'installer :
+Les compétences sont installées dans `~/.agents/skills`. Claude Code y accède via un lien symbolique ; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI et tout autre agent lisant ce dossier lisent les 12 compétences. Le parcours d'une compétence ne démarre qu'avec `/name` ou `$name`. Les agents dotés d'un dossier de compétences privé prennent leur identifiant après `-a` (par exemple `antigravity-cli` ou `qwen-code`). Mise à jour via `npx skills update -g -y`. Vous pouvez aussi demander directement à votre agent de l'installer :
 > Lis https://github.com/gofenix/fskill/blob/main/llms.txt et installe fskill pour moi
 
 **En tant que plugin hôte** (les compétences sont préfixées, ex. `/fskill:check`) :
@@ -66,9 +65,9 @@ Vous choisissez l'ordre. Chaque compétence s'arrête quand son résultat est l�
 
 **Flux courants :**
 
-- **Nouvelle fonctionnalité** : `/think` pour cadrer. Après accord, l'agent en cours réalise le travail. `/implement` seulement pour un graphe de tâches déjà approuvé, en général après `/slice`. Puis `/check` pour valider et fusionner
-- **Correction de bogue** : `/hunt` pour trouver la cause, puis correction, puis `/check` pour revoir les diffs et publier si besoin
-- **Recherche et rédaction** : `/read` pour collecter, `/learn` pour structurer, `/write` pour polir
+- **Nouvelle fonctionnalité** : `/think` pour cadrer. Après accord, l'agent en cours réalise le travail, y compris un graphe de tâches déjà approuvé. Puis `/check` pour valider et fusionner
+- **Correction de bogue** : `/hunt` pour trouver la cause ou tester une mesure déjà fixée, puis correction, puis `/check` pour revoir les diffs et publier si besoin
+- **Recherche et rédaction** : `/learn` pour lire une source ou plusieurs, `/write` pour polir
 
 ## Contexte du projet
 
@@ -142,7 +141,7 @@ Les règles optionnelles s'appliquent au-delà des appels de compétences une fo
 
 ## Pourquoi fskill
 
-fskill est le jeu de compétences de gofenix. La méthode vient de [tw93/Waza](https://github.com/tw93/Waza), pas le nom : Waza appartient à quelqu'un d'autre. Vingt et une compétences de travail, sept groupes : calibrer puis faire, fixer la direction, essayer une limite, faire, livrer, lire et écrire, réutiliser. `/f-mode` est l'entrée explicite au-dessus. Chacune nomme le résultat, la limite, et ce qui compte comme terminé.
+fskill est le jeu de compétences de gofenix. La méthode vient de [tw93/Waza](https://github.com/tw93/Waza), pas le nom : Waza appartient à quelqu'un d'autre. Dix compétences de travail : think, hunt, check, ui, learn, write, handoff, catchup, retro et health. `/f-mode` est l'entrée explicite au-dessus, `/f-help` explique le choix. Les procédures plus fines sont des modes dans une commande. Chacune nomme le résultat, la limite, et ce qui compte comme terminé.
 
 L'appel est explicite : `/name` ou `$name`. Un mot proche ne lance pas le parcours.
 
