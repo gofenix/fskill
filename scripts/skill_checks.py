@@ -36,6 +36,7 @@ from checks_content import (  # noqa: F401
     check_outcome_contract,
     check_context_classifier_literals,
     check_durable_context,
+    check_llms_catalog,
     check_personal_paths,
     check_portable_skill_surface,
     collect_all_md,

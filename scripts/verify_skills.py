@@ -30,6 +30,7 @@ from skill_checks import (  # noqa: E402
     check_description_conformance,
     check_context_classifier_literals,
     check_durable_context,
+    check_llms_catalog,
     check_personal_paths,
     check_english_coaching_guard,
     check_marketplace,
@@ -102,6 +103,7 @@ def main() -> int:
     check_marketplace(root, expected_version, skill_names, skill_descriptions)
     check_references(root, skill_files)
     resolver_path = check_resolver(root, skill_names)
+    check_llms_catalog(root, skill_names)
     all_md = collect_all_md(root, skill_names, resolver_path)
     check_portable_skill_surface(root, all_md)
     check_markdown_links(root, all_md)

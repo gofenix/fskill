@@ -38,7 +38,7 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 If the message could match multiple skills, use these disambiguation rules:
 
 1. Most specific wins: `/ui` is more specific than `/think` for UI decisions.
-2. One URL or PDF to fetch or summarize -> `/read`; multi-source investigation -> `/learn`. The goal determines the skill, not the presence of a URL.
+2. One URL or PDF, and a multi-source investigation, both use `/learn`. One source reads that skill's single-source mode. The goal determines the mode, not a separate command.
 3. Code already done vs. code broken: done/PR -> `/check`; error/broken -> `/hunt`.
 4. Config/maintainability vs. code: Codex/Claude misbehaving, hooks/MCP, `/health` token usage, AI coding code rot, unclear context, missing verification, or stale verifier output -> `/health`; user code errors -> `/hunt`.
 5. Release action vs. release prose: commit/tag/publish/push/release reactions/close issue -> `/check`; write release notes/changelog text -> `/write`.
@@ -55,4 +55,4 @@ In this distribution, sub-skill scripts live at `skills/{name}/scripts/`. Resolv
 
 Each skill stops at the requested outcome. Inside active f-mode, select the next skill only when needed for that outcome; otherwise switching requires a direct command. Complete an already authorized workflow without approval at every transition. Do not infer authorization to implement a planning-only request, publish a fix, or write durable lessons.
 
-Common chains: `/think` -> implement approved plan -> `/check` | `/hunt` -> fix -> `/check` -> release/push/issue follow-through | `/read` -> `/learn` -> `/write`
+Common chains: `/think` -> the current agent does ordinary work, or `/think` coordinates an approved task graph -> `/check` | `/hunt` -> fix -> `/check` -> release/push/issue follow-through | `/learn` -> `/write`

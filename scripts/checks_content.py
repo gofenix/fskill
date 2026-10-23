@@ -274,19 +274,22 @@ def check_durable_context(root: Path, skill_files: list[Path]):
     for path in skill_files:
         skill = path.parent.name
         text = path.read_text()
-        has_section = "## Durable Context Preflight" in text or "## 长期上下文预检" in text
-        if skill in DURABLE_CONTEXT_SKILLS and not has_section:
+        heading = None
+        for candidate in ("## Durable Context Preflight", "## 长期上下文预检"):
+            if candidate in text:
+                heading = candidate
+                break
+        if skill in DURABLE_CONTEXT_SKILLS and heading is None:
             fail(
                 f"MISSING DURABLE CONTEXT PREFLIGHT: {path}\n"
                 f"  This skill must explain how to consume optional memory/preview context."
             )
-        if not has_section:
-            continue
-        if "## Durable Context Preflight" not in text:
-            print(f"ok: durable context preflight for {skill}")
+        if heading is None or skill not in DURABLE_CONTEXT_SKILLS:
+            if heading is not None:
+                print(f"ok: durable context preflight for {skill}")
             continue
 
-        section = text.split("## Durable Context Preflight", 1)[1]
+        section = text.split(heading, 1)[1]
         section = section.split("\n## ", 1)[0]
         section_lower = section.lower()
         if "references/durable-context.md" not in section:
@@ -303,12 +306,51 @@ def check_durable_context(root: Path, skill_files: list[Path]):
                 f"  Must be a byte-exact generated copy of rules/durable-context.md. "
                 f"Run scripts/build_metadata.py (no flags) to regenerate."
             )
-        if "current" not in section_lower or "override" not in section_lower:
+        english_bound = "current" in section_lower and "override" in section_lower
+        chinese_bound = "当前" in section and "优先" in section
+        if not (english_bound or chinese_bound):
             fail(
                 f"DURABLE CONTEXT NOT EVIDENCE-BOUND: {path}\n"
                 f"  Skill-specific paragraph must name what current state overrides memory."
             )
         print(f"ok: durable context preflight for {skill}")
+
+
+RETIRED_SKILL_NAMES = (
+    "sharpen",
+    "domain",
+    "map",
+    "slice",
+    "prototype",
+    "architect",
+    "implement",
+    "optimize",
+    "triage",
+    "verify",
+    "read",
+    "wizard",
+)
+
+
+def check_llms_catalog(root: Path, skill_names: set[str]):
+    """llms.txt is the install prompt. It must name the live skills only."""
+    path = root / "llms.txt"
+    if not path.exists():
+        fail(f"MISSING LLMS CATALOG: expected {path}")
+    text = path.read_text()
+    missing = sorted(name for name in skill_names if f"`{name}`" not in text)
+    if missing:
+        fail(
+            "LLMS CATALOG MISSING SKILLS: llms.txt omits: "
+            + ", ".join(missing)
+        )
+    retired = [name for name in RETIRED_SKILL_NAMES if f"`{name}`" in text]
+    if retired:
+        fail(
+            "LLMS CATALOG STALE SKILLS: llms.txt still names folded commands: "
+            + ", ".join(retired)
+        )
+    print(f"ok: llms.txt names the {len(skill_names)} current skills")
 
 
 def check_portable_skill_surface(root: Path, markdown_paths: list[Path]):
