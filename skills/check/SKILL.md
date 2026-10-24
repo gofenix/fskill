@@ -85,7 +85,7 @@ PR 检查优先用不会切换工作区的命令：`gh pr view`、`gh pr diff`�
 
 规范和需求是两个独立视角：符合项目标准不能证明需求做对，满足需求也不能豁免规范。按需求逐项找实现与验证，再从代码检查规范、回归和额外行为。复杂变更可分别委派，最终按严重度合并同根因发现，不强制两名 reviewer 或固定篇幅。
 
-diff 涉及安全前提、重复故障、视觉对比、异步完成、删减归并、安装与重试、破坏性匹配、重复计算、测试路径失真、依赖变更或验证门槛调整时，按需读取 [references/review-patterns.md](references/review-patterns.md) 的对应段落；复杂独立审查的分片与裁决也在该参考。实际委派 reviewer 前读取 [委派预算](references/delegation-budget.md)，配置不授予委派权限。TypeScript 变更按需读取 [references/typescript.md](references/typescript.md)，沿目标项目的类型、解析与兼容约定检查。
+diff 涉及安全前提、重复故障、视觉对比、异步完成、删减归并、安装与重试、破坏性匹配、重复计算、测试路径失真、依赖变更或验证门槛调整时，按需读取 [references/review-patterns.md](references/review-patterns.md) 的对应段落；复杂独立审查的分片与裁决也在该参考。实际委派 reviewer 前读取 [委派预算](references/delegation-budget.md)，配置不授予委派权限。TypeScript 变更按需读取 [references/typescript.md](references/typescript.md)，沿目标项目的类型、解析与兼容约定检查。编写或修改 TypeScript 时遵循 [TypeScript 写法](references/typescript-style.md)。审查只对本次 diff 里新写的代码指出明显偏离。
 
 涉及 CLI、安装器、配置或环境变量时，验证命令契约和真实安装路径，修改终端文字或排版后重新运行命令、读取输出；修改型命令还要检查失败、重试与回退边界。涉及技能、插件、包、marketplace 或生成镜像时，重建并检查产物，在隔离环境验证安装后的入口、脚本与引用能解析；库测试、manifest JSON 和本地导入不能替代安装验证，缺失层明确报告。
 

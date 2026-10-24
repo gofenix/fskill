@@ -134,6 +134,7 @@ dispatch_intent: "新功能、价值判断、动手前设计、决策完整计�
 - 计划若涉及超过 8 个文件或 1 个新服务，明确提醒复杂度。
 - 多于 3 个组件交换数据时，画一个 ASCII 图并检查循环。
 - 所有 API key、token、第三方账号、外部 CLI 都要在计划里列出，不要实施到一半才要凭据。
+- 项目已是 TypeScript 时，编写或修改前读取 [TypeScript 写法](references/typescript-style.md)。项目已有 lint 和当前文件的写法优先。
 
 ## 常见误区
 

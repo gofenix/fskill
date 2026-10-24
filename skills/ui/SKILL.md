@@ -74,6 +74,7 @@ dispatch_intent: "UI、组件、页面、视觉界面、前端、截图审美问
 - 文本不得挤出按钮、卡片或容器；移动和桌面都要检查。
 - 不用 viewport width 直接缩放字号，letter spacing 默认 0。
 - 不做单一色相大面积 UI，尤其避免整页紫、蓝紫、米色、深蓝、棕橙一把梭。
+- 编写 TypeScript 或 TSX 时读取 [TypeScript 写法](references/typescript-style.md)。项目已有 lint 和当前文件的写法优先。
 
 ## 输出
 

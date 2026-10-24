@@ -18,6 +18,10 @@ Generated files:
                                         direct-install copies of the shared
                                         durable-context preamble (only skills
                                         whose SKILL.md links it)
+  - skills/*/references/typescript-style.md
+                                        direct-install copies of the TypeScript
+                                        style rule (only skills whose SKILL.md
+                                        links it)
   - scripts/setup-rule.sh              default FSKILL_REF pinned to VERSION
   - scripts/setup-statusline.sh        default FSKILL_REF pinned to VERSION
 
@@ -89,6 +93,8 @@ DURABLE_CONTEXT_RULE = Path("rules/durable-context.md")
 DURABLE_CONTEXT_COPY = Path("references/durable-context.md")
 DELEGATION_BUDGET_RULE = Path("rules/delegation-budget.md")
 DELEGATION_BUDGET_COPY = Path("references/delegation-budget.md")
+TYPESCRIPT_STYLE_RULE = Path("rules/typescript-style.md")
+TYPESCRIPT_STYLE_COPY = Path("references/typescript-style.md")
 
 
 def read_version(root: Path) -> str:
@@ -360,30 +366,40 @@ def collect_skill_shared_assets(root: Path) -> dict[str, bytes]:
     """Per-skill copies of shared assets that direct installs need locally.
 
     `npx skills add` copies only each skill directory, so every skill whose
-    SKILL.md links a shared durable-context or delegation-budget rule carries
-    a references/ copy of it.
+    SKILL.md links a shared durable-context, delegation-budget, or
+    typescript-style rule carries a references/ copy of it.
     """
     generated: dict[str, bytes] = {}
     durable_source = root / DURABLE_CONTEXT_RULE
     durable_bytes = durable_source.read_bytes() if durable_source.exists() else None
     budget_source = root / DELEGATION_BUDGET_RULE
     budget_bytes = budget_source.read_bytes() if budget_source.exists() else None
+    style_source = root / TYPESCRIPT_STYLE_RULE
+    style_bytes = style_source.read_bytes() if style_source.exists() else None
     for skill_file in sorted((root / "skills").glob("*/SKILL.md")):
         skill_dir = skill_file.parent.relative_to(root)
-        if DURABLE_CONTEXT_COPY.as_posix() in skill_file.read_text():
+        skill_text = skill_file.read_text()
+        if DURABLE_CONTEXT_COPY.as_posix() in skill_text:
             if durable_bytes is None:
                 raise SystemExit(
                     f"ERROR: {skill_file} links {DURABLE_CONTEXT_COPY} but "
                     f"{DURABLE_CONTEXT_RULE} does not exist"
                 )
             generated[(skill_dir / DURABLE_CONTEXT_COPY).as_posix()] = durable_bytes
-        if DELEGATION_BUDGET_COPY.as_posix() in skill_file.read_text():
+        if DELEGATION_BUDGET_COPY.as_posix() in skill_text:
             if budget_bytes is None:
                 raise SystemExit(
                     f"ERROR: {skill_file} links {DELEGATION_BUDGET_COPY} but "
                     f"{DELEGATION_BUDGET_RULE} does not exist"
                 )
             generated[(skill_dir / DELEGATION_BUDGET_COPY).as_posix()] = budget_bytes
+        if TYPESCRIPT_STYLE_COPY.as_posix() in skill_text:
+            if style_bytes is None:
+                raise SystemExit(
+                    f"ERROR: {skill_file} links {TYPESCRIPT_STYLE_COPY} but "
+                    f"{TYPESCRIPT_STYLE_RULE} does not exist"
+                )
+            generated[(skill_dir / TYPESCRIPT_STYLE_COPY).as_posix()] = style_bytes
     for name in ("f-mode", "f-help"):
         entrypoint = root / f"skills/{name}/SKILL.md"
         if entrypoint.exists() and "references/routing.md" in entrypoint.read_text():
@@ -400,6 +416,8 @@ def shared_asset_source(rel: str) -> str:
         return "skills/RESOLVER.md"
     if rel.endswith("/references/delegation-budget.md"):
         return DELEGATION_BUDGET_RULE.as_posix()
+    if rel.endswith("/references/typescript-style.md"):
+        return TYPESCRIPT_STYLE_RULE.as_posix()
     return DURABLE_CONTEXT_RULE.as_posix()
 
 

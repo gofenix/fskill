@@ -270,6 +270,7 @@ def check_rules_files_present(root: Path):
         "chinese.md",
         "anti-patterns.md",
         "durable-context.md",
+        "typescript-style.md",
         "fskill-routing.md",
     ]
     for name in required:

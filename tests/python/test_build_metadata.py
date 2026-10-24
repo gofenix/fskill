@@ -197,6 +197,27 @@ def test_collect_skill_shared_assets_copies_durable_context_when_linked(tmp_path
     assert "skills/read/references/durable-context.md" not in tree
 
 
+def test_collect_skill_shared_assets_copies_typescript_style_when_linked(tmp_path):
+    rules_dir = tmp_path / "rules"
+    rules_dir.mkdir()
+    (rules_dir / "typescript-style.md").write_text("style\n")
+    linked = tmp_path / "skills" / "think"
+    linked.mkdir(parents=True)
+    (linked / "SKILL.md").write_text(
+        "---\nname: x\n---\nSee [references/typescript-style.md](references/typescript-style.md).\n"
+    )
+    unlinked = tmp_path / "skills" / "write"
+    unlinked.mkdir(parents=True)
+    (unlinked / "SKILL.md").write_text("---\nname: x\n---\n")
+
+    tree = bm.collect_skill_shared_assets(tmp_path)
+
+    target = "skills/think/references/typescript-style.md"
+    assert tree[target] == b"style\n"
+    assert "skills/write/references/typescript-style.md" not in tree
+    assert bm.shared_asset_source(target) == "rules/typescript-style.md"
+
+
 def test_collect_skill_shared_assets_fails_when_link_has_no_source(tmp_path):
     skill_dir = tmp_path / "skills" / "check"
     skill_dir.mkdir(parents=True)
