@@ -1,9 +1,9 @@
 ---
 name: check
-description: "审查代码、方案、发布和项目质量，处理 issue 与外部 PR 队列，并维护可复用的验证指南。在显式调用或已开启的 f-mode 选中时使用：/check、$check 或 fskill 限定调用。不用于尚未确定的设计取舍、根因调试或文字润色。"
+description: "审查代码、方案、发布和项目质量，判断值不值得发版，处理 issue 与外部 PR 队列，并维护可复用的验证指南。显式调用用 /check、$check 或 fskill 限定调用；要审 diff 或 PR、判断值不值得发版、处理 PR 队列时也可直接选用，无需用户点名。不用于尚未确定的设计取舍、根因调试或文字润色。"
 when_to_use: "/check, $check, 调用 fskill 的 check, 用 fskill check skill, invoke fskill check, use fskill check skill"
-disable-model-invocation: true
-dispatch_intent: "代码与技术文档审查、合并前检查、发布门禁、项目质量审计、issue与外部PR队列、可复用验证指南与harness"
+disable-model-invocation: false
+dispatch_intent: "代码与技术文档审查、合并前检查、发版价值判断、发布门禁、项目质量审计、issue与外部PR队列、可复用验证指南与harness"
 ---
 
 # Check: 交付前把关
@@ -16,7 +16,9 @@ dispatch_intent: "代码与技术文档审查、合并前检查、发布门禁�
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/check`、`$check`、`调用 fskill 的 check`、`用 fskill check skill`、`invoke fskill check`、`use fskill check skill`，或 Desktop 根分发器已从 `/fskill check` 选中本技能，或当前会话里用户已进入 `/f-mode` 且 f-mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；f-mode 关闭时，新任务或切换技能仍需显式调用；f-mode 开启时可由 f-mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+用户显式输入 `/check`、`$check`、`调用 fskill 的 check`、`用 fskill check skill`、`invoke fskill check`、`use fskill check skill`，或 Desktop 根分发器已从 `/fskill check` 选中本技能，或当前会话里用户已进入 `/f-mode` 且 f-mode 点名了本技能时，进入本技能。此外，当任务本身属于本技能的适用面——要审 diff 或 PR、要审已定稿的技术文档、要处理 issue 与外部 PR 队列、要判断值不值得发版、要做交付发布收尾、要做项目审计、要维护验证指南——模型可直接按当前目标选用本技能，无需用户点名，但要在动手前用一句话说明进入哪个模式及理由。
+
+同一任务中的回答、补充、纠正和继续请求沿用已选中的技能，无需每轮重复命令。选技能只决定工作方法，不扩大授权：仅审查或判断是否可发布时只交发现和建议，修复、commit、push、发布仍按本任务授权判断。措辞与可读性归 `/write`，根因调试归 `/hunt`，未定的设计取舍归 `/think`。
 
 ## 交付约定
 
@@ -35,7 +37,7 @@ git status --short --branch -uall
 
 把已修改、已暂存和未跟踪文件都视为用户工作。可以读取并纳入审查范围，但不能移动、隐藏、覆盖、清理或丢弃，除非用户已明确授权该操作及其范围。
 
-默认不要运行：`git switch`、`git checkout`、`git reset --hard`、`git clean`、`git stash -u`、`git stash --include-untracked`、`git stash -a`、`git stash --all`、`gh pr checkout`。如果确实需要换分支或清理，先核对该操作及范围是否已有明确授权；缺少授权时再问具体操作。
+默认不要运行：`git switch`、`git checkout`、`git reset --hard`、`git clean`、`git stash -u`、`git stash --include-untracked`、`git stash -a`、`git stash --all`、`git worktree add`、`git worktree remove`、`gh pr checkout`。如果确实需要换分支、另起工作区或清理，先核对该操作及范围是否已有明确授权；缺少授权时再问具体操作。在用户指定的已有分支和工作区里工作，不把“开始做”或“方案通过”当成可以新建分支或 worktree 的授权。
 
 在脏工作区或多 agent checkout 里 commit/push 时，先记录 `git rev-parse HEAD`。commit 前、push 前都重新读取 `git status --short --branch -uall` 和 `git rev-parse HEAD`。如果 HEAD 移动、出现未知提交或工作区被别人改过，停下来报告，不要自行 rebase、recommit 或 push。
 
@@ -54,9 +56,9 @@ PR 检查优先用不会切换工作区的命令：`gh pr view`、`gh pr diff`�
 | 已成稿技术方案、PRD、spec 的正确性、一致性、完整性审查 | 技术文档审查 |
 | issues/外部 PR 队列分类、补充信息重入、准备实施契约 | 读取 [队列](references/modes/triage/MODE.md)；已有 diff 的审查仍走默认审查 |
 | 建立或维护可复用的验证指南和操作入口 | 读取 [验证指南](references/modes/verify/MODE.md)。只跑一次已有测试不进入这一节 |
-| 值不值得发版、is this worth a release | 发版价值判断 |
-| commit、push、publish、release、close issue、发布表情 | 交付与发布收尾 |
-| 打包、mac 包、dmg、notarize、apk、aab、release asset | 发布产物检查 |
+| 值不值得发版、is this worth a release | 发版价值判断：见下节，只判断该不该发，不执行发布 |
+| commit、push、publish、release、close issue、发布表情 | 读取 [交付与发布跟进](references/maintainer-workflows.md)；查状态不附带修改或公共回复授权 |
+| 打包、mac 包、dmg、notarize、apk、aab、release asset | 读取 [发布产物](references/release-artifacts.md)，并填发布检查 2.0 矩阵 |
 | audit、项目体检、项目评分、scorecard、linus review | 项目审计 |
 | 只检查措辞、语法、可读性、去 AI 味或本地化文案 | 建议用户显式调用 `/write` |
 
@@ -111,6 +113,16 @@ diff 涉及安全前提、重复故障、视觉对比、异步完成、删减归
 4. 先列发现，并用文档行号、代码位置或命令证据说明；只改用户授权的文档或实现。
 5. 如果核心方案仍未确定，且用户要比较方向或重新做取舍，建议显式调用 `/think`；如果只需改措辞和可读性，建议显式调用 `/write`。
 
+## 发版价值判断
+
+用户问“值不值得发版”“该不该发”“is this worth a release”时使用。这是判断，不是发布。
+
+先核对三件事，再给结论：这一版实际改变了什么用户可见行为；有没有未解决的阻塞或未验证项；不发版的实际代价是什么。读当前 diff、未关闭 issue、CI 状态和上次发版以来的提交，不凭印象判断。
+
+输出结论为**该发** / **可以等** / **不该发**，并给三条基于真实约束的理由：影响面、风险、时机。缺少发布证据时明确标为缺口，不把“看起来没问题”当成可发。
+
+这个判断不授权执行任何发布动作。用户随后要求发布时，按交付与发布收尾和发布产物检查完成，并重新核对当时的实际状态。
+
 ## 自动修复边界
 
 仅审查或判断是否可发布的请求，默认交付发现和建议。修法简单不代表获得修改授权。
@@ -162,18 +174,7 @@ make package
 
 验证完成后可以判断本轮是否有值得沉淀的经验，但不得自动执行 `/retro` 或发起原任务范围外的沉淀写入。
 
-触发信号：
-
-- 用户纠正了测试方式、日志 API、架构分层、命名、发布步骤或验证入口。
-- 本轮发现并修复了项目文档没写清楚、但会让 agent 反复犯错的约束。
-- 审查中出现了可以被验证器、冒烟测试或 `AGENTS.md` 阻止的重复风险。
-
-处理方式：
-
-1. 没有可复用教训时，不输出单独段落。
-2. 有可复用教训时，用一句话建议用户显式调用 `/retro` 或 `$retro`。
-3. 未收到显式调用前，不为额外沉淀经验而修改 `AGENTS.md`、规则、references、ADR 或验证器；用户已授权的原任务修复仍按自动修复边界完成。建议落点应是目标 Agent 实际会读取的最窄受版本管理指南；UI 约束只有在运行入口会加载时才放进 `.claude/rules/*.md`。
-4. 用户显式调用 retro 或继续其同一任务时，按该技能的调用边界和落点选择处理。
+只把本轮证据验证过的经验列为候选；有候选时用一句话建议用户显式调用 `/retro`，没有候选时不输出单独段落。未收到显式调用前，不为额外沉淀而修改 `AGENTS.md`、规则、references、ADR 或验证器。落点选择由 `/retro` 负责，这里不重复。
 
 ## 合并阻断项
 

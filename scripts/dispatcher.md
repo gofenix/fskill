@@ -15,7 +15,7 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 | Intent | Skill | File |
 |--------|-------|------|
 | 本会话进展回顾、变化与阻塞、仍待用户处理的决策和批准，只读汇报 | catchup | `skills/catchup/SKILL.md` |
-| 代码与技术文档审查、合并前检查、发布门禁、项目质量审计、issue与外部PR队列、可复用验证指南与harness | check | `skills/check/SKILL.md` |
+| 代码与技术文档审查、合并前检查、发版价值判断、发布门禁、项目质量审计、issue与外部PR队列、可复用验证指南与harness | check | `skills/check/SKILL.md` |
 | 解答 fskill 用法、推荐技能、解释模式和定制方式 | f-help | `skills/f-help/SKILL.md` |
 | 显式开启或关闭 f-mode，在会话内选择技能并按需应用工程原则 | f-mode | `skills/f-mode/SKILL.md` |
 | 交接文档、handoff、会话总结、接入恢复、本人相关历史与当前状态核对 | handoff | `skills/handoff/SKILL.md` |
@@ -23,7 +23,7 @@ Default invocation is explicit: `/name`, `$name`, or `/fskill name`. Discussing 
 | 错误、崩溃、回归、失败测试、异常行为、根因定位、指标优化、可信测量基线、单假设实验、收益与回归门禁 | hunt | `skills/hunt/SKILL.md` |
 | 陌生领域深度研究、多来源综合、代码心智模型、历史决策研究、URL或PDF读取、网页抓取、链接摘要 | learn | `skills/learn/SKILL.md` |
 | 工程复盘、改进沉淀、防复发经验、已确认术语与决策、可复用项目上下文、规则分流 | retro | `skills/retro/SKILL.md` |
-| 新功能、价值判断、动手前设计、决策完整计划、术语边界、跨会话路线、纵向切片、一次性实验、代码边界、校准后按授权完成、已批准任务图实施 | think | `skills/think/SKILL.md` |
+| 新功能、价值判断、需求范围分类、高压追问、动手前设计、决策完整计划、术语边界、跨会话路线、纵向切片、一次性实验、代码边界、校准后按授权完成、已批准任务图实施 | think | `skills/think/SKILL.md` |
 | UI、组件、页面、视觉界面、前端、截图审美问题 | ui | `skills/ui/SKILL.md` |
 | 写作、改稿、润色、技术说明消歧、release notes、launch/social copy、去 AI 味 | write | `skills/write/SKILL.md` |
 <!-- routing-table:end -->

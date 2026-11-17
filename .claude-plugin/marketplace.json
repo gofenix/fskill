@@ -29,7 +29,7 @@
     },
     {
       "name": "fskill-check",
-      "description": "审查代码、方案、发布和项目质量，处理 issue 与外部 PR 队列，并维护可复用的验证指南。在显式调用或已开启的 f-mode 选中时使用：/check、$check 或 fskill 限定调用。不用于尚未确定的设计取舍、根因调试或文字润色。",
+      "description": "审查代码、方案、发布和项目质量，判断值不值得发版，处理 issue 与外部 PR 队列，并维护可复用的验证指南。显式调用用 /check、$check 或 fskill 限定调用；要审 diff 或 PR、判断值不值得发版、处理 PR 队列时也可直接选用，无需用户点名。不用于尚未确定的设计取舍、根因调试或文字润色。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/check",
@@ -89,7 +89,7 @@
     },
     {
       "name": "fskill-hunt",
-      "description": "在修复前找到错误、崩溃、回归和异常行为的根因；指标已经定时一次只试一个假设。在显式调用或已开启的 f-mode 选中时使用：/hunt、$hunt 或 fskill 限定调用。不用于代码审查或尚未定性的新功能方案。",
+      "description": "在修复前找到错误、崩溃、回归和异常行为的根因；指标已经定时一次只试一个假设。显式调用用 /hunt、$hunt 或 fskill 限定调用；已经坏了要查根因、或指标已定要试单假设改进时也可直接选用，无需用户点名。不用于代码审查或尚未定性的新功能方案。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/hunt",
@@ -125,7 +125,7 @@
     },
     {
       "name": "fskill-think",
-      "description": "想清楚再动手：计划、术语、跨会话路线、切片、一次性实验、代码边界，以及已给定任务的校准和已批准任务图。在显式调用或已开启的 f-mode 选中时使用：/think、$think 或 fskill 限定调用。不用于界面交付、根因调试、审查或润色。",
+      "description": "想清楚再动手：计划、价值判断、需求范围分类、高压追问、术语、跨会话路线、切片、一次性实验、代码边界，以及已给定任务的校准和已批准任务图。显式调用用 /think、$think 或 fskill 限定调用；任务本身要定方案、做价值判断、定范围或高压追问时也可直接选用，无需用户点名。不用于界面交付、根因调试、审查或润色。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/think",

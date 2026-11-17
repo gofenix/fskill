@@ -1,9 +1,9 @@
 ---
 name: think
-description: "想清楚再动手：计划、术语、跨会话路线、切片、一次性实验、代码边界，以及已给定任务的校准和已批准任务图。在显式调用或已开启的 f-mode 选中时使用：/think、$think 或 fskill 限定调用。不用于界面交付、根因调试、审查或润色。"
+description: "想清楚再动手：计划、价值判断、需求范围分类、高压追问、术语、跨会话路线、切片、一次性实验、代码边界，以及已给定任务的校准和已批准任务图。显式调用用 /think、$think 或 fskill 限定调用；任务本身要定方案、做价值判断、定范围或高压追问时也可直接选用，无需用户点名。不用于界面交付、根因调试、审查或润色。"
 when_to_use: "/think, $think, 调用 fskill 的 think, 用 fskill think skill, invoke fskill think, use fskill think skill"
-disable-model-invocation: true
-dispatch_intent: "新功能、价值判断、动手前设计、决策完整计划、术语边界、跨会话路线、纵向切片、一次性实验、代码边界、校准后按授权完成、已批准任务图实施"
+disable-model-invocation: false
+dispatch_intent: "新功能、价值判断、需求范围分类、高压追问、动手前设计、决策完整计划、术语边界、跨会话路线、纵向切片、一次性实验、代码边界、校准后按授权完成、已批准任务图实施"
 ---
 
 # Think: 动手前先把方向想透
@@ -27,12 +27,19 @@ dispatch_intent: "新功能、价值判断、动手前设计、决策完整计�
 | 用一次性实验验证一个假设 | [实验](references/modes/prototype/MODE.md) |
 | 看代码边界该保持、拆开、合并还是加深 | [代码边界](references/modes/architect/MODE.md) |
 | 已有批准的任务图，要协调实施和合入 | [任务图](references/modes/implement/MODE.md) |
+| 问题已定义，只需要简短修复方案 | [轻量方案](#轻量方案模式) |
+| 要不要做、有没有必要、值不值得、should we keep this | [价值判断](#价值判断模式) |
+| 一次给出多个请求、issue、截图或需求包，要先定范围 | [范围分类](#范围分类模式) |
+| grill me、拷问我、别顺着我、挑战我的想法、压测方案 | [追问](#追问模式) |
+| 需要完整方案或实施计划 | [完整方案](#完整方案流程) |
 
 界面交付用 `/ui`。根因用 `/hunt`。审查用 `/check`。
 
 ## 调用边界
 
-首次进入本技能时，须由用户显式输入 `/think`、`$think`、`调用 fskill 的 think`、`用 fskill think skill`、`invoke fskill think`、`use fskill think skill`，或 Desktop 根分发器已从 `/fskill think` 选中本技能，或当前会话里用户已进入 `/f-mode` 且 f-mode 点名了本技能。同一任务中的回答、补充、纠正和继续请求沿用已显式调用的技能，无需每轮重复命令；f-mode 关闭时，新任务或切换技能仍需显式调用；f-mode 开启时可由 f-mode 按当前目标重新选择。若宿主仅因语义相似自动加载本技能，不应用下文流程，按普通 Agent 请求继续处理。
+用户显式输入 `/think`、`$think`、`调用 fskill 的 think`、`用 fskill think skill`、`invoke fskill think`、`use fskill think skill`，或 Desktop 根分发器已从 `/fskill think` 选中本技能，或当前会话里用户已进入 `/f-mode` 且 f-mode 点名了本技能时，进入本技能。此外，当任务本身属于本技能的适用面——要定方案、要做价值判断、要定需求范围、要高压追问、要理清术语或路线、要拆切片、要看代码边界、要协调已批准任务图——模型可直接按当前目标选用本技能，无需用户点名，但要在动手前用一句话说明选了哪个模式及理由。
+
+同一任务中的回答、补充、纠正和继续请求沿用已选中的技能，无需每轮重复命令。选技能只决定工作方法，不扩大授权：只读请求仍只读，仅要方案仍交方案，实施、push、发布和外部写入仍按本任务授权判断。任务不属于本技能适用面时按普通请求处理，不强套流程。
 
 ## 交付约定
 
