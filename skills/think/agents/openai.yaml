@@ -1,0 +1,6 @@
+interface:
+  display_name: "fskill think"
+  short_description: "想清楚再动手：计划、价值判断、需求范围分类、高压追问、术语、跨会话路线、切片、一次性实验、代码边界，以及已给定任务的校准和已批准任务图"
+  default_prompt: "使用 $think 完成 fskill 工作流。"
+policy:
+  allow_implicit_invocation: true

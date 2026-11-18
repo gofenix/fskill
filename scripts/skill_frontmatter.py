@@ -148,6 +148,13 @@ def parse_frontmatter(path: Path) -> dict:
             in_metadata = True
         elif key in {"name", "description", "when_to_use", "dispatch_intent"}:
             fields[key] = parse_scalar(key, raw_value)
+        elif key == "disable-model-invocation":
+            value = parse_scalar(key, raw_value).lower()
+            if value not in ("true", "false"):
+                fail(
+                    f"INVALID FRONTMATTER VALUE: {path} field {key} must be true or false"
+                )
+            fields[key] = value == "true"
 
     name = fields.get("name")
     description = fields.get("description")
@@ -169,12 +176,15 @@ def parse_frontmatter(path: Path) -> dict:
             f"block from frontmatter."
         )
 
-    return {
+    parsed = {
         "name": name.strip(),
         "description": description.strip(),
         "when_to_use": when_to_use.strip(),
         "dispatch_intent": dispatch_intent.strip(),
     }
+    if "disable-model-invocation" in fields:
+        parsed["disable-model-invocation"] = fields["disable-model-invocation"]
+    return parsed
 
 
 def parse_when_to_use_keywords(when_to_use: str) -> set[str]:

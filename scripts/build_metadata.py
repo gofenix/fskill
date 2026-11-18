@@ -22,6 +22,8 @@ Generated files:
                                         direct-install copies of the TypeScript
                                         style rule (only skills whose SKILL.md
                                         links it)
+  - skills/*/agents/openai.yaml        Codex invocation policy derived from each
+                                        skill's disable-model-invocation field
   - scripts/setup-rule.sh              default FSKILL_REF pinned to VERSION
   - scripts/setup-statusline.sh        default FSKILL_REF pinned to VERSION
 
@@ -411,9 +413,40 @@ def collect_skill_shared_assets(root: Path) -> dict[str, bytes]:
     return generated
 
 
+def collect_codex_policies(root: Path) -> dict[str, bytes]:
+    """Per-skill Codex policy derived from the skill's invocation frontmatter.
+
+    Codex defaults a skill without `agents/openai.yaml` to implicit invocation,
+    so a missing copy silently re-enables every skill there. Emit both values
+    explicitly to keep Codex and Claude Code on the same policy.
+    """
+    generated: dict[str, bytes] = {}
+    for skill_file in sorted((root / "skills").glob("*/SKILL.md")):
+        fields = parse_frontmatter(skill_file)
+        rel = (skill_file.parent.relative_to(root) / "agents" / "openai.yaml").as_posix()
+        generated[rel] = render_openai_yaml(fields).encode("utf-8")
+    return generated
+
+
+def render_openai_yaml(fields: dict) -> str:
+    name = fields["name"]
+    summary = fields["description"].split("。", 1)[0].strip()
+    allow = "false" if fields.get("disable-model-invocation") else "true"
+    return (
+        "interface:\n"
+        f"  display_name: {json.dumps(f'fskill {name}', ensure_ascii=False)}\n"
+        f"  short_description: {json.dumps(summary, ensure_ascii=False)}\n"
+        f"  default_prompt: {json.dumps(f'使用 ${name} 完成 fskill 工作流。', ensure_ascii=False)}\n"
+        "policy:\n"
+        f"  allow_implicit_invocation: {allow}\n"
+    )
+
+
 def shared_asset_source(rel: str) -> str:
     if rel in ("skills/f-mode/references/routing.md", "skills/f-help/references/routing.md"):
         return "skills/RESOLVER.md"
+    if rel.endswith("/agents/openai.yaml"):
+        return "the skill's SKILL.md disable-model-invocation frontmatter"
     if rel.endswith("/references/delegation-budget.md"):
         return DELEGATION_BUDGET_RULE.as_posix()
     if rel.endswith("/references/typescript-style.md"):
@@ -494,6 +527,7 @@ def main() -> int:
         actual = script.read_text() if script.exists() else ""
         script_pairs.append((script, field_label, actual, renderer(actual)))
     skill_shared_assets = collect_skill_shared_assets(root)
+    codex_policies = collect_codex_policies(root)
     codex_plugin_tree = collect_codex_plugin_tree(
         root,
         codex_plugin_rendered,
@@ -571,6 +605,18 @@ def main() -> int:
                 )
                 sys.stderr.write(bytes_diff(rel, expected, actual))
                 drift = True
+        for rel, expected in codex_policies.items():
+            path = root / rel
+            actual = path.read_bytes() if path.exists() else b""
+            if actual != expected:
+                print(
+                    f"DRIFT: {rel} is out of sync with "
+                    f"{shared_asset_source(rel)}.\n"
+                    f"Run scripts/build_metadata.py (no flags) to regenerate.",
+                    file=sys.stderr,
+                )
+                sys.stderr.write(bytes_diff(rel, expected, actual))
+                drift = True
         for script, field_label, actual, rendered_script in script_pairs:
             if actual != rendered_script:
                 label = script.relative_to(root).as_posix()
@@ -632,7 +678,7 @@ def main() -> int:
             print(f"wrote: {script.relative_to(root)} ({field_label}=v{version})")
         else:
             print(f"ok: {script.relative_to(root)} {field_label} already pinned")
-    for rel, expected in skill_shared_assets.items():
+    for rel, expected in {**skill_shared_assets, **codex_policies}.items():
         path = root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         if not path.exists() or path.read_bytes() != expected:

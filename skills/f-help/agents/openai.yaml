@@ -1,0 +1,6 @@
+interface:
+  display_name: "fskill f-help"
+  short_description: "解答 fskill 的选技、调用、安装、排障与定制问题，给出有依据的说明和可直接使用的提示词"
+  default_prompt: "使用 $f-help 完成 fskill 工作流。"
+policy:
+  allow_implicit_invocation: false

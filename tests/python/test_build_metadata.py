@@ -65,6 +65,27 @@ def test_standalone_entrypoint_carries_current_routing_without_repo_paths(tmp_pa
     assert bm.shared_asset_source(f"skills/{skill}/references/routing.md") == "skills/RESOLVER.md"
 
 
+def test_codex_policy_follows_disable_model_invocation(tmp_path):
+    bodies = {
+        "manual": "---\nname: manual\ndescription: \"Manual skill. Not for auto.\"\ndisable-model-invocation: true\n---\n",
+        "auto": "---\nname: auto\ndescription: \"Auto skill. Not for manual.\"\ndisable-model-invocation: false\n---\n",
+        "bare": "---\nname: bare\ndescription: \"Bare skill. Not for nothing.\"\n---\n",
+    }
+    for name, body in bodies.items():
+        directory = tmp_path / "skills" / name
+        directory.mkdir(parents=True)
+        (directory / "SKILL.md").write_text(body)
+    policies = bm.collect_codex_policies(tmp_path)
+    # Codex defaults a missing file to implicit, so every skill gets one.
+    assert set(policies) == {
+        f"skills/{name}/agents/openai.yaml" for name in bodies
+    }
+    assert b"allow_implicit_invocation: false" in policies["skills/manual/agents/openai.yaml"]
+    assert b"allow_implicit_invocation: true" in policies["skills/auto/agents/openai.yaml"]
+    assert b"allow_implicit_invocation: true" in policies["skills/bare/agents/openai.yaml"]
+    assert b'"fskill auto"' in policies["skills/auto/agents/openai.yaml"]
+
+
 def test_render_readme_rewrites_main_to_latest_asset():
     body = "curl https://raw.githubusercontent.com/gofenix/fskill/main/scripts/setup-rule.sh"
     out = bm.render_readme(body)

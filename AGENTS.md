@@ -31,6 +31,7 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twelve sk
 - `.claude-plugin/marketplace.json` - **generated**. Edit `VERSION` or per-skill `SKILL.md` frontmatter and run `make regenerate`; never hand-edit.
 - `.agents/plugins/marketplace.json` - **generated** Codex repo marketplace. Points Codex at the repository root; never hand-edit.
 - `.codex-plugin/plugin.json` - **generated** Codex plugin manifest. `skills` is `./skills/`. Do not add a `plugins/fskill` copy of the skill tree.
+- `skills/*/agents/openai.yaml` - **generated** Codex invocation policy. Codex defaults a skill with no such file to implicit invocation, so codegen emits one for every skill from its `disable-model-invocation` frontmatter; never hand-edit, and keep the two hosts on the same policy.
 - `packaging.allowlist` - default-deny list of paths that ship in `fskill.zip`. New shippable assets must be added here explicitly; everything else is excluded.
 - `.github/workflows/` - public test and release automation. `release.yml` runs `make test` before `make package` so the tagged commit is gated by the same suite as PRs.
 - `scripts/build_metadata.py` - codegen for marketplace and plugin metadata, README install URLs, skill-local shared-context copies, and installer-script `FSKILL_REF` defaults. Run via `make regenerate`; CI checks drift via `make verify-generated`.

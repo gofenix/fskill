@@ -1,0 +1,6 @@
+interface:
+  display_name: "fskill learn"
+  short_description: "把陌生领域、代码、历史决策，或一份 URL、PDF 整理成可引用输出"
+  default_prompt: "使用 $learn 完成 fskill 工作流。"
+policy:
+  allow_implicit_invocation: false
