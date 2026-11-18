@@ -1,6 +1,6 @@
 # fskill
 
-> Twelve engineering skills for AI coding agents. Ten do the work: `/think`, `/hunt`, `/check`, `/ui`, `/learn`, `/write`, `/handoff`, `/catchup`, `/retro`, and `/health`. `/f-mode` routes and `/f-help` explains. Enter a skill with `/name` or `$name`. `/f-mode` picks one skill only after the user enters it. A similar word does not start that workflow. Finer procedures are modes inside a command.
+> Twelve engineering skills for AI coding agents. Ten do the work: `/think`, `/hunt`, `/check`, `/ui`, `/learn`, `/write`, `/handoff`, `/catchup`, `/retro`, and `/health`. `/f-mode` routes and `/f-help` explains. Enter any skill with `/name` or `$name`; `think`, `hunt`, and `check` also start on their own when the task is planning, a broken behavior, or a diff review. `/f-mode` picks among all of them only after the user enters it. Finer procedures are modes inside a command.
 
 Source code: https://github.com/gofenix/fskill
 npm package: https://www.npmjs.com/package/@gofenix/fskill

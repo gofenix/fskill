@@ -14,7 +14,7 @@
 
 ## 스킬 목록
 
-각 스킬은 참고 문서, 스크립트, 실제로 겪은 실패를 담은 디렉터리입니다. 기본적으로 `/name` 또는 `$name` 으로 시작합니다. 비슷한 말로는 바뀌지 않습니다. Waza, Matt Pocock skills, pstack을 기반으로 합니다. 출처는 라이선스 항목을 참고하세요.
+각 스킬은 참고 문서, 스크립트, 실제로 겪은 실패를 담은 디렉터리입니다. 개별 스킬은 `/name` 또는 `$name` 으로 시작합니다. `think`, `hunt`, `check` 는 작업 자체가 해당 범위면 자동으로도 시작되고, 나머지 9개는 명시적 호출만 받습니다. Waza, Matt Pocock skills, pstack을 기반으로 합니다. 출처는 라이선스 항목을 참고하세요.
 
 | 스킬 | 묶음 | 역할 |
 | :--- | :--- | :--- |
@@ -124,7 +124,7 @@ Codex는 남은 한도를, 위의 Claude Code 상태 표시줄은 사용한 비�
   # 안티패턴: 모든 스킬에 항상 적용되는 가드레일 (먼저 읽고 행동, 범위 확장 금지, 요청하지 않은 요약 금지)
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # 라우팅 힌트: 스킬 이름, 그리고 /name 또는 $name 으로만 들어간다는 규칙
+  # 라우팅 힌트: think/hunt/check 는 맞는 작업이면 자동, 나머지는 명시적 호출로 시작한다는 규칙
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # 명확한 일상 답변: 일관된 용어, 명시적인 조건, 불확실성 유지
@@ -143,7 +143,7 @@ Codex는 남은 한도를, 위의 Claude Code 상태 표시줄은 사용한 비�
 
 fskill 은 gofenix 자신의 스킬 모음입니다. 일하는 방식은 [tw93/Waza](https://github.com/tw93/Waza) 에서 가져왔고, 이름은 가져오지 않았습니다. Waza 는 다른 사람의 이름입니다. 작업 스킬은 10개입니다: think, hunt, check, ui, learn, write, handoff, catchup, retro, health. 그 위에 명시적 입구 `/f-mode` 와 도움말 `/f-help` 가 있습니다. 더 잘게 나눈 절차는 각 명령 안의 모드입니다. 각 스킬은 결과, 넘지 않을 선, 완료 기준만 적습니다.
 
-호출은 명시적입니다. `/name` 또는 `$name`. 비슷한 뜻으로는 그 절차가 시작되지 않습니다.
+각 스킬은 `/name` 또는 `$name` 으로 호출합니다. `think`, `hunt`, `check` 는 작업이 맞으면 자동으로도 시작되고, 나머지는 명시적 호출만 받습니다.
 
 ## 삭제 방법
 

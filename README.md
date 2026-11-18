@@ -32,7 +32,7 @@ Not sure where to start? Try `/f-help Which skill fits my task?` (Codex: `$f-hel
 
 Enter `/f-mode` (Codex: `$f-mode`; plugin: `/fskill:f-mode`) once, then describe your tasks normally. It routes within this session until `/f-mode off`; `/f-mode status` reports state. Direct commands such as `/hunt` take priority without closing f-mode. New sessions start off. Mode selects workflows, not action permissions.
 
-Direct commands stay explicit (`/think`, `$think`). `/f-mode` is the only router, and only after you enter it. Saying a related word does not switch skills and does not enter f-mode. Refined from [tw93/Waza](https://github.com/tw93/Waza).
+`think`, `hunt`, and `check` may also start when the task itself is theirs, without naming them; the other nine start only on an explicit call (`/think`, `$think`). `/f-mode` is the only router that switches among all of them, and only after you enter it. Saying a related word does not enter f-mode. Refined from [tw93/Waza](https://github.com/tw93/Waza).
 
 ## Install
 
@@ -145,7 +145,7 @@ Optional rules apply beyond skill invocations when installed into your agent's p
 
 fskill is gofenix's skill set. The working shape comes from [tw93/Waza](https://github.com/tw93/Waza); the name does not, because Waza belongs to someone else. There are ten workflow skills: think, hunt, check, ui, learn, write, handoff, catchup, retro, and health. `/f-mode` routes among them and `/f-help` explains them. Finer procedures are modes inside a command. Each skill states the outcome, the lines it does not cross, and how you know it is done.
 
-You enter a skill with `/name` or `$name`. A similar word does not start that workflow.
+You enter any skill with `/name` or `$name`. `think`, `hunt`, and `check` also start on their own when the task is planning, a broken behavior, or a diff review; the other nine wait for an explicit call.
 
 ## Uninstall
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "fskill",
-  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi. Workflow skills with /catchup reporting, /think for planning and calibration, and /f-help for guidance and explicit /f-mode session routing. Direct commands remain available.",
+  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi. Workflow skills with /catchup reporting, /think for planning and calibration, and /f-help for guidance and explicit /f-mode session routing. /think, /hunt, and /check may also be chosen without a command; direct commands remain available.",
   "owner": {
     "name": "gofenix",
     "email": "gofenix@users.noreply.github.com"

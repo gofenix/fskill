@@ -14,7 +14,7 @@
 
 ## Skills
 
-Jeder Skill ist ein Ordner mit Referenzen, Skripten und echten Fehlern. Standardmäßig startet er bei `/name` oder `$name`. Ein ähnliches Wort schaltet nicht um. Die Abläufe beruhen auf Waza, Matt Pocock skills und pstack; Quellen stehen im Lizenzabschnitt.
+Jeder Skill ist ein Ordner mit Referenzen, Skripten und echten Fehlern. Einzelne Skills starten mit `/name` oder `$name`; `think`, `hunt`, `check` starten zusätzlich von selbst, wenn die Aufgabe selbst ihre ist, die übrigen neun nur auf ausdrücklichen Aufruf. Die Abläufe beruhen auf Waza, Matt Pocock skills und pstack; Quellen stehen im Lizenzabschnitt.
 
 | Skill | Gruppe | Was er tut |
 | :--- | :--- | :--- |
@@ -124,7 +124,7 @@ Optionale Regeln wirken auch außerhalb von Skill-Aufrufen, sobald sie in den da
   # Anti-Patterns: stets aktive, skillübergreifende Leitplanken (erst lesen, dann handeln; kein Scope Creep; keine ungefragten Zusammenfassungen)
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # Routing-Hinweis: Skill-Namen, und dass der Aufruf explizit ist, /name oder $name
+  # Routing-Hinweis: think/hunt/check starten bei passender Aufgabe selbst, die übrigen auf ausdrücklichen Aufruf
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # Klare Alltagsantworten: einheitliche Begriffe, explizite Bedingungen, Unsicherheit bleibt erhalten
@@ -143,7 +143,7 @@ Optionale Regeln wirken auch außerhalb von Skill-Aufrufen, sobald sie in den da
 
 fskill ist gofenix' eigenes Skill-Set. Die Arbeitsweise kommt von [tw93/Waza](https://github.com/tw93/Waza), der Name nicht, denn Waza gehört jemand anderem. Es sind zehn Workflow-Skills: think, hunt, check, ui, learn, write, handoff, catchup, retro und health. Darüber liegen der ausdrückliche Einstieg `/f-mode` und die Hilfe `/f-help`. Feinere Abläufe sind Modi innerhalb eines Befehls. Jeder Skill nennt das Ergebnis, die Grenze und woran man Fertig erkennt.
 
-Der Aufruf ist explizit: `/name` oder `$name`. Ein ähnliches Wort startet den Ablauf nicht.
+Jeder Skill ist über `/name` oder `$name` aufrufbar; `think`, `hunt` und `check` starten auch von selbst, wenn die Aufgabe passt, die übrigen nur auf ausdrücklichen Aufruf.
 
 ## Deinstallation
 

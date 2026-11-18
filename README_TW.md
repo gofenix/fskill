@@ -14,7 +14,7 @@
 
 ## 技能
 
-每個技能是一個目錄，裡面有參考、腳本和踩過的坑。預設透過 `/name` 或 `$name` 進入；說到相關的詞不會自動換技能。以 Waza 為基礎，並融合 Matt Pocock skills 和 pstack 的流程；完整來源見下方授權說明。
+每個技能是一個目錄，裡面有參考、腳本和踩過的坑。單條技能透過 `/name` 或 `$name` 進入；`think`、`hunt`、`check` 在任務本身屬於其適用面時也會自動進入，其餘 9 條只認顯式呼叫。以 Waza 為基礎，並融合 Matt Pocock skills 和 pstack 的流程；完整來源見下方授權說明。
 
 | 技能 | 分組 | 它做什麼 |
 | :--- | :--- | :--- |
@@ -40,7 +40,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-技能統一存放在 `~/.agents/skills` 共享目錄，Claude Code 透過符號連結接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能讀這個目錄的 Agent 都會讀到這 12 個技能。進入某個技能的流程仍要顯式呼叫。有自己技能目錄的 Agent 在 `-a` 後面寫上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，後續透過 `npx skills update -g -y` 保持更新。也可以直接告訴你的 Agent 幫你安裝：
+技能統一存放在 `~/.agents/skills` 共享目錄，Claude Code 透過符號連結接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能讀這個目錄的 Agent 都會讀到這 12 個技能。進入某個技能的流程用 `/name` 或 `$name`；`think`、`hunt`、`check` 也可按任務自動進入。有自己技能目錄的 Agent 在 `-a` 後面寫上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，後續透過 `npx skills update -g -y` 保持更新。也可以直接告訴你的 Agent 幫你安裝：
 > 閱讀 https://github.com/gofenix/fskill/blob/main/llms.txt 幫我安裝 fskill
 
 **宿主外掛方式**，如果你更習慣使用宿主自有的更新指令（技能帶有命名空間前綴，如 `/fskill:check`）：
@@ -124,7 +124,7 @@ Codex 顯示剩餘額度，上方 Claude Code 狀態列顯示已用百分比（�
   # 行為防錯守則：全域常駐約束（先看再改、不隨意擴大範圍、不主動輸出冗餘總結）
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # 技能路由提示：技能名單，以及只在 /name 或 $name 時進入
+  # 技能路由提示：think/hunt/check 可按任務自動進入，其餘顯式呼叫；進入 /f-mode 後按目標選技能
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # 日常清晰表達：術語統一、條件明確、保留不確定性
@@ -143,7 +143,7 @@ Codex 顯示剩餘額度，上方 Claude Code 狀態列顯示已用百分比（�
 
 fskill 是 gofenix 自己的技能集。工作方式來自 [tw93/Waza](https://github.com/tw93/Waza)，名字不沿用，因為 Waza 是別人的。現在是 10 個工作技能：think、hunt、check、ui、learn、write、handoff、catchup、retro、health。上面再加顯式入口 `/f-mode` 和幫助 `/f-help`。更細的做法是這些命令裡的模式。每個技能寫清結果、不能碰的線，以及怎麼算做完。
 
-呼叫是顯式的：`/name` 或 `$name`。意思相近不會自動開始那套流程。
+每條技能都能用 `/name` 或 `$name` 呼叫；`think`、`hunt`、`check` 也會按任務自動進入，其餘技能只在顯式呼叫時開始。
 
 ## 移除
 

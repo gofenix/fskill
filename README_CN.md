@@ -14,7 +14,7 @@
 
 ## 技能
 
-每个技能是一个目录，里面有参考、脚本和踩过的坑。默认通过 `/name` 或 `$name` 进入单条技能。`/f-mode` 是唯一会自己选路的入口，而且要先显式进入。说到相关的词不会自动换技能，也不会进入 f-mode。基于 Waza，并融合 Matt Pocock skills 和 pstack 的流程；完整来源见下方许可证说明。
+每个技能是一个目录，里面有参考、脚本和踩过的坑。单条技能通过 `/name` 或 `$name` 进入；`think`、`hunt`、`check` 在任务本身属于其适用面时（要定方案、已经坏了要查根因、要审 diff 或 PR）也会自动进入，其余 9 条只认显式调用。`/f-mode` 是唯一能在全部技能间自动选路的入口，而且要先显式进入。说到相关的词不会进入 f-mode。基于 Waza，并融合 Matt Pocock skills 和 pstack 的流程；完整来源见下方许可证说明。
 
 | 技能 | 分组 | 它做什么 |
 | :--- | :--- | :--- |
@@ -40,7 +40,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-技能统一存放在 `~/.agents/skills` 共享目录，Claude Code 通过软链接接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能读这个目录的 Agent 都会读到这 12 个技能。进入某个技能的流程仍要显式调用。有自己技能目录的 Agent 在 `-a` 后面写上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，后续通过 `npx skills update -g -y` 保持更新。也可以直接告诉你的 Agent 帮你安装：
+技能统一存放在 `~/.agents/skills` 共享目录，Claude Code 通过软链接接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能读这个目录的 Agent 都会读到这 12 个技能。进入某个技能的流程用 `/name` 或 `$name`；`think`、`hunt`、`check` 也可按任务自动进入。有自己技能目录的 Agent 在 `-a` 后面写上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，后续通过 `npx skills update -g -y` 保持更新。也可以直接告诉你的 Agent 帮你安装：
 > 阅读 https://github.com/gofenix/fskill/blob/main/llms.txt 帮我安装 fskill
 
 **宿主插件方式**，如果你更习惯使用宿主自有的更新命令（技能带有命名空间前缀，如 `/fskill:check`）：
@@ -124,7 +124,7 @@ Codex 显示剩余额度，上方 Claude Code 状态栏显示已用百分比（�
   # 行为防错守则：全局常驻约束（先看再改、不随意扩大范围、不主动输出冗余总结）
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # 技能路由提示：默认显式调用，进入 /f-mode 后按目标选技能
+  # 技能路由提示：think/hunt/check 可按任务自动进入，其余显式调用；进入 /f-mode 后按目标选技能
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # 日常清晰表达：术语统一、条件明确、保留不确定性
@@ -143,7 +143,7 @@ Codex 显示剩余额度，上方 Claude Code 状态栏显示已用百分比（�
 
 fskill 是 gofenix 自己的技能集。工作方式来自 [tw93/Waza](https://github.com/tw93/Waza)，名字不沿用，因为 Waza 是别人的。现在是 10 个工作技能：think、hunt、check、ui、learn、write、handoff、catchup、retro、health。上面再加显式入口 `/f-mode` 和帮助 `/f-help`。更细的做法是这些命令里的模式。每个技能写清结果、不能碰的线，以及怎么算做完。
 
-调用是显式的：`/name` 或 `$name`。意思相近不会自动开始那套流程。
+每条技能都能用 `/name` 或 `$name` 调用；`think`、`hunt`、`check` 也会按任务自动进入，其余技能只在显式调用时开始。
 
 ## 卸载
 

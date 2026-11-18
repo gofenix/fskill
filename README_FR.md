@@ -14,7 +14,7 @@
 
 ## Compétences (Skills)
 
-Chaque compétence est un dossier de références, de scripts et d'échecs réels. Par défaut, elle démarre avec `/name` ou `$name`. Un mot proche ne la lance pas. Les procédures viennent de Waza, Matt Pocock skills et pstack ; voir les sources dans la section licence.
+Chaque compétence est un dossier de références, de scripts et d'échecs réels. Une compétence se lance avec `/name` ou `$name` ; `think`, `hunt` et `check` se lancent aussi d'elles-mêmes quand la tâche est la leur, les neuf autres seulement sur appel explicite. Les procédures viennent de Waza, Matt Pocock skills et pstack ; voir les sources dans la section licence.
 
 | Compétence | Groupe | Ce qu'elle fait |
 | :--- | :--- | :--- |
@@ -124,7 +124,7 @@ Les règles optionnelles s'appliquent au-delà des appels de compétences une fo
   # Anti-patterns : garde-fous permanents communs à toutes les compétences (lire avant d'agir, ne pas élargir le périmètre, pas de résumé non demandé)
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # Indice de routage : les noms des compétences, et l'appel explicite, /name ou $name
+  # Indice de routage : think/hunt/check se lancent seuls sur une tâche qui les concerne, les autres sur appel explicite
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # Réponses claires au quotidien : termes cohérents, conditions explicites, incertitude préservée
@@ -143,7 +143,7 @@ Les règles optionnelles s'appliquent au-delà des appels de compétences une fo
 
 fskill est le jeu de compétences de gofenix. La méthode vient de [tw93/Waza](https://github.com/tw93/Waza), pas le nom : Waza appartient à quelqu'un d'autre. Dix compétences de travail : think, hunt, check, ui, learn, write, handoff, catchup, retro et health. `/f-mode` est l'entrée explicite au-dessus, `/f-help` explique le choix. Les procédures plus fines sont des modes dans une commande. Chacune nomme le résultat, la limite, et ce qui compte comme terminé.
 
-L'appel est explicite : `/name` ou `$name`. Un mot proche ne lance pas le parcours.
+Chaque compétence s'appelle par `/name` ou `$name` ; `think`, `hunt` et `check` se lancent aussi d'elles-mêmes quand la tâche correspond, les autres seulement sur appel explicite.
 
 ## Désinstallation
 

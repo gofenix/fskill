@@ -59,7 +59,7 @@ CLAUDE_MARKETPLACE_TOP = {
     "description": (
         "Personal skill collection for Claude Code, Codex, Antigravity, "
         "OpenCode, and Pi. Workflow skills with /catchup reporting, /think for planning and calibration, and /f-help for guidance "
-        "and explicit /f-mode session routing. Direct commands remain available."
+        "and explicit /f-mode session routing. /think, /hunt, and /check may also be chosen without a command; direct commands remain available."
     ),
     "owner": {
         "name": "gofenix",
@@ -187,8 +187,8 @@ def build_codex_plugin(version: str) -> dict:
                 "fskill packages engineering skills in five groups: "
                 "decide, build, ship, read and write, and leave something "
                 "the next session can use. /f-help explains the toolkit. /f-mode routes only after you "
-                "enter it. Enter any skill with /name or $name. A similar "
-                "word does not start that workflow."
+                "enter it. Enter any skill with /name or $name; think, hunt, and check also start on "
+                "their own when the task is theirs, while the other nine wait for an explicit call."
             ),
             "developerName": "gofenix",
             "category": CODEX_CATEGORY,

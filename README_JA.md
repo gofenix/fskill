@@ -14,7 +14,7 @@
 
 ## スキル一覧
 
-各スキルは参照、スクリプト、実際に踏んだ失敗をまとめたディレクトリです。通常は `/name` または `$name` で開始します。近い言葉では切り替わりません。Waza、Matt Pocock skills、pstack を基にしています。詳細はライセンス欄を参照してください。
+各スキルは参照、スクリプト、実際に踏んだ失敗をまとめたディレクトリです。個々のスキルは `/name` または `$name` で開始します。`think`、`hunt`、`check` はタスク自体がその担当範囲なら自動でも始まり、残り 9 個は明示的な呼び出しだけです。Waza、Matt Pocock skills、pstack を基にしています。詳細はライセンス欄を参照してください。
 
 | スキル | グループ | 役割 |
 | :--- | :--- | :--- |
@@ -124,7 +124,7 @@ Codex は残りの枠を、上の Claude Code ステータスラインは使用�
   # アンチパターン：スキル横断で常に効くガードレール（読んでから動く、範囲を広げない、頼まれていない要約をしない）
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # ルーティングヒント：スキル名と、/name または $name のときだけ入るという規則
+  # ルーティングヒント：think/hunt/check は該当タスクで自動、残りは明示的な呼び出しで開始する規則
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # 明快な日常回答：用語の統一、条件の明示、不確かさの保持
@@ -143,7 +143,7 @@ Codex は残りの枠を、上の Claude Code ステータスラインは使用�
 
 fskill は gofenix 自身のスキル集です。進め方は [tw93/Waza](https://github.com/tw93/Waza) から取り、名前は取りません。Waza は他人の名前だからです。作業スキルは 10 個です：think、hunt、check、ui、learn、write、handoff、catchup、retro、health。その上に明示的な入口 `/f-mode` とヘルプ `/f-help` があります。より細かい手順は各コマンドの中のモードです。各スキルは結果、越えない線、完了の判断だけを書きます。
 
-入り方は明示です。`/name` または `$name`。近い意味ではその手順は始まりません。
+各スキルは `/name` または `$name` で呼び出せます。`think`、`hunt`、`check` はタスクが合えば自動でも始まり、残りは明示的な呼び出しだけです。
 
 ## アンインストール
 
