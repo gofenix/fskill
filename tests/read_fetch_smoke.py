@@ -83,11 +83,33 @@ def main():
             run(fetch, "/short", False, "tier=local status=fail")
             expected = ["/article"] * 3 + ["/unavailable", "/short", "/short"]
             assert Handler.requests == expected, Handler.requests
+
+            # r.jina.ai answers a CAPTCHA-walled page with a header and one
+            # warning line, enough lines to pass the count but no content.
+            # Every proxy tier must report it as a failure, not as ok.
+            jina = scratch / "jina"
+            jina.mkdir()
+            (jina / "curl").write_text(
+                '#!/bin/sh\n'
+                'printf "Title: Reviews\\n\\nURL Source: x\\n\\n'
+                'Warning: This page maybe requiring CAPTCHA, please make sure'
+                ' you are authorized to access this page.\\n\\n'
+                'Markdown Content:\\n\\n\\n"\n'
+            )
+            (jina / "curl").chmod(0o755)
+            captcha_env = dict(env, PATH=f"{jina}{os.pathsep}{os.environ['PATH']}")
+            result = subprocess.run(fetch + ["--use-proxy", base + "/unavailable"],
+                                    env=captcha_env, capture_output=True,
+                                    text=True, timeout=60)
+            assert result.returncode == 1, result.stderr
+            assert "tier=jina status=fail" in result.stderr, result.stderr
+            assert "status=ok" not in result.stderr, result.stderr
+            assert not result.stdout, result.stdout
         finally:
             server.shutdown()
             server.server_close()
             thread.join(timeout=5)
-    print("read fetch smoke: ok (6 loopback cases, no third-party requests)")
+    print("read fetch smoke: ok (7 loopback cases, no third-party requests)")
 
 
 if __name__ == "__main__":

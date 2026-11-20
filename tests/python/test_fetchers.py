@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-sys.path.insert(0, str(ROOT / "skills" / "read" / "scripts"))
+sys.path.insert(0, str(ROOT / "skills" / "learn" / "scripts"))
 
 import fetch_feishu  # noqa: E402
 import fetch_weixin  # noqa: E402
