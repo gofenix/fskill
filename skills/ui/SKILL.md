@@ -1,7 +1,7 @@
 ---
 name: ui
 description: "做有方向感、可交付的 UI、页面、组件、字体排印和截图细节优化。在显式调用或已开启的 f-mode 选中时使用：/ui、$ui 或 fskill 限定调用。不用于后端逻辑或数据流水线。"
-when_to_use: "/ui, $ui, 调用 fskill 的 ui, 用 fskill ui skill, invoke fskill ui, use fskill ui skill"
+when_to_use: "/ui, $ui, /fskill:ui, /fskill ui, 调用 fskill 的 ui, 用 fskill ui skill, invoke fskill ui, use fskill ui skill"
 disable-model-invocation: true
 dispatch_intent: "UI、组件、页面、视觉界面、前端、截图审美问题"
 ---
@@ -41,7 +41,7 @@ dispatch_intent: "UI、组件、页面、视觉界面、前端、截图审美问
 
 涉及手势、抽屉、拖拽、可中断过渡或动效调优时，再读 [交互与动效](references/design-motion.md)。官网、营销页的艺术方向在新产品设计参考中，工具产品默认围绕核心任务设计。
 
-用户说“很傻”“很怪”“突兀”“不协调”“不和谐”时，按现有产品的截图迭代处理；证据证明是回归或渲染错误时，可建议显式调用 `/hunt`，不自动切换技能。
+用户说“很傻”“很怪”“突兀”“不协调”“不和谐”时，按现有产品的截图迭代处理；证据证明是回归或渲染错误时，可建议改用 `/hunt`，不自动切换技能。
 
 ## 范围与项目上下文
 

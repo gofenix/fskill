@@ -1,7 +1,7 @@
 ---
 name: hunt
 description: "在修复前找到错误、崩溃、回归和异常行为的根因；指标已经定时一次只试一个假设。显式调用用 /hunt、$hunt 或 fskill 限定调用；已经坏了要查根因、或指标已定要试单假设改进时也可直接选用，无需用户点名。不用于代码审查或尚未定性的新功能方案。"
-when_to_use: "/hunt, $hunt, 调用 fskill 的 hunt, 用 fskill hunt skill, invoke fskill hunt, use fskill hunt skill"
+when_to_use: "/hunt, $hunt, /fskill:hunt, /fskill hunt, 调用 fskill 的 hunt, 用 fskill hunt skill, invoke fskill hunt, use fskill hunt skill"
 disable-model-invocation: false
 dispatch_intent: "错误、崩溃、回归、失败测试、异常行为、根因定位、指标优化、可信测量基线、单假设实验、收益与回归门禁"
 ---

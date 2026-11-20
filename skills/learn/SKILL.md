@@ -1,7 +1,7 @@
 ---
 name: learn
 description: "把陌生领域、代码、历史决策，或一份 URL、PDF 整理成可引用输出。在显式调用或已开启的 f-mode 选中时使用：/learn、$learn 或 fskill 限定调用。不用于持续教学、根因调试或普通无需材料的闲聊。"
-when_to_use: "/learn, $learn, 调用 fskill 的 learn, 用 fskill learn skill, invoke fskill learn, use fskill learn skill"
+when_to_use: "/learn, $learn, /fskill:learn, /fskill learn, 调用 fskill 的 learn, 用 fskill learn skill, invoke fskill learn, use fskill learn skill"
 disable-model-invocation: true
 dispatch_intent: "陌生领域深度研究、多来源综合、代码心智模型、历史决策研究、URL或PDF读取、网页抓取、链接摘要"
 ---
@@ -27,7 +27,8 @@ dispatch_intent: "陌生领域深度研究、多来源综合、代码心智模�
 
 - **完整研究（默认）**：多来源综合、陌生领域调研、摸清代码运行机制或历史决策原因、把素材整理成文章、报告、讲稿或对比表。
 - **单份材料（精简模式）**：只有一个 URL 或 PDF 时，直接读取 [单份材料](references/modes/read/MODE.md)，用本技能 `scripts/` 里的抓取脚本，不用套下面的六步深度研究流程。
-- **不走 `/learn`**：普通无需查证的问答直接答；决策所需的窄问题查证按 `references/focused-research.md` 快速收束；改稿用 `/write`，排错用 `/hunt`，定工程方案用 `/think`。
+- **窄问题查证（快速收束）**：决策所需的窄问题查证按 `references/focused-research.md` 快速收束，不用展开六阶段长报告。
+- **不走 `/learn`**：普通无需查证的问答直接答；改稿用 `/write`，排错用 `/hunt`，定工程方案用 `/think`。
 
 ## 六阶段流程
 

@@ -87,7 +87,7 @@ catchup 不启动或重试被汇报的工作；完整交接仍用 `/handoff`。�
 
 ## 工程原则与工作流
 
-f-mode 用[短原则索引](https://github.com/gofenix/fskill/blob/main/skills/f-mode/references/principles.md)连接现有正文：先减后增、质疑前提、真实验收、行为测试、解释数字、结构性防复发。工程任务按条件读取，普通问答和模式开关省略。索引只负责发现，详细规则继续维护在各自技能里。
+f-mode 用[短原则索引](https://github.com/gofenix/fskill/blob/main/skills/f-mode/references/principles.md)连接现有正文：先减后增、质疑前提、真实验收、行为测试、委派预算、解释数字、结构性防复发。工程任务按条件读取，普通问答和模式开关省略。索引只负责发现，详细规则继续维护在各自技能里。
 
 可以这样定向纠偏：`/f-mode 用“质疑前提”重新检查这两次修复失败的原因；只诊断，不改文件。` 仅点名原则不会开启 f-mode。只读适用正文，读取不等于启动所属技能的流程；缺少对应技能时说明缺口，不自动安装。
 

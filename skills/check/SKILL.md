@@ -1,7 +1,7 @@
 ---
 name: check
-description: "审查代码、方案、发布和项目质量，判断值不值得发版，处理 issue 与外部 PR 队列，并维护可复用的验证指南。显式调用用 /check、$check 或 fskill 限定调用；要审 diff 或 PR、判断值不值得发版、处理 PR 队列时也可直接选用，无需用户点名。不用于尚未确定的设计取舍、根因调试或文字润色。"
-when_to_use: "/check, $check, 调用 fskill 的 check, 用 fskill check skill, invoke fskill check, use fskill check skill"
+description: "审查代码、方案、发布和项目质量，判断值不值得发版，处理 issue 与外部 PR 队列，并维护可复用的验证指南。显式调用用 /check、$check 或 fskill 限定调用；要审 diff/PR 或定稿技术文档、处理 issue/PR 队列、判断发版与发布收尾、做项目审计或维护验证指南时也可直接选用，无需用户点名。不用于尚未确定的设计取舍、根因调试或文字润色。"
+when_to_use: "/check, $check, /fskill:check, /fskill check, 调用 fskill 的 check, 用 fskill check skill, invoke fskill check, use fskill check skill"
 disable-model-invocation: false
 dispatch_intent: "代码与技术文档审查、合并前检查、发版价值判断、发布门禁、项目质量审计、issue与外部PR队列、可复用验证指南与harness"
 ---
@@ -16,7 +16,7 @@ dispatch_intent: "代码与技术文档审查、合并前检查、发版价值�
 
 ## 调用边界
 
-用户显式调用 `/check`、`$check`、fskill 限定入口，或已开启的 `/f-mode` 选中时进入。任务本身属于审查范围（审 diff 或 PR、审定稿技术文档、处理 issue/PR 队列、判断值不值得发版、发布收尾、项目审计、维护验证指南）时，也可直接选用，无需用户点名，但动手前用一句话说明进入哪个模式和理由。
+用户显式调用 `/check`、`$check`、fskill 限定入口，或已开启的 `/f-mode` 选中时进入。任务本身属于审查与把关范围（审 diff 或 PR、审定稿技术文档、处理 issue/PR 队列、判断值不值得发版与发布收尾、做项目审计、维护验证指南）时，也可直接选用，无需用户点名，但动手前用一句话说明进入哪个模式和理由。
 
 同一任务里的追问和纠正继续沿用，不用每轮重复命令。选技能只定做法，不扩大授权：只读审查只交发现和建议，修复、commit、push、发布仍按本任务授权走。改措辞走 `/write`，查根因走 `/hunt`，未定方案取舍走 `/think`。
 
@@ -59,7 +59,7 @@ PR 检查优先用不会切换工作区的命令：`gh pr view`、`gh pr diff`�
 | 值不值得发版、is this worth a release | 发版价值判断：见下节，只判断该不该发，不执行发布 |
 | commit、push、publish、release、close issue、发布表情 | 读取 [交付与发布跟进](references/maintainer-workflows.md)；查状态不附带修改或公共回复授权 |
 | 打包、mac 包、dmg、notarize、apk、aab、release asset | 读取 [发布产物](references/release-artifacts.md)，并填发布检查 2.0 矩阵 |
-| audit、项目体检、项目评分、scorecard、linus review | 项目审计 |
+| audit、项目代码体检、项目评分、scorecard、linus review | 项目审计 |
 | 只检查措辞、语法、可读性、去 AI 味或本地化文案 | 建议用户显式调用 `/write` |
 | 审查提示、技能、persona 或模型变了，问审查还灵不灵 | 读取 [事故台账](references/incident-ledger.md) 的重放评估 |
 
@@ -118,7 +118,7 @@ diff 涉及安全前提、重复故障、视觉对比、异步完成、删减归
 2. 按请求读取相关需求、代码、schema、接口、测试和 CI，验证文档主张与当前实现是否一致。
 3. 交叉检查术语与字段定义、适用矩阵、执行顺序、不变量、异常路径和示例，定位矛盾、遗漏和不可实现之处。
 4. 先列发现，并用文档行号、代码位置或命令证据说明；只改用户授权的文档或实现。
-5. 如果核心方案仍未确定，且用户要比较方向或重新做取舍，建议显式调用 `/think`；如果只需改措辞和可读性，建议显式调用 `/write`。
+5. 如果核心方案仍未确定，且用户要比较方向或重新做取舍，建议改用 `/think`，不自动切换技能；如果只需改措辞和可读性，建议显式调用 `/write`。
 
 ## 发版价值判断
 

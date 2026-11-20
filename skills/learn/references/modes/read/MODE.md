@@ -37,7 +37,7 @@
 
 ## 隐私与抓取层级
 
-`scripts/fetch.sh` 默认保护隐私。
+父技能（`learn`）目录下的 `scripts/fetch.sh` 默认保护隐私。
 
 - **默认（`fetch.sh URL`）**：请求原网站并在本机抽取，不把 URL 发给第三方抽取服务。最好安装 `readability-lxml` 和 `html2text`；没有也会用 stdlib HTML stripper，质量稍差。
 - **明确同意后启用（`fetch.sh --use-proxy URL`）**：本地失败后尝试 `defuddle.md` 和 `r.jina.ai`。这些第三方服务会收到 URL，并可能缓存或记录。只用于 JS-heavy 页面、X/Twitter、付费墙或本地无法抓取的页面。

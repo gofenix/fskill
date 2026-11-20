@@ -1,7 +1,7 @@
 ---
 name: retro
 description: "复盘已验证的修复、用户纠偏和工程经验，把改进沉淀到正确上下文层。在显式调用或已开启的 f-mode 选中时使用：/retro、$retro 或 fskill 限定调用。不用于尚在进行的调试、未定架构取舍或常规文档写作。"
-when_to_use: "/retro, $retro, 调用 fskill 的 retro, 用 fskill retro skill, invoke fskill retro, use fskill retro skill"
+when_to_use: "/retro, $retro, /fskill:retro, /fskill retro, 调用 fskill 的 retro, 用 fskill retro skill, invoke fskill retro, use fskill retro skill"
 disable-model-invocation: true
 dispatch_intent: "工程复盘、改进沉淀、防复发经验、已确认术语与决策、可复用项目上下文、规则分流"
 ---
@@ -37,7 +37,7 @@ dispatch_intent: "工程复盘、改进沉淀、防复发经验、已确认术�
 | 沉淀已确认的术语、领域词汇或领域边界 | 已确认上下文沉淀 |
 | 记录已经确定且难以逆转的架构决策 | 已确认上下文沉淀的 ADR 筛选条件 |
 
-设计方案还没有确定时可建议用户显式调用 `/think`，不自动切换。`/retro` 只沉淀已确认的术语和决策，不主动开展领域建模。
+设计方案还没有确定时可建议用户改用 `/think`，不自动切换技能。`/retro` 只沉淀已确认的术语和决策，不主动开展领域建模。
 
 ## 经验筛选
 

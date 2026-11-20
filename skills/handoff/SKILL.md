@@ -1,7 +1,7 @@
 ---
 name: handoff
 description: "交出当前会话，或从限定历史与当前现场恢复工作上下文，让 agent 接续任务。在显式调用或已开启的 f-mode 选中时使用：/handoff、$handoff 或 fskill 限定调用。不用于常规写作、编辑、去 AI 味或自动实施历史计划。"
-when_to_use: "/handoff, $handoff, 调用 fskill 的 handoff, 用 fskill handoff skill, invoke fskill handoff, use fskill handoff skill"
+when_to_use: "/handoff, $handoff, /fskill:handoff, /fskill handoff, 调用 fskill 的 handoff, 用 fskill handoff skill, invoke fskill handoff, use fskill handoff skill"
 disable-model-invocation: true
 dispatch_intent: "交接文档、handoff、会话总结、接入恢复、本人相关历史与当前状态核对"
 ---

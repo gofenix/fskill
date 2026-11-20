@@ -63,7 +63,7 @@
 
 ## 边界
 
-- 没进入 `/f-mode` 时，下面的表不自动换技能。单条命令仍然直接进入对应技能。
+- 没进入 `/f-mode` 时，不会依据上面的表在多条技能间自动跳转；`think`、`hunt`、`check` 仅在任务本身属于其适用面时可直接选用，其余单条命令仍需显式调用。
 - 上下文装不下走 `skills/handoff/SKILL.md`。路线还没清仍走 `skills/think/SKILL.md`。
 - 已确认的术语和 ADR 走 `skills/retro/SKILL.md`。还在厘清概念走 `skills/think/SKILL.md`。
 - 已经坏了，或指标已经定了，走 `skills/hunt/SKILL.md`。没有故障、要看 diff 能不能交，走 `skills/check/SKILL.md`。
