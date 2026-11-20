@@ -207,11 +207,13 @@ def build_codex_plugin(version: str) -> dict:
     }
 
 
-def build_agy_plugin() -> dict:
+def build_agy_plugin(version: str) -> dict:
     return {
         "$schema": "https://antigravity.google/schemas/v1/plugin.json",
         "name": "fskill",
+        "version": version,
         "description": CODEX_DESCRIPTION.replace("Codex", "Antigravity CLI"),
+        "logo": "assets/logo.svg",
     }
 
 
@@ -495,7 +497,7 @@ def main() -> int:
     marketplace = build_marketplace(version, skills)
     rendered = render_json(marketplace)
     codex_plugin_rendered = render_json(build_codex_plugin(version))
-    agy_plugin_rendered = render_json(build_agy_plugin())
+    agy_plugin_rendered = render_json(build_agy_plugin(version))
     codex_marketplace_rendered = render_json(build_codex_marketplace())
     package_rendered = build_package_json(version)
 

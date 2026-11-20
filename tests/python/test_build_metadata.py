@@ -248,3 +248,12 @@ def test_collect_skill_shared_assets_fails_when_link_has_no_source(tmp_path):
 
     with pytest.raises(SystemExit):
         bm.collect_skill_shared_assets(tmp_path)
+
+
+def test_build_agy_plugin_includes_version_and_logo():
+    manifest = bm.build_agy_plugin("3.39.0")
+
+    assert manifest["$schema"] == "https://antigravity.google/schemas/v1/plugin.json"
+    assert manifest["name"] == "fskill"
+    assert manifest["version"] == "3.39.0"
+    assert manifest["logo"] == "assets/logo.svg"
