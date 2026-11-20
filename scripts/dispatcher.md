@@ -19,7 +19,7 @@ Every skill takes `/name`, `$name`, or `/fskill name`; `think`, `hunt`, and `che
 | 解答 fskill 用法、推荐技能、解释模式和定制方式 | f-help | `skills/f-help/SKILL.md` |
 | 显式开启或关闭 f-mode，在会话内选择技能并按需应用工程原则 | f-mode | `skills/f-mode/SKILL.md` |
 | 交接文档、handoff、会话总结、接入恢复、本人相关历史与当前状态核对 | handoff | `skills/handoff/SKILL.md` |
-| Agent 配置审计、指令漂移、hooks/MCP、验证入口、AI 可维护性、必须由人完成的配置或迁移向导 | health | `skills/health/SKILL.md` |
+| Agent 配置审计、指令漂移、hooks/MCP、验证入口、AI 可维护性、规则或 skill 瘦身、必须由人完成的配置或迁移向导 | health | `skills/health/SKILL.md` |
 | 错误、崩溃、回归、失败测试、异常行为、根因定位、指标优化、可信测量基线、单假设实验、收益与回归门禁 | hunt | `skills/hunt/SKILL.md` |
 | 陌生领域深度研究、多来源综合、代码心智模型、历史决策研究、URL或PDF读取、网页抓取、链接摘要 | learn | `skills/learn/SKILL.md` |
 | 工程复盘、改进沉淀、防复发经验、已确认术语与决策、可复用项目上下文、规则分流 | retro | `skills/retro/SKILL.md` |

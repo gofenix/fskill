@@ -488,7 +488,7 @@ def scan_file(
         if descriptor >= 0:
             os.close(descriptor)
     try:
-        final_stat = item.path.stat(follow_symlinks=False)
+        final_stat = os.stat(item.path, follow_symlinks=False)
         if (
             (final_stat.st_dev, final_stat.st_ino) != (item.device, item.inode)
             or final_stat.st_size != item.size
@@ -610,7 +610,9 @@ def discover(
         if project_root is not None and not codex_project_matches(path, project_root):
             continue
         try:
-            stat = path.stat(follow_symlinks=False)
+            # os.stat keeps the no-follow semantics on Python 3.9, where
+            # Path.stat() has no follow_symlinks argument (added in 3.10).
+            stat = os.stat(path, follow_symlinks=False)
         except OSError:
             continue
         files.append(

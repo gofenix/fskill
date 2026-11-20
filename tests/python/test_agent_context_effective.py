@@ -1057,10 +1057,43 @@ def test_agents_md_alone_is_not_a_claude_surface_while_the_fallback_is_off(
     home = tmp_path / "home"
     project.mkdir()
     (project / "AGENTS.md").write_text("# Guide\n\n## Git Safety\n", encoding="utf-8")
-    write_json(home / ".claude" / "settings.json", {})
+    write_json(
+        home / ".claude" / "settings.json",
+        {"enabledPlugins": {"cc-plugin-agents-md@builtin": False}},
+    )
     out = run_context(project, home)
     assert "Claude instruction surface not found" in out
     assert "project_instructions_mode: claude-md" in out
+
+
+def test_agents_md_alone_is_a_claude_surface_by_default(tmp_path: Path):
+    project = tmp_path / "project"
+    home = tmp_path / "home"
+    project.mkdir()
+    (project / "AGENTS.md").write_text("# Guide\n\n## Git Safety\n", encoding="utf-8")
+    write_json(home / ".claude" / "settings.json", {})
+    out = run_context(project, home)
+    assert "Claude instruction surface not found" not in out
+    assert "project_instructions_mode: claude-md-or-agents-md" in out
+
+
+def test_current_plugin_id_sets_the_mode(tmp_path: Path):
+    project = tmp_path / "project"
+    home = tmp_path / "home"
+    project.mkdir()
+    (project / "AGENTS.md").write_text("# Guide\n", encoding="utf-8")
+    write_json(
+        home / ".claude" / "settings.json",
+        {
+            "pluginConfigs": {
+                "cc-plugin-agents-md@builtin": {
+                    "options": {"instructionFiles": "claude-md-and-agents-md"}
+                }
+            }
+        },
+    )
+    out = run_context(project, home)
+    assert "project_instructions_mode: claude-md-and-agents-md" in out
 
 
 def test_root_claude_md_hides_nested_agents_md_from_claude(tmp_path: Path):

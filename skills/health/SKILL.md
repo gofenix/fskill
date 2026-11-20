@@ -3,7 +3,7 @@ name: health
 description: "审计 Agent 配置、指令、hooks/MCP 和验证入口，并把必须由人完成的配置或迁移做成向导。在显式调用或已开启的 f-mode 选中时使用：/health、$health 或 fskill 限定调用。不用于用户代码调试或 PR 审查。"
 when_to_use: "/health, $health, 调用 fskill 的 health, 用 fskill health skill, invoke fskill health, use fskill health skill"
 disable-model-invocation: true
-dispatch_intent: "Agent 配置审计、指令漂移、hooks/MCP、验证入口、AI 可维护性、必须由人完成的配置或迁移向导"
+dispatch_intent: "Agent 配置审计、指令漂移、hooks/MCP、验证入口、AI 可维护性、规则或 skill 瘦身、必须由人完成的配置或迁移向导"
 ---
 
 # Health: Agent 辅助工程体检
@@ -41,6 +41,8 @@ Agent 配置 -> 指令面 -> 工具与运行时 -> 验证器 -> 可维护性
 ## 检查预算
 
 默认先做摘要审计，不直接深挖。
+
+**瘦身请求**：用户要求精简、瘦身、裁剪指引、skill 或规则时，用 `instructions` 范围收集，并读取 [规则瘦身](references/prune.md)。它的台账替代发现清单，且即使用户说了"直接改"，也要等台账确认后才开始修复。
 
 升级条件：
 
