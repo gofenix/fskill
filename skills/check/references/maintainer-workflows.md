@@ -16,7 +16,7 @@
 
 网络或 API 失败后先回读最终状态。发布、建 tag 或创建 release 的验证超时表示结果未知，不等于操作失败；按项目重试策略进行有界只读检查，仍不明确就报告具体缺口，不能为让验证通过而重复发布。交付时分别说明源码、CI、可安装产物和公共回复状态。
 
-提交说明使用项目约定。这个仓库约定是 `{type}: {description}`，type 为 `feat`、`fix`、`refactor`、`docs`、`chore`。
+提交说明使用项目约定。这个仓库约定是 `{type}: {description}`，type 为 `feat`、`fix`、`refactor`、`docs`、`chore`。属于风险等级（见 `project-context.md` 的按路径定的风险等级）的提交，正文还要写明如何验证、如何回退。
 
 ## 已有 PR 的持续跟进
 
