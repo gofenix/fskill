@@ -116,4 +116,45 @@ if grep -q '2000003600%' "$tmpdir7/out"; then
   exit 1
 fi
 
+# ISO-8601 resets_at (newer Claude Code) must render the same countdown as
+# epoch seconds and persist as epoch in highwater.json.
+tmpdir8=$(make_tmpdir)
+json_iso='{"context_window":{"current_usage":{"input_tokens":5},"context_window_size":100},"rate_limits":{"five_hour":{"used_percentage":12,"resets_at":"2033-05-18T03:33:20.500Z"},"seven_day":{"used_percentage":34,"resets_at":"2033-05-18T04:33:20+00:00"}}}'
+printf '%s' "$json_iso" | HOME="$tmpdir8" bash "$ROOT/scripts/statusline.sh" >"$tmpdir8/out"
+grep -q '12%' "$tmpdir8/out"
+grep -q '34%' "$tmpdir8/out"
+if grep -Eq '\([0-9]{5,}d' "$tmpdir8/out"; then
+  echo "ISO resets_at rendered as a bogus countdown" >&2
+  exit 1
+fi
+grep -q '"five_hour": {"used_percentage": 12, "resets_at": 2000000000}' "$tmpdir8/.cache/fskill-statusline/highwater.json"
+grep -q '"seven_day": {"used_percentage": 34, "resets_at": 2000003600}' "$tmpdir8/.cache/fskill-statusline/highwater.json"
+
+assert_statusline_prefix() {
+  local output
+  output=$(cat "$1")
+  if [[ "$output" != "$2"* ]]; then
+    printf 'expected statusline prefix %q, got %q\n' "$2" "$output" >&2
+    exit 1
+  fi
+}
+
+assert_statusline_prefix "$tmpdir3/out" $'\033[2mContext'
+
+# Live effort wins over settings; older payloads can show the configured effort.
+tmpdir9=$(make_tmpdir)
+mkdir -p "$tmpdir9/.claude"
+printf '%s\n' '{"effortLevel":"medium"}' > "$tmpdir9/.claude/settings.json"
+printf '%s' '{"model":{"display_name":"Claude Sonnet"},"effort":{"level":"high"}}' \
+  | HOME="$tmpdir9" bash "$ROOT/scripts/statusline.sh" > "$tmpdir9/live"
+assert_statusline_prefix "$tmpdir9/live" $'Claude Sonnet \033[2mhigh\033[0m | \033[2mContext'
+printf '%s' '{"model":{"display_name":"Claude Sonnet"}}' \
+  | HOME="$tmpdir9" bash "$ROOT/scripts/statusline.sh" > "$tmpdir9/fallback"
+assert_statusline_prefix "$tmpdir9/fallback" $'Claude Sonnet \033[2mmedium\033[0m | \033[2mContext'
+printf '%s' '{}' | HOME="$tmpdir9" bash "$ROOT/scripts/statusline.sh" > "$tmpdir9/effort-only"
+assert_statusline_prefix "$tmpdir9/effort-only" $'\033[2mmedium\033[0m | \033[2mContext'
+printf '%s' '{"model":{"display_name":"Claude Sonnet"}}' \
+  | HOME="$tmpdir3" bash "$ROOT/scripts/statusline.sh" > "$tmpdir3/model-only"
+assert_statusline_prefix "$tmpdir3/model-only" $'Claude Sonnet | \033[2mContext'
+
 echo "statusline smoke: ok"

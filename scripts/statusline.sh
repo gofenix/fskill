@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Code statusline: Context % | 5h: % (reset) | 7d: % (reset)
+# Claude Code statusline: optional model and effort | Context % | 5h: % (reset) | 7d: % (reset)
 # Set FSKILL_STATUSLINE_DEBUG=1 to surface stderr (jq parse errors, missing tools).
 [ "${FSKILL_STATUSLINE_DEBUG:-}" = "1" ] || exec 2>/dev/null
 
@@ -20,7 +20,16 @@ input=$(cat)
 
 tab=$(printf '\t')
 
-jq_full='[
+# Newer Claude Code sends resets_at as ISO-8601; normalize it to epoch seconds.
+jq_epoch_def='
+def to_epoch:
+  if type == "number" then floor
+  elif type == "string" and test("^[0-9]+$") then tonumber
+  elif type == "string" then
+    (sub("\\.[0-9]+"; "") | sub("\\+00:00$"; "Z") | try fromdateiso8601 catch null)
+  else null end;'
+
+jq_full="$jq_epoch_def"'[
   ((.context_window.current_usage.input_tokens // 0)
    + (.context_window.current_usage.cache_creation_input_tokens // 0)
    + (.context_window.current_usage.cache_read_input_tokens // 0) | tostring),
@@ -29,16 +38,18 @@ jq_full='[
   (.cost.total_api_duration_ms // 0 | tonumber? // 0 | floor | tostring),
   (.context_window.total_output_tokens // 0 | tonumber? // 0 | floor | tostring),
   (.rate_limits.five_hour.used_percentage // null | if . then (. | round | tostring) else "null" end),
-  (.rate_limits.five_hour.resets_at // "null" | tostring),
+  (.rate_limits.five_hour.resets_at | to_epoch // "null" | tostring),
   (.rate_limits.seven_day.used_percentage // null | if . then (. | round | tostring) else "null" end),
-  (.rate_limits.seven_day.resets_at // "null" | tostring)
+  (.rate_limits.seven_day.resets_at | to_epoch // "null" | tostring),
+  ((.model.display_name | strings | select(length > 0)) // "null"),
+  ((.effort.level | strings | select(length > 0)) // "null")
 ] | @tsv'
 
-jq_rl='[
+jq_rl="$jq_epoch_def"'[
   (.rate_limits.five_hour.used_percentage // null | if . then (. | round | tostring) else "null" end),
-  (.rate_limits.five_hour.resets_at // "null" | tostring),
+  (.rate_limits.five_hour.resets_at | to_epoch // "null" | tostring),
   (.rate_limits.seven_day.used_percentage // null | if . then (. | round | tostring) else "null" end),
-  (.rate_limits.seven_day.resets_at // "null" | tostring)
+  (.rate_limits.seven_day.resets_at | to_epoch // "null" | tostring)
 ] | @tsv'
 
 jq_hw='[
@@ -281,9 +292,16 @@ apply_highwater_all() {
 parsed=""
 [ -n "$input" ] && parsed=$(printf '%s' "$input" | jq -r "$jq_full" 2>/dev/null)
 
-IFS="$tab" read -r used_tokens window_size live_session_id live_api_ms live_output_tokens live_five_pct live_five_reset live_seven_pct live_seven_reset <<EOF
+IFS="$tab" read -r used_tokens window_size live_session_id live_api_ms live_output_tokens live_five_pct live_five_reset live_seven_pct live_seven_reset model_name effort_level <<EOF
 $parsed
 EOF
+
+[ "$model_name" = "null" ] && model_name=""
+[ "$effort_level" = "null" ] && effort_level=""
+settings_file="$HOME/.claude/settings.json"
+if [ -z "$effort_level" ] && [ -f "$settings_file" ]; then
+  effort_level=$(jq -r '.effortLevel // empty | strings' "$settings_file" 2>/dev/null)
+fi
 
 live_session_id="${live_session_id:-}"
 [ "$live_session_id" = "null" ] && live_session_id=""
@@ -352,8 +370,8 @@ format_reset() {
   local ts="$1"
   [ -z "$ts" ] && return
   local epoch now diff
-  epoch=$(printf '%s' "$ts" | tr -dc '0-9')
-  [ -z "$epoch" ] && return
+  is_uint "$ts" || return
+  epoch="$ts"
   now=$(date +%s)
   diff=$((epoch - now))
   [ "$diff" -le 0 ] && return
@@ -418,4 +436,11 @@ else
   seven_part="${DIM}7d: --${RESET}"
 fi
 
+if [ -n "$model_name" ] || [ -n "$effort_level" ]; then
+  printf '%s' "$model_name"
+  if [ -n "$effort_level" ]; then
+    printf '%s%b%s%b' "${model_name:+ }" "$DIM" "$effort_level" "$RESET"
+  fi
+  printf ' | '
+fi
 printf "%b | %b | %b\n" "$context_part" "$five_part" "$seven_part"
