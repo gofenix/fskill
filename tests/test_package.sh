@@ -81,14 +81,14 @@ fi
 if [[ "$root_skill" != *'`skills/check/references/project-context.md`'* ]]; then
   echo "package root should rewrite inlined skill-relative backtick paths"; exit 1
 fi
-if [[ "$root_skill" != *'[references/review-patterns.md](skills/check/references/review-patterns.md)'* ]]; then
+if [[ "$root_skill" != *'[审查模式](skills/check/references/review-patterns.md)'* ]]; then
   echo "package root should rewrite inlined skill-relative Markdown links"; exit 1
 fi
 
 # Second-hop references inside shipped Markdown must also resolve from the ZIP
 # root instead of pointing at nonexistent root references/ paths.
 workflows=$(unzip -p "$tmpdir/fskill.zip" skills/check/references/maintainer-workflows.md)
-[[ "$workflows" == *'[release-artifacts.md](skills/check/references/release-artifacts.md)'* ]] || {
+[[ "$workflows" == *'[发布产物](skills/check/references/release-artifacts.md)'* ]] || {
   echo "nested reference should qualify a same-directory basename"; exit 1
 }
 prose=$(unzip -p "$tmpdir/fskill.zip" skills/write/references/write-zh-prose.md)
