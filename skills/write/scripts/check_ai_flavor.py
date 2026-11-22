@@ -50,7 +50,7 @@ RULES = [
         "binary_contrast",
         "二分对照壳。不是所有对照都要删，但空转的“不是 A，而是 B”要改成具体关系。",
         3,
-        re.compile(r"(?:不是|并非|不在于|不只是|不止是|不仅是).{0,32}(?:而是|而在于|更是)|与其说.{0,32}不如说"),
+        re.compile(r"(?:不是|并非|不在于).{0,32}(?:而是|而在于)|与其说.{0,32}不如说"),
     ),
     Rule(
         "staged_sequence",
@@ -233,10 +233,11 @@ def add_shape_findings(path: str, text: str, findings: list[Finding]) -> None:
             )
         )
 
-    for sentence in re.split(r"[。！？!?]\s*", text):
-        sentence = sentence.strip()
-        if sentence and not sentence.startswith("#") and HEN_SENTENCE_RE.match(sentence):
-            hen_sentences.append(sentence)
+    for _, line in prose_lines(text):
+        for sentence in re.split(r"[。！？!?]\s*", line):
+            sentence = sentence.strip()
+            if sentence and not sentence.startswith("#") and HEN_SENTENCE_RE.match(sentence):
+                hen_sentences.append(sentence)
     if len(hen_sentences) >= 3:
         findings.append(
             Finding(
@@ -250,9 +251,22 @@ def add_shape_findings(path: str, text: str, findings: list[Finding]) -> None:
             )
         )
 
-    for paragraph in text.split("\n\n"):
+    un_fenced_lines: list[str] = []
+    in_fence = False
+    for raw in text.splitlines():
+        if FENCE_RE.match(raw):
+            in_fence = not in_fence
+            un_fenced_lines.append("")
+            continue
+        un_fenced_lines.append("" if in_fence else raw)
+    for paragraph in "\n".join(un_fenced_lines).split("\n\n"):
         stripped = paragraph.strip()
-        if not stripped or stripped.startswith("#") or stripped.startswith(">"):
+        if (
+            not stripped
+            or stripped.startswith("#")
+            or stripped.startswith(">")
+            or stripped.startswith("    ")
+        ):
             continue
         compact = re.sub(r"\s+", "", stripped)
         if 24 <= len(compact) <= 90:

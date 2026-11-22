@@ -1047,28 +1047,43 @@ else
 fi
 
 echo "[8/12] Conversation signals + extract..."
-CONVERSATION_AUDIT_SCRIPT="$(resolve_health_helper conversation_audit.py || true)"
-if [ -n "$CONVERSATION_AUDIT_SCRIPT" ] && [ -n "$PYTHON_BIN" ]; then
-  "$PYTHON_BIN" -I "$CONVERSATION_AUDIT_SCRIPT" "$CONVO_DIR" "$MODE" \
-    --codex-root "$HOME/.codex/sessions" --project-root "$P"
-else
+if [ "$AUDIT_HINT" = "instructions" ]; then
   echo "=== CONVERSATION COVERAGE ==="
-  echo "(unavailable: conversation_audit.py or trusted Python missing)"
+  echo "(skipped: instructions scope)"
   echo "=== CONVERSATION FILES ==="
-  echo "(unavailable)"
+  echo "(skipped: instructions scope)"
   echo "=== CONVERSATION SIGNALS ==="
-  echo "(unavailable)"
+  echo "(skipped: instructions scope)"
   echo "=== CONVERSATION EXTRACT ==="
-  echo "(unavailable)"
+  echo "(skipped: instructions scope)"
   echo "=== VERIFICATION RECEIPTS ==="
-  echo "(unavailable)"
-fi
-
-if [ "$MODE" = "deep" ]; then
-echo "=== MCP ACCESS DENIALS ==="
-print_mcp_access_denials
+  echo "(skipped: instructions scope)"
+  echo "=== MCP ACCESS DENIALS ==="
+  echo "(skipped: instructions scope)"
 else
-  echo "=== MCP ACCESS DENIALS ===" ; echo "(skipped: summary mode; ask for a deep health audit or run collect-data.sh auto deep for access-denial scan)"
+  CONVO_AUDIT_SCRIPT="$(resolve_health_helper conversation_audit.py || true)"
+  if [ -n "$CONVO_AUDIT_SCRIPT" ] && [ -n "$PYTHON_BIN" ]; then
+    "$PYTHON_BIN" -I "$CONVO_AUDIT_SCRIPT" "$CONVO_DIR" "$MODE" \
+      --codex-root "$HOME/.codex/sessions" --project-root "$P"
+  else
+    echo "=== CONVERSATION COVERAGE ==="
+    echo "(unavailable: conversation_audit.py or trusted Python missing)"
+    echo "=== CONVERSATION FILES ==="
+    echo "(unavailable)"
+    echo "=== CONVERSATION SIGNALS ==="
+    echo "(unavailable)"
+    echo "=== CONVERSATION EXTRACT ==="
+    echo "(unavailable)"
+    echo "=== VERIFICATION RECEIPTS ==="
+    echo "(unavailable)"
+  fi
+
+  if [ "$MODE" = "deep" ]; then
+  echo "=== MCP ACCESS DENIALS ==="
+  print_mcp_access_denials
+  else
+    echo "=== MCP ACCESS DENIALS ===" ; echo "(skipped: summary mode; ask for a deep health audit or run collect-data.sh auto deep for access-denial scan)"
+  fi
 fi
 
 echo "[9/12] Agent config..."
@@ -1092,13 +1107,17 @@ if [ "$MODE" = "deep" ]; then
 else
   echo "=== AI MAINTAINABILITY SUMMARY ==="
 fi
-MAINTAINABILITY_SCRIPT="$(resolve_health_helper check_maintainability.py || true)"
-if [ -n "$MAINTAINABILITY_SCRIPT" ] && [ -n "$PYTHON_BIN" ]; then
-  if ! "$PYTHON_BIN" -I "$MAINTAINABILITY_SCRIPT" "$P" "$MODE"; then
-    echo "(unavailable: check_maintainability.py failed)"
-  fi
+if [ "$AUDIT_HINT" = "instructions" ]; then
+  echo "(skipped: instructions scope)"
 else
-  echo "(unavailable: check_maintainability.py or trusted Python missing)"
+  MAINTAINABILITY_SCRIPT="$(resolve_health_helper check_maintainability.py || true)"
+  if [ -n "$MAINTAINABILITY_SCRIPT" ] && [ -n "$PYTHON_BIN" ]; then
+    if ! "$PYTHON_BIN" -I "$MAINTAINABILITY_SCRIPT" "$P" "$MODE"; then
+      echo "(unavailable: check_maintainability.py failed)"
+    fi
+  else
+    echo "(unavailable: check_maintainability.py or trusted Python missing)"
+  fi
 fi
 
 echo "[11/12] Skill inventory + frontmatter + provenance..."
@@ -1170,7 +1189,10 @@ done < <(skill_roots)
 [ "$_PROVENANCE_SHOWN" -le 100 ] || echo "skill_provenance_truncated: $((_PROVENANCE_SHOWN - 100))"
 
 echo "[12/12] Full skill security scan..."
-if [ "$MODE" = "deep" ]; then
+if [ "$AUDIT_HINT" = "instructions" ]; then
+  echo "=== SKILL SECURITY SCAN ==="
+  echo "(skipped: instructions scope)"
+elif [ "$MODE" = "deep" ]; then
 echo "=== SKILL SECURITY SCAN ==="
 _SKILL_SCAN_FILES=()
 while IFS= read -r f; do

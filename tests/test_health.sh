@@ -388,4 +388,18 @@ done
   test ! -e project-helper-marker
 )
 
+# `instructions` scope skips conversation, maintainability, and deep security scans
+# while still reporting startup context and agent configuration summaries.
+HOME="$tmpdir" bash "$ROOT/skills/health/scripts/collect-data.sh" instructions deep > "$tmpdir/instructions.out"
+grep -q '^audit_hint: instructions$' "$tmpdir/instructions.out"
+grep -q '^=== STARTUP CONTEXT ESTIMATE ===$' "$tmpdir/instructions.out"
+grep -q '^=== AGENT CONFIG DETAIL ===$' "$tmpdir/instructions.out"
+grep -q '^(skipped: instructions scope)$' "$tmpdir/instructions.out"
+if grep -q '^USER CORRECTION:' "$tmpdir/instructions.out"; then
+  echo "instructions scope must skip conversation audit"; exit 1
+fi
+if grep -q '^maintainability_status:' "$tmpdir/instructions.out"; then
+  echo "instructions scope must skip maintainability audit"; exit 1
+fi
+
 echo "health smoke: ok"

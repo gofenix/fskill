@@ -46,4 +46,31 @@ if run_check "$tmpdir/wide.out" --lang zh "$tmpdir/wide.md"; then
 fi
 grep -q '全角空格' "$tmpdir/wide.out"
 
+# AI-flavor checker: skip fenced code blocks for dense_hen_judgments / over_even_paragraphs,
+# and allow progressive "不只是 ... 更是 ..." phrasing per rules/chinese.md.
+FLAVOR_CHECKER="$ROOT/skills/write/scripts/check-ai-flavor.sh"
+cat > "$tmpdir/flavor-clean.md" <<'MD'
+# 标题
+
+不只是速度更快，更是降低了维护成本。
+
+```text
+这个工具很快。这个方案很稳。这个结果很准。
+```
+
+```text
+第一段测试代码块里的占位正文内容，用来确认超过二十四个字符的段落。
+
+第二段测试代码块里的占位正文内容，用来确认超过二十四个字符的段落。
+
+第三段测试代码块里的占位正文内容，用来确认超过二十四个字符的段落。
+
+第四段测试代码块里的占位正文内容，用来确认超过二十四个字符的段落。
+
+第五段测试代码块里的占位正文内容，用来确认超过二十四个字符的段落。
+```
+MD
+bash "$FLAVOR_CHECKER" --lang zh "$tmpdir/flavor-clean.md" > "$tmpdir/flavor-clean.out" 2>&1
+grep -q 'ai flavor check: ok' "$tmpdir/flavor-clean.out"
+
 echo "punctuation smoke: ok"

@@ -2,13 +2,13 @@
 """Project audit signals (Phase 1) for /check audit mode.
 
 Walks a project root and emits structured signal blocks to stdout.
-Each block ends with `status: PASS|WARN|FAIL|N/A` so the LLM driving the
-4-axis Linus-style scorecard can skim quickly.
+Each block ends with `status: PASS|WARN|FAIL|N/A` so the LLM running /check
+project audit can inspect concrete structural signals.
 
 Pure stdlib. Read-only. Exits 0 even on WARN/FAIL so the harness does
 not confuse "finding surfaced" with "script broken".
 
-Run as: python3 skills/check/scripts/audit_signals.py --root <path>
+Run as: python3 <skill-dir>/scripts/audit_signals.py --root <path>
 """
 
 from __future__ import annotations

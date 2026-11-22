@@ -105,3 +105,5 @@ if __name__ == "__main__":
         print(json.dumps(result, ensure_ascii=False, indent=2))
     else:
         print(to_markdown(result))
+    if "error" in result:
+        sys.exit(1)
