@@ -17,8 +17,6 @@ dispatch_intent: "UI、组件、页面、视觉界面、前端、截图审美问
 - 依据: 当前需求、运行界面、截图、组件源码、设计 token、可访问性要求和用户参考。
 - 交付形式: 能跑起来的界面和效果证据，或方案与视觉评审；顺带说清关键设计解决了什么问题。
 
-**输出语言规则**：输出里不要用长破折号（U+2014），改用逗号、冒号或句号。
-
 ## 长期上下文预检
 
 先读取 [长期上下文预检](references/durable-context.md)。可选读取，只作为背景。对 `/ui` 来说，旧记忆可以提供视觉偏好、设计原则和成熟交互模式；当前截图、渲染结果、源码、设计 token 和用户反馈优先于旧记忆。
@@ -27,7 +25,7 @@ dispatch_intent: "UI、组件、页面、视觉界面、前端、截图审美问
 
 仅在用户显式调用 `/ui`、`$ui`、fskill 限定入口，或已开启的 `/f-mode` 选中时执行；同一任务里的追问和纠正继续沿用，不用每轮重复命令。f-mode 关闭时，新任务或切技能需重新点名；宿主仅因语义相似自动加载，或文中只是提到命令名时，按普通请求处理。
 
-不用于后端逻辑或数据流水线。文档、PPT、简历、长报告、分页 PDF 建议走 Kami（`tw93/Kami`）等文档设计系统。App、网页、组件和屏幕 UI 由本技能处理。
+不用于后端逻辑或数据流水线；一次性布局或结构实验走 `/think`，已确认的渲染或状态回归走 `/hunt`。文档、PPT、简历、长报告、分页 PDF 建议走 Kami（`tw93/Kami`）等文档设计系统。App、网页、组件和屏幕 UI 由本技能处理。
 
 ## 场景选择
 
@@ -41,7 +39,7 @@ dispatch_intent: "UI、组件、页面、视觉界面、前端、截图审美问
 
 涉及手势、抽屉、拖拽、可中断过渡或动效调优时，再读 [交互与动效](references/design-motion.md)。官网、营销页的艺术方向在新产品设计参考中，工具产品默认围绕核心任务设计。
 
-用户说“很傻”“很怪”“突兀”“不协调”“不和谐”时，按现有产品的截图迭代处理；证据证明是回归或渲染错误时，可建议改用 `/hunt`，不自动切换技能。
+用户说“很傻”“很怪”“突兀”“不协调”“不和谐”时，按现有产品的截图迭代处理；证据证明是回归或渲染错误时，可建议改用 `/hunt`，不自动切换技能（f-mode 开启时除外）。
 
 ## 范围与项目上下文
 
@@ -61,20 +59,21 @@ dispatch_intent: "UI、组件、页面、视觉界面、前端、截图审美问
 
 - `references/design-reference.md`：控件、布局与视觉规则，设计或较大截图迭代时读取。
 - `references/design-traps.md`：常见 CSS 和视觉陷阱。
-- `references/design-tokens.md`：token 和尺寸规则。
+- `references/design-tokens.md`：设计变量与尺寸规则。
 - `references/design-data-viz.md`：数据可视化。
-- `references/design-aesthetic-quality.md`：审美质量校准。
+- `references/design-aesthetic-quality.md`：视觉质量与诊断语言。
 
 ## 硬性规则
 
+- 输出里不用长破折号（U+2014 / U+2013），改用逗号、冒号或句号。
 - 以主体或场景承载视觉方向的页面要使用相关真实视觉资产，不用纯 SVG/渐变假装主题；工具界面不为装饰硬加图片。
-- 3D 必须用 Three.js，主场景全幅或无框，完成前用截图和 canvas pixel 检查非空。
+- Web 3D 优先用 Three.js（项目已有 3D 栈或原生平台沿用既有框架），主场景全幅或无框，完成前用截图和 canvas pixel 检查非空。
 - 不做卡片套卡片，不把页面 section 做成漂浮卡。
 - 不用装饰性 orb、gradient orb、bokeh blob。
 - 文本不得挤出按钮、卡片或容器；移动和桌面都要检查。
-- 不用 viewport width 直接缩放字号，letter spacing 默认 0。
+- 不用 viewport width 直接缩放字号；正文和工具界面 letter spacing 默认 0（展示标题按实际字体验证后可调）。
 - 不做单一色相大面积 UI，尤其避免整页紫、蓝紫、米色、深蓝、棕橙一把梭。
-- 编写 TypeScript 或 TSX 时读取 [TypeScript 写法](references/typescript-style.md)。项目已有 lint 和当前文件的写法优先。
+- 项目已是 TypeScript 时，编写或修改 TS/TSX 前读取 [TypeScript 写法](references/typescript-style.md)。项目已有 lint 和当前文件的写法优先。
 
 ## 输出
 
