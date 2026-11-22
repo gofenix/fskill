@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill p-prove-it-works"
-  short_description: "真实验收：完成声明必须对应实际运行、真实安装路径、真实渲染或远端回读证据，未测部分直说缺口"
-  default_prompt: "应用 $p-prove-it-works 工程原则。"
-policy:
-  allow_implicit_invocation: true

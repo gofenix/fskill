@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill p-encode-in-structure"
-  short_description: "结构防复发：把已验证的教训与易错边界固化进类型系统、schema、测试或检查脚本，不靠往文档追加口号防错"
-  default_prompt: "应用 $p-encode-in-structure 工程原则。"
-policy:
-  allow_implicit_invocation: true

@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill p-fix-root-causes"
-  short_description: "先证根因：修改前用运行时证据定位首个预期偏离点，拒绝重启掩盖与盲猜补丁"
-  default_prompt: "应用 $p-fix-root-causes 工程原则。"
-policy:
-  allow_implicit_invocation: true

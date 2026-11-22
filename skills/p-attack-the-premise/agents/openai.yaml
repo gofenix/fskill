@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill p-attack-the-premise"
-  short_description: "质疑前提：连续两次修在同一个卡点上，或变通方案比主功能更复杂时，停下检验共有假设"
-  default_prompt: "应用 $p-attack-the-premise 工程原则。"
-policy:
-  allow_implicit_invocation: true

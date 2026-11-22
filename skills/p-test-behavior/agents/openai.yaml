@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill p-test-behavior"
-  short_description: "行为测试：从公开入口测试输入到可观察输出，新测试必须先在旧代码上报红，不为变绿放宽预期"
-  default_prompt: "应用 $p-test-behavior 工程原则。"
-policy:
-  allow_implicit_invocation: true

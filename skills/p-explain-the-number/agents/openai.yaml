@@ -1,6 +1,0 @@
-interface:
-  display_name: "fskill p-explain-the-number"
-  short_description: "解释数字：任何性能、大小、配额或评测数字必须附基线、负载口径与样本条件，指标改进一次只验一个假设"
-  default_prompt: "应用 $p-explain-the-number 工程原则。"
-policy:
-  allow_implicit_invocation: true
