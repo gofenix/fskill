@@ -14,23 +14,21 @@
 
 ## Compétences (Skills)
 
-Chaque compétence est un dossier de références, de scripts et d'échecs réels. Une compétence se lance avec `/name` ou `$name` ; `think`, `hunt` et `check` se lancent aussi d'elles-mêmes quand la tâche est la leur, les neuf autres seulement sur appel explicite. Les procédures viennent de Waza, Matt Pocock skills et pstack ; voir les sources dans la section licence.
+fskill associe **9 workflows épurés**, **8 principes d'ingénierie inspirés de `pstack` (`p-*`)** et des scripts déterministes. Chaque compétence s'appelle via `/name` ou `$name` ; `think`, `hunt`, `check` et les 8 principes `p-*` se déclenchent aussi selon la tâche, tandis que les six autres restent sur appel explicite ou via `/f-mode`. Inspiré de [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills) et [pstack](https://github.com/cursor/plugins/tree/main/pstack).
 
 | Compétence | Groupe | Ce qu'elle fait |
 | :--- | :--- | :--- |
-| [`/f-mode`](skills/f-mode/SKILL.md) | Route | Entrer explicitement, puis choisir une compétence ci-dessous. Les commandes seules restent directes. |
-| [`/f-help`](skills/f-help/SKILL.md) | Aide | Comprendre fskill, choisir une compétence, dépanner ou personnaliser. |
-| [`/catchup`](skills/catchup/SKILL.md) | Bilan | Vérifier les progrès et les décisions en attente, sans rien modifier. |
-| [`/think`](skills/think/SKILL.md) | Décider | Plan, termes, route, découpes, essai jetable, limites du code, calibrer puis faire, graphe de tâches déjà approuvé. Une modification ordinaire reste à l'agent en cours. |
-| [`/hunt`](skills/hunt/SKILL.md) | Trouver le problème | Cause racine, ou une hypothèse quand la mesure est déjà fixée. |
-| [`/check`](skills/check/SKILL.md) | Vérifier | Revue avant merge et release, file d'issues, guide de vérification réutilisable. |
-| [`/ui`](skills/ui/SKILL.md) | Interface | Page, composant ou capture à livrer. |
-| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lire et écrire | Une URL ou un PDF, recherche multi-sources, prose. |
-| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) | Réutiliser | Passation de session, leçons vérifiées, config d'agent, installation manuelle. |
+| [`/f-mode`](skills/f-mode/SKILL.md) | Route | Entrer explicitement pour choisir le workflow et les principes `p-*` adaptés à la tâche. |
+| [`/think`](skills/think/SKILL.md) | Décider | Cadrage avant action, jugement de valeur (`Drop/Keep/Pivot`), tri de périmètre et `grill me`. |
+| [`/hunt`](skills/hunt/SKILL.md) | Trouver le problème | Diagnostic de cause racine par preuve d'exécution et optimisation à une hypothèse par mesure. |
+| [`/check`](skills/check/SKILL.md) | Vérifier | Revue de diff/PR fondée sur les preuves, verdict de release, audit de projet et rejeu d'incidents. |
+| [`/ui`](skills/ui/SKILL.md) | Interface | UI soignée sans AI slop, mouvement et contrôle sur rendu réel (appel explicite). |
+| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lire et écrire | Extraction URL/PDF et synthèse multi-sources ; réécriture sans style IA et notes de version (appel explicite). |
+| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | Réutiliser | Passation compacte et audit déterministe de config agent, hooks/MCP et élagage de règles (appel explicite). |
 
-Pour commencer : `/f-help Quelle compétence convient à ma tâche ?` (Codex : `$f-help`, plugin : `/fskill:f-help`).
+**8 principes `pstack` (`p-*`, déclenchement automatique) :** [`p-subtract-before-add`](skills/p-subtract-before-add/SKILL.md) · [`p-attack-the-premise`](skills/p-attack-the-premise/SKILL.md) · [`p-fix-root-causes`](skills/p-fix-root-causes/SKILL.md) · [`p-prove-it-works`](skills/p-prove-it-works/SKILL.md) · [`p-test-behavior`](skills/p-test-behavior/SKILL.md) · [`p-explain-the-number`](skills/p-explain-the-number/SKILL.md) · [`p-encode-in-structure`](skills/p-encode-in-structure/SKILL.md) · [`p-respect-boundaries`](skills/p-respect-boundaries/SKILL.md)
 
-Entrez `/f-mode` (Codex : `$f-mode`, plugin : `/fskill:f-mode`), puis décrivez vos tâches normalement. Le routage reste actif dans cette session jusqu'à `/f-mode off`. `/f-mode status` affiche l'état. Les commandes directes sont prioritaires sans fermer f-mode. Une nouvelle session démarre sans f-mode. Les autorisations d'action ne changent pas.
+Entrez `/f-mode` (Codex : `$f-mode`, plugin : `/fskill:f-mode`), puis décrivez vos tâches normalement. Le routage reste actif dans cette session jusqu'à `/f-mode off`. `/f-mode status` affiche l'état. Les commandes directes sont prioritaires sans fermer f-mode. Une nouvelle session démarre sans f-mode. Les autorisations d'action ne changent pas. Table complète : [skills/RESOLVER.md](skills/RESOLVER.md).
 
 ## Installation
 
@@ -40,7 +38,7 @@ Entrez `/f-mode` (Codex : `$f-mode`, plugin : `/fskill:f-mode`), puis décrivez 
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-Les compétences sont installées dans `~/.agents/skills`. Claude Code y accède via un lien symbolique ; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI et tout autre agent lisant ce dossier lisent les 12 compétences. Le parcours d'une compétence ne démarre qu'avec `/name` ou `$name`. Les agents dotés d'un dossier de compétences privé prennent leur identifiant après `-a` (par exemple `antigravity-cli` ou `qwen-code`). Mise à jour via `npx skills update -g -y`. Vous pouvez aussi demander directement à votre agent de l'installer :
+Les compétences sont installées dans `~/.agents/skills`. Claude Code y accède via un lien symbolique ; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI et tout autre agent lisant ce dossier lisent les 9 workflows et 8 principes. Les workflows explicites ne démarrent que via `/ui`, `$ui` ou dans `/f-mode`. Les agents dotés d'un dossier privé prennent leur identifiant après `-a` (ex. `antigravity-cli` ou `qwen-code`). Mise à jour via `npx skills update -g -y`. Vous pouvez aussi demander directement à votre agent de l'installer :
 > Lis https://github.com/gofenix/fskill/blob/main/llms.txt et installe fskill pour moi
 
 **En tant que plugin hôte** (les compétences sont préfixées, ex. `/fskill:check`) :
@@ -65,13 +63,13 @@ Vous choisissez l'ordre. Chaque compétence s'arrête quand son résultat est l�
 
 **Flux courants :**
 
-- **Nouvelle fonctionnalité** : `/think` pour cadrer. Après accord, l'agent en cours réalise le travail, y compris un graphe de tâches déjà approuvé. Puis `/check` pour valider et fusionner
-- **Correction de bogue** : `/hunt` pour trouver la cause ou tester une mesure déjà fixée, puis correction, puis `/check` pour revoir les diffs et publier si besoin
-- **Recherche et rédaction** : `/learn` pour lire une source ou plusieurs, `/write` pour polir
+- **Nouvelle fonctionnalité** : `/think` cadre avec `p-subtract-before-add`. Après accord, l'agent en cours réalise le travail, puis `/check` valide.
+- **Correction de bogue** : `/hunt` prouve la cause via `p-fix-root-causes`, correction, puis `/check` revoit les diffs et preuves de release.
+- **Recherche et rédaction** : `/learn` lit une URL/PDF ou des sources primaires, `/write` polit le texte.
 
 ## Contexte du projet
 
-fskill n'embarque que des méthodes d'ingénierie universelles. `/check` lit au moment de l'exécution les fichiers publics du dépôt cible (README, manifestes, Makefile, CI) et vos contraintes, sans jamais accéder à des chemins privés, identifiants ou tokens. Le modèle de contexte de revue se trouve dans [`skills/check/references/project-context.md`](skills/check/references/project-context.md).
+fskill n'embarque que des principes universels et des scripts déterministes. `/check` lit à l'exécution les fichiers publics du dépôt cible (README, manifestes, Makefile, CI) et vos contraintes, sans jamais accéder à des chemins privés, identifiants ou tokens. Voir [`skills/check/references/review-patterns.md`](skills/check/references/review-patterns.md) et [`skills/check/references/release-artifacts.md`](skills/check/references/release-artifacts.md).
 
 ## Outils additionnels
 
@@ -141,9 +139,9 @@ Les règles optionnelles s'appliquent au-delà des appels de compétences une fo
 
 ## Pourquoi fskill
 
-fskill est le jeu de compétences de gofenix. La méthode vient de [tw93/Waza](https://github.com/tw93/Waza), pas le nom : Waza appartient à quelqu'un d'autre. Dix compétences de travail : think, hunt, check, ui, learn, write, handoff, catchup, retro et health. `/f-mode` est l'entrée explicite au-dessus, `/f-help` explique le choix. Les procédures plus fines sont des modes dans une commande. Chacune nomme le résultat, la limite, et ce qui compte comme terminé.
+fskill associe les scripts déterministes de [tw93/Waza](https://github.com/tw93/Waza) à l'approche par principes de [pstack](https://github.com/cursor/plugins/tree/main/pstack) : **9 workflows légers** (`f-mode`, `think`, `hunt`, `check`, `ui`, `learn`, `write`, `handoff`, `health`) et **8 principes courts** (`p-*`), sans procédures redondantes que les modèles actuels savent déjà faire.
 
-Chaque compétence s'appelle par `/name` ou `$name` ; `think`, `hunt` et `check` se lancent aussi d'elles-mêmes quand la tâche correspond, les autres seulement sur appel explicite.
+Chaque compétence s'appelle par `/name` ou `$name` ; `think`, `hunt`, `check` et `p-*` se lancent aussi d'eux-mêmes quand la tâche correspond, les six autres seulement sur appel explicite.
 
 ## Désinstallation
 

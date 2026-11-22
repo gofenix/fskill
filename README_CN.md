@@ -14,23 +14,21 @@
 
 ## 技能
 
-每个技能是一个目录，里面有参考、脚本和踩过的坑。单条技能通过 `/name` 或 `$name` 进入；`think`、`hunt`、`check` 在任务本身属于其适用面时（要定方案、已经坏了要查根因、要审 diff 或 PR）也会自动进入，其余 9 条只认显式调用。`/f-mode` 是唯一能在全部技能间自动选路的入口，而且要先显式进入。说到相关的词不会进入 f-mode。基于 Waza，并融合 Matt Pocock skills 和 pstack 的流程；完整来源见下方许可证说明。
+fskill 采用 **9 个精简工作流 + 8 条 `pstack` 风格工程原则（`p-*`）+ 确定性脚本**。单条技能通过 `/name` 或 `$name` 进入；`think`、`hunt`、`check` 与 8 条 `p-*` 原则在任务本身匹配时也可自动生效，其余 6 条只在显式调用或进入 `/f-mode` 后运行。基于 [Waza](https://github.com/tw93/Waza)，并融合 [Matt Pocock skills](https://github.com/mattpocock/skills) 与 [pstack](https://github.com/cursor/plugins/tree/main/pstack) 的原则化设计；完整来源见下方许可证。
 
 | 技能 | 分组 | 它做什么 |
 | :--- | :--- | :--- |
-| [`/f-mode`](skills/f-mode/SKILL.md) | 路由 | 先显式进入，再从下面的技能里选一条。单条仍然可以直接用。 |
-| [`/f-help`](skills/f-help/SKILL.md) | 帮助 | 了解 fskill 用法、选择技能、排障与定制。 |
-| [`/catchup`](skills/catchup/SKILL.md) | 汇报 | 只读核对进展、变化与待你处理的事项。 |
-| [`/think`](skills/think/SKILL.md) | 想清楚 | 方案、术语、路线、切片、一次性实验、代码边界、校准后按授权做完、已批准任务图。普通改动由当前 Agent 直接做。 |
-| [`/hunt`](skills/hunt/SKILL.md) | 找问题 | 先证明根因；指标已经定时一次只试一个假设。 |
-| [`/check`](skills/check/SKILL.md) | 做检查 | 审查、问题队列、可复用的验证说明。 |
-| [`/ui`](skills/ui/SKILL.md) | 界面 | 做可交付的页面、组件，或按截图打磨。 |
-| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 读和写 | 一个链接或 PDF、多来源研究、把文字改顺。 |
-| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) | 下次还能用 | 会话交接、已经验证的教训、Agent 配置、AI 可维护性、规则瘦身和人工安装。 |
+| [`/f-mode`](skills/f-mode/SKILL.md) | 路由 | 显式开启，按目标在会话内选用工作流并挂载 `p-*` 原则。 |
+| [`/think`](skills/think/SKILL.md) | 想清楚 | 动手前方案规划、价值判断（放弃/保留/转向）、范围分类与 `grill me` 压测。 |
+| [`/hunt`](skills/hunt/SKILL.md) | 找问题 | 用运行时证据查实根因；指标已定时单假设对照验证。 |
+| [`/check`](skills/check/SKILL.md) | 做检查 | 审 diff/PR、发版价值判断、发布产物门禁、项目审计与事故重放。 |
+| [`/ui`](skills/ui/SKILL.md) | 界面 | 做出有方向感、反 AI slop 的界面，按真实渲染与截图验收（显式调用）。 |
+| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 读和写 | 抓取 URL/PDF 与一手调研；去掉中英文与发布说明 AI 味（显式调用）。 |
+| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | 下次还能用 | 会话交接与现状核对；Agent 配置/hooks/MCP/省 token 工具体检与规则瘦身（显式调用）。 |
 
-不知道从哪开始？试试 `/f-help 我这个任务该用哪个技能？`（Codex 用 `$f-help`，插件用 `/fskill:f-help`）。
+**8 条 `pstack` 风格工程原则（`p-*`，自动触发）：** [`p-subtract-before-add`](skills/p-subtract-before-add/SKILL.md) · [`p-attack-the-premise`](skills/p-attack-the-premise/SKILL.md) · [`p-fix-root-causes`](skills/p-fix-root-causes/SKILL.md) · [`p-prove-it-works`](skills/p-prove-it-works/SKILL.md) · [`p-test-behavior`](skills/p-test-behavior/SKILL.md) · [`p-explain-the-number`](skills/p-explain-the-number/SKILL.md) · [`p-encode-in-structure`](skills/p-encode-in-structure/SKILL.md) · [`p-respect-boundaries`](skills/p-respect-boundaries/SKILL.md)
 
-输入 `/f-mode`（Codex 用 `$f-mode`，插件用 `/fskill:f-mode`）进入，再直接描述任务；当前会话内持续自动选技能。`/f-mode off` 退出，`/f-mode status` 查看状态。直接 `/hunt` 等命令优先，不关闭 f-mode。新会话默认关闭；选路不扩大操作授权。
+输入 `/f-mode`（Codex 用 `$f-mode`，插件用 `/fskill:f-mode`）进入，再直接描述任务；当前会话内持续自动选技能。`/f-mode off` 退出，`/f-mode status` 查看状态。直接 `/hunt` 等命令优先，不关闭 f-mode。新会话默认关闭；选路不扩大操作授权。完整路由见 [skills/RESOLVER.md](skills/RESOLVER.md)。
 
 ## 安装
 
@@ -40,7 +38,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-技能统一存放在 `~/.agents/skills` 共享目录，Claude Code 通过软链接接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能读这个目录的 Agent 都会读到这 12 个技能。进入某个技能的流程用 `/name` 或 `$name`；`think`、`hunt`、`check` 也可按任务自动进入。有自己技能目录的 Agent 在 `-a` 后面写上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，后续通过 `npx skills update -g -y` 保持更新。也可以直接告诉你的 Agent 帮你安装：
+技能统一存放在 `~/.agents/skills` 共享目录，Claude Code 通过软链接接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能读这个目录的 Agent 都会读到这 9 个工作流和 8 条原则。仅限显式调用的工作流只在 `/ui`、`$ui` 等明确点名或 `/f-mode` 内进入。有自己技能目录的 Agent 在 `-a` 后面写上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，后续通过 `npx skills update -g -y` 保持更新。也可以直接告诉你的 Agent 帮你安装：
 > 阅读 https://github.com/gofenix/fskill/blob/main/llms.txt 帮我安装 fskill
 
 **宿主插件方式**，如果你更习惯使用宿主自有的更新命令（技能带有命名空间前缀，如 `/fskill:check`）：
@@ -65,13 +63,13 @@ codex plugin add fskill@fskill
 
 **常见工作流：**
 
-- **做新功能**：`/think` 想透方案。确认后由当前 Agent 动手，已批准的任务图也在 `/think` 里协调。再用 `/check` 把关。
-- **排查修复**：`/hunt` 查清根因或试一个已定指标，动手修复，再用 `/check` 审查改动，需要时一并发布
-- **调研成文**：`/learn` 读取一份材料或消化多来源，`/write` 润色文字
+- **做新功能**：`/think` 用先减后增收拢方案，获准后直接动手，再用 `/check` 把关。
+- **排查修复**：`/hunt` 拿运行时证据坐实根因并最小修复，再用 `/check` 核对改动与发布证据。
+- **调研成文**：`/learn` 抓取 URL/PDF 或整合一手来源，`/write` 润色正文。
 
 ## 项目上下文
 
-fskill 只沉淀通用的工程习惯，`/check` 运行时从目标仓库公开的 README、包清单、Makefile、CI 配置和你的任务要求里提炼约束，绝不读取私有路径、凭证或 Token，具体上下文模板可参考 [`skills/check/references/project-context.md`](skills/check/references/project-context.md)。
+fskill 只沉淀通用的工程原则与工具。`/check` 运行时从目标仓库公开的 README、包清单、Makefile、CI 配置和你的任务要求里提炼约束，绝不读取私有路径、凭证或 Token；常见审查陷阱与发布门禁见 [`skills/check/references/review-patterns.md`](skills/check/references/review-patterns.md) 和 [`skills/check/references/release-artifacts.md`](skills/check/references/release-artifacts.md)。
 
 ## 附加工具与规则
 
@@ -141,9 +139,9 @@ Codex 显示剩余额度，上方 Claude Code 状态栏显示已用百分比（�
 
 ## 为什么做 fskill
 
-fskill 是 gofenix 自己的技能集。工作方式来自 [tw93/Waza](https://github.com/tw93/Waza)，名字不沿用，因为 Waza 是别人的。现在是 10 个工作技能：think、hunt、check、ui、learn、write、handoff、catchup、retro、health。上面再加显式入口 `/f-mode` 和帮助 `/f-help`。更细的做法是这些命令里的模式。每个技能写清结果、不能碰的线，以及怎么算做完。
+fskill 是 gofenix 自己的技能集。结合 [tw93/Waza](https://github.com/tw93/Waza) 的脚本与 [pstack](https://github.com/cursor/plugins/tree/main/pstack) 的原则化思路，砍掉已被现代前沿模型内化的重型 SOP，保留 **9 个精简工作流**（`f-mode`、`think`、`hunt`、`check`、`ui`、`learn`、`write`、`handoff`、`health`）、**8 条短工程原则**（`p-*`）以及确定性检查脚本。
 
-每条技能都能用 `/name` 或 `$name` 调用；`think`、`hunt`、`check` 也会按任务自动进入，其余技能只在显式调用时开始。
+每条技能都能用 `/name` 或 `$name` 调用；`think`、`hunt`、`check` 与 `p-*` 原则也会按任务匹配自动生效，其余 6 条只在显式调用或进入 `/f-mode` 后运行。
 
 ## 卸载
 

@@ -14,23 +14,21 @@
 
 ## 스킬 목록
 
-각 스킬은 참고 문서, 스크립트, 실제로 겪은 실패를 담은 디렉터리입니다. 개별 스킬은 `/name` 또는 `$name` 으로 시작합니다. `think`, `hunt`, `check` 는 작업 자체가 해당 범위면 자동으로도 시작되고, 나머지 9개는 명시적 호출만 받습니다. Waza, Matt Pocock skills, pstack을 기반으로 합니다. 출처는 라이선스 항목을 참고하세요.
+fskill은 **9개의 슬림 워크플로우 + 8개의 `pstack` 스타일 엔지니어링 원칙(`p-*`) + 결정론적 스크립트**로 구성됩니다. 개별 스킬은 `/name` 또는 `$name`으로 호출하며 `think`, `hunt`, `check` 및 8개 `p-*` 원칙은 작업이 맞으면 자동으로 동작하고, 나머지 6개는 명시적 호출 또는 `/f-mode`에서만 실행됩니다. [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills), [pstack](https://github.com/cursor/plugins/tree/main/pstack)을 바탕으로 재구성했습니다.
 
 | 스킬 | 묶음 | 역할 |
 | :--- | :--- | :--- |
-| [`/f-mode`](skills/f-mode/SKILL.md) | 경로 | 명시적으로 들어온 뒤 아래 스킬 중 하나를 고른다. 개별 명령도 그대로 쓸 수 있다. |
-| [`/f-help`](skills/f-help/SKILL.md) | 도움말 | fskill 사용법, 스킬 선택, 설치 문제와 맞춤 설정을 묻는다. |
-| [`/catchup`](skills/catchup/SKILL.md) | 보고 | 진행 상황, 변경 사항과 사용자 결정이 필요한 항목을 읽기 전용으로 확인. |
-| [`/think`](skills/think/SKILL.md) | 방향 정하기 | 계획, 용어, 경로, 쪼개기, 버릴 수 있는 시험, 코드 경계, 확인 후 실행, 승인된 작업 그래프. 일반 수정은 현재 에이전트가 한다. |
-| [`/hunt`](skills/hunt/SKILL.md) | 문제 찾기 | 근본 원인. 지표가 정해져 있으면 가설은 한 번에 하나. |
-| [`/check`](skills/check/SKILL.md) | 확인 | 머지 전 검토, 이슈 정리, 다시 쓰는 검증 설명. |
-| [`/ui`](skills/ui/SKILL.md) | 화면 | 전달할 페이지와 컴포넌트, 스크린샷 다듬기. |
-| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 읽고 쓰기 | URL 또는 PDF 하나, 여러 자료 조사, 문장 다듬기. |
-| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) | 다음에 쓰기 | 세션 인수인계, 확인된 교훈, 에이전트 설정, 수동 설치. |
+| [`/f-mode`](skills/f-mode/SKILL.md) | 경로 | 명시적으로 진입한 뒤 목표에 맞는 워크플로우와 `p-*` 원칙을 선택합니다. |
+| [`/think`](skills/think/SKILL.md) | 방향 정하기 | 구현 전 설계, 가치 판단, 범위 분류, `grill me` 압박 질문. |
+| [`/hunt`](skills/hunt/SKILL.md) | 문제 찾기 | 런타임 증거 기반 근본 원인 분석 및 단일 가설 지표 개선. |
+| [`/check`](skills/check/SKILL.md) | 확인 | diff/PR 검토, 릴리스 가치 판단, 프로젝트 감사, 사고 대장 검증. |
+| [`/ui`](skills/ui/SKILL.md) | 화면 | 반 AI slop UI 제작과 실렌더링 스크린샷 검증(명시적 호출). |
+| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 읽고 쓰기 | URL/PDF 수집과 1차 자료 조사, AI 투 제거 및 릴리스 노트 작성(명시적 호출). |
+| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | 다음에 쓰기 | 세션 인수인계, 에이전트 설정·hooks·MCP·토큰 도구 점검 및 규칙 슬림화(명시적 호출). |
 
-어디서 시작할지 모르겠다면 `/f-help 이 작업에 어떤 스킬이 맞나요?`(Codex: `$f-help`, 플러그인: `/fskill:f-help`).
+**8가지 `pstack` 스타일 원칙(`p-*`, 자동 트리거):** [`p-subtract-before-add`](skills/p-subtract-before-add/SKILL.md) · [`p-attack-the-premise`](skills/p-attack-the-premise/SKILL.md) · [`p-fix-root-causes`](skills/p-fix-root-causes/SKILL.md) · [`p-prove-it-works`](skills/p-prove-it-works/SKILL.md) · [`p-test-behavior`](skills/p-test-behavior/SKILL.md) · [`p-explain-the-number`](skills/p-explain-the-number/SKILL.md) · [`p-encode-in-structure`](skills/p-encode-in-structure/SKILL.md) · [`p-respect-boundaries`](skills/p-respect-boundaries/SKILL.md)
 
-`/f-mode`(Codex: `$f-mode`, 플러그인: `/fskill:f-mode`)로 시작한 뒤 평소처럼 요청하세요. 현재 대화에서 `/f-mode off`까지 자동 선택합니다. `/f-mode status`로 상태를 확인합니다. 직접 명령을 우선하며 f-mode는 유지됩니다. 새 대화에서는 꺼져 있습니다. 작업 권한은 바뀌지 않습니다.
+`/f-mode`(Codex: `$f-mode`, 플러그인: `/fskill:f-mode`)로 시작한 뒤 평소처럼 요청하세요. 현재 대화에서 `/f-mode off`까지 자동 선택합니다. `/f-mode status`로 상태를 확인합니다. 직접 명령을 우선하며 f-mode는 유지됩니다. 새 대화에서는 꺼져 있습니다. 작업 권한은 바뀌지 않습니다. 전체 라우팅은 [skills/RESOLVER.md](skills/RESOLVER.md)를 참고하세요.
 
 ## 설치 방법
 
@@ -40,7 +38,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-스킬은 공유 디렉터리인 `~/.agents/skills`에 저장됩니다. Claude Code는 심볼릭 링크로 연결되며, Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI 등 해당 디렉터리를 읽는 에이전트는 12개 스킬을 읽습니다. 각 스킬의 절차는 `/name` 또는 `$name` 일 때만 시작합니다. 독립 디렉터리를 사용하는 에이전트는 `-a` 뒤에 ID(예: `antigravity-cli`, `qwen-code`)를 지정하세요. 업데이트는 `npx skills update -g -y`로 실행합니다. AI 에이전트에게 직접 설치를 요청할 수도 있습니다:
+스킬은 공유 디렉터리인 `~/.agents/skills`에 저장됩니다. Claude Code는 심볼릭 링크로 연결되며, Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI 등 해당 디렉터리를 읽는 에이전트는 9개 워크플로우와 8개 원칙을 읽습니다. 독립 디렉터리를 사용하는 에이전트는 `-a` 뒤에 ID(예: `antigravity-cli`, `qwen-code`)를 지정하세요. 업데이트는 `npx skills update -g -y`로 실행합니다. AI 에이전트에게 직접 설치를 요청할 수도 있습니다:
 > 다음 문서를 읽고 fskill를 설치해 줘: https://github.com/gofenix/fskill/blob/main/llms.txt
 
 **호스트 플러그인 방식** (네임스페이스 포함: `/fskill:check`):
@@ -65,13 +63,13 @@ f-mode 밖에서는 순서를 직접 정합니다. 각 스킬은 자기 결과�
 
 **자주 쓰이는 워크플로우:**
 
-- **새 기능 구현**: `/think`로 설계를 확정한다. 승인 후에는 현재 에이전트가 구현하고, 승인된 작업 그래프도 `/think`에서 조정한다. 그다음 `/check`로 검토하고 머지
-- **버그 해결**: `/hunt`로 원인을 규명하거나 정해진 지표를 하나만 시험하고, 수정한 뒤 `/check`로 변경 사항을 검토하고 필요하면 배포
-- **리서치 및 작성**: `/learn`으로 자료 하나 또는 여러 자료를 정리하고, `/write`로 문장 다듬기
+- **새 기능 구현**: `/think`로 설계를 확정하고 승인 후 현재 에이전트가 구현한 뒤 `/check`로 검토·머지
+- **버그 해결**: `/hunt`로 원인을 증명해 최소 수정한 뒤 `/check`로 변경 사항과 릴리스 증거 검토
+- **리서치 및 작성**: `/learn`으로 자료를 정리하고 `/write`로 문장 다듬기
 
 ## 프로젝트 컨텍스트
 
-fskill는 범용적인 엔지니어링 습관만을 제공합니다. `/check`는 런타임에 대상 저장소의 공개 정보(README, 패키지 파일, Makefile, CI 설정)와 작업 조건만을 읽으며, 비공개 경로나 자격 증명, 토큰에는 접근하지 않습니다. 리뷰 컨텍스트 템플릿은 [`skills/check/references/project-context.md`](skills/check/references/project-context.md)를 참고하세요.
+fskill은 범용적인 엔지니어링 원칙과 스크립트만 제공합니다. `/check`는 런타임에 대상 저장소의 공개 정보(README, 패키지 파일, Makefile, CI 설정)와 작업 조건만을 읽으며 비공개 경로나 자격 증명, 토큰에는 접근하지 않습니다. 세부 패턴은 [`skills/check/references/review-patterns.md`](skills/check/references/review-patterns.md)와 [`skills/check/references/release-artifacts.md`](skills/check/references/release-artifacts.md)를 참고하세요.
 
 ## 추가 도구 및 규칙
 
@@ -141,9 +139,9 @@ Codex는 남은 한도를, 위의 Claude Code 상태 표시줄은 사용한 비�
 
 ## fskill를 만든 이유
 
-fskill 은 gofenix 자신의 스킬 모음입니다. 일하는 방식은 [tw93/Waza](https://github.com/tw93/Waza) 에서 가져왔고, 이름은 가져오지 않았습니다. Waza 는 다른 사람의 이름입니다. 작업 스킬은 10개입니다: think, hunt, check, ui, learn, write, handoff, catchup, retro, health. 그 위에 명시적 입구 `/f-mode` 와 도움말 `/f-help` 가 있습니다. 더 잘게 나눈 절차는 각 명령 안의 모드입니다. 각 스킬은 결과, 넘지 않을 선, 완료 기준만 적습니다.
+fskill은 gofenix 자신의 스킬 모음입니다. [tw93/Waza](https://github.com/tw93/Waza)의 결정론적 스크립트와 [pstack](https://github.com/cursor/plugins/tree/main/pstack)의 원칙 중심 설계를 결합해 **9개의 경량 워크플로우**(`f-mode`, `think`, `hunt`, `check`, `ui`, `learn`, `write`, `handoff`, `health`)와 **8개의 짧은 원칙 스킬**(`p-*`)로 정리했습니다.
 
-각 스킬은 `/name` 또는 `$name` 으로 호출합니다. `think`, `hunt`, `check` 는 작업이 맞으면 자동으로도 시작되고, 나머지는 명시적 호출만 받습니다.
+각 스킬은 `/name` 또는 `$name`으로 호출합니다. `think`, `hunt`, `check` 및 `p-*` 원칙은 작업에 맞으면 자동으로 시작되고, 나머지 6개는 명시적 호출 또는 `/f-mode`로 동작합니다.
 
 ## 삭제 방법
 

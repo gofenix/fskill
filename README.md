@@ -14,25 +14,21 @@
 
 ## Skills
 
-Each engineering habit gets an installed skill, a folder with reference docs, helper scripts, and gotchas from real failures. In Claude Code, type the slash command. In Codex, invoke the installed skill by name and follow the same playbook.
+fskill pairs **9 lean workflow skills** with **8 `pstack`-style engineering principles (`p-*`)** and deterministic helper scripts. Start any workflow with `/name` or `$name`. `think`, `hunt`, `check`, and the 8 `p-*` principles also activate automatically when the task calls for them; the other six stay explicit-only. Refined from [tw93/Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills), and [pstack](https://github.com/cursor/plugins/tree/main/pstack).
 
 | Skill | When | What it does |
 | :--- | :--- | :--- |
-| [`/f-mode`](skills/f-mode/SKILL.md) | Route | Enter explicitly, then pick one skill below. Direct commands still work. |
-| [`/f-help`](skills/f-help/SKILL.md) | Help | Ask how fskill works, which skill to use, or how to customize it. |
-| [`/catchup`](skills/catchup/SKILL.md) | Report | Read-only progress and decisions awaiting you. |
-| [`/think`](skills/think/SKILL.md) | Decide | Plan, terms, route, slices, a throwaway experiment, code boundaries, calibrate-then-do, and an approved task graph. Ordinary edits stay with the current agent. |
-| [`/hunt`](skills/hunt/SKILL.md) | Find the problem | Root cause, or one hypothesis when the metric is already set. |
-| [`/check`](skills/check/SKILL.md) | Review | Diff and release review, the issue queue, and the reusable verification guide. |
-| [`/ui`](skills/ui/SKILL.md) | Interface | Build or polish a deliverable page, component, or screenshot. |
-| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Read and write | One URL or PDF, multi-source research, prose. |
-| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) | Keep | Session handoff, verified lessons, agent config, maintainability, pruning, and human setup. |
+| [`/f-mode`](skills/f-mode/SKILL.md) | Route | Enter explicitly, then select one workflow below and apply matching `p-*` principles. |
+| [`/think`](skills/think/SKILL.md) | Decide | Pre-implementation plan, value judgment (`Drop/Keep/Pivot`), scope triage, and `grill me` pressure testing. |
+| [`/hunt`](skills/hunt/SKILL.md) | Find the problem | Root-cause debugging with runtime evidence, plus single-hypothesis metric optimization. |
+| [`/check`](skills/check/SKILL.md) | Review | Evidence-backed diff/PR review, release judgment, audit signals, and incident replay. |
+| [`/ui`](skills/ui/SKILL.md) | Interface | Distinctive, non-slop frontend UI design, motion, and real-render verification (explicit call). |
+| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Read and write | Fetch one URL/PDF or synthesize primary sources; de-AI prose and release notes (explicit call). |
+| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | Keep | Compact session handoff, agent config/hooks/MCP/token-tool audits, and rule pruning (explicit call). |
 
-Not sure where to start? Try `/f-help Which skill fits my task?` (Codex: `$f-help`; plugin: `/fskill:f-help`).
+**Eight `pstack`-style engineering principles (`p-*`, auto-triggered):** [`p-subtract-before-add`](skills/p-subtract-before-add/SKILL.md) · [`p-attack-the-premise`](skills/p-attack-the-premise/SKILL.md) · [`p-fix-root-causes`](skills/p-fix-root-causes/SKILL.md) · [`p-prove-it-works`](skills/p-prove-it-works/SKILL.md) · [`p-test-behavior`](skills/p-test-behavior/SKILL.md) · [`p-explain-the-number`](skills/p-explain-the-number/SKILL.md) · [`p-encode-in-structure`](skills/p-encode-in-structure/SKILL.md) · [`p-respect-boundaries`](skills/p-respect-boundaries/SKILL.md)
 
-Enter `/f-mode` (Codex: `$f-mode`; plugin: `/fskill:f-mode`) once, then describe your tasks normally. It routes within this session until `/f-mode off`; `/f-mode status` reports state. Direct commands such as `/hunt` take priority without closing f-mode. New sessions start off. Mode selects workflows, not action permissions.
-
-`think`, `hunt`, and `check` may also start when the task itself is theirs, without naming them; the other nine start only on an explicit call (`/ui`, `$ui`). `/f-mode` is the only router that switches among all of them, and only after you enter it. Saying a related word does not enter f-mode. Refined from [tw93/Waza](https://github.com/tw93/Waza).
+Enter `/f-mode` (Codex: `$f-mode`; plugin: `/fskill:f-mode`) once, then describe your tasks normally. It routes within this session until `/f-mode off`; `/f-mode status` reports state. Direct commands such as `/hunt` take priority without closing f-mode. New sessions start off. Mode selects workflows, not action permissions. See [skills/RESOLVER.md](skills/RESOLVER.md) for the full trigger map.
 
 ## Install
 
@@ -42,7 +38,7 @@ Enter `/f-mode` (Codex: `$f-mode`; plugin: `/fskill:f-mode`) once, then describe
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-One copy lands in `~/.agents/skills`, the shared skills directory. Claude Code is symlinked in; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI, and every other agent that reads that directory picks the twelve skills up as `/check`, `/think`, and so on. Agents with a private skills directory take their id after `-a` (for example `antigravity-cli` or `qwen-code`). Update with `npx skills update -g -y`. You can also tell your agent to install it:
+One copy lands in `~/.agents/skills`, the shared skills directory. Claude Code is symlinked in; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI, and every other agent that reads that directory picks up the 9 workflow skills and 8 principles. Explicit-only workflows start only on `/ui`, `$ui`, or inside `/f-mode`. Agents with a private skills directory take their id after `-a` (for example `antigravity-cli` or `qwen-code`). Update with `npx skills update -g -y`. You can also tell your agent to install it:
 > Install fskill for me by reading https://github.com/gofenix/fskill/blob/main/llms.txt
 
 **Host plugin**, if you prefer the host's own update command (skills are namespaced, `/fskill:check`)
@@ -67,13 +63,13 @@ Outside f-mode, you decide the order. Each skill stops when its outcome is done.
 
 **Common workflows:**
 
-- **Plan a feature**: `/think` settles the plan. After approval, the current agent does the work, including an approved task graph. Then `/check` before merging.
-- **Ship a fix**: `/hunt` to find the root cause or test one metric, fix it, then `/check` to review the changes and, when needed, handle release, publish, push, and issue follow-through
-- **Research and write**: `/learn` to read one source or synthesize several, `/write` to polish
+- **Plan a feature**: `/think` settles the plan cleanly with `p-subtract-before-add`. After approval, the current agent implements it, then `/check` reviews before merging.
+- **Ship a fix**: `/hunt` proves root cause via `p-fix-root-causes`, fix cleanly, then `/check` reviews and validates release evidence.
+- **Research and write**: `/learn` fetches a URL/PDF or synthesizes primary sources, `/write` polishes the prose.
 
 ## Project Context
 
-fskill ships only generic engineering habits. `/check` becomes project-aware at runtime by reading the target repository's public context (READMEs, package manifests, Makefiles, CI workflows) and your task constraints, never private paths, credentials, or tokens. See [`skills/check/references/project-context.md`](skills/check/references/project-context.md) for the review context template.
+fskill ships only generic engineering workflows, concise principles, and deterministic scripts. `/check` becomes project-aware at runtime by reading the target repository's public context (READMEs, package manifests, Makefiles, CI workflows) and your task constraints, never private paths, credentials, or tokens. See [`skills/check/references/review-patterns.md`](skills/check/references/review-patterns.md) and [`skills/check/references/release-artifacts.md`](skills/check/references/release-artifacts.md).
 
 ## Extras
 
@@ -143,9 +139,9 @@ Optional rules apply beyond skill invocations when installed into your agent's p
 
 ## Why
 
-fskill is gofenix's skill set. The working shape comes from [tw93/Waza](https://github.com/tw93/Waza); the name does not, because Waza belongs to someone else. There are ten workflow skills: think, hunt, check, ui, learn, write, handoff, catchup, retro, and health. `/f-mode` routes among them and `/f-help` explains them. Finer procedures are modes inside a command. Each skill states the outcome, the lines it does not cross, and how you know it is done.
+fskill is gofenix's skill set, built from [tw93/Waza](https://github.com/tw93/Waza)'s tooling and [pstack](https://github.com/cursor/plugins/tree/main/pstack)'s principle-first design. Instead of bloating contexts with textbook multi-file SOPs that frontier models already know, it keeps **9 lean workflows** (`f-mode`, `think`, `hunt`, `check`, `ui`, `learn`, `write`, `handoff`, `health`), **8 concise engineering principles** (`p-*`), and deterministic scripts for checks models shouldn't guess.
 
-You enter any skill with `/name` or `$name`. `think`, `hunt`, and `check` also start on their own when the task is planning, a broken behavior, or a diff review; the other nine wait for an explicit call.
+Enter any skill with `/name` or `$name`. `think`, `hunt`, `check`, and `p-*` principles trigger on matching tasks; the other six wait for an explicit call.
 
 ## Uninstall
 

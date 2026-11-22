@@ -4,30 +4,22 @@ This file is the canonical agent guide for the fskill repository. `CLAUDE.md` is
 
 ## Project
 
-fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twelve skills live flat under `skills/<name>/`: ten workflow skills plus `f-mode` routing and `f-help` guidance. Every skill takes `/name` or `$name`; `think`, `hunt`, and `check` may also be selected by the model when the task itself is theirs (planning or a value judgment, a broken behavior or a defined metric, a diff or PR review), while the other nine start only on an explicit call. After explicit `/f-mode`, route within the current session until `/f-mode off`; direct commands take priority without closing f-mode. A similar word never enables f-mode. Finer procedures are modes inside the selected skill.
+fskill is gofenix's skill set, combining Waza's practical tooling with `pstack`-style concise principles. Seventeen skills live flat under `skills/<name>/`: 9 lean workflow skills (`f-mode`, `think`, `hunt`, `check`, `ui`, `learn`, `write`, `handoff`, `health`) plus 8 short auto-triggered principle skills (`p-*`). Every skill takes `/name` or `$name`; `think`, `hunt`, `check`, and all eight `p-*` principles may also be selected by the model when the task fits, while `f-mode`, `ui`, `write`, `learn`, `health`, and `handoff` require an explicit call or active `/f-mode`. Explicit `/f-mode` routes within the current session until `/f-mode off`; direct commands take priority without closing it.
 
-- 想清楚: `think`（计划、价值判断、范围分类、追问、术语、路线、切片、一次性实验、代码边界、显式校准后就做、已批准任务图）
-- 找问题: `hunt`（根因，以及指标已经定时的单假设改进）
-- 做检查: `check`（审查、队列、可复用验证指南）
-- 界面: `ui`
-- 进展汇报: `catchup`
-- 读和写: `learn`, `write`
-- 下次还能用: `handoff`, `retro`, `health`
+- Workflows (9): `f-mode` (session router), `think` (plans, value judgments, scope triage, `grill me`), `hunt` (root-cause debugging & single-hypothesis metrics), `check` (diff/PR/release review, audit signals, incident ledger), `ui`, `learn`, `write`, `handoff`, `health` (audits & rule pruning).
+- Principles (`p-*`, 8): `p-subtract-before-add`, `p-attack-the-premise`, `p-fix-root-causes`, `p-prove-it-works`, `p-test-behavior`, `p-explain-the-number`, `p-encode-in-structure`, `p-respect-boundaries`.
 
 ## Repository Map
 
 - `VERSION` - single source of truth for the lock-step version. Marketplace entries, `package.json`, and installer `FSKILL_REF` defaults must agree with this file (codegen-enforced). Per-skill frontmatter carries no version field; the verifier rejects a stale `metadata.version`.
-- `skills/RESOLVER.md` - trigger and routing table for the skill set.
-- `skills/{f-mode,f-help}/references/routing.md` - generated portable copies of `skills/RESOLVER.md` for standalone installs; never hand-edit.
-- `skills/f-mode/references/principles.md` - short trigger-to-source index of existing engineering principles; details stay in the owning skill, and citations describe actual changed decisions.
-- `rules/delegation-budget.md` - shared delegation policy, generated into each linking skill, for example `skills/think/references/delegation-budget.md`, so direct installs remain self-contained. Edit the rule, not its copies.
-- `skills/f-help/references/guide.md` - usage guide for setup, session routing, troubleshooting, customization, and engineering principles.
-- `skills/*/SKILL.md` - individual skill entrypoints. `catchup` reports progress. Calibration and an approved task graph are modes inside `think`, not separate commands.
+- `skills/RESOLVER.md` - trigger and routing table for the 17 skills.
+- `skills/f-mode/references/routing.md` - generated portable copy of `skills/RESOLVER.md` for standalone installs; never hand-edit.
+- `skills/f-mode/references/principles.md` - quick index of the 8 `p-*` principle skills.
+- `skills/*/SKILL.md` - individual skill entrypoints (9 workflow skills + 8 `p-*` principles).
 - `LICENSE` - canonical MIT license, third-party Apache-2.0 terms, upstream copyright notices, and acknowledgements, maintained once at the repository root. UI adaptations credit Impeccable, taste-skill, and Emil Kowalski's apple-design. Do not duplicate the license under individual skills.
-- `skills/*/agents/` - specialist reviewer or inspector prompts.
-- `skills/*/references/` - supporting references loaded only when needed.
-- `skills/*/scripts/` - deterministic helper scripts.
-- `rules/` - shared writing and behavior rules used by install and validation flows. `rules/durable-context.md` is the shared Durable Context Preflight preamble; codegen copies it into each referencing skill as `skills/<name>/references/durable-context.md` (direct installs get only the skill directory), and the six skills whose preflight forbids raw transcript reads (`think`, `check`, `hunt`, `ui`, `write`, `health`) link to that skill-local copy, while `handoff` and `retro` carry conditional history-recovery rules in their own `## 长期上下文预检`. `rules/typescript-style.md` is the TypeScript style guide; codegen copies it the same way into each skill whose `SKILL.md` links `references/typescript-style.md`. Apply it when the project is already TypeScript. Project lint and the current file's existing style stay ahead of it. Bun, Effect, and Drizzle rules apply only when that project already uses them.
+- `skills/*/references/` - supporting references loaded only when needed (`review-patterns.md`, `release-artifacts.md`, `incident-ledger.md`, `ime-unicode.md`, `design-traps.md`, `design-motion.md`, `write-zh.md`, `write-en.md`, `read-methods.md`, `prune.md`, plus generated `durable-context.md`).
+- `skills/*/scripts/` - deterministic helper scripts (`health`, `write`, `learn`, `check`).
+- `rules/` - shared writing and behavior rules used by install and validation flows. `rules/durable-context.md` is copied by codegen into the six durable-context workflow skills (`think`, `check`, `hunt`, `ui`, `write`, `health`) as `references/durable-context.md`. `rules/typescript-style.md` captures concise anti-default TypeScript constraints for optional standalone installation.
 - `.claude-plugin/marketplace.json` - **generated**. Edit `VERSION` or per-skill `SKILL.md` frontmatter and run `make regenerate`; never hand-edit.
 - `.agents/plugins/marketplace.json` - **generated** Codex repo marketplace. Points Codex at the repository root; never hand-edit.
 - `.codex-plugin/plugin.json` - **generated** Codex plugin manifest. `skills` is `./skills/`. Do not add a `plugins/fskill` copy of the skill tree.
@@ -43,7 +35,7 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twelve sk
 
 ## Issue And Pull Request Maintenance
 
-- Use the official GitHub CLI/API for this repository's issue and PR queue. Read the complete discussion and use [check triage guidance](skills/check/references/modes/triage/MODE.md) for disposition and release evidence.
+- Use the official GitHub CLI/API for this repository's issue and PR queue. Read the complete discussion and verify release/fix evidence before acting.
 - Before modifying an item, check relevant local and remote commits, associated PRs, branches/worktrees, and accessible existing agent conversations or task inventories. Report the deduplication evidence and owner first. Verify an existing fix; if another session owns ongoing work, report its verifiable ID/status and leave implementation there. Record unread or inaccessible history as a coverage gap, not evidence that no owner exists.
 - Preserve concurrent and uncommitted work; use an independent branch/worktree for fixes, isolated fixtures for reproduction, and targeted verification. Missing evidence keeps an item pending; an empty queue requires no manufactured changes.
 - Public replies, closure, commits, pushes, merges, and releases follow current task authorization. Historical conversation requests and saved queue snapshots do not grant permission or establish current state. Before implementing any change to user-visible interfaces, visual effects, interaction, user parameters, or configuration defaults, present the concrete before/after behavior and obtain explicit user confirmation; general fix or push authorization does not cover those changes. Pause and isolate any such unconfirmed work already in progress; report already-pushed changes without independently reverting them.
@@ -94,9 +86,9 @@ Examples: `verify_skills.py` is a script; `rules/english.md` and `rules/chinese.
 - Keep each `description` short and precise: what it does, when to use it, and a `Not for` exclusion. Do not pad with synonym lists or "in any language" coverage; multilingual aliases belong in `when_to_use`.
 - Write skill entrypoints outcome-first: name the target result, what counts as done, which constraints and evidence matter, and what the final answer or artifact should look like. Keep detailed process in references.
 - `SKILL.md` carries what every run of that skill needs; a body only some runs need belongs in `references/`, reached from a picker row or a conditional line that names the trigger. Mutually exclusive modes are the clearest case: a diff review should not pay for the release, triage, and audit playbooks. Deterministic checks keep going to `scripts/`; this rule is about where the judgment prose loads, not about splitting a skill.
-- Keep every `SKILL.md` on one skeleton so they read as a set: a `🥷` first line inlined, then `## 交付约定` (目标, 完成条件, 依据, 交付形式), then `## 长期上下文预检` for skills that read memory, then the lines the skill does not cross (`不用于`). Invocation is `/name` or `$name`; only `think`, `hunt`, and `check` may also be chosen by the model when the task matches them. Tables are compact `| a | b |` with no hand-aligned spacing; a numbered step sequence stays contiguous, with side-checks grouped under a step rather than wedged between two.
+- Keep every workflow `SKILL.md` on one skeleton so they read as a set: a `🥷` first line inlined, then `## 交付约定` (目标, 完成条件, 依据, 交付形式), then `## 长期上下文预检` for skills that read memory, then the lines the skill does not cross (`不用于`). Principle skills (`p-*`) follow `pstack`'s minimal card shape instead (`触发信号` / `原则` / `坏 vs 好`) with `disable-model-invocation: false`. Invocation is `/name` or `$name`; only `think`, `hunt`, `check`, and `p-*` principle skills may also be chosen by the model when the task matches them. Tables are compact `| a | b |` with no hand-aligned spacing; a numbered step sequence stays contiguous, with side-checks grouped under a step rather than wedged between two.
 - Avoid broad skills that mix unrelated workflows.
-- The set is the twelve skills under `skills/`. Do not add, rename, or split a skill without an explicit decision. Behavior additions land in `references/`, `rules/`, `scripts/`, or `rules/anti-patterns.md`.
+- The set is the 9 workflow skills + 8 `p-*` principle skills under `skills/`. Do not add, rename, or split a skill without an explicit decision. Behavior additions consolidate into `p-*` principles, `references/`, `rules/`, `scripts/`, or `rules/anti-patterns.md`.
 - Keep generic programmer capabilities in fskill. Project-specific constraints should be extracted from public repository context or user-provided task context.
 - Treat `code-review` as an invocation alias for fskill `check`, not as a separate generic skill.
 - Skill names stay short verbs (`check`, `think`). Decline requests to rename them or to prefix the skill names with `fskill-`. The `fskill-<name>` per-skill plugin ids in `.claude-plugin/marketplace.json` are the host's install namespace, not skill names. Short commands stay `/think`; the plugin namespace is `/fskill:check`.
@@ -136,7 +128,7 @@ Use this path for any new skill or meaningful behavior change:
 ## Distribution Rules
 
 - `.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`, `.codex-plugin/plugin.json`, `skills/RESOLVER.md`, and every `skills/*/SKILL.md` must agree on skill names, descriptions, and source paths; versions march in lock-step with `VERSION` through the generated metadata.
-- `npx skills add gofenix/fskill` should install the twelve skills by default. Do not add a source-root `SKILL.md`; it prevents nested skill discovery.
+- `npx skills add gofenix/fskill` installs the full skill tree under `skills/` by default. Do not add a source-root `SKILL.md`; it prevents nested skill discovery.
 - Codex marketplace entries resolve to `./`, the repository root, where `skills/` is the only skill tree. Do not recreate `plugins/fskill`. After Codex marketplace or plugin manifest changes, verify an isolated install flow rather than only checking JSON shape.
 - Plugin mirror generation must filter local cache and noise files in both generator and verifier paths, including `__pycache__`, `*.pyc`, `.pytest_cache`, `.ruff_cache`, `.mypy_cache`, and `.DS_Store`.
 - Claude Desktop uses the release ZIP built by `scripts/package-skill.sh`.

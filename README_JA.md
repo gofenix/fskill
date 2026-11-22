@@ -14,23 +14,21 @@
 
 ## スキル一覧
 
-各スキルは参照、スクリプト、実際に踏んだ失敗をまとめたディレクトリです。個々のスキルは `/name` または `$name` で開始します。`think`、`hunt`、`check` はタスク自体がその担当範囲なら自動でも始まり、残り 9 個は明示的な呼び出しだけです。Waza、Matt Pocock skills、pstack を基にしています。詳細はライセンス欄を参照してください。
+fskill は **9 つのスリムなワークフロー + 8 つの `pstack` 風エンジニアリング原則（`p-*`）+ 決定論的スクリプト** で構成されます。各スキルは `/name` または `$name` で開始し、`think`・`hunt`・`check` と 8 つの `p-*` 原則はタスクに応じて自動選択されます（残り 6 つは明示呼び出しまたは `/f-mode` 時のみ）。[Waza](https://github.com/tw93/Waza)、[Matt Pocock skills](https://github.com/mattpocock/skills)、[pstack](https://github.com/cursor/plugins/tree/main/pstack) を基にしています。
 
 | スキル | グループ | 役割 |
 | :--- | :--- | :--- |
-| [`/f-mode`](skills/f-mode/SKILL.md) | 経路 | 明示的に入ってから、下のスキルを一つ選ぶ。単体のコマンドもそのまま使える。 |
-| [`/f-help`](skills/f-help/SKILL.md) | ヘルプ | fskill の使い方、スキル選び、設定やカスタマイズを質問する。 |
-| [`/catchup`](skills/catchup/SKILL.md) | 報告 | 進捗、変化、あなたの判断が必要な事項を読み取り専用で確認。 |
-| [`/think`](skills/think/SKILL.md) | 方向を決める | 計画、用語、経路、切り分け、捨てられる試作、コードの境界、確認してから実行、承認済みのタスク図。通常の変更は今のエージェントが行う。 |
-| [`/hunt`](skills/hunt/SKILL.md) | 問題を探す | 根本原因。指標が決まっていれば仮説は一度に一つ。 |
-| [`/check`](skills/check/SKILL.md) | 確認する | マージ前の確認、課題の整理、再利用できる検証手順。 |
-| [`/ui`](skills/ui/SKILL.md) | 画面 | 納品するページやコンポーネント、スクリーンショットの調整。 |
-| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 読む・書く | 一つの URL か PDF、複数資料の調査、文章を整える。 |
-| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) | 次も使える | セッションの引き継ぎ、確認済みの教訓、エージェント設定、手動セットアップ。 |
+| [`/f-mode`](skills/f-mode/SKILL.md) | 経路 | 明示的に入り、目的別にワークフローと `p-*` 原則を選択。 |
+| [`/think`](skills/think/SKILL.md) | 方向を決める | 計画、価値判断、範囲分類、`grill me` 深掘り。 |
+| [`/hunt`](skills/hunt/SKILL.md) | 問題を探す | 実行時証拠に基づく根本原因特定と単一仮説の指標改善。 |
+| [`/check`](skills/check/SKILL.md) | 確認する | diff/PR レビュー、リリース可否判断、プロジェクト監査、事故台帳検証。 |
+| [`/ui`](skills/ui/SKILL.md) | 画面 | 反 AI slop の UI 設計と実画面スクリーンショット検証（明示呼び出し）。 |
+| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 読む・書く | URL/PDF 取得と一次資料調査、AI 臭除去・リリースノート（明示呼び出し）。 |
+| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | 次も使える | セッション引き継ぎ、Agent 設定・hooks・MCP・省トークン監査とルール削減（明示呼び出し）。 |
 
-迷ったら `/f-help この作業にはどのスキルが合う？`（Codex: `$f-help`、プラグイン: `/fskill:f-help`）。
+**8 つの `pstack` 風原則（`p-*`、自動発火）：** [`p-subtract-before-add`](skills/p-subtract-before-add/SKILL.md) · [`p-attack-the-premise`](skills/p-attack-the-premise/SKILL.md) · [`p-fix-root-causes`](skills/p-fix-root-causes/SKILL.md) · [`p-prove-it-works`](skills/p-prove-it-works/SKILL.md) · [`p-test-behavior`](skills/p-test-behavior/SKILL.md) · [`p-explain-the-number`](skills/p-explain-the-number/SKILL.md) · [`p-encode-in-structure`](skills/p-encode-in-structure/SKILL.md) · [`p-respect-boundaries`](skills/p-respect-boundaries/SKILL.md)
 
-`/f-mode`（Codex: `$f-mode`、プラグイン: `/fskill:f-mode`）で開始し、通常の言葉で依頼できます。現在の会話で `/f-mode off` まで自動選択が続きます。`/f-mode status` で状態を確認。直接コマンドを優先し、f-mode は維持します。新しい会話では無効です。操作の権限は変わりません。
+`/f-mode`（Codex: `$f-mode`、プラグイン: `/fskill:f-mode`）で開始し、通常の言葉で依頼できます。現在の会話で `/f-mode off` まで自動選択が続きます。`/f-mode status` で状態を確認。直接コマンドを優先し、f-mode は維持します。新しい会話では無効です。操作の権限は変わりません。一覧は [skills/RESOLVER.md](skills/RESOLVER.md) を参照してください。
 
 ## インストール
 
@@ -40,7 +38,7 @@
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-スキルは共通の `~/.agents/skills` ディレクトリに保存されます。Claude Code はシンボリックリンク経由で連携し、Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI など、このディレクトリを読み込む各エージェントは 12 個のスキルを読み込みます。各スキルの手順は `/name` または `$name` のときだけ始まります。専用ディレクトリを持つエージェントは `-a` の後にID（例：`antigravity-cli`、`qwen-code`）を指定してください。更新は `npx skills update -g -y` で行います。AIエージェントに直接インストールを依頼することも可能です：
+スキルは共通の `~/.agents/skills` ディレクトリに保存されます。Claude Code はシンボリックリンク経由で連携し、Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI など、このディレクトリを読み込む各エージェントは 9 ワークフローと 8 原則を読み込みます。専用ディレクトリを持つエージェントは `-a` の後にID（例：`antigravity-cli`、`qwen-code`）を指定してください。更新は `npx skills update -g -y` で行います。AIエージェントに直接インストールを依頼することも可能です：
 > https://github.com/gofenix/fskill/blob/main/llms.txt を読んで fskill をインストールして
 
 **ホストのプラグイン機能を利用する場合**（スキル名に名前空間が付きます：`/fskill:check`）：
@@ -65,13 +63,13 @@ codex plugin add fskill@fskill
 
 **一般的なワークフロー：**
 
-- **新機能の開発**：`/think` で設計を固める。承認後は今のエージェントが実装し、承認済みのタスク図も `/think` で調整する。その後 `/check` でレビューしてマージ
-- **不具合の修正**：`/hunt` で原因を特定するか、決まった指標を一つ試し、修正してから `/check` で変更差分をレビューし、必要に応じてリリース
-- **調査と執筆**：`/learn` で一つの資料または複数資料を整理し、`/write` で文章を磨く
+- **新機能の開発**：`/think` で設計を固める。承認後に現在のエージェントが実装し、`/check` でレビューしてマージ
+- **不具合の修正**：`/hunt` で原因を特定し修正した後、`/check` で変更とリリース証拠を確認
+- **調査と執筆**：`/learn` で資料を整理し、`/write` で文章を磨く
 
 ## プロジェクトコンテキスト
 
-fskill は汎用的なエンジニアリングの型のみを提供します。`/check` は実行時に対象リポジトリの公開情報（README、パッケージ定義、Makefile、CI設定）とタスク要件を読み取り、非公開のパスや認証情報、トークンは読みません。レビュー用コンテキストのテンプレートは [`skills/check/references/project-context.md`](skills/check/references/project-context.md) を参照してください。
+fskill は汎用的なエンジニアリング原則とスクリプトのみを提供します。`/check` は実行時に対象リポジトリの公開情報（README、パッケージ定義、Makefile、CI設定）とタスク要件を読み取り、非公開のパスや認証情報、トークンは読みません。詳細は [`skills/check/references/review-patterns.md`](skills/check/references/review-patterns.md) と [`skills/check/references/release-artifacts.md`](skills/check/references/release-artifacts.md) を参照してください。
 
 ## 追加ツールとルール
 
@@ -141,9 +139,9 @@ Codex は残りの枠を、上の Claude Code ステータスラインは使用�
 
 ## 開発の背景
 
-fskill は gofenix 自身のスキル集です。進め方は [tw93/Waza](https://github.com/tw93/Waza) から取り、名前は取りません。Waza は他人の名前だからです。作業スキルは 10 個です：think、hunt、check、ui、learn、write、handoff、catchup、retro、health。その上に明示的な入口 `/f-mode` とヘルプ `/f-help` があります。より細かい手順は各コマンドの中のモードです。各スキルは結果、越えない線、完了の判断だけを書きます。
+fskill は gofenix 自身のスキル集です。[tw93/Waza](https://github.com/tw93/Waza) の決定論的スクリプトと [pstack](https://github.com/cursor/plugins/tree/main/pstack) の原則重視設計を合わせ、**9 つの軽量ワークフロー**（`f-mode`・`think`・`hunt`・`check`・`ui`・`learn`・`write`・`handoff`・`health`）と **8 つの短い原則スキル**（`p-*`）に整理しています。
 
-各スキルは `/name` または `$name` で呼び出せます。`think`、`hunt`、`check` はタスクが合えば自動でも始まり、残りは明示的な呼び出しだけです。
+各スキルは `/name` または `$name` で呼び出せます。`think`・`hunt`・`check` と `p-*` 原則はタスクが合えば自動でも始まり、残り 6 つは明示的な呼び出しまたは `/f-mode` で動きます。
 
 ## アンインストール
 
