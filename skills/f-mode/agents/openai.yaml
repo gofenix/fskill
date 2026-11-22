@@ -1,6 +1,6 @@
 interface:
   display_name: "fskill f-mode"
-  short_description: "显式进入 f-mode 后，按请求选择已安装技能，按需应用工程原则并在授权范围内执行；支持退出和单条直调"
+  short_description: "显式进入 f-mode 后，按任务匹配原则与工作流技能，在原有授权范围内执行"
   default_prompt: "使用 $f-mode 完成 fskill 工作流。"
 policy:
   allow_implicit_invocation: false

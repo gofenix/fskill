@@ -1,7 +1,7 @@
 {
   "name": "fskill",
   "version": "3.39.0",
-  "description": "Engineering workflow skills for Codex, with /catchup reporting, /think for planning and calibration, and /f-help guidance and explicit /f-mode session routing. Direct commands remain available.",
+  "description": "Lean engineering workflow skills and 8 pstack-style principle skills for Codex, with explicit /f-mode session routing. Direct commands remain available.",
   "author": {
     "name": "gofenix",
     "email": "gofenix@users.noreply.github.com",
@@ -23,7 +23,7 @@
   "interface": {
     "displayName": "fskill",
     "shortDescription": "Engineering workflow skills for Codex",
-    "longDescription": "fskill packages ten engineering workflow skills (planning, debugging, review, UI, research, writing, handoff, reporting, retro, and health) plus /f-mode routing and /f-help guidance. /f-mode routes only after you enter it. Enter any skill with /name or $name; think, hunt, and check also start on their own when the task is theirs, while the other nine wait for an explicit call.",
+    "longDescription": "fskill packages 8 lean engineering workflow skills (planning, debugging, review, UI, research, writing, handoff, and health), explicit /f-mode routing, and 8 pstack-style engineering principle skills (p-*). think, hunt, check, and principle skills also trigger when the task fits; the remaining six require an explicit call.",
     "developerName": "gofenix",
     "category": "Developer Tools",
     "capabilities": [

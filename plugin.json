@@ -2,6 +2,6 @@
   "$schema": "https://antigravity.google/schemas/v1/plugin.json",
   "name": "fskill",
   "version": "3.39.0",
-  "description": "Engineering workflow skills for Antigravity CLI, with /catchup reporting, /think for planning and calibration, and /f-help guidance and explicit /f-mode session routing. Direct commands remain available.",
+  "description": "Lean engineering workflow skills and 8 pstack-style principle skills for Antigravity CLI, with explicit /f-mode session routing. Direct commands remain available.",
   "logo": "assets/logo.svg"
 }

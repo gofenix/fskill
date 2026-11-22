@@ -1,6 +1,6 @@
 interface:
   display_name: "fskill health"
-  short_description: "审计 Agent 配置、指令、hooks/MCP、验证入口与项目 AI 可维护性，精简规则与技能，并把必须由人完成的配置或迁移做成向导"
+  short_description: "审计 Agent 配置、指令漂移、hooks/MCP、验证入口与规则瘦身"
   default_prompt: "使用 $health 完成 fskill 工作流。"
 policy:
   allow_implicit_invocation: false

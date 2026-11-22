@@ -1,0 +1,6 @@
+interface:
+  display_name: "fskill p-subtract-before-add"
+  short_description: "先减后增：新增抽象、开关或扩展层前，先删死代码、多余中间层与未释放脚手架"
+  default_prompt: "应用 $p-subtract-before-add 工程原则。"
+policy:
+  allow_implicit_invocation: true
