@@ -12,22 +12,20 @@ def read(relative: str) -> str:
 
 def test_write_release_copy_is_explicit_and_artifact_bounded() -> None:
     skill = read("skills/write/SKILL.md")
-    notes = read("skills/write/references/write-zh-release-notes.md")
+    zh = read("skills/write/references/write-zh.md")
 
     assert "/write" in skill
     assert "显式调用" in skill
     assert "事实主张基于产物" in skill
     assert "发布说明要工程师可读" in skill
-    assert "5 到 8 条足够，除非发布规模很小或很大" in notes
-    assert "全面优化体验" in notes
+    assert "5 到 8 条足够，除非发布规模很小或很大" in zh
+    assert "全面优化体验" in zh
 
 
 def test_release_guidance_does_not_turn_previous_item_count_into_a_quota() -> None:
     surfaces = {
         "write skill": read("skills/write/SKILL.md"),
-        "Chinese release notes": read(
-            "skills/write/references/write-zh-release-notes.md"
-        ),
+        "Chinese write reference": read("skills/write/references/write-zh.md"),
     }
     stale_contracts = (
         "Match the reference release's item count",

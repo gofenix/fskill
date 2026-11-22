@@ -15,11 +15,8 @@ def test_ui_is_explicit_and_keeps_design_references() -> None:
     assert "显式调用" in skill
     assert "不自动切换技能" in skill
     for reference in (
-        "references/design-reference.md",
         "references/design-traps.md",
-        "references/design-tokens.md",
-        "references/design-data-viz.md",
-        "references/design-aesthetic-quality.md",
+        "references/design-motion.md",
     ):
         assert reference in skill
         assert (UI / reference).is_file()

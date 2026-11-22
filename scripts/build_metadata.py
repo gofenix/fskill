@@ -58,8 +58,9 @@ CLAUDE_MARKETPLACE_TOP = {
     "name": "fskill",
     "description": (
         "Personal skill collection for Claude Code, Codex, Antigravity, "
-        "OpenCode, and Pi. Workflow skills with /catchup reporting, /think for planning and calibration, and /f-help for guidance "
-        "and explicit /f-mode session routing. /think, /hunt, and /check may also be chosen without a command; direct commands remain available."
+        "OpenCode, and Pi: 9 lean workflow skills plus 8 pstack-style engineering principles "
+        "(p-*), with explicit /f-mode routing. think, hunt, check, and principle skills "
+        "also trigger on matching tasks; direct commands remain available."
     ),
     "owner": {
         "name": "gofenix",
@@ -68,10 +69,10 @@ CLAUDE_MARKETPLACE_TOP = {
 }
 
 BUNDLE_DESCRIPTION = (
-    "Installs the full fskill toolkit. Registers the skills under the "
-    "fskill namespace, callable as /fskill:think, /fskill:ui, /fskill:check, "
-    "and the other fskill commands. For one skill on Claude Code v2.1.143 "
-    "or newer, use /plugin install fskill-<name>@fskill."
+    "Installs the full fskill toolkit: 9 lean workflow skills plus 8 engineering "
+    "principle skills under the fskill namespace (/fskill:think, /fskill:check, "
+    "/fskill:ui, etc.). For one skill on Claude Code v2.1.143 or newer, use "
+    "/plugin install fskill-<name>@fskill."
 )
 
 CATEGORY = "development"
@@ -86,8 +87,8 @@ AUTHOR = {
 }
 
 CODEX_DESCRIPTION = (
-    "Engineering workflow skills for Codex, with /catchup reporting, /think for planning and calibration, and "
-    "/f-help guidance and explicit /f-mode session routing. Direct commands remain available."
+    "Lean engineering workflow skills and 8 pstack-style principle skills for Codex, "
+    "with explicit /f-mode session routing. Direct commands remain available."
 )
 # Shared durable-context preamble: source of truth in rules/, copied into each
 # referencing skill's references/ so direct installs resolve the link locally.
@@ -184,11 +185,10 @@ def build_codex_plugin(version: str) -> dict:
             "displayName": "fskill",
             "shortDescription": "Engineering workflow skills for Codex",
             "longDescription": (
-                "fskill packages ten engineering workflow skills (planning, debugging, "
-                "review, UI, research, writing, handoff, reporting, retro, and health) "
-                "plus /f-mode routing and /f-help guidance. /f-mode routes only after you "
-                "enter it. Enter any skill with /name or $name; think, hunt, and check also start on "
-                "their own when the task is theirs, while the other nine wait for an explicit call."
+                "fskill packages 8 lean engineering workflow skills (planning, debugging, "
+                "review, UI, research, writing, handoff, and health), explicit /f-mode routing, "
+                "and 8 pstack-style engineering principle skills (p-*). think, hunt, check, and "
+                "principle skills also trigger when the task fits; the remaining six require an explicit call."
             ),
             "developerName": "gofenix",
             "category": CODEX_CATEGORY,
@@ -434,11 +434,16 @@ def render_openai_yaml(fields: dict) -> str:
     name = fields["name"]
     summary = fields["description"].split("。", 1)[0].strip()
     allow = "false" if fields.get("disable-model-invocation") else "true"
+    default_prompt = (
+        f"应用 ${name} 工程原则。"
+        if name.startswith("p-")
+        else f"使用 ${name} 完成 fskill 工作流。"
+    )
     return (
         "interface:\n"
         f"  display_name: {json.dumps(f'fskill {name}', ensure_ascii=False)}\n"
         f"  short_description: {json.dumps(summary, ensure_ascii=False)}\n"
-        f"  default_prompt: {json.dumps(f'使用 ${name} 完成 fskill 工作流。', ensure_ascii=False)}\n"
+        f"  default_prompt: {json.dumps(default_prompt, ensure_ascii=False)}\n"
         "policy:\n"
         f"  allow_implicit_invocation: {allow}\n"
     )
