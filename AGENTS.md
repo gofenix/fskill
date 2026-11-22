@@ -6,7 +6,7 @@ This file is the canonical agent guide for the fskill repository. `CLAUDE.md` is
 
 fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twelve skills live flat under `skills/<name>/`: ten workflow skills plus `f-mode` routing and `f-help` guidance. Every skill takes `/name` or `$name`; `think`, `hunt`, and `check` may also be selected by the model when the task itself is theirs (planning or a value judgment, a broken behavior or a defined metric, a diff or PR review), while the other nine start only on an explicit call. After explicit `/f-mode`, route within the current session until `/f-mode off`; direct commands take priority without closing f-mode. A similar word never enables f-mode. Finer procedures are modes inside the selected skill.
 
-- 想清楚: `think`（计划、术语、路线、切片、一次性实验、代码边界、校准后就做、已批准任务图）
+- 想清楚: `think`（计划、价值判断、范围分类、追问、术语、路线、切片、一次性实验、代码边界、显式校准后就做、已批准任务图）
 - 找问题: `hunt`（根因，以及指标已经定时的单假设改进）
 - 做检查: `check`（审查、队列、可复用验证指南）
 - 界面: `ui`
@@ -27,7 +27,7 @@ fskill is gofenix's skill set. The working shape comes from tw93/Waza. Twelve sk
 - `skills/*/agents/` - specialist reviewer or inspector prompts.
 - `skills/*/references/` - supporting references loaded only when needed.
 - `skills/*/scripts/` - deterministic helper scripts.
-- `rules/` - shared writing and behavior rules used by install and validation flows. `rules/durable-context.md` is the shared Durable Context Preflight preamble; codegen copies it into each referencing skill as `skills/<name>/references/durable-context.md` (direct installs get only the skill directory), and the six skills with optional memory context link to that skill-local copy. `rules/typescript-style.md` is the TypeScript style guide; codegen copies it the same way into each skill whose `SKILL.md` links `references/typescript-style.md`. Apply it when the project is already TypeScript. Project lint and the current file's existing style stay ahead of it. Bun, Effect, and Drizzle rules apply only when that project already uses them.
+- `rules/` - shared writing and behavior rules used by install and validation flows. `rules/durable-context.md` is the shared Durable Context Preflight preamble; codegen copies it into each referencing skill as `skills/<name>/references/durable-context.md` (direct installs get only the skill directory), and the six skills whose preflight forbids raw transcript reads (`think`, `check`, `hunt`, `ui`, `write`, `health`) link to that skill-local copy, while `handoff` and `retro` carry conditional history-recovery rules in their own `## 长期上下文预检`. `rules/typescript-style.md` is the TypeScript style guide; codegen copies it the same way into each skill whose `SKILL.md` links `references/typescript-style.md`. Apply it when the project is already TypeScript. Project lint and the current file's existing style stay ahead of it. Bun, Effect, and Drizzle rules apply only when that project already uses them.
 - `.claude-plugin/marketplace.json` - **generated**. Edit `VERSION` or per-skill `SKILL.md` frontmatter and run `make regenerate`; never hand-edit.
 - `.agents/plugins/marketplace.json` - **generated** Codex repo marketplace. Points Codex at the repository root; never hand-edit.
 - `.codex-plugin/plugin.json` - **generated** Codex plugin manifest. `skills` is `./skills/`. Do not add a `plugins/fskill` copy of the skill tree.

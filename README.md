@@ -26,13 +26,13 @@ Each engineering habit gets an installed skill, a folder with reference docs, he
 | [`/check`](skills/check/SKILL.md) | Review | Diff and release review, the issue queue, and the reusable verification guide. |
 | [`/ui`](skills/ui/SKILL.md) | Interface | Build or polish a deliverable page, component, or screenshot. |
 | [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Read and write | One URL or PDF, multi-source research, prose. |
-| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) | Keep | Session handoff, verified lessons, agent config and human setup. |
+| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) | Keep | Session handoff, verified lessons, agent config, maintainability, pruning, and human setup. |
 
 Not sure where to start? Try `/f-help Which skill fits my task?` (Codex: `$f-help`; plugin: `/fskill:f-help`).
 
 Enter `/f-mode` (Codex: `$f-mode`; plugin: `/fskill:f-mode`) once, then describe your tasks normally. It routes within this session until `/f-mode off`; `/f-mode status` reports state. Direct commands such as `/hunt` take priority without closing f-mode. New sessions start off. Mode selects workflows, not action permissions.
 
-`think`, `hunt`, and `check` may also start when the task itself is theirs, without naming them; the other nine start only on an explicit call (`/think`, `$think`). `/f-mode` is the only router that switches among all of them, and only after you enter it. Saying a related word does not enter f-mode. Refined from [tw93/Waza](https://github.com/tw93/Waza).
+`think`, `hunt`, and `check` may also start when the task itself is theirs, without naming them; the other nine start only on an explicit call (`/ui`, `$ui`). `/f-mode` is the only router that switches among all of them, and only after you enter it. Saying a related word does not enter f-mode. Refined from [tw93/Waza](https://github.com/tw93/Waza).
 
 ## Install
 
@@ -126,7 +126,7 @@ Optional rules apply beyond skill invocations when installed into your agent's p
   # Anti-patterns: always-on cross-skill guardrails (read before acting, no scope creep, no unsolicited summaries)
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # Routing hint: explicit commands by default, goal-based routing inside /f-mode
+  # Routing hint: think/hunt/check may auto-enter on matching tasks; explicit commands for the rest, goal-based routing inside /f-mode
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # Clear everyday replies: consistent terms, explicit conditions, preserved uncertainty

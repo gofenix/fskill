@@ -17,7 +17,7 @@
     },
     {
       "name": "fskill-catchup",
-      "description": "只读核对本会话的变化、当前进展与待用户事项，给出简短汇报。在显式调用 /catchup、$catchup 或已开启的 f-mode 选中时使用。不用于交接文档、重新启动工作或执行待决操作。",
+      "description": "只读核对本会话的变化、当前进展与待用户事项，给出简短汇报。在显式调用 /catchup、$catchup、fskill 限定调用或已开启的 f-mode 选中时使用。不用于交接文档、重新启动工作或执行待决操作。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/catchup",
@@ -53,7 +53,7 @@
     },
     {
       "name": "fskill-f-mode",
-      "description": "显式进入 f-mode 后，按请求选择已安装技能，按需应用工程原则并在授权范围内执行；支持退出和单条直调。仅在显式调用 /f-mode、$f-mode 或用户明确要求进入 f-mode 时使用。不用于普通话题的自动接管，也不改变宿主权限。",
+      "description": "显式进入 f-mode 后，按请求选择已安装技能，按需应用工程原则并在授权范围内执行；支持退出和单条直调。仅在显式调用 /f-mode、$f-mode、fskill 限定调用或用户明确要求进入 f-mode 时使用。不用于普通话题的自动接管，也不改变宿主权限。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/f-mode",
@@ -77,7 +77,7 @@
     },
     {
       "name": "fskill-health",
-      "description": "审计 Agent 配置、指令、hooks/MCP 和验证入口，并把必须由人完成的配置或迁移做成向导。在显式调用或已开启的 f-mode 选中时使用：/health、$health 或 fskill 限定调用。不用于用户代码调试或 PR 审查。",
+      "description": "审计 Agent 配置、指令、hooks/MCP、验证入口与项目 AI 可维护性，精简规则与技能，并把必须由人完成的配置或迁移做成向导。在显式调用或已开启的 f-mode 选中时使用：/health、$health 或 fskill 限定调用。不用于用户代码调试或 PR 审查。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/health",
@@ -125,7 +125,7 @@
     },
     {
       "name": "fskill-think",
-      "description": "想清楚再动手：计划、价值判断、需求范围分类、高压追问、术语、跨会话路线、切片、一次性实验、代码边界，以及已给定任务的校准和已批准任务图。显式调用用 /think、$think 或 fskill 限定调用；任务本身要定方案、做价值判断、定范围、高压追问、理清术语或路线、拆切片、做一次性实验、看代码边界，或校准已给定任务、推进已批准任务图时也可直接选用，无需用户点名。不用于界面交付、根因调试、审查或润色。",
+      "description": "想清楚再动手：计划、价值判断、需求范围分类、高压追问、术语、跨会话路线、切片、一次性实验、代码边界，以及已给定任务的校准和已批准任务图。显式调用用 /think、$think 或 fskill 限定调用；任务本身要定方案、做价值判断、定范围、高压追问、理清术语或路线、拆切片、做一次性实验、看代码边界，或推进已批准任务图时也可直接选用，无需用户点名（已给定任务的校准仅显式调用或由 f-mode 选中）。不用于界面交付、根因调试、审查或润色。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/think",

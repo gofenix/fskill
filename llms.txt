@@ -20,7 +20,7 @@ Route:
 
 Decide and do:
 
-- `think`: plan, settle a term, keep a cross-session route, slice finished work, try one throwaway experiment, judge a code boundary, calibrate an already given task and do it, or coordinate an approved task graph. Ordinary edits stay with the current agent.
+- `think`: plan, make value judgments, triage request scope, run grill-me questioning, settle a term, keep a cross-session route, slice a settled spec, try one throwaway experiment, judge a code boundary, calibrate an already given task (on explicit call or f-mode), or coordinate an approved task graph. Ordinary edits stay with the current agent.
 
 Find the problem:
 

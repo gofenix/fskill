@@ -26,7 +26,7 @@
 | [`/check`](skills/check/SKILL.md) | 做检查 | 审查、问题队列、可复用的验证说明。 |
 | [`/ui`](skills/ui/SKILL.md) | 界面 | 做可交付的页面、组件，或按截图打磨。 |
 | [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 读和写 | 一个链接或 PDF、多来源研究、把文字改顺。 |
-| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) | 下次还能用 | 会话交接、已经验证的教训、Agent 配置和人工安装。 |
+| [`/handoff`](skills/handoff/SKILL.md) [`/retro`](skills/retro/SKILL.md) [`/health`](skills/health/SKILL.md) | 下次还能用 | 会话交接、已经验证的教训、Agent 配置、AI 可维护性、规则瘦身和人工安装。 |
 
 不知道从哪开始？试试 `/f-help 我这个任务该用哪个技能？`（Codex 用 `$f-help`，插件用 `/fskill:f-help`）。
 
@@ -61,7 +61,7 @@ codex plugin add fskill@fskill
 
 ## 技能串联
 
-顺序由你决定。每个技能做完自己的结果就停下。下一步用 `/name` 或 `$name` 自己调用。
+在 f-mode 之外，顺序由你决定。每个技能做完自己的结果就停下。下一步用 `/name` 或 `$name` 自己调用。
 
 **常见工作流：**
 

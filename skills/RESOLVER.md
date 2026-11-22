@@ -14,8 +14,8 @@
 
 | 触发 | 技能 |
 |------|------|
-| 把想法收成能执行的计划，包含追问和值不值得做 | `skills/think/SKILL.md` |
-| 任务已经给定，校准方法、目标与约束后直接按授权工作 | `skills/think/SKILL.md` |
+| 把想法收成能执行的计划，包含追问、价值判断和一次多请求的边界/范围分类 | `skills/think/SKILL.md` |
+| 任务已经给定，显式校准方法、目标与约束后直接按授权工作（仅显式调用或 f-mode 选中） | `skills/think/SKILL.md` |
 | 一个词或一种行为的边界说不清，而且挡着当前决定 | `skills/think/SKILL.md` |
 | 目标会跨多次会话，路线还没清 | `skills/think/SKILL.md` |
 | 规格已经定了，拆成能单独演示的纵切 | `skills/think/SKILL.md` |
@@ -58,7 +58,7 @@
 |------|------|
 | 交出或接回当前会话现场 | `skills/handoff/SKILL.md` |
 | 把已经验证、还会再犯的教训写回去 | `skills/retro/SKILL.md` |
-| 查 agent 配置、指令漂移、hooks | `skills/health/SKILL.md` |
+| 查 agent 配置、指令漂移、hooks、项目 AI 可维护性，或精简规则与技能 | `skills/health/SKILL.md` |
 | 必须人亲手做的配置或迁移 | `skills/health/SKILL.md` |
 
 ## 边界
@@ -67,5 +67,5 @@
 - 上下文装不下走 `skills/handoff/SKILL.md`。路线还没清仍走 `skills/think/SKILL.md`。
 - 已确认的术语和 ADR 走 `skills/retro/SKILL.md`。还在厘清概念走 `skills/think/SKILL.md`。
 - 已经坏了，或指标已经定了，走 `skills/hunt/SKILL.md`。没有故障、要看 diff 能不能交，走 `skills/check/SKILL.md`。
-- 方案、术语、路线、切片、一次性实验、代码边界、校准后就做、已批准任务图都走 `skills/think/SKILL.md`。可交付界面走 `skills/ui/SKILL.md`。普通代码修改由当前 Agent 直接做。
-- 项目代码体检、队列和可复用验证指南走 `skills/check/SKILL.md`。Agent 配置和必须由人完成的迁移走 `skills/health/SKILL.md`。
+- 方案、价值判断、需求范围分类、追问、术语、路线、切片、一次性实验、代码边界、显式校准后就做、已批准任务图都走 `skills/think/SKILL.md`。可交付界面走 `skills/ui/SKILL.md`。普通代码修改由当前 Agent 直接做。
+- 代码/发布审查、项目代码审计、队列和可复用验证指南走 `skills/check/SKILL.md`。Agent 配置、AI 可维护性、规则瘦身和必须由人完成的迁移走 `skills/health/SKILL.md`。
