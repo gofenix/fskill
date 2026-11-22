@@ -14,11 +14,11 @@
 
 ## 스킬 목록
 
-fskill은 **9개의 슬림 워크플로우 + 8개의 `pstack` 스타일 엔지니어링 원칙(`p-*`) + 결정론적 스크립트**로 구성됩니다. 개별 스킬은 `/name` 또는 `$name`으로 호출하며 `think`, `hunt`, `check` 및 8개 `p-*` 원칙은 작업이 맞으면 자동으로 동작하고, 나머지 6개는 명시적 호출 또는 `/f-mode`에서만 실행됩니다. [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills), [pstack](https://github.com/cursor/plugins/tree/main/pstack)을 바탕으로 재구성했습니다.
+fskill은 **9개의 슬림 워크플로우 + 8개의 `pstack` 스타일 엔지니어링 원칙 + 결정론적 스크립트**로 구성됩니다. 개별 스킬은 `/name` 또는 `$name`으로 호출하며 `think`, `hunt`, `check`는 작업이 맞으면 자동으로 동작하고, 나머지 6개는 명시적 호출 또는 `/f-mode`에서만 실행됩니다. [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills), [pstack](https://github.com/cursor/plugins/tree/main/pstack)을 바탕으로 재구성했습니다.
 
 | 스킬 | 묶음 | 역할 |
 | :--- | :--- | :--- |
-| [`/f-mode`](skills/f-mode/SKILL.md) | 경로 | 명시적으로 진입한 뒤 목표에 맞는 워크플로우와 `p-*` 원칙을 선택합니다. |
+| [`/f-mode`](skills/f-mode/SKILL.md) | 경로 | 명시적으로 진입한 뒤 목표에 맞는 워크플로우와 공유 엔지니어링 원칙을 참고·선택합니다. |
 | [`/think`](skills/think/SKILL.md) | 방향 정하기 | 구현 전 설계, 가치 판단, 범위 분류, `grill me` 압박 질문. |
 | [`/hunt`](skills/hunt/SKILL.md) | 문제 찾기 | 런타임 증거 기반 근본 원인 분석 및 단일 가설 지표 개선. |
 | [`/check`](skills/check/SKILL.md) | 확인 | diff/PR 검토, 릴리스 가치 판단, 프로젝트 감사, 사고 대장 검증. |
@@ -26,7 +26,7 @@ fskill은 **9개의 슬림 워크플로우 + 8개의 `pstack` 스타일 엔지�
 | [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 읽고 쓰기 | URL/PDF 수집과 1차 자료 조사, AI 투 제거 및 릴리스 노트 작성(명시적 호출). |
 | [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | 다음에 쓰기 | 세션 인수인계, 에이전트 설정·hooks·MCP·토큰 도구 점검 및 규칙 슬림화(명시적 호출). |
 
-**8가지 `pstack` 스타일 원칙(`p-*`, 자동 트리거):** [`p-subtract-before-add`](skills/p-subtract-before-add/SKILL.md) · [`p-attack-the-premise`](skills/p-attack-the-premise/SKILL.md) · [`p-fix-root-causes`](skills/p-fix-root-causes/SKILL.md) · [`p-prove-it-works`](skills/p-prove-it-works/SKILL.md) · [`p-test-behavior`](skills/p-test-behavior/SKILL.md) · [`p-explain-the-number`](skills/p-explain-the-number/SKILL.md) · [`p-encode-in-structure`](skills/p-encode-in-structure/SKILL.md) · [`p-respect-boundaries`](skills/p-respect-boundaries/SKILL.md)
+**8가지 엔지니어링 원칙 ([`rules/principles.md`](rules/principles.md), [`f-mode`](skills/f-mode/references/principles.md) 내장):** 추가 전 삭제 · 전제 검증 · 근본 원인 증명 · 실제 동작 검증 · 행위 테스트 · 수치 근거 제시 · 구조로 재발 방지 · 경계와 단방향 문 준수
 
 `/f-mode`(Codex: `$f-mode`, 플러그인: `/fskill:f-mode`)로 시작한 뒤 평소처럼 요청하세요. 현재 대화에서 `/f-mode off`까지 자동 선택합니다. `/f-mode status`로 상태를 확인합니다. 직접 명령을 우선하며 f-mode는 유지됩니다. 새 대화에서는 꺼져 있습니다. 작업 권한은 바뀌지 않습니다. 전체 라우팅은 [skills/RESOLVER.md](skills/RESOLVER.md)를 참고하세요.
 
@@ -38,7 +38,7 @@ fskill은 **9개의 슬림 워크플로우 + 8개의 `pstack` 스타일 엔지�
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-스킬은 공유 디렉터리인 `~/.agents/skills`에 저장됩니다. Claude Code는 심볼릭 링크로 연결되며, Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI 등 해당 디렉터리를 읽는 에이전트는 9개 워크플로우와 8개 원칙을 읽습니다. 독립 디렉터리를 사용하는 에이전트는 `-a` 뒤에 ID(예: `antigravity-cli`, `qwen-code`)를 지정하세요. 업데이트는 `npx skills update -g -y`로 실행합니다. AI 에이전트에게 직접 설치를 요청할 수도 있습니다:
+스킬은 공유 디렉터리인 `~/.agents/skills`에 저장됩니다. Claude Code는 심볼릭 링크로 연결되며, Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI 등 해당 디렉터리를 읽는 에이전트는 9개 워크플로우를 읽습니다. 독립 디렉터리를 사용하는 에이전트는 `-a` 뒤에 ID(예: `antigravity-cli`, `qwen-code`)를 지정하세요. 업데이트는 `npx skills update -g -y`로 실행합니다. AI 에이전트에게 직접 설치를 요청할 수도 있습니다:
 > 다음 문서를 읽고 fskill를 설치해 줘: https://github.com/gofenix/fskill/blob/main/llms.txt
 
 **호스트 플러그인 방식** (네임스페이스 포함: `/fskill:check`):
@@ -125,6 +125,10 @@ Codex는 남은 한도를, 위의 Claude Code 상태 표시줄은 사용한 비�
   # 라우팅 힌트: think/hunt/check 는 맞는 작업이면 자동, 나머지는 명시적 호출로 시작한다는 규칙
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
+  # 엔지니어링 원칙: 스킬 폴더를 늘리지 않고 적용하는 8가지 불변 원칙
+  # Principles는 main 브랜치에서 사용할 수 있으며 아직 정식 릴리스에는 포함되지 않았습니다
+  FSKILL_REF=main bash "$FSKILL_RULE_SCRIPT" principles claude-code
+
   # 명확한 일상 답변: 일관된 용어, 명시적인 조건, 불확실성 유지
   # Clarity는 main 브랜치에서 사용할 수 있으며 아직 정식 릴리스에는 포함되지 않았습니다
   FSKILL_REF=main bash "$FSKILL_RULE_SCRIPT" clarity claude-code
@@ -139,9 +143,9 @@ Codex는 남은 한도를, 위의 Claude Code 상태 표시줄은 사용한 비�
 
 ## fskill를 만든 이유
 
-fskill은 gofenix 자신의 스킬 모음입니다. [tw93/Waza](https://github.com/tw93/Waza)의 결정론적 스크립트와 [pstack](https://github.com/cursor/plugins/tree/main/pstack)의 원칙 중심 설계를 결합해 **9개의 경량 워크플로우**(`f-mode`, `think`, `hunt`, `check`, `ui`, `learn`, `write`, `handoff`, `health`)와 **8개의 짧은 원칙 스킬**(`p-*`)로 정리했습니다.
+fskill은 gofenix 자신의 스킬 모음입니다. [tw93/Waza](https://github.com/tw93/Waza)의 결정론적 스크립트와 [pstack](https://github.com/cursor/plugins/tree/main/pstack)의 원칙 중심 설계를 결합해 **9개의 경량 워크플로우**(`f-mode`, `think`, `hunt`, `check`, `ui`, `learn`, `write`, `handoff`, `health`)와 [`rules/principles.md`](rules/principles.md)의 8가지 원칙으로 정리했습니다.
 
-각 스킬은 `/name` 또는 `$name`으로 호출합니다. `think`, `hunt`, `check` 및 `p-*` 원칙은 작업에 맞으면 자동으로 시작되고, 나머지 6개는 명시적 호출 또는 `/f-mode`로 동작합니다.
+각 스킬은 `/name` 또는 `$name`으로 호출합니다. `think`, `hunt`, `check`는 작업에 맞으면 자동으로 시작되고, 나머지 6개는 명시적 호출 또는 `/f-mode`로 동작합니다.
 
 ## 삭제 방법
 
@@ -151,6 +155,7 @@ rm -f ~/.claude/statusline.sh
 rm -f ~/.claude/rules/english.md
 rm -f ~/.claude/rules/anti-patterns.md
 rm -f ~/.claude/rules/fskill-routing.md
+rm -f ~/.claude/rules/principles.md
 rm -f ~/.claude/rules/clarity.md
 ```
 

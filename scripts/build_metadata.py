@@ -22,6 +22,10 @@ Generated files:
                                         direct-install copies of the TypeScript
                                         style rule (only skills whose SKILL.md
                                         links it)
+  - skills/*/references/principles.md
+                                        direct-install copies of the shared
+                                        engineering principles (only skills
+                                        whose SKILL.md links it)
   - skills/*/agents/openai.yaml        Codex invocation policy derived from each
                                         skill's disable-model-invocation field
   - scripts/setup-rule.sh              default FSKILL_REF pinned to VERSION
@@ -58,9 +62,9 @@ CLAUDE_MARKETPLACE_TOP = {
     "name": "fskill",
     "description": (
         "Personal skill collection for Claude Code, Codex, Antigravity, "
-        "OpenCode, and Pi: 9 lean workflow skills plus 8 pstack-style engineering principles "
-        "(p-*), with explicit /f-mode routing. think, hunt, check, and principle skills "
-        "also trigger on matching tasks; direct commands remain available."
+        "OpenCode, and Pi: 9 lean workflow skills with explicit /f-mode routing "
+        "and concise engineering principles. think, hunt, and check also trigger "
+        "on matching tasks; the remaining six stay explicit-only."
     ),
     "owner": {
         "name": "gofenix",
@@ -69,10 +73,10 @@ CLAUDE_MARKETPLACE_TOP = {
 }
 
 BUNDLE_DESCRIPTION = (
-    "Installs the full fskill toolkit: 9 lean workflow skills plus 8 engineering "
-    "principle skills under the fskill namespace (/fskill:think, /fskill:check, "
-    "/fskill:ui, etc.). For one skill on Claude Code v2.1.143 or newer, use "
-    "/plugin install fskill-<name>@fskill."
+    "Installs the full fskill toolkit: 9 lean workflow skills plus shared "
+    "engineering principles under the fskill namespace (/fskill:think, "
+    "/fskill:check, /fskill:ui, etc.). For one skill on Claude Code v2.1.143 "
+    "or newer, use /plugin install fskill-<name>@fskill."
 )
 
 CATEGORY = "development"
@@ -87,7 +91,7 @@ AUTHOR = {
 }
 
 CODEX_DESCRIPTION = (
-    "Lean engineering workflow skills and 8 pstack-style principle skills for Codex, "
+    "Lean engineering workflow skills and concise engineering principles for Codex, "
     "with explicit /f-mode session routing. Direct commands remain available."
 )
 # Shared durable-context preamble: source of truth in rules/, copied into each
@@ -98,6 +102,8 @@ DELEGATION_BUDGET_RULE = Path("rules/delegation-budget.md")
 DELEGATION_BUDGET_COPY = Path("references/delegation-budget.md")
 TYPESCRIPT_STYLE_RULE = Path("rules/typescript-style.md")
 TYPESCRIPT_STYLE_COPY = Path("references/typescript-style.md")
+PRINCIPLES_RULE = Path("rules/principles.md")
+PRINCIPLES_COPY = Path("references/principles.md")
 
 
 def read_version(root: Path) -> str:
@@ -185,10 +191,9 @@ def build_codex_plugin(version: str) -> dict:
             "displayName": "fskill",
             "shortDescription": "Engineering workflow skills for Codex",
             "longDescription": (
-                "fskill packages 8 lean engineering workflow skills (planning, debugging, "
-                "review, UI, research, writing, handoff, and health), explicit /f-mode routing, "
-                "and 8 pstack-style engineering principle skills (p-*). think, hunt, check, and "
-                "principle skills also trigger when the task fits; the remaining six require an explicit call."
+                "fskill packages 9 lean engineering workflow skills (session routing, planning, debugging, "
+                "review, UI, research, writing, handoff, and health) and shared engineering principles. "
+                "think, hunt, and check also trigger when the task fits; the remaining six require an explicit call."
             ),
             "developerName": "gofenix",
             "category": CODEX_CATEGORY,
@@ -370,40 +375,31 @@ def collect_skill_shared_assets(root: Path) -> dict[str, bytes]:
     """Per-skill copies of shared assets that direct installs need locally.
 
     `npx skills add` copies only each skill directory, so every skill whose
-    SKILL.md links a shared durable-context, delegation-budget, or
-    typescript-style rule carries a references/ copy of it.
+    SKILL.md links a shared durable-context, delegation-budget,
+    typescript-style, or principles rule carries a references/ copy of it.
     """
     generated: dict[str, bytes] = {}
-    durable_source = root / DURABLE_CONTEXT_RULE
-    durable_bytes = durable_source.read_bytes() if durable_source.exists() else None
-    budget_source = root / DELEGATION_BUDGET_RULE
-    budget_bytes = budget_source.read_bytes() if budget_source.exists() else None
-    style_source = root / TYPESCRIPT_STYLE_RULE
-    style_bytes = style_source.read_bytes() if style_source.exists() else None
+    shared_rules = (
+        (DURABLE_CONTEXT_RULE, DURABLE_CONTEXT_COPY),
+        (DELEGATION_BUDGET_RULE, DELEGATION_BUDGET_COPY),
+        (TYPESCRIPT_STYLE_RULE, TYPESCRIPT_STYLE_COPY),
+        (PRINCIPLES_RULE, PRINCIPLES_COPY),
+    )
+    loaded_rules = {
+        copy_rel: (rule_rel, (root / rule_rel).read_bytes() if (root / rule_rel).exists() else None)
+        for rule_rel, copy_rel in shared_rules
+    }
     for skill_file in sorted((root / "skills").glob("*/SKILL.md")):
         skill_dir = skill_file.parent.relative_to(root)
         skill_text = skill_file.read_text()
-        if DURABLE_CONTEXT_COPY.as_posix() in skill_text:
-            if durable_bytes is None:
-                raise SystemExit(
-                    f"ERROR: {skill_file} links {DURABLE_CONTEXT_COPY} but "
-                    f"{DURABLE_CONTEXT_RULE} does not exist"
-                )
-            generated[(skill_dir / DURABLE_CONTEXT_COPY).as_posix()] = durable_bytes
-        if DELEGATION_BUDGET_COPY.as_posix() in skill_text:
-            if budget_bytes is None:
-                raise SystemExit(
-                    f"ERROR: {skill_file} links {DELEGATION_BUDGET_COPY} but "
-                    f"{DELEGATION_BUDGET_RULE} does not exist"
-                )
-            generated[(skill_dir / DELEGATION_BUDGET_COPY).as_posix()] = budget_bytes
-        if TYPESCRIPT_STYLE_COPY.as_posix() in skill_text:
-            if style_bytes is None:
-                raise SystemExit(
-                    f"ERROR: {skill_file} links {TYPESCRIPT_STYLE_COPY} but "
-                    f"{TYPESCRIPT_STYLE_RULE} does not exist"
-                )
-            generated[(skill_dir / TYPESCRIPT_STYLE_COPY).as_posix()] = style_bytes
+        for copy_rel, (rule_rel, rule_bytes) in loaded_rules.items():
+            if copy_rel.as_posix() in skill_text:
+                if rule_bytes is None:
+                    raise SystemExit(
+                        f"ERROR: {skill_file} links {copy_rel} but "
+                        f"{rule_rel} does not exist"
+                    )
+                generated[(skill_dir / copy_rel).as_posix()] = rule_bytes
     for name in ("f-mode", "f-help"):
         entrypoint = root / f"skills/{name}/SKILL.md"
         if entrypoint.exists() and "references/routing.md" in entrypoint.read_text():
@@ -434,11 +430,7 @@ def render_openai_yaml(fields: dict) -> str:
     name = fields["name"]
     summary = fields["description"].split("。", 1)[0].strip()
     allow = "false" if fields.get("disable-model-invocation") else "true"
-    default_prompt = (
-        f"应用 ${name} 工程原则。"
-        if name.startswith("p-")
-        else f"使用 ${name} 完成 fskill 工作流。"
-    )
+    default_prompt = f"使用 ${name} 完成 fskill 工作流。"
     return (
         "interface:\n"
         f"  display_name: {json.dumps(f'fskill {name}', ensure_ascii=False)}\n"
@@ -458,6 +450,8 @@ def shared_asset_source(rel: str) -> str:
         return DELEGATION_BUDGET_RULE.as_posix()
     if rel.endswith("/references/typescript-style.md"):
         return TYPESCRIPT_STYLE_RULE.as_posix()
+    if rel.endswith("/references/principles.md"):
+        return PRINCIPLES_RULE.as_posix()
     return DURABLE_CONTEXT_RULE.as_posix()
 
 

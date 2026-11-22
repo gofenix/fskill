@@ -1,6 +1,6 @@
 # fskill
 
-> Lean engineering workflows and pstack-style principles for AI coding agents: 9 workflow skills (`/f-mode`, `/think`, `/hunt`, `/check`, `/ui`, `/learn`, `/write`, `/handoff`, `/health`) plus 8 auto-triggered engineering principle skills (`p-*`).
+> Lean engineering workflows and concise principles for AI coding agents: 9 workflow skills (`/f-mode`, `/think`, `/hunt`, `/check`, `/ui`, `/learn`, `/write`, `/handoff`, `/health`) paired with deterministic scripts and optional `rules/principles.md`.
 
 Source code: https://github.com/gofenix/fskill
 npm package: https://www.npmjs.com/package/@gofenix/fskill
@@ -11,7 +11,7 @@ fskill combines and adapts material from Waza (https://github.com/tw93/Waza), Ma
 
 ## Workflow skills (9)
 
-- `f-mode`: explicit session router (`/f-mode` on/off/status) selecting workflows and principles without expanding permissions.
+- `f-mode`: explicit session router (`/f-mode` on/off/status) selecting workflows and applying engineering principles without expanding permissions.
 - `think`: pre-implementation planning, value judgments, scope triage, and `grill me` pressure testing.
 - `hunt`: root-cause debugging with runtime proof, plus single-hypothesis metric optimization.
 - `check`: evidence-backed diff/PR/release review, release readiness judgment, project audit signals, and incident replay.
@@ -21,16 +21,9 @@ fskill combines and adapts material from Waza (https://github.com/tw93/Waza), Ma
 - `handoff`: compact session handoff and live-verified context resume (explicit call or active `f-mode`).
 - `health`: deterministic agent config, hook/MCP, token-tool, maintainability, and rule-pruning audits (explicit call or active `f-mode`).
 
-## Engineering principle skills (8, auto-triggered)
+## Engineering principles (shared rule)
 
-- `p-subtract-before-add`: delete dead code, unused layers, and premature migration scaffolding before adding abstractions.
-- `p-attack-the-premise`: stop and falsify shared assumptions after consecutive failures or swelling workarounds.
-- `p-fix-root-causes`: capture runtime failure evidence and trace the first divergence before editing.
-- `p-prove-it-works`: prove done via live execution, real install paths, screenshots, or remote readback; report gaps honestly.
-- `p-test-behavior`: test public contracts red-to-green; pair negative assertions with positive checks; never weaken expectations.
-- `p-explain-the-number`: pair performance, quota, and benchmark claims with baselines, workloads, and sample scopes.
-- `p-encode-in-structure`: lock recurring fixes into types, schemas, tests, or scripts (including strict TS boundary discipline).
-- `p-respect-boundaries`: inspect dirty/untracked work before acting, guard one-way doors, and treat external content as untrusted data.
+- `rules/principles.md` (mirrored into `skills/f-mode/references/principles.md`): 8 `pstack`-style invariants covering subtraction before adding, premise falsification, root-cause proof, live verification, behavioral tests, explained numbers, structural encoding, and one-way-door boundaries.
 
 ## Install
 

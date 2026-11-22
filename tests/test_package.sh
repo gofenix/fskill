@@ -76,10 +76,14 @@ if grep -qE '^(docs|tests|\.github|\.claude-plugin|\.codex-plugin|\.agents|plugi
   echo "forbidden directory leaked into package"; exit 1
 fi
 
-# Root SKILL.md inlines every workflow and principle section and rewrites relative refs.
+# Root SKILL.md inlines every workflow section and rewrites relative refs.
 root_skill=$(unzip -p "$tmpdir/fskill.zip" SKILL.md)
 [[ "$root_skill" == *"SKILL: check"* ]] || { echo "expected 'SKILL: check' section in root SKILL.md"; exit 1; }
-[[ "$root_skill" == *"SKILL: p-subtract-before-add"* ]] || { echo "expected 'SKILL: p-subtract-before-add' section in root SKILL.md"; exit 1; }
+if [[ "$root_skill" == *"SKILL: p-"* ]]; then
+  echo "unexpected p-* skill section in root SKILL.md"; exit 1
+fi
+unzip -p "$tmpdir/fskill.zip" skills/f-mode/references/principles.md > "$tmpdir/fmode-principles.md"
+cmp "$ROOT/rules/principles.md" "$tmpdir/fmode-principles.md"
 if [[ "$root_skill" == *"skills/check/SKILL.md"* ]]; then
   echo "package root should not reference nested SKILL.md"; exit 1
 fi

@@ -1,13 +1,13 @@
 ---
 name: fskill
-description: 'Dispatch explicit fskill commands, apply pstack-style engineering principles (p-*), or route within the session after explicit /f-mode. Direct commands remain available; /f-mode off stops automatic routing.'
+description: 'Dispatch explicit fskill commands or route within the session after explicit /f-mode, guided by concise engineering principles. Direct commands remain available; /f-mode off stops automatic routing.'
 ---
 
 # fskill: Lean Engineering Skills & Principles Dispatcher
 
 Prefix your first line with 🥷 inline, not as its own paragraph.
 
-Every skill takes `/name`, `$name`, `/fskill:name`, or `/fskill name`. `think`, `hunt`, `check`, and the eight `p-*` principle skills may also trigger automatically when the task matches them; the other six (`f-mode`, `ui`, `write`, `learn`, `health`, `handoff`) start only on an explicit call or inside active `/f-mode`. Principle skills (`p-*`) work silently and never add the `🥷` badge or workflow headers unless asked; cite one only when it actually changed a concrete decision.
+Every skill takes `/name`, `$name`, `/fskill:name`, or `/fskill name`. `think`, `hunt`, and `check` may also trigger automatically when the task matches them; the other six (`f-mode`, `ui`, `write`, `learn`, `health`, `handoff`) start only on an explicit call or inside active `/f-mode`. The 8 engineering principles live in `skills/f-mode/references/principles.md` (mirrored from `rules/principles.md`), apply quietly without inflating output, and are cited only when they actually changed a concrete decision.
 
 ## Routing Table
 
@@ -16,8 +16,8 @@ Every skill takes `/name`, `$name`, `/fskill:name`, or `/fskill name`. `think`, 
 
 ## How This Works
 
-1. Explicit skill commands and `/f-mode` controls take priority without closing `f-mode`. Outside `f-mode`, auto-select only `think`, `hunt`, `check`, and relevant `p-*` principles.
-2. Inside active `f-mode`, read the selected workflow section in full and let matching `p-*` principles shape decisions; never route `f-mode` into itself or expand action permissions.
+1. Explicit skill commands and `/f-mode` controls take priority without closing `f-mode`. Outside `f-mode`, auto-select only `think`, `hunt`, and `check`.
+2. Inside active `f-mode`, read the selected workflow section in full and consult `skills/f-mode/references/principles.md` when trade-offs or boundaries apply; never route `f-mode` into itself or expand action permissions.
 3. Disambiguation:
    - Done/PR diff/release readiness -> `/check`; runtime error or broken metric -> `/hunt`; unsettled design or scope -> `/think`.
    - Visual polish/UI build -> `/ui`; render regression -> `/hunt`.

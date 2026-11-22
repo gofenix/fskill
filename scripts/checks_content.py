@@ -46,10 +46,6 @@ CJK_RE = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]")
 
 DURABLE_CONTEXT_SKILLS = {"think", "check", "hunt", "ui", "write", "health"}
 
-
-def is_principle_skill(name: str) -> bool:
-    return name.startswith("p-")
-
 NINJA_PREFIXES = (
     "Prefix your first line with 🥷 inline, not as its own paragraph.",
     "首行内联带上 🥷，不要单独起段。",
@@ -120,9 +116,7 @@ def check_skill_files(root: Path):
         fields = parse_frontmatter(path)
         if fields["name"] != skill_dir:
             fail(f"NAME MISMATCH: {path} frontmatter name={fields['name']} dir={skill_dir}")
-        if not is_principle_skill(skill_dir) and not any(
-            prefix in path.read_text() for prefix in NINJA_PREFIXES
-        ):
+        if not any(prefix in path.read_text() for prefix in NINJA_PREFIXES):
             fail(
                 f"MISSING NINJA PREFIX INSTRUCTION: {path}\n"
                 f"  Every workflow SKILL.md must carry one of:\n"
@@ -191,8 +185,6 @@ def check_description_conformance(skill_descriptions: dict[str, str]):
 def check_outcome_contract(skill_files: list[Path]):
     """Keep workflow skill entrypoints outcome-first instead of process-heavy."""
     for path in skill_files:
-        if is_principle_skill(path.parent.name):
-            continue
         text = path.read_text()
         if "## Outcome Contract" in text:
             section = text.split("## Outcome Contract", 1)[1]
@@ -340,6 +332,14 @@ RETIRED_SKILL_NAMES = (
     "catchup",
     "f-help",
     "retro",
+    "p-subtract-before-add",
+    "p-attack-the-premise",
+    "p-fix-root-causes",
+    "p-prove-it-works",
+    "p-test-behavior",
+    "p-explain-the-number",
+    "p-encode-in-structure",
+    "p-respect-boundaries",
 )
 
 

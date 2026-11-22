@@ -14,11 +14,11 @@
 
 ## 技能
 
-fskill 採用 **9 個精簡工作流 + 8 條 `pstack` 風格工程原則（`p-*`）+ 確定性腳本**。單條技能透過 `/name` 或 `$name` 進入；`think`、`hunt`、`check` 與 8 條 `p-*` 原則在任務本身符合時也會自動啟用，其餘 6 條僅在顯式呼叫或進入 `/f-mode` 後執行。以 [Waza](https://github.com/tw93/Waza) 為基礎，融合 [Matt Pocock skills](https://github.com/mattpocock/skills) 與 [pstack](https://github.com/cursor/plugins/tree/main/pstack) 的原則化設計；完整來源見下方授權說明。
+fskill 採用 **9 個精簡工作流 + 8 條 `pstack` 風格工程原則 + 確定性腳本**。單條技能透過 `/name` 或 `$name` 進入；`think`、`hunt`、`check` 在任務本身符合時也會自動啟用，其餘 6 條僅在顯式呼叫或進入 `/f-mode` 後執行。以 [Waza](https://github.com/tw93/Waza) 為基礎，融合 [Matt Pocock skills](https://github.com/mattpocock/skills) 與 [pstack](https://github.com/cursor/plugins/tree/main/pstack) 的原則化設計；完整來源見下方授權說明。
 
 | 技能 | 分組 | 它做什麼 |
 | :--- | :--- | :--- |
-| [`/f-mode`](skills/f-mode/SKILL.md) | 路由 | 顯式開啟，依目標在目前會話選用工作流並掛載 `p-*` 原則。 |
+| [`/f-mode`](skills/f-mode/SKILL.md) | 路由 | 顯式開啟，依目標在目前會話選用工作流並參考工程原則。 |
 | [`/think`](skills/think/SKILL.md) | 想清楚 | 動手前方案規劃、價值判斷（放棄/保留/轉向）、範圍分類與 `grill me` 壓測。 |
 | [`/hunt`](skills/hunt/SKILL.md) | 找問題 | 用執行期證據查實根因；指標已定時單假設對照驗證。 |
 | [`/check`](skills/check/SKILL.md) | 做檢查 | 審 diff/PR、發版價值判斷、發布產物門禁、專案審計與事故重放。 |
@@ -26,7 +26,7 @@ fskill 採用 **9 個精簡工作流 + 8 條 `pstack` 風格工程原則（`p-*`
 | [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 讀和寫 | 抓取 URL/PDF 與一手調研；去掉中英文與發布說明 AI 味（顯式呼叫）。 |
 | [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | 下次還能用 | 會話交接與現況核對；Agent 設定/hooks/MCP/省 token 工具體檢與規則瘦身（顯式呼叫）。 |
 
-**8 條 `pstack` 風格工程原則（`p-*`，自動觸發）：** [`p-subtract-before-add`](skills/p-subtract-before-add/SKILL.md) · [`p-attack-the-premise`](skills/p-attack-the-premise/SKILL.md) · [`p-fix-root-causes`](skills/p-fix-root-causes/SKILL.md) · [`p-prove-it-works`](skills/p-prove-it-works/SKILL.md) · [`p-test-behavior`](skills/p-test-behavior/SKILL.md) · [`p-explain-the-number`](skills/p-explain-the-number/SKILL.md) · [`p-encode-in-structure`](skills/p-encode-in-structure/SKILL.md) · [`p-respect-boundaries`](skills/p-respect-boundaries/SKILL.md)
+**8 條工程原則（[`rules/principles.md`](rules/principles.md)，同步內嵌於 [`f-mode`](skills/f-mode/references/principles.md)）：** 先減後增 · 質疑前提 · 先證根因 · 真實驗收 · 行為測試 · 解釋數字 · 結構防復發 · 邊界與單向門
 
 輸入 `/f-mode`（Codex 用 `$f-mode`，外掛用 `/fskill:f-mode`）進入，再直接描述任務；目前會話內持續自動選技能。`/f-mode off` 退出，`/f-mode status` 查看狀態。直接 `/hunt` 等命令優先，不關閉 f-mode。新會話預設關閉；選路不擴大操作授權。完整路由見 [skills/RESOLVER.md](skills/RESOLVER.md)。
 
@@ -38,7 +38,7 @@ fskill 採用 **9 個精簡工作流 + 8 條 `pstack` 風格工程原則（`p-*`
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-技能統一存放在 `~/.agents/skills` 共享目錄，Claude Code 透過符號連結接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能讀這個目錄的 Agent 都會讀到這 9 個工作流與 8 條原則。僅限顯式呼叫的工作流只在 `/ui`、`$ui` 等明確點名或 `/f-mode` 內進入。有自己技能目錄的 Agent 在 `-a` 後面寫上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，後續透過 `npx skills update -g -y` 保持更新。也可以直接告訴你的 Agent 幫你安裝：
+技能統一存放在 `~/.agents/skills` 共享目錄，Claude Code 透過符號連結接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能讀這個目錄的 Agent 都會讀到這 9 個工作流。僅限顯式呼叫的工作流只在 `/ui`、`$ui` 等明確點名或 `/f-mode` 內進入。有自己技能目錄的 Agent 在 `-a` 後面寫上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，後續透過 `npx skills update -g -y` 保持更新。也可以直接告訴你的 Agent 幫你安裝：
 > 閱讀 https://github.com/gofenix/fskill/blob/main/llms.txt 幫我安裝 fskill
 
 **宿主外掛方式**，如果你更習慣使用宿主自有的更新指令（技能帶有命名空間前綴，如 `/fskill:check`）：
@@ -125,6 +125,10 @@ Codex 顯示剩餘額度，上方 Claude Code 狀態列顯示已用百分比（�
   # 技能路由提示：think/hunt/check 可按任務自動進入，其餘顯式呼叫；進入 /f-mode 後按目標選技能
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
+  # 工程原則：8 條 pstack 風格工程不變量（不單獨建技能目錄）
+  # Principles 規則目前在 main 分支可用，尚未進入正式版
+  FSKILL_REF=main bash "$FSKILL_RULE_SCRIPT" principles claude-code
+
   # 日常清晰表達：術語統一、條件明確、保留不確定性
   # Clarity 規則目前在 main 分支可用，尚未進入正式版
   FSKILL_REF=main bash "$FSKILL_RULE_SCRIPT" clarity claude-code
@@ -139,9 +143,9 @@ Codex 顯示剩餘額度，上方 Claude Code 狀態列顯示已用百分比（�
 
 ## 為什麼做 fskill
 
-fskill 是 gofenix 自己的技能集，結合 [tw93/Waza](https://github.com/tw93/Waza) 的工具腳本與 [pstack](https://github.com/cursor/plugins/tree/main/pstack) 的原則化設計，保留 **9 個精簡工作流**（`f-mode`、`think`、`hunt`、`check`、`ui`、`learn`、`write`、`handoff`、`health`）、**8 條短工程原則**（`p-*`）與確定性檢查腳本。
+fskill 是 gofenix 自己的技能集，結合 [tw93/Waza](https://github.com/tw93/Waza) 的工具腳本與 [pstack](https://github.com/cursor/plugins/tree/main/pstack) 的原則化設計，保留 **9 個精簡工作流**（`f-mode`、`think`、`hunt`、`check`、`ui`、`learn`、`write`、`handoff`、`health`）、沉澱於 [`rules/principles.md`](rules/principles.md) 的 **8 條短工程原則**與確定性檢查腳本。
 
-每條技能都能用 `/name` 或 `$name` 呼叫；`think`、`hunt`、`check` 與 `p-*` 原則會依任務自動啟用，其餘 6 條只在顯式呼叫或 `/f-mode` 內開始。
+每條技能都能用 `/name` 或 `$name` 呼叫；`think`、`hunt`、`check` 會依任務自動啟用，其餘 6 條只在顯式呼叫或 `/f-mode` 內開始。
 
 ## 移除
 
@@ -151,6 +155,7 @@ rm -f ~/.claude/statusline.sh
 rm -f ~/.claude/rules/english.md
 rm -f ~/.claude/rules/anti-patterns.md
 rm -f ~/.claude/rules/fskill-routing.md
+rm -f ~/.claude/rules/principles.md
 rm -f ~/.claude/rules/clarity.md
 ```
 

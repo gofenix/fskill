@@ -14,11 +14,11 @@
 
 ## Skills
 
-fskill verbindet **9 schlanke Workflow-Skills**, **8 Engineering-Prinzipien im Stil von `pstack` (`p-*`)** und deterministische Skripte. Jeder Skill startet per `/name` oder `$name`; `think`, `hunt`, `check` sowie alle 8 `p-*`-Prinzipien greifen bei passender Aufgabe automatisch, die übrigen sechs nur nach ausdrücklichem Aufruf oder im aktiven `/f-mode`. Abgeleitet aus [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills) und [pstack](https://github.com/cursor/plugins/tree/main/pstack).
+fskill verbindet **9 schlanke Workflow-Skills**, **8 Engineering-Prinzipien im Stil von `pstack`** und deterministische Skripte. Jeder Skill startet per `/name` oder `$name`; `think`, `hunt` und `check` greifen bei passender Aufgabe automatisch, die übrigen sechs nur nach ausdrücklichem Aufruf oder im aktiven `/f-mode`. Abgeleitet aus [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills) und [pstack](https://github.com/cursor/plugins/tree/main/pstack).
 
 | Skill | Gruppe | Was er tut |
 | :--- | :--- | :--- |
-| [`/f-mode`](skills/f-mode/SKILL.md) | Route | Ausdrücklich aktivieren, um je nach Ziel den passenden Workflow samt `p-*`-Prinzipien zu wählen. |
+| [`/f-mode`](skills/f-mode/SKILL.md) | Route | Ausdrücklich aktivieren, um je nach Ziel den passenden Workflow mit gemeinsamen Prinzipien zu wählen. |
 | [`/think`](skills/think/SKILL.md) | Richtung | Planung vorab, Werturteil (`Drop/Keep/Pivot`), Scope-Triage und `grill me`. |
 | [`/hunt`](skills/hunt/SKILL.md) | Problem finden | Ursachenanalyse mit Laufzeitbeleg sowie Einzelhypothesen-Optimierung für feste Metriken. |
 | [`/check`](skills/check/SKILL.md) | Prüfen | Evidenzbasierter Diff-/PR-Review, Release-Bewertung, Projekt-Audit und Incident-Replay. |
@@ -26,7 +26,7 @@ fskill verbindet **9 schlanke Workflow-Skills**, **8 Engineering-Prinzipien im S
 | [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lesen und schreiben | URL/PDF abrufen, Primärquellen verdichten; AI-Ton und Release Notes glätten (ausdrücklicher Aufruf). |
 | [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | Wiederverwenden | Kompakte Übergabe sowie deterministisches Audit für Agent-Konfig, Hooks/MCP und Regel-Pruning (ausdrücklicher Aufruf). |
 
-**8 `pstack`-Prinzipien (`p-*`, automatischer Trigger):** [`p-subtract-before-add`](skills/p-subtract-before-add/SKILL.md) · [`p-attack-the-premise`](skills/p-attack-the-premise/SKILL.md) · [`p-fix-root-causes`](skills/p-fix-root-causes/SKILL.md) · [`p-prove-it-works`](skills/p-prove-it-works/SKILL.md) · [`p-test-behavior`](skills/p-test-behavior/SKILL.md) · [`p-explain-the-number`](skills/p-explain-the-number/SKILL.md) · [`p-encode-in-structure`](skills/p-encode-in-structure/SKILL.md) · [`p-respect-boundaries`](skills/p-respect-boundaries/SKILL.md)
+**8 Engineering-Prinzipien ([`rules/principles.md`](rules/principles.md), eingebettet in [`f-mode`](skills/f-mode/references/principles.md)):** Erst kürzen, dann ergänzen · Prämisse angreifen · Grundursache beweisen · Echt verifizieren · Verhalten testen · Zahlen erklären · In Struktur verankern · Grenzen und Einbahnstraßen achten
 
 Mit `/f-mode` (Codex: `$f-mode`, Plugin: `/fskill:f-mode`) starten und Aufgaben normal beschreiben. Die Auswahl bleibt in dieser Sitzung bis `/f-mode off` aktiv. `/f-mode status` zeigt den Zustand. Direkte Befehle haben Vorrang und lassen f-mode aktiv. Neue Sitzungen starten ohne f-mode. Aktionsberechtigungen bleiben unverändert. Vollständiges Routing: [skills/RESOLVER.md](skills/RESOLVER.md).
 
@@ -38,7 +38,7 @@ Mit `/f-mode` (Codex: `$f-mode`, Plugin: `/fskill:f-mode`) starten und Aufgaben 
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-Skills landen zentral in `~/.agents/skills`. Claude Code bindet sie per Symlink ein; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI und alle Agenten, die dieses Verzeichnis nutzen, laden die 9 Workflows und 8 Prinzipien. Explizite Workflows starten nur über `/ui`, `$ui` oder im `/f-mode`. Agenten mit eigenem Skill-Verzeichnis gibst du nach `-a` mit ihrer ID an (zum Beispiel `antigravity-cli` oder `qwen-code`). Aktualisierung über `npx skills update -g -y`. Du kannst deinen Agenten auch direkt mit der Installation beauftragen:
+Skills landen zentral in `~/.agents/skills`. Claude Code bindet sie per Symlink ein; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI und alle Agenten, die dieses Verzeichnis nutzen, laden die 9 Workflows. Explizite Workflows starten nur über `/ui`, `$ui` oder im `/f-mode`. Agenten mit eigenem Skill-Verzeichnis gibst du nach `-a` mit ihrer ID an (zum Beispiel `antigravity-cli` oder `qwen-code`). Aktualisierung über `npx skills update -g -y`. Du kannst deinen Agenten auch direkt mit der Installation beauftragen:
 > Lies https://github.com/gofenix/fskill/blob/main/llms.txt und installiere fskill für mich
 
 **Host-Plugin-Methode** (Skills erhalten ein Namespace-Präfix, z. B. `/fskill:check`):
@@ -63,8 +63,8 @@ Außerhalb von f-mode bestimmst du die Reihenfolge. Jeder Skill stoppt, wenn sei
 
 **Typische Workflows:**
 
-- **Neues Feature**: `/think` schärft den Plan per `p-subtract-before-add`. Nach Freigabe setzt der aktuelle Agent um, danach prüft `/check`.
-- **Bugfix**: `/hunt` beweist die Ursache per `p-fix-root-causes`, Behebung, danach Prüfung und Release-Evidenz über `/check`.
+- **Neues Feature**: `/think` schärft den Plan (erst kürzen, dann ergänzen). Nach Freigabe setzt der aktuelle Agent um, danach prüft `/check`.
+- **Bugfix**: `/hunt` beweist die Grundursache mit Laufzeitbelegen, Behebung, danach Prüfung und Release-Evidenz über `/check`.
 - **Recherche**: `/learn` liest URL/PDF oder Primärquellen, `/write` formuliert aus.
 
 ## Projekt-Kontext
@@ -125,6 +125,10 @@ Optionale Regeln wirken auch außerhalb von Skill-Aufrufen, sobald sie in den da
   # Routing-Hinweis: think/hunt/check starten bei passender Aufgabe selbst, die übrigen auf ausdrücklichen Aufruf
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
+  # Engineering-Prinzipien: 8 knappe Invarianten ohne zusätzliche Skill-Ordner
+  # Principles ist auf main verfügbar, aber noch nicht im aktuellen Release
+  FSKILL_REF=main bash "$FSKILL_RULE_SCRIPT" principles claude-code
+
   # Klare Alltagsantworten: einheitliche Begriffe, explizite Bedingungen, Unsicherheit bleibt erhalten
   # Clarity ist auf main verfügbar, aber noch nicht im aktuellen Release
   FSKILL_REF=main bash "$FSKILL_RULE_SCRIPT" clarity claude-code
@@ -139,9 +143,9 @@ Optionale Regeln wirken auch außerhalb von Skill-Aufrufen, sobald sie in den da
 
 ## Warum fskill
 
-fskill verbindet [tw93/Waza](https://github.com/tw93/Waza)-Skripte mit dem prinzipienorientierten Aufbau von [pstack](https://github.com/cursor/plugins/tree/main/pstack): **9 schlanke Workflows** (`f-mode`, `think`, `hunt`, `check`, `ui`, `learn`, `write`, `handoff`, `health`) und **8 kurze Prinzipien** (`p-*`), ohne Handbuch-Ballast, den moderne Modelle bereits beherrschen.
+fskill verbindet [tw93/Waza](https://github.com/tw93/Waza)-Skripte mit dem prinzipienorientierten Aufbau von [pstack](https://github.com/cursor/plugins/tree/main/pstack): **9 schlanke Workflows** (`f-mode`, `think`, `hunt`, `check`, `ui`, `learn`, `write`, `handoff`, `health`) und 8 kurze Prinzipien in [`rules/principles.md`](rules/principles.md), ohne Handbuch-Ballast, den moderne Modelle bereits beherrschen.
 
-Jeder Skill ist über `/name` oder `$name` aufrufbar; `think`, `hunt`, `check` und `p-*` starten auch von selbst, die übrigen sechs nur ausdrücklich.
+Jeder Skill ist über `/name` oder `$name` aufrufbar; `think`, `hunt` und `check` starten auch von selbst, die übrigen sechs nur ausdrücklich.
 
 ## Deinstallation
 
@@ -151,6 +155,7 @@ rm -f ~/.claude/statusline.sh
 rm -f ~/.claude/rules/english.md
 rm -f ~/.claude/rules/anti-patterns.md
 rm -f ~/.claude/rules/fskill-routing.md
+rm -f ~/.claude/rules/principles.md
 rm -f ~/.claude/rules/clarity.md
 ```
 

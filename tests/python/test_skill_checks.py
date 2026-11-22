@@ -266,28 +266,6 @@ def test_outcome_contract_missing_field_rejected(tmp_path, capsys):
     assert "INCOMPLETE OUTCOME CONTRACT" in capsys.readouterr().err
 
 
-def test_principle_skill_exempt_from_outcome_contract_and_ninja_badge(tmp_path, capsys):
-    root = tmp_path
-    skill_dir = root / "skills" / "p-sample"
-    skill_dir.mkdir(parents=True)
-    skill = skill_dir / "SKILL.md"
-    skill.write_text(
-        "---\n"
-        "name: p-sample\n"
-        'description: "Enforce clean boundaries. Use when designing modules; 不用于无关查询。"\n'
-        'when_to_use: "/p-sample, $p-sample, sample-boundary"\n'
-        "disable-model-invocation: false\n"
-        'dispatch_intent: "principle sample"\n'
-        "---\n\n"
-        "# Sample Principle\n\nKeep modules clean.\n"
-    )
-
-    skill_files, _desc, _kw = check_skill_files(root)
-    assert skill_files == [skill]
-    check_outcome_contract(skill_files)
-    assert "ok:" in capsys.readouterr().out
-
-
 # ---- Codex plugin metadata ------------------------------------------------
 
 
