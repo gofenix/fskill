@@ -252,10 +252,10 @@ def check_personal_paths(skill_files: list[Path]):
 def check_durable_context(root: Path, skill_files: list[Path]):
     """Durable context rules must stay portable and evidence-bound.
 
-    Each skill in DURABLE_CONTEXT_SKILLS links to rules/durable-context.md for the
-    shared preamble (scope, current-state-wins, redaction gate) and then adds
-    skill-specific guidance with current-state override evidence. The shared
-    rules file itself is checked once for the "raw transcripts" guard.
+    `rules/durable-context.md` remains the shared optional rule source (checked
+    once for the "raw transcripts" guard). Each skill in DURABLE_CONTEXT_SKILLS
+    either states its current-state, no-raw-transcripts, and no-permission
+    boundaries inline, or links references/durable-context.md matching the rule.
     """
     rules_path = root / "rules" / "durable-context.md"
     if not rules_path.exists():
@@ -273,47 +273,40 @@ def check_durable_context(root: Path, skill_files: list[Path]):
 
     for path in skill_files:
         skill = path.parent.name
-        text = path.read_text()
-        heading = None
-        for candidate in ("## Durable Context Preflight", "## 长期上下文预检"):
-            if candidate in text:
-                heading = candidate
-                break
-        if skill in DURABLE_CONTEXT_SKILLS and heading is None:
-            fail(
-                f"MISSING DURABLE CONTEXT PREFLIGHT: {path}\n"
-                f"  This skill must explain how to consume optional memory/preview context."
-            )
-        if heading is None or skill not in DURABLE_CONTEXT_SKILLS:
-            if heading is not None:
-                print(f"ok: durable context preflight for {skill}")
+        if skill not in DURABLE_CONTEXT_SKILLS:
             continue
+        text = path.read_text()
+        text_lower = text.lower()
+        if "references/durable-context.md" in text:
+            copy_path = path.parent / "references" / "durable-context.md"
+            if not copy_path.exists() or copy_path.read_bytes() != rules_path.read_bytes():
+                fail(
+                    f"DURABLE CONTEXT COPY DRIFT: {copy_path.relative_to(root)}\n"
+                    f"  Must be a byte-exact generated copy of rules/durable-context.md. "
+                    f"Run scripts/build_metadata.py (no flags) to regenerate."
+                )
 
-        section = text.split(heading, 1)[1]
-        section = section.split("\n## ", 1)[0]
-        section_lower = section.lower()
-        if "references/durable-context.md" not in section:
-            fail(
-                f"DURABLE CONTEXT MISSING SHARED REFERENCE: {path}\n"
-                f"  Section must link to references/durable-context.md (the "
-                f"generated skill-local copy of rules/durable-context.md); "
-                f"a rules/ link is dead in installed copies."
-            )
-        copy_path = path.parent / "references" / "durable-context.md"
-        if not copy_path.exists() or copy_path.read_bytes() != rules_path.read_bytes():
-            fail(
-                f"DURABLE CONTEXT COPY DRIFT: {copy_path.relative_to(root)}\n"
-                f"  Must be a byte-exact generated copy of rules/durable-context.md. "
-                f"Run scripts/build_metadata.py (no flags) to regenerate."
-            )
-        english_bound = "current" in section_lower and "override" in section_lower
-        chinese_bound = "当前" in section and "优先" in section
+        english_bound = "current" in text_lower and "override" in text_lower
+        chinese_bound = "当前" in text and "优先" in text
         if not (english_bound or chinese_bound):
             fail(
                 f"DURABLE CONTEXT NOT EVIDENCE-BOUND: {path}\n"
-                f"  Skill-specific paragraph must name what current state overrides memory."
+                f"  Skill must state what current state overrides memory."
             )
-        print(f"ok: durable context preflight for {skill}")
+        transcript_guard = any(
+            marker in text_lower
+            for marker in ("raw transcripts", "不读原始对话", "不直接翻读原始会话", "不读取原始对话记录")
+        )
+        permission_guard = any(
+            marker in text_lower
+            for marker in ("never grants", "no permission", "不授予")
+        )
+        if not (transcript_guard and permission_guard):
+            fail(
+                f"DURABLE CONTEXT MISSING BOUNDARY GUARD: {path}\n"
+                f"  Skill must forbid reading raw transcripts and disallow permission expansion from memory."
+            )
+        print(f"ok: durable context boundary for {skill}")
 
 
 RETIRED_SKILL_NAMES = (
