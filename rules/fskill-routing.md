@@ -1,10 +1,10 @@
 # fskill 路由
 
-fskill 提供 9 个精简工作流技能与 8 条 `pstack` 风格工程原则（`p-*`）。每条都能用 `/name` 或 `$name` 调用；`think`、`hunt`、`check` 与 8 条 `p-*` 原则可按任务匹配选用，其余 6 条仅限显式调用或进入 `/f-mode` 后路由。`/f-mode` 默认关闭，输入 `/f-mode` 开启、`/f-mode off` 关闭，直接命令优先且不改开关，路由绝不扩大操作权限。
+fskill 提供 9 个精简工作流技能，并可选配合 `rules/principles.md` 的 8 条 `pstack` 风格工程原则。每条都能用 `/name` 或 `$name` 调用；`think`、`hunt`、`check` 可按任务匹配选用，其余 6 条仅限显式调用或进入 `/f-mode` 后路由。`/f-mode` 默认关闭，输入 `/f-mode` 开启、`/f-mode off` 关闭，直接命令优先且不改开关，路由绝不扩大操作权限。
 
 | skill | 使用场景 |
 |---|---|
-| f-mode | 显式「进入 f-mode」或控制路由开关并匹配技能与原则 |
+| f-mode | 显式「进入 f-mode」或控制路由开关并匹配技能与工程原则 |
 | think | 动工前「出方案」、「值不值得做」、「需求范围分类」或「grill me」压测 |
 | hunt | 已经出错时「排查报错」、「查根因」、回归调试或「指标单假设优化」 |
 | check | 代码改动、PR 与发版前「审查代码」、「code review」、「值不值得发版」或「发布收尾」 |
@@ -13,13 +13,5 @@ fskill 提供 9 个精简工作流技能与 8 条 `pstack` 风格工程原则（
 | write | 显式调用下「改稿润色」、「去 AI 味」、「发布说明文案」或「产品本地化文案」 |
 | handoff | 显式调用下「写交接文档」供后续接手，或「接入上次会话」核对现场 |
 | health | 显式调用下「检查 agent 配置」、「AI 可维护性体检」或「规则瘦身」 |
-| p-subtract-before-add | 准备加抽象、开关或重构时贯彻「先减后增」，先「删除死代码再新增」 |
-| p-attack-the-premise | 出现「连续修同一个问题失败」或变通膨胀时「质疑前提」，「停下检验共同假设」 |
-| p-fix-root-causes | 运行出错时不掩盖症状，「定位第一个偏离预期的点」，坚持「先证根因」 |
-| p-prove-it-works | 声称完成或可发版前贯彻「真实验收」，坚持「不能只凭编译判断完成」 |
-| p-test-behavior | 写改测试时强调「行为测试」、「先红后绿」与「禁止为绿灯改测试」 |
-| p-explain-the-number | 报数字或调指标时「解释数字」，写明「性能基线与评测口径」 |
-| p-encode-in-structure | 「复盘沉淀」与定义 TypeScript 类型时贯彻「结构防复发」，「用类型与测试代替口头提醒」 |
-| p-respect-boundaries | 遇到「脏工作区保护」、不可信外部文本或「单向门授权」边界时生效 |
 
 两个技能同时匹配时先看各自描述里的排除条件，仍冲突再问用户。完整路由见 <https://github.com/gofenix/fskill/blob/main/skills/RESOLVER.md>。

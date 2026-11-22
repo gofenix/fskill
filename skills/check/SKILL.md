@@ -12,7 +12,7 @@ dispatch_intent: "基于证据审查 diff/PR、项目体检、发版价值判断
 
 > `/review` 是宿主内置 PR 审查命令；本工作流使用 `/check` 或 `$check`，不转调 `/review`。
 
-读取 diff，基于证据报告问题；仅在已有明确授权且范围内时局部修复并实证。所有结论贯彻 `p-prove-it-works` 与 `p-respect-boundaries`。
+读取 diff，基于证据报告问题；仅在已有明确授权且范围内时局部修复并实证。所有结论贯彻「真实验收」与「边界与单向门」。
 
 ## 交付约定
 
@@ -45,7 +45,7 @@ git status --short --branch -uall
 
 1. **提取公开上下文**：从目标仓库公开的 `README`、`AGENTS/CLAUDE`、包清单、锁文件、构建脚本与 CI 工作流提取验证命令、受保护生成物和路径风险等级；不依赖本机私有路径。
 2. **核对全量范围与需求**：冻结当前 `HEAD` 与待审 diff 列表；同时对照“需求真的要做对什么”与“代码有没有缺陷/多余抽象/安全漏洞/生成物漂移”。修改前按自动修复边界核对授权，若中途修过代码则重审当前版本。
-3. **常见高危模式按需深读**：diff 涉及安装重试、非原子替换、破坏性通配/删除、门禁放宽、重复推导、视觉对比、测试路径失真或依赖变更时，读取 [审查模式](references/review-patterns.md)。TypeScript 变更对照 `p-encode-in-structure` 查状态与边界，只读审查不把排版偏好判成 bug。
+3. **常见高危模式按需深读**：diff 涉及安装重试、非原子替换、破坏性通配/删除、门禁放宽、重复推导、视觉对比、测试路径失真或依赖变更时，读取 [审查模式](references/review-patterns.md)。TypeScript 变更对照「结构防复发」查状态与边界，只读审查不把排版偏好判成 bug。
 4. **发版判断与发布产物**：仅问“值不值得发版”时给出 **该发 / 可以等 / 不该发** 与三条真实约束理由（影响、风险、时机），不顺手发布。涉及打包、签名、公证、release asset、版本号与发版就绪核对时读取 [发布产物](references/release-artifacts.md)；缺证据直接标缺口，**不能说已就绪**。
 5. **项目审计模式**：做项目质量体检时定位已加载 `check` 目录为 `CHECK_DIR`，运行 `python3 "$CHECK_DIR/scripts/audit_signals.py" --root <project>` 并结合项目上下文核查；报告不带无契约分数的可行动问题。
 6. **事故台账与重放**：项目维护 `docs/incidents.md` 且缺陷曾到达用户，或需评估 reviewer/技能变化后的回归时，读取 [事故台账](references/incident-ledger.md)。
