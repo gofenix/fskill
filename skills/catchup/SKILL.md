@@ -1,6 +1,6 @@
 ---
 name: catchup
-description: "只读核对本会话的变化、当前进展与待用户事项，给出简短汇报。在显式调用 /catchup、$catchup 或已开启的 f-mode 选中时使用。不用于交接文档、重新启动工作或执行待决操作。"
+description: "只读核对本会话的变化、当前进展与待用户事项，给出简短汇报。在显式调用 /catchup、$catchup、fskill 限定调用或已开启的 f-mode 选中时使用。不用于交接文档、重新启动工作或执行待决操作。"
 when_to_use: "/catchup, $catchup, /fskill:catchup, /fskill catchup, 调用 fskill 的 catchup, 用 fskill catchup skill, invoke fskill catchup, use fskill catchup skill"
 disable-model-invocation: true
 dispatch_intent: "本会话进展回顾、变化与阻塞、仍待用户处理的决策和批准，只读汇报"

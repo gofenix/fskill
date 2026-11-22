@@ -10,6 +10,8 @@
 - `=== PROJECT SHAPE ===`
 - `=== AI CONTEXT SURFACE ===`
 - `=== VERIFICATION SURFACE ===`
+- `=== VERIFICATION WRAPPER SURFACE ===`
+- `=== MARKDOWN LINK SURFACE ===`
 - `=== DECISION ARTIFACTS ===`
 - `=== DRIFT MARKERS ===`
 
@@ -17,9 +19,7 @@
 
 ## 目标
 
-判断项目是否有足够的结构，能在反复由 AI 编码的会话中保持可维护。
-
-关注长期有效的 Agent 工程支撑质量，不评价个人风格偏好：
+判断项目是否有足够的结构，能在反复由 AI 编码的会话中保持可维护（不评价个人风格偏好）：
 
 1. 相关任务触发时，AI Agent 能否找到稳定且不显然的约束？
 2. 实现、生成、发布、部署或其他实质风险，是否在实际失效的层面有可执行验证？
