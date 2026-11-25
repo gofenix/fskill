@@ -89,7 +89,7 @@
     },
     {
       "name": "fskill-think",
-      "description": "想清楚再动手：方案设计、价值判断、需求范围分类与 grill-me 高压追问。Use when planning features, judging whether to build, triaging scope, or stress-testing an idea; 无需用户点名也可按任务选用。不用于界面交付、根因调试、PR 审查或文案润色。",
+      "description": "想清楚再动手：方案设计、价值判断、需求范围分类、术语重构、深化提示词与 grill-me 高压追问。Use when planning features, judging whether to build, triaging scope, reframing terminology, sharpening a prompt, or stress-testing an idea; 无需用户点名也可按任务选用。不用于界面交付、根因调试、PR 审查或文案润色。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/think",

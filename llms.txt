@@ -12,7 +12,7 @@ fskill combines and adapts material from Waza (https://github.com/tw93/Waza), Ma
 ## Workflow skills (9)
 
 - `f-mode`: explicit session router (`/f-mode` on/off/status) selecting workflows and applying engineering principles without expanding permissions.
-- `think`: pre-implementation planning, value judgments, scope triage, and `grill me` pressure testing.
+- `think`: pre-implementation planning, value judgments, scope triage, prompt reframing/sharpening, and `grill me` pressure testing.
 - `hunt`: root-cause debugging with runtime proof, plus single-hypothesis metric optimization.
 - `check`: evidence-backed diff/PR/release review, release readiness judgment, project audit signals, and incident replay.
 - `ui`: distinctive, non-slop frontend UI design, motion, and real-render verification (explicit call or active `f-mode`).

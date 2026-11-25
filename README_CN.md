@@ -19,7 +19,7 @@ fskill 采用 **9 个精简工作流 + 8 条 `pstack` 风格工程原则 + 确�
 | 技能 | 分组 | 它做什么 |
 | :--- | :--- | :--- |
 | [`/f-mode`](skills/f-mode/SKILL.md) | 路由 | 显式开启，按目标在会话内选用工作流并参考工程原则。 |
-| [`/think`](skills/think/SKILL.md) | 想清楚 | 动手前方案规划、价值判断（放弃/保留/转向）、范围分类与 `grill me` 压测。 |
+| [`/think`](skills/think/SKILL.md) | 想清楚 | 动手前方案规划、价值判断（放弃/保留/转向）、范围分类、术语重构/深化提示词与 `grill me` 压测。 |
 | [`/hunt`](skills/hunt/SKILL.md) | 找问题 | 用运行时证据查实根因；指标已定时单假设对照验证。 |
 | [`/check`](skills/check/SKILL.md) | 做检查 | 审 diff/PR、发版价值判断、发布产物门禁、项目审计与事故重放。 |
 | [`/ui`](skills/ui/SKILL.md) | 界面 | 做出有方向感、反 AI slop 的界面，按真实渲染与截图验收（显式调用）。 |

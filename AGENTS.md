@@ -6,7 +6,7 @@ This file is the canonical agent guide for the fskill repository. `CLAUDE.md` is
 
 fskill is gofenix's skill set, combining Waza's practical tooling with `pstack`-style concise principles. Nine lean workflow skills live flat under `skills/<name>/` (`f-mode`, `think`, `hunt`, `check`, `ui`, `learn`, `write`, `handoff`, `health`). Every skill takes `/name` or `$name`; `think`, `hunt`, and `check` may also be selected by the model when the task fits, while `f-mode`, `ui`, `write`, `learn`, `health`, and `handoff` require an explicit call or active `/f-mode`. Explicit `/f-mode` routes within the current session until `/f-mode off`; direct commands take priority without closing it. Eight concise engineering principles live in `rules/principles.md` (codegen-mirrored to `skills/f-mode/references/principles.md`) without adding top-level directories under `skills/`.
 
-- Workflows (9): `f-mode` (session router), `think` (plans, value judgments, scope triage, `grill me`), `hunt` (root-cause debugging & single-hypothesis metrics), `check` (diff/PR/release review, audit signals, incident ledger), `ui`, `learn`, `write`, `handoff`, `health` (audits & rule pruning).
+- Workflows (9): `f-mode` (session router), `think` (plans, value judgments, scope triage, prompt reframing/sharpening, `grill me`), `hunt` (root-cause debugging & single-hypothesis metrics), `check` (diff/PR/release review, audit signals, incident ledger), `ui`, `learn`, `write`, `handoff`, `health` (audits & rule pruning).
 
 ## Repository Map
 

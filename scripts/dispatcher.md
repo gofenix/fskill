@@ -20,7 +20,7 @@ Every skill takes `/name`, `$name`, `/fskill:name`, or `/fskill name`. `think`, 
 | 用确定性脚本审计 Agent 配置与可维护性、排查省 token 工具与做规则瘦身 | health | `skills/health/SKILL.md` |
 | 用运行时证据证明根因，或对已定指标做单假设对照实验 | hunt | `skills/hunt/SKILL.md` |
 | 抓取 URL/PDF 内容、多一手来源调研与代码系统梳理 | learn | `skills/learn/SKILL.md` |
-| 动手前方案规划、价值判断、需求分类、grill-me 压测 | think | `skills/think/SKILL.md` |
+| 动手前方案规划、价值判断、需求分类、术语重构与深化提示词、grill-me 压测 | think | `skills/think/SKILL.md` |
 | 构建可交互前端界面、视觉打磨与按截图逐层改进 | ui | `skills/ui/SKILL.md` |
 | 中英文写作润色、发布说明与本地化文案、消除歧义与 AI 味 | write | `skills/write/SKILL.md` |
 <!-- routing-table:end -->

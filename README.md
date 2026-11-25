@@ -19,7 +19,7 @@ fskill pairs **9 lean workflow skills** with **8 `pstack`-style engineering prin
 | Skill | When | What it does |
 | :--- | :--- | :--- |
 | [`/f-mode`](skills/f-mode/SKILL.md) | Route | Enter explicitly, then select one workflow below and consult shared engineering principles. |
-| [`/think`](skills/think/SKILL.md) | Decide | Pre-implementation plan, value judgment (`Drop/Keep/Pivot`), scope triage, and `grill me` pressure testing. |
+| [`/think`](skills/think/SKILL.md) | Decide | Pre-implementation plan, value judgment (`Drop/Keep/Pivot`), scope triage, prompt reframing/sharpening, and `grill me` pressure testing. |
 | [`/hunt`](skills/hunt/SKILL.md) | Find the problem | Root-cause debugging with runtime evidence, plus single-hypothesis metric optimization. |
 | [`/check`](skills/check/SKILL.md) | Review | Evidence-backed diff/PR review, release judgment, audit signals, and incident replay. |
 | [`/ui`](skills/ui/SKILL.md) | Interface | Distinctive, non-slop frontend UI design, motion, and real-render verification (explicit call). |

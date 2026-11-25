@@ -13,7 +13,7 @@
 
 | 触发 | 技能 |
 |---|---|
-| 定方案、价值判断（值不值得）、需求范围分类或 `grill me` 追问 | `skills/think/SKILL.md` |
+| 定方案、价值判断（值不值得）、需求范围分类、术语重构/深化提示词或 `grill me` 追问 | `skills/think/SKILL.md` |
 | 报错、崩溃、回归先证根因，或已定指标单假设验证 | `skills/hunt/SKILL.md` |
 | 审 diff/PR、发版价值判断、发布产物门禁、项目审计或事故重放 | `skills/check/SKILL.md` |
 | 构建可交互前端界面、视觉打磨与按截图修细节 | `skills/ui/SKILL.md` |
