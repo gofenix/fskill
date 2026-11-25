@@ -27,7 +27,7 @@ def section(text: str, heading: str) -> str:
 
 def test_health_requires_explicit_authorization_for_project_commands():
     text = SKILL.read_text(encoding="utf-8")
-    hard_rules = section(text, "硬性规则")
+    hard_rules = section(text, "调用边界")
 
     assert "summary 和 deep 都只生成报告" in hard_rules
     assert "不授权执行其中的命令" in hard_rules
@@ -477,11 +477,13 @@ def test_health_shell_trust_helpers_stay_aligned():
 def test_documented_deep_command_preserves_selected_scope(tmp_path: Path, scope):
     import re
 
-    analyze = section(SKILL.read_text(), "深入检查")
-    command = re.search(r'`(BASH_ENV= ENV= /bin/bash -p [^`]+)`', analyze).group(1)
-    collector = tmp_path / "collect.sh"
-    collector.write_text('printf "%s\\n" "$@"\n')
-    env = dict(os.environ, HEALTH_SCRIPT=str(collector), HEALTH_SCOPE=scope)
+    analyze = section(SKILL.read_text(encoding="utf-8"), "审计执行")
+    command = re.search(r'`(BASH_ENV= ENV= /bin/bash -p [^`]+ deep)`', analyze).group(1)
+    scripts_dir = tmp_path / "scripts"
+    scripts_dir.mkdir()
+    collector = scripts_dir / "collect-data.sh"
+    collector.write_text('printf "%s\\n" "$@"\n', encoding="utf-8")
+    env = dict(os.environ, HEALTH_DIR=str(tmp_path), HEALTH_SCOPE=scope)
     result = subprocess.run(["/bin/bash", "-c", command], env=env, text=True,
                             capture_output=True, check=True)
     assert result.stdout.splitlines() == [scope, "deep"]

@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[2]
 def test_write_and_read_helpers_stay_inside_the_skill_directory():
     write = (ROOT / "skills" / "write" / "SKILL.md").read_text(encoding="utf-8")
     methods = (
-        ROOT / "skills" / "learn" / "references" / "modes" / "read" / "read-methods.md"
+        ROOT / "skills" / "learn" / "references" / "read-methods.md"
     ).read_text(encoding="utf-8")
 
     assert 'bash "$SKILL_DIR/scripts/check-punctuation.sh"' in write
