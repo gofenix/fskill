@@ -14,7 +14,7 @@
 
 ## 技能
 
-fskill 采用 **9 个精简工作流 + 8 条 `pstack` 风格工程原则 + 确定性脚本**。单条技能通过 `/name` 或 `$name` 进入；`think`、`hunt`、`check` 在任务本身匹配时也可自动生效，其余 6 条只在显式调用或进入 `/f-mode` 后运行。基于 [Waza](https://github.com/tw93/Waza)，并融合 [Matt Pocock skills](https://github.com/mattpocock/skills) 与 [pstack](https://github.com/cursor/plugins/tree/main/pstack) 的原则化设计；完整来源见下方许可证。
+fskill 采用 **9 个精简工作流 + 8 条 `pstack` 风格工程原则 + 确定性脚本**。全部 9 条技能均只在显式调用（`/name`、`$name`）或进入 `/f-mode` 后运行，不会自动生效。基于 [Waza](https://github.com/tw93/Waza)，并融合 [Matt Pocock skills](https://github.com/mattpocock/skills) 与 [pstack](https://github.com/cursor/plugins/tree/main/pstack) 的原则化设计；完整来源见下方许可证。
 
 | 技能 | 分组 | 它做什么 |
 | :--- | :--- | :--- |
@@ -22,9 +22,9 @@ fskill 采用 **9 个精简工作流 + 8 条 `pstack` 风格工程原则 + 确�
 | [`/think`](skills/think/SKILL.md) | 想清楚 | 动手前方案规划、价值判断（放弃/保留/转向）、范围分类、术语重构/深化提示词与 `grill me` 压测。 |
 | [`/hunt`](skills/hunt/SKILL.md) | 找问题 | 用运行时证据查实根因；指标已定时单假设对照验证。 |
 | [`/check`](skills/check/SKILL.md) | 做检查 | 审 diff/PR、发版价值判断、发布产物门禁、项目审计与事故重放。 |
-| [`/ui`](skills/ui/SKILL.md) | 界面 | 做出有方向感、反 AI slop 的界面，按真实渲染与截图验收（显式调用）。 |
-| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 读和写 | 抓取 URL/PDF 与一手调研；去掉中英文与发布说明 AI 味（显式调用）。 |
-| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | 下次还能用 | 会话交接与现状核对；Agent 配置/hooks/MCP/省 token 工具体检与规则瘦身（显式调用）。 |
+| [`/ui`](skills/ui/SKILL.md) | 界面 | 做出有方向感、反 AI slop 的界面，按真实渲染与截图验收。 |
+| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 读和写 | 抓取 URL/PDF 与一手调研；去掉中英文与发布说明 AI 味。 |
+| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | 下次还能用 | 会话交接与现状核对；Agent 配置/hooks/MCP/省 token 工具体检与规则瘦身。 |
 
 **8 条工程原则（[`rules/principles.md`](rules/principles.md)，同步内嵌于 [`f-mode`](skills/f-mode/references/principles.md)）：** 先减后增 · 质疑前提 · 先证根因 · 真实验收 · 行为测试 · 解释数字 · 结构防复发 · 边界与单向门
 
@@ -38,7 +38,7 @@ fskill 采用 **9 个精简工作流 + 8 条 `pstack` 风格工程原则 + 确�
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-技能统一存放在 `~/.agents/skills` 共享目录，Claude Code 通过软链接接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能读这个目录的 Agent 都会读到这 9 个工作流。仅限显式调用的工作流只在 `/ui`、`$ui` 等明确点名或 `/f-mode` 内进入。有自己技能目录的 Agent 在 `-a` 后面写上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，后续通过 `npx skills update -g -y` 保持更新。也可以直接告诉你的 Agent 帮你安装：
+技能统一存放在 `~/.agents/skills` 共享目录，Claude Code 通过软链接接入，Codex、Cursor、Gemini CLI、Copilot、Amp、Kimi Code CLI 以及其他能读这个目录的 Agent 都会读到这 9 个工作流。全部 9 个工作流均仅在 `/ui`、`$ui` 等明确点名或 `/f-mode` 内进入。有自己技能目录的 Agent 在 `-a` 后面写上它的 ID，比如 `antigravity-cli` 或 `qwen-code`，后续通过 `npx skills update -g -y` 保持更新。也可以直接告诉你的 Agent 帮你安装：
 > 阅读 https://github.com/gofenix/fskill/blob/main/llms.txt 帮我安装 fskill
 
 **宿主插件方式**，如果你更习惯使用宿主自有的更新命令（技能带有命名空间前缀，如 `/fskill:check`）：
@@ -122,7 +122,7 @@ Codex 显示剩余额度，上方 Claude Code 状态栏显示已用百分比（�
   # 行为防错守则：全局常驻约束（先看再改、不随意扩大范围、不主动输出冗余总结）
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # 技能路由提示：think/hunt/check 可按任务自动进入，其余显式调用；进入 /f-mode 后按目标选技能
+  # 技能路由提示：全部 9 条技能均仅限显式调用，或进入 /f-mode 后按目标选技能
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # 工程原则：8 条 pstack 风格工程不变量（不单独建技能目录）
@@ -145,7 +145,7 @@ Codex 显示剩余额度，上方 Claude Code 状态栏显示已用百分比（�
 
 fskill 是 gofenix 自己的技能集。结合 [tw93/Waza](https://github.com/tw93/Waza) 的脚本与 [pstack](https://github.com/cursor/plugins/tree/main/pstack) 的原则化思路，砍掉已被现代前沿模型内化的重型 SOP，保留 **9 个精简工作流**（`f-mode`、`think`、`hunt`、`check`、`ui`、`learn`、`write`、`handoff`、`health`）、沉淀在 [`rules/principles.md`](rules/principles.md) 的 **8 条短工程原则**以及确定性检查脚本。
 
-每条技能都能用 `/name` 或 `$name` 调用；`think`、`hunt`、`check` 也会按任务匹配自动生效，其余 6 条只在显式调用或进入 `/f-mode` 后运行。
+全部 9 条技能都只在显式调用（`/name` 或 `$name`）或进入 `/f-mode` 后运行，不会自动生效。
 
 ## 卸载
 

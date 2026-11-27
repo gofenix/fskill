@@ -1,6 +1,6 @@
 # fskill
 
-> Lean engineering workflows and concise principles for AI coding agents: 9 workflow skills (`/f-mode`, `/think`, `/hunt`, `/check`, `/ui`, `/learn`, `/write`, `/handoff`, `/health`) paired with deterministic scripts and optional `rules/principles.md`.
+> Lean engineering workflows and concise principles for AI coding agents: 9 workflow skills (`/f-mode`, `/think`, `/hunt`, `/check`, `/ui`, `/learn`, `/write`, `/handoff`, `/health`) paired with deterministic scripts and optional `rules/principles.md`. All 9 skills are explicit-only (invoke via `/name`, `$name`, or active `/f-mode`).
 
 Source code: https://github.com/gofenix/fskill
 npm package: https://www.npmjs.com/package/@gofenix/fskill
@@ -15,11 +15,11 @@ fskill combines and adapts material from Waza (https://github.com/tw93/Waza), Ma
 - `think`: pre-implementation planning, value judgments, scope triage, prompt reframing/sharpening, and `grill me` pressure testing.
 - `hunt`: root-cause debugging with runtime proof, plus single-hypothesis metric optimization.
 - `check`: evidence-backed diff/PR/release review, release readiness judgment, project audit signals, and incident replay.
-- `ui`: distinctive, non-slop frontend UI design, motion, and real-render verification (explicit call or active `f-mode`).
-- `learn`: URL/PDF fetching (`fetch.sh`, Feishu, Weixin) and primary-source research synthesis (explicit call or active `f-mode`).
-- `write`: Chinese/English prose de-AI polishing, release notes, and localization (explicit call or active `f-mode`).
-- `handoff`: compact session handoff and live-verified context resume (explicit call or active `f-mode`).
-- `health`: deterministic agent config, hook/MCP, token-tool, maintainability, and rule-pruning audits (explicit call or active `f-mode`).
+- `ui`: distinctive, non-slop frontend UI design, motion, and real-render verification.
+- `learn`: URL/PDF fetching (`fetch.sh`, Feishu, Weixin) and primary-source research synthesis.
+- `write`: Chinese/English prose de-AI polishing, release notes, and localization.
+- `handoff`: compact session handoff and live-verified context resume.
+- `health`: deterministic agent config, hook/MCP, token-tool, maintainability, and rule-pruning audits.
 
 ## Engineering principles (shared rule)
 

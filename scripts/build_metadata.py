@@ -63,8 +63,8 @@ CLAUDE_MARKETPLACE_TOP = {
     "description": (
         "Personal skill collection for Claude Code, Codex, Antigravity, "
         "OpenCode, and Pi: 9 lean workflow skills with explicit /f-mode routing "
-        "and concise engineering principles. think, hunt, and check also trigger "
-        "on matching tasks; the remaining six stay explicit-only."
+        "and concise engineering principles. All 9 skills are explicit-only "
+        "(run via /name, $name, or inside active /f-mode)."
     ),
     "owner": {
         "name": "gofenix",
@@ -193,7 +193,7 @@ def build_codex_plugin(version: str) -> dict:
             "longDescription": (
                 "fskill packages 9 lean engineering workflow skills (session routing, planning, debugging, "
                 "review, UI, research, writing, handoff, and health) and shared engineering principles. "
-                "think, hunt, and check also trigger when the task fits; the remaining six require an explicit call."
+                "All 9 skills are explicit-only and run via /name, $name, or inside active /f-mode."
             ),
             "developerName": "gofenix",
             "category": CODEX_CATEGORY,

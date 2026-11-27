@@ -14,7 +14,7 @@
 
 ## Skills
 
-fskill verbindet **9 schlanke Workflow-Skills**, **8 Engineering-Prinzipien im Stil von `pstack`** und deterministische Skripte. Jeder Skill startet per `/name` oder `$name`; `think`, `hunt` und `check` greifen bei passender Aufgabe automatisch, die übrigen sechs nur nach ausdrücklichem Aufruf oder im aktiven `/f-mode`. Abgeleitet aus [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills) und [pstack](https://github.com/cursor/plugins/tree/main/pstack).
+fskill verbindet **9 schlanke Workflow-Skills**, **8 Engineering-Prinzipien im Stil von `pstack`** und deterministische Skripte. Alle 9 Skills starten nur nach ausdrücklichem Aufruf (`/name`, `$name`) oder im aktiven `/f-mode`; keiner greift automatisch. Abgeleitet aus [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills) und [pstack](https://github.com/cursor/plugins/tree/main/pstack).
 
 | Skill | Gruppe | Was er tut |
 | :--- | :--- | :--- |
@@ -22,9 +22,9 @@ fskill verbindet **9 schlanke Workflow-Skills**, **8 Engineering-Prinzipien im S
 | [`/think`](skills/think/SKILL.md) | Richtung | Planung vorab, Werturteil (`Drop/Keep/Pivot`), Scope-Triage und `grill me`. |
 | [`/hunt`](skills/hunt/SKILL.md) | Problem finden | Ursachenanalyse mit Laufzeitbeleg sowie Einzelhypothesen-Optimierung für feste Metriken. |
 | [`/check`](skills/check/SKILL.md) | Prüfen | Evidenzbasierter Diff-/PR-Review, Release-Bewertung, Projekt-Audit und Incident-Replay. |
-| [`/ui`](skills/ui/SKILL.md) | Oberfläche | Eigenständige, slop-freie UI, Motion und echte Render-Prüfung (ausdrücklicher Aufruf). |
-| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lesen und schreiben | URL/PDF abrufen, Primärquellen verdichten; AI-Ton und Release Notes glätten (ausdrücklicher Aufruf). |
-| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | Wiederverwenden | Kompakte Übergabe sowie deterministisches Audit für Agent-Konfig, Hooks/MCP und Regel-Pruning (ausdrücklicher Aufruf). |
+| [`/ui`](skills/ui/SKILL.md) | Oberfläche | Eigenständige, slop-freie UI, Motion und echte Render-Prüfung. |
+| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | Lesen und schreiben | URL/PDF abrufen, Primärquellen verdichten; AI-Ton und Release Notes glätten. |
+| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | Wiederverwenden | Kompakte Übergabe sowie deterministisches Audit für Agent-Konfig, Hooks/MCP und Regel-Pruning. |
 
 **8 Engineering-Prinzipien ([`rules/principles.md`](rules/principles.md), eingebettet in [`f-mode`](skills/f-mode/references/principles.md)):** Erst kürzen, dann ergänzen · Prämisse angreifen · Grundursache beweisen · Echt verifizieren · Verhalten testen · Zahlen erklären · In Struktur verankern · Grenzen und Einbahnstraßen achten
 
@@ -38,7 +38,7 @@ Mit `/f-mode` (Codex: `$f-mode`, Plugin: `/fskill:f-mode`) starten und Aufgaben 
 npx skills add gofenix/fskill -a claude-code codex cursor -g -y
 ```
 
-Skills landen zentral in `~/.agents/skills`. Claude Code bindet sie per Symlink ein; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI und alle Agenten, die dieses Verzeichnis nutzen, laden die 9 Workflows. Explizite Workflows starten nur über `/ui`, `$ui` oder im `/f-mode`. Agenten mit eigenem Skill-Verzeichnis gibst du nach `-a` mit ihrer ID an (zum Beispiel `antigravity-cli` oder `qwen-code`). Aktualisierung über `npx skills update -g -y`. Du kannst deinen Agenten auch direkt mit der Installation beauftragen:
+Skills landen zentral in `~/.agents/skills`. Claude Code bindet sie per Symlink ein; Codex, Cursor, Gemini CLI, Copilot, Amp, Kimi Code CLI und alle Agenten, die dieses Verzeichnis nutzen, laden die 9 Workflows. Alle 9 Workflows starten nur über ausdrücklichen Aufruf wie `/ui`, `$ui` oder im `/f-mode`. Agenten mit eigenem Skill-Verzeichnis gibst du nach `-a` mit ihrer ID an (zum Beispiel `antigravity-cli` oder `qwen-code`). Aktualisierung über `npx skills update -g -y`. Du kannst deinen Agenten auch direkt mit der Installation beauftragen:
 > Lies https://github.com/gofenix/fskill/blob/main/llms.txt und installiere fskill für mich
 
 **Host-Plugin-Methode** (Skills erhalten ein Namespace-Präfix, z. B. `/fskill:check`):
@@ -122,7 +122,7 @@ Optionale Regeln wirken auch außerhalb von Skill-Aufrufen, sobald sie in den da
   # Anti-Patterns: stets aktive, skillübergreifende Leitplanken (erst lesen, dann handeln; kein Scope Creep; keine ungefragten Zusammenfassungen)
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # Routing-Hinweis: think/hunt/check starten bei passender Aufgabe selbst, die übrigen auf ausdrücklichen Aufruf
+  # Routing-Hinweis: Alle 9 Skills starten nur auf ausdrücklichen Aufruf oder im /f-mode
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # Engineering-Prinzipien: 8 knappe Invarianten ohne zusätzliche Skill-Ordner
@@ -145,7 +145,7 @@ Optionale Regeln wirken auch außerhalb von Skill-Aufrufen, sobald sie in den da
 
 fskill verbindet [tw93/Waza](https://github.com/tw93/Waza)-Skripte mit dem prinzipienorientierten Aufbau von [pstack](https://github.com/cursor/plugins/tree/main/pstack): **9 schlanke Workflows** (`f-mode`, `think`, `hunt`, `check`, `ui`, `learn`, `write`, `handoff`, `health`) und 8 kurze Prinzipien in [`rules/principles.md`](rules/principles.md), ohne Handbuch-Ballast, den moderne Modelle bereits beherrschen.
 
-Jeder Skill ist über `/name` oder `$name` aufrufbar; `think`, `hunt` und `check` starten auch von selbst, die übrigen sechs nur ausdrücklich.
+Alle 9 Skills starten nur auf ausdrücklichen Aufruf (`/name` oder `$name`) oder im `/f-mode`; keiner greift automatisch.
 
 ## Deinstallation
 

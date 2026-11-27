@@ -23,7 +23,7 @@
   "interface": {
     "displayName": "fskill",
     "shortDescription": "Engineering workflow skills for Codex",
-    "longDescription": "fskill packages 9 lean engineering workflow skills (session routing, planning, debugging, review, UI, research, writing, handoff, and health) and shared engineering principles. think, hunt, and check also trigger when the task fits; the remaining six require an explicit call.",
+    "longDescription": "fskill packages 9 lean engineering workflow skills (session routing, planning, debugging, review, UI, research, writing, handoff, and health) and shared engineering principles. All 9 skills are explicit-only and run via /name, $name, or inside active /f-mode.",
     "developerName": "gofenix",
     "category": "Developer Tools",
     "capabilities": [

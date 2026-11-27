@@ -1,8 +1,8 @@
 ---
 name: hunt
-description: "在修复前用运行时证据查实错误、崩溃、回归与异常根因；指标已定时单假设验证。Use when debugging errors, regressions, broken renders, or running single-hypothesis metric improvements; 无需用户点名也可按任务选用。不用于代码审查或新功能规划。"
+description: "在修复前用运行时证据查实错误、崩溃、回归与异常根因；指标已定时单假设验证。Use when debugging errors, regressions, broken renders, or running single-hypothesis metric improvements; 仅在显式调用或 /f-mode 选中时使用：/hunt、$hunt 或 fskill 限定调用。不用于代码审查或新功能规划。"
 when_to_use: "/hunt, $hunt, /fskill:hunt, /fskill hunt, 排查报错, 查根因, 回归调试, 指标单假设优化"
-disable-model-invocation: false
+disable-model-invocation: true
 dispatch_intent: "用运行时证据证明根因，或对已定指标做单假设对照实验"
 ---
 
@@ -19,7 +19,7 @@ dispatch_intent: "用运行时证据证明根因，或对已定指标做单假�
 
 ## 调用边界
 
-显式调用、`/f-mode` 选中，或出现明确报错、崩溃、回归、已定指标优化时进入；隐式选用前一句话说明排查目标。只诊断时绝不改文件；修、改分支与发版遵循本任务授权。旧记忆只作历史故障线索，不读原始对话且不授予修改权限，当前日志、源码与复现结果优先于旧记忆。代码/PR 审查用 `/check`，视觉审美问题建议改用 `/ui`，新功能规划用 `/think`。
+仅在显式调用 `/hunt`、`$hunt`、fskill 限定入口或已开启的 `/f-mode` 选中时执行；同一任务中的追问继续沿用，**不自动切换技能**（`f-mode` 开启时除外）。只诊断时绝不改文件；修、改分支与发版遵循本任务授权。旧记忆只作历史故障线索，不读原始对话且不授予修改权限，当前日志、源码与复现结果优先于旧记忆。代码/PR 审查用 `/check`，视觉审美问题建议改用 `/ui`，新功能规划用 `/think`。
 
 ## 排查流程
 

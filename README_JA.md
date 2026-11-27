@@ -14,7 +14,7 @@
 
 ## スキル一覧
 
-fskill は **9 つのスリムなワークフロー + 8 つの `pstack` 風エンジニアリング原則 + 決定論的スクリプト** で構成されます。各スキルは `/name` または `$name` で開始し、`think`・`hunt`・`check` はタスクに応じて自動選択されます（残り 6 つは明示呼び出しまたは `/f-mode` 時のみ）。[Waza](https://github.com/tw93/Waza)、[Matt Pocock skills](https://github.com/mattpocock/skills)、[pstack](https://github.com/cursor/plugins/tree/main/pstack) を基にしています。
+fskill は **9 つのスリムなワークフロー + 8 つの `pstack` 風エンジニアリング原則 + 決定論的スクリプト** で構成されます。9 スキルすべてが明示呼び出し（`/name`・`$name`）または `/f-mode` 内でのみ起動し、自動発動はしません。[Waza](https://github.com/tw93/Waza)、[Matt Pocock skills](https://github.com/mattpocock/skills)、[pstack](https://github.com/cursor/plugins/tree/main/pstack) を基にしています。
 
 | スキル | グループ | 役割 |
 | :--- | :--- | :--- |
@@ -22,9 +22,9 @@ fskill は **9 つのスリムなワークフロー + 8 つの `pstack` 風エ�
 | [`/think`](skills/think/SKILL.md) | 方向を決める | 計画、価値判断、範囲分類、`grill me` 深掘り。 |
 | [`/hunt`](skills/hunt/SKILL.md) | 問題を探す | 実行時証拠に基づく根本原因特定と単一仮説の指標改善。 |
 | [`/check`](skills/check/SKILL.md) | 確認する | diff/PR レビュー、リリース可否判断、プロジェクト監査、事故台帳検証。 |
-| [`/ui`](skills/ui/SKILL.md) | 画面 | 反 AI slop の UI 設計と実画面スクリーンショット検証（明示呼び出し）。 |
-| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 読む・書く | URL/PDF 取得と一次資料調査、AI 臭除去・リリースノート（明示呼び出し）。 |
-| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | 次も使える | セッション引き継ぎ、Agent 設定・hooks・MCP・省トークン監査とルール削減（明示呼び出し）。 |
+| [`/ui`](skills/ui/SKILL.md) | 画面 | 反 AI slop の UI 設計と実画面スクリーンショット検証。 |
+| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 読む・書く | URL/PDF 取得と一次資料調査、AI 臭除去・リリースノート。 |
+| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | 次も使える | セッション引き継ぎ、Agent 設定・hooks・MCP・省トークン監査とルール削減。 |
 
 **8 つのエンジニアリング原則（[`rules/principles.md`](rules/principles.md)、[`f-mode`](skills/f-mode/references/principles.md) に同梱）：** 追加前に削減 · 前提を疑う · 根本原因を証明 · 実際の動作で検証 · 振る舞いをテスト · 数値に根拠 · 構造に落とし込む · 境界と片道ドアを守る
 
@@ -122,7 +122,7 @@ Codex は残りの枠を、上の Claude Code ステータスラインは使用�
   # アンチパターン：スキル横断で常に効くガードレール（読んでから動く、範囲を広げない、頼まれていない要約をしない）
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # ルーティングヒント：think/hunt/check は該当タスクで自動、残りは明示的な呼び出しで開始する規則
+  # ルーティングヒント：9 スキルすべてが明示的な呼び出しまたは /f-mode 内でのみ開始する規則
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # エンジニアリング原則：スキルフォルダを増やさず使う 8 つの不変条件
@@ -145,7 +145,7 @@ Codex は残りの枠を、上の Claude Code ステータスラインは使用�
 
 fskill は gofenix 自身のスキル集です。[tw93/Waza](https://github.com/tw93/Waza) の決定論的スクリプトと [pstack](https://github.com/cursor/plugins/tree/main/pstack) の原則重視設計を合わせ、**9 つの軽量ワークフロー**（`f-mode`・`think`・`hunt`・`check`・`ui`・`learn`・`write`・`handoff`・`health`）と [`rules/principles.md`](rules/principles.md) にまとめた 8 つの原則に整理しています。
 
-各スキルは `/name` または `$name` で呼び出せます。`think`・`hunt`・`check` はタスクが合えば自動でも始まり、残り 6 つは明示的な呼び出しまたは `/f-mode` で動きます。
+9 スキルすべてが明示的な呼び出し（`/name` または `$name`）または `/f-mode` でのみ動き、自動発動はしません。
 
 ## アンインストール
 

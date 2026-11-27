@@ -1,6 +1,6 @@
 # fskill Skill Resolver
 
-9 个精简工作流技能，并配有一套沉淀为共享规则的工程原则。每条技能都能用 `/name` 或 `$name` 调用；`think`、`hunt`、`check` 在任务匹配时也可由模型自动选用，其余 6 条只在显式调用或开启 `/f-mode` 后进入。`/f-mode` 控制当前会话路由，`/f-mode off` 退出；直接命令优先且不关闭它。
+9 个精简工作流技能，并配有一套沉淀为共享规则的工程原则。全部 9 条技能均只在显式调用（`/name`、`$name` 或 `/fskill:name`）或开启 `/f-mode` 后进入，不会自动生效。`/f-mode` 控制当前会话路由，`/f-mode off` 退出；直接命令优先且不关闭它。
 
 ## 路由与模式
 
@@ -23,5 +23,5 @@
 
 ## 边界与原则
 
-- 没开 `/f-mode` 时，只有 `think`、`hunt`、`check` 可按任务选用；`ui`、`write`、`learn`、`health`、`handoff`、`f-mode` 必须显式调用。
+- 全部 9 条技能均设为 `disable-model-invocation: true`：没开 `/f-mode` 时不自动生效，仅按用户显式命令执行；开启 `/f-mode` 后按当前会话目标路由。
 - 8 条通用工程原则（先减后增、质疑前提、先证根因、真实验收、行为测试、解释数字、结构防复发、边界与单向门）沉淀在 `rules/principles.md` 并生成同步到 `f-mode` 的 `references/principles.md`，不单独占用 `skills/` 目录；只在真正改变具体决定时顺带点名依据，平时保持安静且绝不扩大授权。

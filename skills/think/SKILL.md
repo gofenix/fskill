@@ -1,8 +1,8 @@
 ---
 name: think
-description: "想清楚再动手：方案设计、价值判断、需求范围分类、术语重构、深化提示词与 grill-me 高压追问。Use when planning features, judging whether to build, triaging scope, reframing terminology, sharpening a prompt, or stress-testing an idea; 无需用户点名也可按任务选用。不用于界面交付、根因调试、PR 审查或文案润色。"
+description: "想清楚再动手：方案设计、价值判断、需求范围分类、术语重构、深化提示词与 grill-me 高压追问。Use when planning features, judging whether to build, triaging scope, reframing terminology, sharpening a prompt, or stress-testing an idea; 仅在显式调用或 /f-mode 选中时使用：/think、$think 或 fskill 限定调用。不用于界面交付、根因调试、PR 审查或文案润色。"
 when_to_use: "/think, $think, /fskill:think, /fskill think, 出方案, 值不值得做, grill me, 拷问我, 需求范围分类, reframe, 术语重构, sharpen, 深化提示词"
-disable-model-invocation: false
+disable-model-invocation: true
 dispatch_intent: "动手前方案规划、价值判断、需求分类、术语重构与深化提示词、grill-me 压测"
 ---
 
@@ -19,7 +19,7 @@ dispatch_intent: "动手前方案规划、价值判断、需求分类、术语�
 
 ## 调用边界
 
-显式调用、`/f-mode` 选中，或任务本身明显属于定方案、价值判断、范围分类、术语重构、深化提示词、高压追问时进入；隐式选用前一句话说明目的。同一任务中的追问与校准继续沿用。**不扩大授权**：只问方案就只交方案；“方案不错”不授予实施、新建/切换分支、worktree、push 或发布授权；已有明确实施授权且前提不变时直接推进，不把实施请求变成重写提示词或额外索要确认；仅在用户要求术语重构或深化提示词时，只交付重写结果供确认，不擅自改文件。涉及多子任务时保持委派与校验克制，不随意调低验收预算。历史记忆只作偏好与旧决定线索，不读原始对话且不授予实施权限，当前仓库代码、文档与用户状态优先于旧记忆。界面交付用 `/ui`，查根因用 `/hunt`，审 diff/发布用 `/check`。
+仅在显式调用 `/think`、`$think`、fskill 限定入口或已开启的 `/f-mode` 选中时执行；同一任务中的追问与校准继续沿用，**不自动切换技能**（`f-mode` 开启时除外）。**不扩大授权**：只问方案就只交方案；“方案不错”不授予实施、新建/切换分支、worktree、push 或发布授权；已有明确实施授权且前提不变时直接推进，不把实施请求变成重写提示词或额外索要确认；仅在用户要求术语重构或深化提示词时，只交付重写结果供确认，不擅自改文件。涉及多子任务时保持委派与校验克制，不随意调低验收预算。历史记忆只作偏好与旧决定线索，不读原始对话且不授予实施权限，当前仓库代码、文档与用户状态优先于旧记忆。界面交付用 `/ui`，查根因用 `/hunt`，审 diff/发布用 `/check`。
 
 ## 按场景选择做法
 

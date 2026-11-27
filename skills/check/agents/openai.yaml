@@ -3,4 +3,4 @@ interface:
   short_description: "基于现场证据审查 diff、PR、发布就绪状态与项目代码健康；只判断发版价值或按授权交付"
   default_prompt: "使用 $check 完成 fskill 工作流。"
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

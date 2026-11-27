@@ -1,8 +1,8 @@
 ---
 name: check
-description: "基于现场证据审查 diff、PR、发布就绪状态与项目代码健康；只判断发版价值或按授权交付。Use when reviewing changes, assessing release readiness, auditing a project, or handling PRs and releases; 无需用户点名也可按任务选用。不用于尚未定性的方案设计或根因调试。"
+description: "基于现场证据审查 diff、PR、发布就绪状态与项目代码健康；只判断发版价值或按授权交付。Use when reviewing changes, assessing release readiness, auditing a project, or handling PRs and releases; 仅在显式调用或 /f-mode 选中时使用：/check、$check 或 fskill 限定调用。不用于尚未定性的方案设计或根因调试。"
 when_to_use: "/check, $check, /fskill:check, /fskill check, code review, code-review, 审查代码, 值不值得发版, 发布收尾"
-disable-model-invocation: false
+disable-model-invocation: true
 dispatch_intent: "基于证据审查 diff/PR、项目体检、发版价值判断与发布收尾"
 ---
 
@@ -23,7 +23,7 @@ dispatch_intent: "基于证据审查 diff/PR、项目体检、发版价值判断
 
 ## 调用边界
 
-显式调用、`/f-mode` 选中，或任务明确是要审 diff/PR/成稿 spec、判别“值不值得发版”、发布前检查、执行已授权的发布收尾、做项目审计或台账重放时进入；隐式选用前一句话交代理由。**不扩大授权**：只审或只判发版价值时不改文件；旧记忆仅作背景，不读原始对话且不授予任何修改或发布权限，当前 diff、公开文档、CI 与实测输出优先于旧记忆；方案未定走 `/think`，根因排错走 `/hunt`，纯语言润色建议显式调用 `/write`，Agent 配置与规则瘦身用 `/health`。
+仅在显式调用 `/check`、`$check`、fskill 限定入口或已开启的 `/f-mode` 选中时执行；同一任务中的追问继续沿用，**不自动切换技能**（`f-mode` 开启时除外）。**不扩大授权**：只审或只判发版价值时不改文件；旧记忆仅作背景，不读原始对话且不授予任何修改或发布权限，当前 diff、公开文档、CI 与实测输出优先于旧记忆；方案未定走 `/think`，根因排错走 `/hunt`，纯语言润色建议显式调用 `/write`，Agent 配置与规则瘦身用 `/health`。
 
 ## 工作区安全预检
 

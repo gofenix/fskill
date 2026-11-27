@@ -7,7 +7,7 @@ description: 'Dispatch explicit fskill commands or route within the session afte
 
 Prefix your first line with 🥷 inline, not as its own paragraph.
 
-Every skill takes `/name`, `$name`, `/fskill:name`, or `/fskill name`. `think`, `hunt`, and `check` may also trigger automatically when the task matches them; the other six (`f-mode`, `ui`, `write`, `learn`, `health`, `handoff`) start only on an explicit call or inside active `/f-mode`. The 8 engineering principles live in `skills/f-mode/references/principles.md` (mirrored from `rules/principles.md`), apply quietly without inflating output, and are cited only when they actually changed a concrete decision.
+Every skill takes `/name`, `$name`, `/fskill:name`, or `/fskill name` and starts only on an explicit call or inside active `/f-mode`; none trigger automatically. The 8 engineering principles live in `skills/f-mode/references/principles.md` (mirrored from `rules/principles.md`), apply quietly without inflating output, and are cited only when they actually changed a concrete decision.
 
 ## Routing Table
 
@@ -16,7 +16,7 @@ Every skill takes `/name`, `$name`, `/fskill:name`, or `/fskill name`. `think`, 
 
 ## How This Works
 
-1. Explicit skill commands and `/f-mode` controls take priority without closing `f-mode`. Outside `f-mode`, auto-select only `think`, `hunt`, and `check`.
+1. Explicit skill commands and `/f-mode` controls take priority without closing `f-mode`. Outside `f-mode`, never auto-select any skill.
 2. Inside active `f-mode`, read the selected workflow section in full and consult `skills/f-mode/references/principles.md` when trade-offs or boundaries apply; never route `f-mode` into itself or expand action permissions.
 3. Disambiguation:
    - Done/PR diff/release readiness -> `/check`; runtime error or broken metric -> `/hunt`; unsettled design or scope -> `/think`.

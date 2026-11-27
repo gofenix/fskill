@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "fskill",
-  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi: 9 lean workflow skills with explicit /f-mode routing and concise engineering principles. think, hunt, and check also trigger on matching tasks; the remaining six stay explicit-only.",
+  "description": "Personal skill collection for Claude Code, Codex, Antigravity, OpenCode, and Pi: 9 lean workflow skills with explicit /f-mode routing and concise engineering principles. All 9 skills are explicit-only (run via /name, $name, or inside active /f-mode).",
   "owner": {
     "name": "gofenix",
     "email": "gofenix@users.noreply.github.com"
@@ -17,7 +17,7 @@
     },
     {
       "name": "fskill-check",
-      "description": "基于现场证据审查 diff、PR、发布就绪状态与项目代码健康；只判断发版价值或按授权交付。Use when reviewing changes, assessing release readiness, auditing a project, or handling PRs and releases; 无需用户点名也可按任务选用。不用于尚未定性的方案设计或根因调试。",
+      "description": "基于现场证据审查 diff、PR、发布就绪状态与项目代码健康；只判断发版价值或按授权交付。Use when reviewing changes, assessing release readiness, auditing a project, or handling PRs and releases; 仅在显式调用或 /f-mode 选中时使用：/check、$check 或 fskill 限定调用。不用于尚未定性的方案设计或根因调试。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/check",
@@ -65,7 +65,7 @@
     },
     {
       "name": "fskill-hunt",
-      "description": "在修复前用运行时证据查实错误、崩溃、回归与异常根因；指标已定时单假设验证。Use when debugging errors, regressions, broken renders, or running single-hypothesis metric improvements; 无需用户点名也可按任务选用。不用于代码审查或新功能规划。",
+      "description": "在修复前用运行时证据查实错误、崩溃、回归与异常根因；指标已定时单假设验证。Use when debugging errors, regressions, broken renders, or running single-hypothesis metric improvements; 仅在显式调用或 /f-mode 选中时使用：/hunt、$hunt 或 fskill 限定调用。不用于代码审查或新功能规划。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/hunt",
@@ -89,7 +89,7 @@
     },
     {
       "name": "fskill-think",
-      "description": "想清楚再动手：方案设计、价值判断、需求范围分类、术语重构、深化提示词与 grill-me 高压追问。Use when planning features, judging whether to build, triaging scope, reframing terminology, sharpening a prompt, or stress-testing an idea; 无需用户点名也可按任务选用。不用于界面交付、根因调试、PR 审查或文案润色。",
+      "description": "想清楚再动手：方案设计、价值判断、需求范围分类、术语重构、深化提示词与 grill-me 高压追问。Use when planning features, judging whether to build, triaging scope, reframing terminology, sharpening a prompt, or stress-testing an idea; 仅在显式调用或 /f-mode 选中时使用：/think、$think 或 fskill 限定调用。不用于界面交付、根因调试、PR 审查或文案润色。",
       "version": "3.39.0",
       "category": "development",
       "source": "./skills/think",

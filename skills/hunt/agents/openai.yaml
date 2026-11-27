@@ -3,4 +3,4 @@ interface:
   short_description: "在修复前用运行时证据查实错误、崩溃、回归与异常根因；指标已定时单假设验证"
   default_prompt: "使用 $hunt 完成 fskill 工作流。"
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

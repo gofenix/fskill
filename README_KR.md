@@ -14,7 +14,7 @@
 
 ## 스킬 목록
 
-fskill은 **9개의 슬림 워크플로우 + 8개의 `pstack` 스타일 엔지니어링 원칙 + 결정론적 스크립트**로 구성됩니다. 개별 스킬은 `/name` 또는 `$name`으로 호출하며 `think`, `hunt`, `check`는 작업이 맞으면 자동으로 동작하고, 나머지 6개는 명시적 호출 또는 `/f-mode`에서만 실행됩니다. [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills), [pstack](https://github.com/cursor/plugins/tree/main/pstack)을 바탕으로 재구성했습니다.
+fskill은 **9개의 슬림 워크플로우 + 8개의 `pstack` 스타일 엔지니어링 원칙 + 결정론적 스크립트**로 구성됩니다. 9개 스킬 모두 `/name`, `$name` 명시적 호출 또는 `/f-mode` 내에서만 실행되며 자동으로 동작하지 않습니다. [Waza](https://github.com/tw93/Waza), [Matt Pocock skills](https://github.com/mattpocock/skills), [pstack](https://github.com/cursor/plugins/tree/main/pstack)을 바탕으로 재구성했습니다.
 
 | 스킬 | 묶음 | 역할 |
 | :--- | :--- | :--- |
@@ -22,9 +22,9 @@ fskill은 **9개의 슬림 워크플로우 + 8개의 `pstack` 스타일 엔지�
 | [`/think`](skills/think/SKILL.md) | 방향 정하기 | 구현 전 설계, 가치 판단, 범위 분류, `grill me` 압박 질문. |
 | [`/hunt`](skills/hunt/SKILL.md) | 문제 찾기 | 런타임 증거 기반 근본 원인 분석 및 단일 가설 지표 개선. |
 | [`/check`](skills/check/SKILL.md) | 확인 | diff/PR 검토, 릴리스 가치 판단, 프로젝트 감사, 사고 대장 검증. |
-| [`/ui`](skills/ui/SKILL.md) | 화면 | 반 AI slop UI 제작과 실렌더링 스크린샷 검증(명시적 호출). |
-| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 읽고 쓰기 | URL/PDF 수집과 1차 자료 조사, AI 투 제거 및 릴리스 노트 작성(명시적 호출). |
-| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | 다음에 쓰기 | 세션 인수인계, 에이전트 설정·hooks·MCP·토큰 도구 점검 및 규칙 슬림화(명시적 호출). |
+| [`/ui`](skills/ui/SKILL.md) | 화면 | 반 AI slop UI 제작과 실렌더링 스크린샷 검증. |
+| [`/learn`](skills/learn/SKILL.md) [`/write`](skills/write/SKILL.md) | 읽고 쓰기 | URL/PDF 수집과 1차 자료 조사, AI 투 제거 및 릴리스 노트 작성. |
+| [`/handoff`](skills/handoff/SKILL.md) [`/health`](skills/health/SKILL.md) | 다음에 쓰기 | 세션 인수인계, 에이전트 설정·hooks·MCP·토큰 도구 점검 및 규칙 슬림화. |
 
 **8가지 엔지니어링 원칙 ([`rules/principles.md`](rules/principles.md), [`f-mode`](skills/f-mode/references/principles.md) 내장):** 추가 전 삭제 · 전제 검증 · 근본 원인 증명 · 실제 동작 검증 · 행위 테스트 · 수치 근거 제시 · 구조로 재발 방지 · 경계와 단방향 문 준수
 
@@ -122,7 +122,7 @@ Codex는 남은 한도를, 위의 Claude Code 상태 표시줄은 사용한 비�
   # 안티패턴: 모든 스킬에 항상 적용되는 가드레일 (먼저 읽고 행동, 범위 확장 금지, 요청하지 않은 요약 금지)
   bash "$FSKILL_RULE_SCRIPT" anti-patterns claude-code
 
-  # 라우팅 힌트: think/hunt/check 는 맞는 작업이면 자동, 나머지는 명시적 호출로 시작한다는 규칙
+  # 라우팅 힌트: 9개 스킬 모두 명시적 호출 또는 /f-mode 내에서만 시작한다는 규칙
   bash "$FSKILL_RULE_SCRIPT" fskill-routing claude-code
 
   # 엔지니어링 원칙: 스킬 폴더를 늘리지 않고 적용하는 8가지 불변 원칙
@@ -145,7 +145,7 @@ Codex는 남은 한도를, 위의 Claude Code 상태 표시줄은 사용한 비�
 
 fskill은 gofenix 자신의 스킬 모음입니다. [tw93/Waza](https://github.com/tw93/Waza)의 결정론적 스크립트와 [pstack](https://github.com/cursor/plugins/tree/main/pstack)의 원칙 중심 설계를 결합해 **9개의 경량 워크플로우**(`f-mode`, `think`, `hunt`, `check`, `ui`, `learn`, `write`, `handoff`, `health`)와 [`rules/principles.md`](rules/principles.md)의 8가지 원칙으로 정리했습니다.
 
-각 스킬은 `/name` 또는 `$name`으로 호출합니다. `think`, `hunt`, `check`는 작업에 맞으면 자동으로 시작되고, 나머지 6개는 명시적 호출 또는 `/f-mode`로 동작합니다.
+9개 스킬 모두 `/name`, `$name` 명시적 호출 또는 `/f-mode`에서만 동작하며 자동으로 시작되지 않습니다.
 
 ## 삭제 방법
 
